@@ -1,0 +1,2 @@
+org.eclipse.edc.sample.runtime.SeedVaultExtension
+org.eclipse.edc.extension.health.HealthEndpointExtension
