@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.sample.runtime;
+package org.eclipse.edc.basedataspace.consumer.sample.runtime;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.security.Vault;

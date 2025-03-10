@@ -21,21 +21,25 @@ import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.Clock;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.restassured.RestAssured.given;
+import static org.eclipse.edc.basedataspace.util.ConfigPropertiesLoader.fromPropertiesFile;
+import static org.hamcrest.CoreMatchers.containsString;
 
 @EndToEndTest
-class Basic01basicConsumerTest {
+class ConsumerConfigurationHealthEndpointTest {
 
     @RegisterExtension
-    static RuntimeExtension consumer = new RuntimePerClassExtension(new EmbeddedRuntime(
+    static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
             "consumer",
             ":consumer"
-    ));
+    ).configurationProvider(fromPropertiesFile("system-tests/src/test/resources/consumer-test-configuration.properties")));
 
     @Test
-    public void testShouldStartConsumer() {
-        assertThat(consumer.getService(Clock.class)).isNotNull();
+    void shouldStartConnector() {
+        given()
+                .get("http://localhost:39191/api/health")
+                .then()
+                .statusCode(200)
+                .body(containsString("alive"));
     }
 }
