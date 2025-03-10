@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.util;
+package org.eclipse.edc.basedataspace.util;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.extension.health;
+package org.eclipse.edc.basedataspace.provider.extension.health;
 
 
 import jakarta.ws.rs.Consumes;
@@ -37,6 +37,6 @@ public class HealthApiController {
     @Path("health")
     public String checkHealth() {
         monitor.info("Consumer received a health request");
-        return "{\"response\":\"Consumer: I'm alive!\"}";
+        return "{\"response\":\"Provider: I'm alive!\"}";
     }
 }

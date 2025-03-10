@@ -14,7 +14,9 @@ dependencyResolutionManagement {
     }
 }
 
+
 include(":consumer")
 include(":provider")
 
 include(":util:http-request-logger")
+include("system-tests")
