@@ -36,7 +36,7 @@ public class HealthApiController {
     @GET
     @Path("health")
     public String checkHealth() {
-        monitor.info("Consumer received a health request");
+        monitor.info("Provider received a health request");
         return "{\"response\":\"Provider: I'm alive!\"}";
     }
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.basedataspace.consumer;
+package org.eclipse.edc.basedataspace.provider;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
@@ -26,18 +26,18 @@ import static org.eclipse.edc.basedataspace.util.ConfigPropertiesLoader.fromProp
 import static org.hamcrest.CoreMatchers.containsString;
 
 @EndToEndTest
-class ConsumerConfigurationHealthEndpointTest {
+class ProviderConfigurationHealthEndpointTest {
 
     @RegisterExtension
     static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
-            "consumer",
-            ":consumer"
-    ).configurationProvider(fromPropertiesFile("system-tests/src/test/resources/consumer-test-configuration.properties")));
+            "provider",
+            ":provider"
+    ).configurationProvider(fromPropertiesFile("system-tests/src/test/resources/provider-test-configuration.properties")));
 
     @Test
-    void testConsumerHealthEndpoint() {
+    void testProviderHealthEndpoint() {
         given()
-                .get("http://localhost:39191/api/health")
+                .get("http://localhost:49191/api/health")
                 .then()
                 .statusCode(200)
                 .body(containsString("alive"));
