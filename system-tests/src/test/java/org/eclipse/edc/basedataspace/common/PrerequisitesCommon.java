@@ -22,15 +22,15 @@ import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 public class PrerequisitesCommon {
     public static final String API_KEY_HEADER_KEY = "X-Api-Key";
     public static final String API_KEY_HEADER_VALUE = "password";
-    public static final String PROVIDER_MANAGEMENT_URL = "http://localhost:19193/management";
-    public static final String CONSUMER_MANAGEMENT_URL = "http://localhost:29193/management";
+    public static final String PROVIDER_MANAGEMENT_URL = "http://localhost:49193/management";
+    public static final String CONSUMER_MANAGEMENT_URL = "http://localhost:39193/management";
 
     private static final String PROVIDER_MODULE_PATH = ":provider";
     private static final String CONSUMER_MODULE_PATH = ":consumer";
     private static final String PROVIDER = "provider";
     private static final String CONSUMER = "consumer";
-    private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "provider/resources/configuration/provider-configuration.properties";
-    private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "consumer/resources/configuration/consumer-configuration.properties";
+    private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/provider-test-configuration.properties";
+    private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/consumer-test-configuration.properties";
 
     public static RuntimeExtension getProvider() {
         return getProvider(PROVIDER_MODULE_PATH, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
