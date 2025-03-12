@@ -16,11 +16,11 @@
 package org.eclipse.edc.basedataspace.util;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 
 import java.time.Duration;
-import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,7 +80,7 @@ public class TransferUtil {
                 .statusCode(HttpStatus.SC_OK);
     }
 
-    public static Object postObject(String url, String requestBody, String jsonPath) {
+    public static JsonPath postJson(String url, String requestBody) {
         return given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                 .contentType(ContentType.JSON)
@@ -90,10 +90,8 @@ public class TransferUtil {
                 .then()
                 .log().ifError()
                 .statusCode(HttpStatus.SC_OK)
-                .body(jsonPath, not(emptyString()))
                 .extract()
-                .jsonPath()
-                .get(jsonPath);
+                .jsonPath();
     }
 
     public static String post(String url, String requestBody, String jsonPath) {

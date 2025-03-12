@@ -36,6 +36,7 @@ dependencies {
     testImplementation(libs.testcontainers.hashicorp.vault)
     testImplementation(libs.azure.storage.blob)
     testImplementation(libs.minio.io)
+    testImplementation("org.json:json:20250107")
 
     // runtimes
     testCompileOnly(project(":consumer"))

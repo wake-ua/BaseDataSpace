@@ -15,7 +15,12 @@
 
 package org.eclipse.edc.basedataspace.common;
 
+import io.restassured.path.json.JsonPath;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +30,7 @@ import static org.eclipse.edc.basedataspace.util.TransferUtil.POLL_INTERVAL;
 import static org.eclipse.edc.basedataspace.util.TransferUtil.TIMEOUT;
 import static org.eclipse.edc.basedataspace.util.TransferUtil.get;
 import static org.eclipse.edc.basedataspace.util.TransferUtil.post;
-import static org.eclipse.edc.basedataspace.util.TransferUtil.postObject;
+import static org.eclipse.edc.basedataspace.util.TransferUtil.postJson;
 
 public class NegotiationCommon {
 
@@ -61,6 +66,7 @@ public class NegotiationCommon {
     public static void createPolicy(String createPolicyFilePath) {
         post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
     }
+
     public static void createContractDefinition() {
         createContractDefinition(CREATE_CONTRACT_DEFINITION_FILE_PATH);
     }
@@ -79,12 +85,21 @@ public class NegotiationCommon {
         return catalogDatasetId;
     }
 
-    public static Object fetchCatalogDatasets(String catalogRequestFilePath) {
-        var catalogDatasets = postObject(
+    public static ArrayList<LinkedHashMap> fetchCatalogDatasets(String catalogRequestFilePath) {
+        var catalog = postJson(
                 PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CATALOG_REQUEST_PATH,
-                getFileContentFromRelativePath(catalogRequestFilePath), CATALOG_DATASET_LIST);
-        assertThat(catalogDatasets).isNotNull();
-        return catalogDatasets;
+                getFileContentFromRelativePath(catalogRequestFilePath));
+        assertThat(catalog).isNotNull();
+        var catalogDatasets = catalog.get(CATALOG_DATASET_LIST);
+        if (catalogDatasets != null && (!(catalogDatasets instanceof List<?>))){
+            LinkedHashMap catalogDatasetsLinkedHashMap = catalog.get(CATALOG_DATASET_LIST);
+            var listSingleCatalogDataset = new ArrayList<LinkedHashMap>();
+            listSingleCatalogDataset.add(catalogDatasetsLinkedHashMap);
+            return listSingleCatalogDataset;
+        } else {
+            ArrayList<LinkedHashMap> catalogDatasetsLinkedHashMapList = catalog.get(CATALOG_DATASET_LIST);
+            return catalogDatasetsLinkedHashMapList;
+        }
     }
 
     public static String negotiateContract(String negotiateContractFilePath, String catalogDatasetId) {
