@@ -20,6 +20,7 @@ import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,6 +78,22 @@ public class TransferUtil {
                 .then()
                 .log().ifError()
                 .statusCode(HttpStatus.SC_OK);
+    }
+
+    public static Object postObject(String url, String requestBody, String jsonPath) {
+        return given()
+                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post(url)
+                .then()
+                .log().ifError()
+                .statusCode(HttpStatus.SC_OK)
+                .body(jsonPath, not(emptyString()))
+                .extract()
+                .jsonPath()
+                .get(jsonPath);
     }
 
     public static String post(String url, String requestBody, String jsonPath) {

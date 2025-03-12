@@ -1,0 +1,17 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@id": "assetIdOriginal",
+  "properties": {
+    "name": "product reviews",
+    "hassample": "assetIdSample",
+    "contenttype": "application/json"
+  },
+  "dataAddress": {
+    "type": "HttpData",
+    "name": "Test original asset",
+    "baseUrl": "https://jsonplaceholder.typicode.com/posts",
+    "proxyPath": "true"
+  }
+}

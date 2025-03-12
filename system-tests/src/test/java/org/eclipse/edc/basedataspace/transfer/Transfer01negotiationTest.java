@@ -39,8 +39,8 @@ public class Transfer01negotiationTest {
     @RegisterExtension
     static RuntimeExtension consumer = getConsumer();
 
-    private static final String NEGOTIATE_CONTRACT_FILE_PATH = "system-tests/src/test/resources/negotiate-contract.json";
-    private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "system-tests/src/test/resources/get-dataset.json";
+    private static final String NEGOTIATE_CONTRACT_FILE_PATH = "system-tests/src/test/resources/transfer/negotiate-contract.json";
+    private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "system-tests/src/test/resources/transfer/get-dataset.json";
 
     @Test
     void runNegotiationSteps() {
