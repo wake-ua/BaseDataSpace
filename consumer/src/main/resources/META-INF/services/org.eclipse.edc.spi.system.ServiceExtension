@@ -1,2 +1,2 @@
-org.eclipse.edc.basedataspace.consumer.sample.runtime.SeedVaultExtension
+org.eclipse.edc.heleade.consumer.sample.runtime.SeedVaultExtension
 org.eclipse.edc.extension.health.HealthEndpointExtension

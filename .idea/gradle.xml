@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/consumer" />
+            <option value="$PROJECT_DIR$/federated-catalog" />
             <option value="$PROJECT_DIR$/provider" />
             <option value="$PROJECT_DIR$/system-tests" />
             <option value="$PROJECT_DIR$/util" />

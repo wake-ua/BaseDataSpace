@@ -1,2 +1,2 @@
-org.eclipse.edc.basedataspace.provider.sample.runtime.SeedVaultExtension
+org.eclipse.edc.heleade.provider.sample.runtime.SeedVaultExtension
 org.eclipse.edc.extension.health.HealthEndpointExtension

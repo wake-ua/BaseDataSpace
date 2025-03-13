@@ -20,3 +20,5 @@ include(":provider")
 
 include(":util:http-request-logger")
 include("system-tests")
+include("federated-catalog")
+include("federated-catalog")
