@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.basedataspace.extension.fc;
+package org.eclipse.edc.heleade.federated.catalog.extension.directory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

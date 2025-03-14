@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.extension.health;
+package org.eclipse.edc.heleade.federated.catalog.extension.health;
 
 
 import jakarta.ws.rs.Consumes;
@@ -36,7 +36,7 @@ public class HealthApiController {
     @GET
     @Path("health")
     public String checkHealth() {
-        monitor.info("Provider received a health request");
-        return "{\"response\":\"Provider: I'm alive!\"}";
+        monitor.info("FederatedCatalog received a health request");
+        return "{\"response\":\"FederatedCatalog: I'm alive!\"}";
     }
 }

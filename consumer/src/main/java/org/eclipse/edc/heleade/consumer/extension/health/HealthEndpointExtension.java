@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.extension.health;
+package org.eclipse.edc.heleade.consumer.extension.health;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;

@@ -1,0 +1,2 @@
+org.eclipse.edc.heleade.federated.catalog.extension.health.HealthEndpointExtension
+org.eclipse.edc.heleade.federated.catalog.extension.directory.CatalogNodeDirectoryExtension

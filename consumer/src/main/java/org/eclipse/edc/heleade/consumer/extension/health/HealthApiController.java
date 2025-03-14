@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.extension.health;
+package org.eclipse.edc.heleade.consumer.extension.health;
 
 
 import jakarta.ws.rs.Consumes;

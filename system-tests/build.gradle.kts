@@ -18,7 +18,6 @@ plugins {
     `java-library`
 }
 
-// may not be all necessary (review)
 dependencies {
     testImplementation(libs.edc.junit)
     testImplementation(libs.edc.json.ld.lib)
@@ -36,14 +35,10 @@ dependencies {
     testImplementation(libs.testcontainers.hashicorp.vault)
     testImplementation(libs.azure.storage.blob)
     testImplementation(libs.minio.io)
-    testImplementation("org.json:json:20250107")
 
-    // runtimes
-    testCompileOnly(project(":consumer"))
-    testCompileOnly(project(":provider"))
+    // runtimes (commented out as it messes up the tests)
+//    testCompileOnly(project(":consumer"))
+//    testCompileOnly(project(":provider"))
+//    testCompileOnly(project(":federated-catalog"))
 
 }
-
-//tasks.compileJava {
-//    dependsOn(":advanced:advanced-01-open-telemetry:open-telemetry-runtime:build")
-//}

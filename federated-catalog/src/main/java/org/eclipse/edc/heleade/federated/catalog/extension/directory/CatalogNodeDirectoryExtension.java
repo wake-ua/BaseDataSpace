@@ -12,12 +12,14 @@
  *
  */
 
-package org.eclipse.edc.basedataspace.extension.fc;
+package org.eclipse.edc.heleade.federated.catalog.extension.directory;
 
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
+import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
 
 import java.io.IOException;
@@ -28,9 +30,12 @@ public class CatalogNodeDirectoryExtension implements ServiceExtension {
     @Inject
     private TypeManager typeManager;
 
+    private String participantsFilePath;
+    private Monitor monitor;
+
     @Provider 
     public TargetNodeDirectory federatedCacheNodeDirectory() {
-        String participantsFilePath = "participants.json";
+        monitor.info("Participant list file selected: " + participantsFilePath);
 
         ClassLoader classLoader = getClass().getClassLoader();
         try (InputStream participantFileInputStream = classLoader.getResourceAsStream(participantsFilePath)) {
@@ -45,4 +50,11 @@ public class CatalogNodeDirectoryExtension implements ServiceExtension {
             throw new RuntimeException("Failed to read and map participant list file: " + participantsFilePath, e);
         }
     }
+
+    @Override
+    public void initialize(ServiceExtensionContext context) {
+        participantsFilePath = context.getConfig().getString("edc.catalog.participants.path", "participants.json");
+        monitor = context.getMonitor();
+    }
 }
+

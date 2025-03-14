@@ -48,7 +48,7 @@ public class PrerequisitesCommon {
         return getConnector(modulePath, CONSUMER, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
     }
 
-    private static RuntimeExtension getConnector(
+    public static RuntimeExtension getConnector(
             String modulePath,
             String moduleName,
             String configPropertiesFilePath

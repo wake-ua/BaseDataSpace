@@ -1,2 +1,2 @@
 org.eclipse.edc.heleade.consumer.sample.runtime.SeedVaultExtension
-org.eclipse.edc.extension.health.HealthEndpointExtension
+org.eclipse.edc.heleade.consumer.extension.health.HealthEndpointExtension

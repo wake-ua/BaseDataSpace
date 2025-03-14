@@ -33,6 +33,7 @@ public class NegotiationCommon {
 
     private static final String CREATE_ASSET_FILE_PATH = "system-tests/src/test/resources/transfer/create-asset.json";
     private static final String V3_ASSETS_PATH = "/v3/assets";
+    private static final String ASSET_ID = "@id";
     private static final String CREATE_POLICY_FILE_PATH = "system-tests/src/test/resources/transfer/create-policy.json";
     private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
     private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = "system-tests/src/test/resources/transfer/create-contract-definition.json";
@@ -48,12 +49,13 @@ public class NegotiationCommon {
     private static final String CONTRACT_AGREEMENT_ID = "contractAgreementId";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
 
-    public static void createAsset() {
-        createAsset(CREATE_ASSET_FILE_PATH);
+    public static String createAsset() {
+        return createAsset(CREATE_ASSET_FILE_PATH);
     }
 
-    public static void createAsset(String assetFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, getFileContentFromRelativePath(assetFilePath));
+    public static String createAsset(String assetFilePath) {
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH,
+                        getFileContentFromRelativePath(assetFilePath), ASSET_ID);
     }
 
     public static void createPolicy() {
