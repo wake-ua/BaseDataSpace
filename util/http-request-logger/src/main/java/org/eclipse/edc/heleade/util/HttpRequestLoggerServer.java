@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.basedataspace.util;
+package org.eclipse.edc.heleade.util;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

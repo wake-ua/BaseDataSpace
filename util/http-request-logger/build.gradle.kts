@@ -19,7 +19,7 @@ plugins {
 tasks.withType<Jar> {
     from(sourceSets["main"].output)
     manifest {
-        attributes["Main-Class"] = "org.eclipse.edc.basedataspace.util.HttpRequestLoggerServer"
+        attributes["Main-Class"] = "org.eclipse.edc.heleade.util.HttpRequestLoggerServer"
     }
     archiveFileName.set("http-request-logger.jar")
 }
