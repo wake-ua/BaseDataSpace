@@ -1,0 +1,1 @@
+Base consumer module to extend

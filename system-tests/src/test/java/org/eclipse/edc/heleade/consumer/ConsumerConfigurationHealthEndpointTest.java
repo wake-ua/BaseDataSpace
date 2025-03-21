@@ -31,7 +31,7 @@ class ConsumerConfigurationHealthEndpointTest {
     @RegisterExtension
     static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
             "consumer",
-            ":consumer"
+            ":consumers:consumer-base"
     ).configurationProvider(fromPropertiesFile("system-tests/src/test/resources/consumer-test-configuration.properties")));
 
     @Test

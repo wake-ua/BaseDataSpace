@@ -26,7 +26,7 @@ public class PrerequisitesCommon {
     public static final String CONSUMER_MANAGEMENT_URL = "http://localhost:39193/management";
 
     private static final String PROVIDER_MODULE_PATH = ":providers:provider-base";
-    private static final String CONSUMER_MODULE_PATH = ":consumer";
+    private static final String CONSUMER_MODULE_PATH = ":consumers:consumer-base";
     private static final String PROVIDER = "provider";
     private static final String CONSUMER = "consumer";
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/provider-test-configuration.properties";
