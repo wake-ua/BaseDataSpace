@@ -12,6 +12,11 @@ Base Data Space for the Heleade project
 IntelliJ IDEA based
 TODO
 
+## Build
+Trying to fix this. Currently, the provider template has to be built independently:
+./gradlew clean build --continue
+./gradlew provider-template:clean provider-template:build
+
 ## Tests
 
 ### System Tests

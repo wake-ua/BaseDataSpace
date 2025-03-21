@@ -19,6 +19,9 @@ import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
+/**
+ * Seed vault class for the service extension
+ */
 public class SeedVaultExtension implements ServiceExtension {
 
     @Inject

@@ -25,7 +25,7 @@ public class PrerequisitesCommon {
     public static final String PROVIDER_MANAGEMENT_URL = "http://localhost:49193/management";
     public static final String CONSUMER_MANAGEMENT_URL = "http://localhost:39193/management";
 
-    private static final String PROVIDER_MODULE_PATH = ":provider";
+    private static final String PROVIDER_MODULE_PATH = ":providers:provider-base";
     private static final String CONSUMER_MODULE_PATH = ":consumer";
     private static final String PROVIDER = "provider";
     private static final String CONSUMER = "consumer";

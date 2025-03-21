@@ -16,10 +16,11 @@ dependencyResolutionManagement {
 
 
 include(":consumer")
-include(":provider")
 
 include(":util:http-request-logger")
-include("system-tests")
-include("federated-catalog")
-include("federated-catalog")
-include("provider-template")
+include(":system-tests")
+include(":federated-catalog")
+
+include(":providers:provider")
+include(":providers:provider-template")
+include(":providers:provider-base")

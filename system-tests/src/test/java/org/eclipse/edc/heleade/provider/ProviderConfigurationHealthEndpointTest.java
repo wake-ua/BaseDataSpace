@@ -31,7 +31,7 @@ class ProviderConfigurationHealthEndpointTest {
     @RegisterExtension
     static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
             "provider",
-            ":provider"
+            ":providers:provider-base"
     ).configurationProvider(fromPropertiesFile("system-tests/src/test/resources/provider-test-configuration.properties")));
 
     @Test

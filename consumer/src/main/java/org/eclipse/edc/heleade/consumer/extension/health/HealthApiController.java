@@ -22,21 +22,37 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.spi.monitor.Monitor;
 
+/**
+ * Controller class for the health check
+ */
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 @Path("/")
 public class HealthApiController {
 
     private final Monitor monitor;
+    private final String name;
 
-    public HealthApiController(Monitor monitor) {
+    /**
+     * Initializes the health controller
+     *
+     * @param monitor object for logging purposes
+     * @param name identifier of teh consumer within the dataspace
+     */
+    public HealthApiController(Monitor monitor, String name) {
         this.monitor = monitor;
+        this.name = name;
     }
 
+    /**
+     * outputs a simple line to assess connector health
+     *
+     * @return string confirming status and name
+     */
     @GET
     @Path("health")
     public String checkHealth() {
         monitor.info("Consumer received a health request");
-        return "{\"response\":\"Consumer: I'm alive!\"}";
+        return "{\"response\":\"Consumer (%s): I'm alive!\"}".formatted(name);
     }
 }

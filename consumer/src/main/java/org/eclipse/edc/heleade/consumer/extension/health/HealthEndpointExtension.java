@@ -19,13 +19,22 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
 
+/**
+ * Endpoint class for the health check service
+ */
 public class HealthEndpointExtension implements ServiceExtension {
 
     @Inject
     WebService webService;
 
+    /**
+     * initializes the extension
+     *
+     * @param context necessary object to get the configuration and logging
+     */
     @Override
     public void initialize(ServiceExtensionContext context) {
-        webService.registerResource(new HealthApiController(context.getMonitor()));
+        String name = context.getConfig().getString("edc.participant.id", "undefined");
+        webService.registerResource(new HealthApiController(context.getMonitor(), name));
     }
 }
