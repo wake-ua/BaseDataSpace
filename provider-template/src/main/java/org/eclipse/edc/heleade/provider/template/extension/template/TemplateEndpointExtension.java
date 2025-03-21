@@ -12,14 +12,14 @@
  *
  */
 
-package org.eclipse.edc.heleade.provider.extension.health;
+package org.eclipse.edc.heleade.provider.template.extension.template;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
 
-public class HealthEndpointExtension implements ServiceExtension {
+public class TemplateEndpointExtension implements ServiceExtension {
 
     @Inject
     WebService webService;
@@ -27,6 +27,6 @@ public class HealthEndpointExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         String name = context.getConfig().getString("edc.participant.id", "undefined");
-        webService.registerResource(new HealthApiController(context.getMonitor(), name));
+        webService.registerResource(new TemplateApiController(context.getMonitor(), name));
     }
 }

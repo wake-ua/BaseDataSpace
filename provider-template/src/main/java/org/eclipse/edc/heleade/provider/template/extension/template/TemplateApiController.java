@@ -12,8 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.provider.extension.health;
-
+package org.eclipse.edc.heleade.provider.template.extension.template;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -25,7 +24,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 @Path("/")
-public class HealthApiController {
+public class TemplateApiController {
 
     private final Monitor monitor;
     private final String name;
@@ -36,15 +35,15 @@ public class HealthApiController {
      * @param monitor log output
      * @param name provider identifier name to show
      */
-    public HealthApiController(Monitor monitor, String name) {
+    public TemplateApiController(Monitor monitor, String name) {
         this.monitor = monitor;
         this.name = name;
     }
 
     @GET
-    @Path("health")
-    public String checkHealth() {
-        monitor.info("Provider received a health request");
-        return "{\"response\":\"Provider (%s): I'm alive!\"}".formatted(name);
+    @Path("template")
+    public String checkTemplate() {
+        monitor.info("Template Provider received a request");
+        return "{\"response\":\"Provider (%s): It works!\"}".formatted(name);
     }
 }

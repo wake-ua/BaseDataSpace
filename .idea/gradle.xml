@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/consumer" />
             <option value="$PROJECT_DIR$/federated-catalog" />
             <option value="$PROJECT_DIR$/provider" />
+            <option value="$PROJECT_DIR$/provider-template" />
             <option value="$PROJECT_DIR$/system-tests" />
             <option value="$PROJECT_DIR$/util" />
             <option value="$PROJECT_DIR$/util/http-request-logger" />
