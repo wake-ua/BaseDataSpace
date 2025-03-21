@@ -13,16 +13,34 @@ IntelliJ IDEA based
 TODO
 
 ## Build
-Trying to fix this. Currently, the provider template has to be built independently:
-./gradlew clean build --continue
-./gradlew provider-template:clean provider-template:build
+Build the whole project:
+```
+./gradlew clean build 
+```
+Execute the components:
+* Provider Base
+```
+java -Dedc.fs.config=providers/provider-base/resources/configuration/provider-base-configuration.properties -jar providers/provider-base/build/libs/provider-base.jar --log-level=DEBUG
+```
+* Provider Template
+```
+java -Dedc.fs.config=providers/provider-template/resources/configuration/provider-template-configuration.properties -jar providers/provider-template/build/libs/provider-template.jar --log-level=DEBUG
+```
+* Consumer Base
+```
+java -Dedc.fs.config=consumers/consumer-base/resources/configuration/consumer-base-configuration.properties -jar consumers/consumer-base/build/libs/consumer-base.jar --log-level=DEBUG
+```
+* Federated Catalog
+```
+java -Dedc.fs.config=federated-catalog/src/main/resources/configuration/fc-configuration.properties -jar federated-catalog/build/libs/federated-catalog.jar --log-level=DEBUG
+```
 
-## Tests
 
 ### System Tests
-Instructions regarding system tests
+To execute the systems tests, just right-click on the tests folder and select the option 'Run "All Tests"'.
 
 ### Postman Collection
-TODO
+The postman collection is under development.
+Import into Postman the file BaseDS-EDC.postman_collection.json
 
 
