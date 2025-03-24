@@ -32,8 +32,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.emptyString;
 
 public class FederatedCatalogCommon {
-    private static final String STANDALONE_FC = "federated-catalog";
-    private static final String STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/fc-test-configuration.properties";
+    private static final String EMBEDDED_FC = "federated-catalog";
+    private static final String FC_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/fc-test-configuration.properties";
 
     private static final String CRAWLER_EXECUTION_DELAY = "edc.catalog.cache.execution.delay.seconds";
     public static final int CRAWLER_EXECUTION_DELAY_VALUE = 5;
@@ -41,14 +41,14 @@ public class FederatedCatalogCommon {
     public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 40;
     public static final int TIMEOUT = 5 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
-    public static final String STANDALONE_FC_CATALOG_API_ENDPOINT = "http://localhost:59195/api/catalog/v1alpha/catalog/query";
+    public static final String FC_CATALOG_API_ENDPOINT = "http://localhost:59195/api/catalog/v1alpha/catalog/query";
     public static final String EMPTY_QUERY_FILE_PATH = "system-tests/src/test/resources/federated-catalog/empty-query.json";
     public static final String TYPE = "[0].@type";
     public static final String CATALOG = "dcat:Catalog";
     public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
 
-    public static RuntimeExtension getStandaloneFc(String modulePath) {
-        return getRuntime(modulePath, STANDALONE_FC, STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH);
+    public static RuntimeExtension getEmbeddedFc(String modulePath) {
+        return getRuntime(modulePath, EMBEDDED_FC, FC_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     private static RuntimeExtension getRuntime(

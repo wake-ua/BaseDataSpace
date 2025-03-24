@@ -34,7 +34,7 @@ public class HealthApiController {
     }
 
     @GET
-    @Path("health")
+    @Path("health-fc")
     public String checkHealth() {
         monitor.info("FederatedCatalog received a health request");
         return "{\"response\":\"FederatedCatalog: I'm alive!\"}";

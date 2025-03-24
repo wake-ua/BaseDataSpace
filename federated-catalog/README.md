@@ -1,1 +1,2 @@
-TODO
+
+Embedded Federated Catalog (Consumer Connector)

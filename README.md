@@ -32,7 +32,7 @@ java -Dedc.fs.config=consumers/consumer-base/resources/configuration/consumer-ba
 ```
 * Federated Catalog
 ```
-java -Dedc.fs.config=federated-catalog/src/main/resources/configuration/fc-configuration.properties -jar federated-catalog/build/libs/federated-catalog.jar --log-level=DEBUG
+java -Dedc.fs.config=federated-catalog/resources/configuration/fc-configuration.properties -jar federated-catalog/build/libs/federated-catalog.jar --log-level=DEBUG
 ```
 
 
@@ -43,4 +43,8 @@ To execute the systems tests, just right-click on the tests folder and select th
 The postman collection is under development.
 Import into Postman the file BaseDS-EDC.postman_collection.json
 
-
+Start endpoint echo for transfers:
+```
+docker build -t http-request-logger util/http-request-logger
+docker run -p 4000:4000 http-request-logger
+```

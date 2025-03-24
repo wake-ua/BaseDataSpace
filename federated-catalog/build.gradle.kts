@@ -27,14 +27,18 @@ dependencies {
     implementation(libs.edc.fc.spi.crawler)
 
     // standalone fc
-    implementation(libs.edc.connector.core)
     runtimeOnly(libs.edc.boot)
-    runtimeOnly(libs.edc.control.plane.core)
-    implementation(libs.edc.configuration.filesystem)
-    runtimeOnly(libs.edc.token.core)
     implementation(libs.edc.http)
-    runtimeOnly(libs.edc.dsp)
+    implementation(libs.edc.dsp)
+    runtimeOnly(libs.edc.token.core)
+
+    implementation(libs.edc.connector.core)
+    implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
+
+    // consumer
+    runtimeOnly(project(":consumers:consumer"))
 }
 
 application {
