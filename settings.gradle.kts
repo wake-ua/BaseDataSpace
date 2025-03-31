@@ -2,6 +2,10 @@ rootProject.name = "BaseDataSpace"
 
 pluginManagement {
     repositories {
+        mavenLocal()
+        maven {
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -9,8 +13,11 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        mavenCentral()
         mavenLocal()
+        maven {
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
+        mavenCentral()
     }
 }
 

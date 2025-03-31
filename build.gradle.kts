@@ -17,10 +17,6 @@ plugins {
     `java-library`
 }
 
-repositories {
-    mavenCentral()
-}
-
 buildscript {
     dependencies {
         classpath(libs.edc.build.plugin)
