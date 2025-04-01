@@ -22,12 +22,20 @@ import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This class reads the participants from a file defined in the configuration
+ */
 public class CatalogNodeDirectory implements TargetNodeDirectory {
 
     private final ObjectMapper objectMapper;
     private final String participantFileContent;
 
-
+    /**
+     * Instantiates a new object
+     *
+     * @param objectMapper reads JSON content
+     * @param participantFileContent list of DS participants
+     */
     public CatalogNodeDirectory(ObjectMapper objectMapper, String participantFileContent) {
         this.objectMapper = objectMapper;
         this.participantFileContent = participantFileContent;

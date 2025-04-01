@@ -19,6 +19,9 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
 
+/**
+ * Extension class for the template endpoint
+ */
 public class TemplateEndpointExtension implements ServiceExtension {
 
     @Inject

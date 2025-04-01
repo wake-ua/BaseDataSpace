@@ -22,6 +22,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.spi.monitor.Monitor;
 
+/**
+ * Endpoint to check the federated catalog health
+ */
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 @Path("/")
@@ -29,10 +32,20 @@ public class HealthApiController {
 
     private final Monitor monitor;
 
+    /**
+     * Instantiates the controller for the health endpoint
+     *
+     * @param monitor logger object
+     */
     public HealthApiController(Monitor monitor) {
         this.monitor = monitor;
     }
 
+    /**
+     * Defines the health endpoint for the federated catalog
+     *
+     * @return JSON response
+     */
     @GET
     @Path("health-fc")
     public String checkHealth() {

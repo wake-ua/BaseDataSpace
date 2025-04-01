@@ -26,6 +26,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+
+/**
+ * Extension so that the participants of the dataspace are provded in a file
+ */
 public class CatalogNodeDirectoryExtension implements ServiceExtension {
     @Inject
     private TypeManager typeManager;
@@ -33,7 +37,12 @@ public class CatalogNodeDirectoryExtension implements ServiceExtension {
     private String participantsFilePath;
     private Monitor monitor;
 
-    @Provider 
+    /**
+     * Directory of the DS participants defined in a JSON input file
+     *
+     * @return catalog node directory
+     */
+    @Provider
     public TargetNodeDirectory federatedCacheNodeDirectory() {
         monitor.info("Participant list file selected: " + participantsFilePath);
 

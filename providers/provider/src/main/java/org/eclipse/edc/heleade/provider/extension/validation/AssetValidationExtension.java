@@ -45,6 +45,9 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
+/**
+ * Class to validate the asset JSON input against a JSON Schema
+ */
 public class AssetValidationExtension implements ServiceExtension {
 
     @Inject
@@ -59,12 +62,16 @@ public class AssetValidationExtension implements ServiceExtension {
 
     public void start() {
         validatorRegistry.register(Asset.EDC_ASSET_TYPE, (asset) -> {
+            // Compact the asset JSON so that it looks similar to user's input with the namespace as context
             var assetCompacted = jsonLd.compact(asset);
             var assetCompactedStr = assetCompacted.getContent().toString();
 
+            // validate the asset against the schema
             Set<ValidationMessage> messages = assetSchema.validate(assetCompactedStr, InputFormat.JSON, executionContext -> {
                 executionContext.getExecutionConfig().setFormatAssertionsEnabled(true);
             });
+
+            // collect the validation messages and if necessary transform them into violations to show the user
             List<ValidationMessage> validationMessagesList = messages.stream().collect(Collectors.toList());
 
             if (validationMessagesList.isEmpty()) {

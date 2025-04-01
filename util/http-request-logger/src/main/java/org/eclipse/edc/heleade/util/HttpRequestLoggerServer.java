@@ -22,10 +22,18 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Optional;
 
+/**
+ * Logger that prints out everything it receives
+ */
 public class HttpRequestLoggerServer {
 
     static final String HTTP_PORT = "HTTP_SERVER_PORT";
 
+    /**
+     * Method that launches the logger server
+     *
+     * @param args Ununsed default parameter for commandline arguments
+     */
     public static void main(String[] args) {
         int port = Integer.parseInt(Optional.ofNullable(System.getenv(HTTP_PORT)).orElse("4000"));
         try {

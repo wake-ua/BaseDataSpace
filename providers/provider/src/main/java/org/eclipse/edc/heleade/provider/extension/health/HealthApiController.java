@@ -22,6 +22,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.spi.monitor.Monitor;
 
+/**
+ * Class that defines the health endpoint for the provider
+ */
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 @Path("/")
@@ -41,6 +44,11 @@ public class HealthApiController {
         this.name = name;
     }
 
+    /**
+     * Defines the health endpoint to check connector is running
+     *
+     * @return JSON string to communicate provider is online
+     */
     @GET
     @Path("health")
     public String checkHealth() {

@@ -19,6 +19,9 @@ import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
+/**
+ * Extension to store public and private keys
+ */
 public class SeedVaultExtension implements ServiceExtension {
 
     @Inject

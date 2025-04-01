@@ -19,6 +19,9 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
 
+/**
+ * Extension for the health endpoint
+ */
 public class HealthEndpointExtension implements ServiceExtension {
 
     @Inject

@@ -21,6 +21,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.spi.monitor.Monitor;
 
+/**
+ * Template class to uae as base for adding custom controllers and endpoints
+ */
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 @Path("/")
@@ -40,6 +43,11 @@ public class TemplateApiController {
         this.name = name;
     }
 
+    /**
+     * Template method to setup a template endpoint
+     *
+     * @return JSOM response
+     */
     @GET
     @Path("template")
     public String checkTemplate() {
