@@ -14,7 +14,11 @@
 
 package org.eclipse.edc.heleade.provider.extension.validation;
 
-import com.networknt.schema.*;
+import com.networknt.schema.InputFormat;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SchemaValidatorsConfig;
+import com.networknt.schema.SpecVersion;
 import com.networknt.schema.serialization.JsonNodeReader;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
@@ -34,24 +38,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_DATA_ADDRESS;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_PRIVATE_PROPERTIES;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_PROPERTIES;
-import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
-import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VALUE;
+import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.PROPERTY_NAME;
+import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.*;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 import static org.eclipse.edc.spi.types.domain.DataAddress.EDC_DATA_ADDRESS_TYPE_PROPERTY;
 
+
 public class AssetValidationExtensionTest {
-    private final JsonLd jsonLd = new JsonLdExtension().createJsonLdService(TestServiceExtensionContext.testServiceExtensionContext());
+    private final JsonLd jsonLd = initializeJsonLd();
     private final Validator<JsonObject> validator = new AssetJsonSchemaValidator().getValidator(getTestJsonSchema(), jsonLd);
 
     @Test
     void shouldSucceed_whenValidInput() {
         var input = createObjectBuilder()
-                .add(EDC_ASSET_PROPERTIES, createArrayBuilder().add(createObjectBuilder().add("name", "test asset")))
-                .add("properties", createArrayBuilder().add(createObjectBuilder().add("name", "test asset")))
+                .add(EDC_ASSET_PROPERTIES, createArrayBuilder().add(createObjectBuilder().add(PROPERTY_NAME, "test asset")))
                 .add(EDC_ASSET_DATA_ADDRESS, validDataAddress())
                 .build();
-        var assetStr = input.toString();
-
         var result = validator.validate(input);
 
         assertThat(result).isSucceeded();
@@ -92,8 +95,9 @@ public class AssetValidationExtensionTest {
     @Test
     void shouldFail_whenPropertiesAndPrivatePropertiesHaveDuplicatedKeys() {
         var input = createObjectBuilder()
-                .add(EDC_ASSET_PROPERTIES, createArrayBuilder().add(createObjectBuilder().add("name", createArrayBuilder())))
-                .add(EDC_ASSET_PRIVATE_PROPERTIES, createArrayBuilder().add(createObjectBuilder().add("name", createArrayBuilder())))
+                .add(EDC_ASSET_PROPERTIES, createArrayBuilder().add(createObjectBuilder().add(PROPERTY_NAME, "test asset")
+                                                               .add(EDC_NAMESPACE + "key", createArrayBuilder())))
+                .add(EDC_ASSET_PRIVATE_PROPERTIES, createArrayBuilder().add(createObjectBuilder().add(EDC_NAMESPACE + "key", createArrayBuilder())))
                 .add(EDC_ASSET_DATA_ADDRESS, validDataAddress())
                 .build();
 
@@ -127,12 +131,12 @@ public class AssetValidationExtensionTest {
                 "        }\n" +
                 "      },\n" +
                 "      \"required\": [\n" +
-                // "        \"name\"\n" +
+                 "        \"name\"\n" +
                 "      ]\n" +
                 "    }\n" +
                 "  },\n" +
                 "  \"required\": [\n" +
-                // "    \"properties\"\n" +
+                 "    \"properties\"\n" +
                 "  ]\n" +
                 "}";
 
@@ -148,11 +152,17 @@ public class AssetValidationExtensionTest {
             });
             JsonObjectBuilder contextBuilder = Json.createObjectBuilder(contextObject);
             if (!contextObject.containsKey("@vocab")) {
-                JsonObject newContextObject = contextBuilder.add("@vocab", "https://w3id.org/edc/v0.0.1/ns/").build();
+                JsonObject newContextObject = contextBuilder.add("@vocab", EDC_NAMESPACE).build();
                 jsonObjectBuilder.add("@context", newContextObject);
             }
         }
 
         return jsonObjectBuilder.build();
+    }
+
+    public JsonLd initializeJsonLd() {
+        JsonLd jsonLd = new JsonLdExtension().createJsonLdService(TestServiceExtensionContext.testServiceExtensionContext());
+        jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
+        return jsonLd;
     }
 }

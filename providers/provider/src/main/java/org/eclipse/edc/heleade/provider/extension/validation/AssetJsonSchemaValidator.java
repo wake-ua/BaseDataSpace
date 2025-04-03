@@ -57,8 +57,6 @@ public class AssetJsonSchemaValidator {
                 return defaultValidatorResult;
             }
 
-            String assetStr = asset.toString();
-
             // Compact the asset JSON so that it looks similar to user's input with the namespace as context
             var assetCompacted = jsonLd.compact(asset);
             var assetCompactedStr = assetCompacted.getContent().toString();
@@ -83,5 +81,4 @@ public class AssetJsonSchemaValidator {
             }
         }
     }
-
 }
