@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2021 Microsoft Corporation
+ *  Copyright (c) 2025 University of Alicante
  *
  *  This program and the accompanying materials are made available under the
  *  terms of the Apache License, Version 2.0 which is available at
@@ -8,7 +8,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  *
  *  Contributors:
- *       University Alicante - Initial implementation
+ *       University of Alicante - Initial implementation
  *
  */
 
@@ -19,7 +19,6 @@ import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SchemaValidatorsConfig;
 import com.networknt.schema.SpecVersion.VersionFlag;
-import com.networknt.schema.ValidationMessage;
 import com.networknt.schema.serialization.JsonNodeReader;
 import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
 import org.eclipse.edc.jsonld.JsonLdExtension;
@@ -28,18 +27,11 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
-import org.eclipse.edc.validator.spi.ValidationResult;
-import org.eclipse.edc.validator.spi.Violation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -53,41 +45,13 @@ public class AssetValidationExtension implements ServiceExtension {
     @Inject
     private JsonObjectValidatorRegistry validatorRegistry;
 
-    @Inject
-    private TypeTransformerRegistry transformerRegistry;
-
     private Monitor monitor;
     private JsonSchema assetSchema;
     private JsonLd jsonLd;
 
-    public void start() {
-        validatorRegistry.register(Asset.EDC_ASSET_TYPE, (asset) -> {
-            // Compact the asset JSON so that it looks similar to user's input with the namespace as context
-            var assetCompacted = jsonLd.compact(asset);
-            var assetCompactedStr = assetCompacted.getContent().toString();
-
-            // validate the asset against the schema
-            Set<ValidationMessage> messages = assetSchema.validate(assetCompactedStr, InputFormat.JSON, executionContext -> {
-                executionContext.getExecutionConfig().setFormatAssertionsEnabled(true);
-            });
-
-            // collect the validation messages and if necessary transform them into violations to show the user
-            List<ValidationMessage> validationMessagesList = messages.stream().collect(Collectors.toList());
-
-            if (validationMessagesList.isEmpty()) {
-                return ValidationResult.success();
-            } else {
-                String errorSize = Integer.toString(validationMessagesList.size());
-                monitor.info("AssetValidation error(s) found (" + errorSize + ")");
-                List<Violation> violations = new ArrayList<>();
-                for (ValidationMessage message : validationMessagesList) {
-                    Violation violation = new Violation(message.getMessage(), message.getInstanceLocation().toString(), message.getInstanceNode());
-                    violations.add(violation);
-                }
-                return ValidationResult.failure(violations);
-            }
-
-        });
+    public void prepare() {
+        var validator = new AssetJsonSchemaValidator().getValidator(assetSchema, jsonLd);
+        validatorRegistry.register(Asset.EDC_ASSET_TYPE, validator);
     }
 
     public void initialize(ServiceExtensionContext context) {

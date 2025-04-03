@@ -22,7 +22,6 @@ dependencies {
     implementation(libs.edc.connector.core)
     implementation(libs.jakarta.rsApi)
     implementation(libs.edc.controlplane.transform)
-
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
@@ -37,6 +36,8 @@ dependencies {
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.validator.data.address.http.data)
+    implementation(libs.edc.lib.validator)
+    implementation(libs.edc.lib.json)
 
     implementation(libs.edc.edr.cache.api)
     implementation(libs.edc.edr.store.core)
@@ -54,4 +55,7 @@ dependencies {
 
     implementation("com.networknt:json-schema-validator:1.5.6")
 
+    testImplementation(libs.restAssured)
+    testImplementation(libs.awaitility)
+    testImplementation(libs.edc.junit)
 }
