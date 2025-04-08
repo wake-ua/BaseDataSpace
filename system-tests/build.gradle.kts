@@ -35,6 +35,7 @@ dependencies {
     testImplementation(libs.testcontainers.hashicorp.vault)
     testImplementation(libs.azure.storage.blob)
     testImplementation(libs.minio.io)
+    testImplementation(libs.postgres)
 
     // runtimes (commented out as it messes up the tests)
 //    testCompileOnly(project(":consumer"))

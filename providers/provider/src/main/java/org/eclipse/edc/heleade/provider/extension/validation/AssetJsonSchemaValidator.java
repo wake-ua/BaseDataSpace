@@ -34,6 +34,13 @@ import java.util.stream.Collectors;
  * Contains the AssetEntryDto validator definition using a JsonSchema
  */
 public class AssetJsonSchemaValidator {
+    /**
+     * Returns a JSON Schema validator
+     *
+     * @param assetSchema json schema parsed into a JsonSchema object
+     * @param jsonLd jsonld for compacting the asset
+     * @return a validator including default and json schema
+     */
     public Validator<JsonObject> getValidator(JsonSchema assetSchema, JsonLd jsonLd) {
         return JsonObjectValidator.newValidator()
                 .verify(path -> new AssetJsonSchemaCompliance(assetSchema, jsonLd))

@@ -6,6 +6,7 @@ awaitility = "4.2.2"
 edc = "0.11.1"
 jupiter = "5.11.3"
 okhttp-mockwebserver = "5.0.0-alpha.14"
+postgres = "42.7.5"
 restAssured = "5.5.0"
 rsApi = "4.0.0"
 testcontainers = "1.20.4"
@@ -90,6 +91,24 @@ edc-fc-spi-core = { module = "org.eclipse.edc:federated-catalog-spi", version.re
 edc-fc-core = { module = "org.eclipse.edc:federated-catalog-core", version.ref = "edc" }
 edc-fc-ext-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref = "edc" }
 edc-fc-spi-crawler = { module = "org.eclipse.edc:crawler-spi", version.ref = "edc" }
+
+# datasource sql
+edc-sql-assetindex = { module = "org.eclipse.edc:asset-index-sql", version.ref = "edc" }
+edc-sql-contract-definition = { module = "org.eclipse.edc:contract-definition-store-sql", version.ref = "edc" }
+edc-sql-contract-negotiation = { module = "org.eclipse.edc:contract-negotiation-store-sql", version.ref = "edc" }
+edc-sql-policydef = { module = "org.eclipse.edc:policy-definition-store-sql", version.ref = "edc" }
+edc-sql-policy-monitor = { module = "org.eclipse.edc:policy-monitor-store-sql", version.ref = "edc" }
+edc-sql-edrindex = { module = "org.eclipse.edc:edr-index-sql", version.ref = "edc" }
+edc-sql-transferprocess = { module = "org.eclipse.edc:transfer-process-store-sql", version.ref = "edc" }
+edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
+edc-sql-lease = { module = "org.eclipse.edc:sql-lease", version.ref = "edc" }
+edc-sql-pool = { module = "org.eclipse.edc:sql-pool-apache-commons", version.ref = "edc" }
+postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
+edc-spi-transaction-datasource = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
+
+[bundles]
+edc-sqlstores = ["edc-sql-assetindex", "edc-sql-contract-definition", "edc-sql-contract-negotiation", "edc-sql-transferprocess", "edc-sql-policydef", "edc-sql-policy-monitor", "edc-sql-edrindex"]
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version = "8.3.5" }

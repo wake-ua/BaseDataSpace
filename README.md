@@ -10,7 +10,8 @@ Base Data Space for the Heleade project
 
 ## Setup
 IntelliJ IDEA based
-TODO
+You need a PostgreSQL connection for the provider and create the store with the sql code in the resources.
+Also, temporarily the tests run on a PostgreSQL database too, it is planned to replace them with a container.
 
 ## Build
 Build the whole project:
