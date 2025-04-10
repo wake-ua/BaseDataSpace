@@ -30,6 +30,7 @@ include(":federated-catalog")
 include(":providers:provider")
 include(":providers:provider-template")
 include(":providers:provider-base")
+include("providers:provider-ebird")
 
 include(":consumers:consumer")
 include(":consumers:consumer-base")
