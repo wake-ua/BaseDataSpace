@@ -56,13 +56,15 @@ dependencies {
     implementation("com.networknt:json-schema-validator:1.5.6")
 
     // sql storage
-    // implementation(libs.edc.vault.hashicorp)
     implementation(libs.edc.spi.transaction.datasource)
     implementation(libs.bundles.edc.sqlstores)
     implementation(libs.edc.transaction.local)
     implementation(libs.edc.sql.pool)
     implementation(libs.edc.sql.core)
     implementation(libs.postgres)
+
+    // Hashicorp vault
+    implementation(libs.edc.vault.hashicorp)
 
     // test
     testImplementation(libs.restAssured)
