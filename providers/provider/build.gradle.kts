@@ -63,9 +63,6 @@ dependencies {
     implementation(libs.edc.sql.core)
     implementation(libs.postgres)
 
-    // Hashicorp vault
-    implementation(libs.edc.vault.hashicorp)
-
     // test
     testImplementation(libs.restAssured)
     testImplementation(libs.awaitility)

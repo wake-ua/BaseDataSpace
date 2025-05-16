@@ -26,7 +26,7 @@ dependencies {
     // catalog node directory
     implementation(libs.edc.fc.spi.crawler)
 
-    // standalone fc
+    // consumer fc
     runtimeOnly(libs.edc.boot)
     implementation(libs.edc.http)
     implementation(libs.edc.dsp)
@@ -36,6 +36,17 @@ dependencies {
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
+
+    // sql storage
+    implementation(libs.edc.spi.transaction.datasource)
+    implementation(libs.bundles.edc.sqlstores)
+    implementation(libs.edc.transaction.local)
+    implementation(libs.edc.sql.pool)
+    implementation(libs.edc.sql.core)
+    implementation(libs.postgres)
+
+    // fc sql storage
+    implementation(libs.edc.fc.cache.sql)
 
     // consumer
     runtimeOnly(project(":consumers:consumer"))

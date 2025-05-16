@@ -2,7 +2,7 @@
 -- PostgreSQL database
 --
 
-CREATE DATABASE IF NOT EXISTS edc WITH ENCODING = 'UTF8';
+-- CREATE DATABASE edc WITH ENCODING = 'UTF8';
 \connect edc
 
 
