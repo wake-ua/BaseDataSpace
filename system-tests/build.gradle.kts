@@ -36,6 +36,9 @@ dependencies {
     testImplementation(libs.azure.storage.blob)
     testImplementation(libs.minio.io)
     testImplementation(libs.postgres)
+    testImplementation("org.mongodb:mongodb-driver-sync:5.5.0")
+    // catalog node directory
+    testImplementation(libs.edc.fc.spi.crawler)
 
     // runtimes (commented out as it messes up the tests)
 //    testCompileOnly(project(":consumer"))

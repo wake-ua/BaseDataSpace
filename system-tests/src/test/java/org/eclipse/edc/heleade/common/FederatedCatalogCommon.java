@@ -15,6 +15,12 @@
 package org.eclipse.edc.heleade.common;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerApi;
+import com.mongodb.ServerApiVersion;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import io.restassured.http.ContentType;
 import org.eclipse.edc.heleade.util.ConfigPropertiesLoader;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
@@ -59,6 +65,8 @@ public class FederatedCatalogCommon {
     public static final String CATALOG = "dcat:Catalog";
     public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
 
+    public static final String FC_MONGODB_COLLECTION = "edc_federated_catalog";
+
     public static RuntimeExtension getEmbeddedFc(String modulePath) {
         return getRuntime(modulePath, EMBEDDED_FC, FC_CONFIG_PROPERTIES_FILE_PATH);
     }
@@ -70,6 +78,7 @@ public class FederatedCatalogCommon {
     ) {
         Config config = ConfigPropertiesLoader.fromPropertiesFile(configPropertiesFilePath).get();
         startPostgresqlDb(config);
+        startMongodbCollection(config);
         return new RuntimePerClassExtension(new EmbeddedRuntime(moduleName, modulePath)
                 .configurationProvider(fromPropertiesFile(configPropertiesFilePath))
                 .configurationProvider(() -> ConfigFactory.fromMap(Map.of(
@@ -138,4 +147,32 @@ public class FederatedCatalogCommon {
             throw new RuntimeException(e);
         }
     }
+
+    public static void startMongodbCollection(Config config) {
+        try {
+
+            // Get parameters
+            String uri = config.getString("org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.uri");
+            String db = config.getString("org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.db");
+            String collection = FC_MONGODB_COLLECTION;
+
+            ServerApi serverApi = ServerApi.builder()
+                    .version(ServerApiVersion.V1)
+                    .build();
+            MongoClientSettings settings = MongoClientSettings.builder()
+                    .applyConnectionString(new ConnectionString(uri))
+                    .serverApi(serverApi)
+                    .build();
+            MongoClient mongoClient = MongoClients.create(settings);
+
+            mongoClient.getDatabase(db).getCollection(collection).drop();
+            mongoClient.getDatabase(db).createCollection(collection);
+
+            mongoClient.close();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -1,0 +1,334 @@
+/*
+ *  Copyright (c) 2025 Universidad de Alicante
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       LdE - Universidad de Alicante - initial implementation
+ *
+ */
+
+package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.UpdateOptions;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.eclipse.edc.catalog.spi.CatalogConstants;
+import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
+import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
+import org.eclipse.edc.spi.persistence.EdcPersistenceException;
+import org.eclipse.edc.spi.query.Criterion;
+import org.eclipse.edc.spi.query.QuerySpec;
+import org.eclipse.edc.spi.query.SortOrder;
+import org.eclipse.edc.transaction.spi.TransactionContext;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import static java.util.Optional.ofNullable;
+
+/**
+ * The MongodbFederatedCatalogCache is a MongoDB-based implementation of the FederatedCatalogCache interface.
+ * It provides functionality to manage and query a catalog cache using MongoDB as the backend storage.
+ * This class handles operations such as saving catalog entries, querying them based on filters,
+ * expiring all entries, and cleaning up expired entries from the cache.
+ */
+public class MongodbFederatedCatalogCache extends MongodbStore implements FederatedCatalogCache {
+
+    /**
+     * Constructs a new instance of {@code MongodbFederatedCatalogCache}.
+     *
+     * @param dataSourceUri        the URI of the MongoDB data source
+     * @param dataSourceDb         the MongoDB database name
+     * @param transactionContext   the transaction context to use for database operations
+     * @param objectMapper         the object mapper used for JSON serialization and deserialization
+     */
+    public MongodbFederatedCatalogCache(String dataSourceUri, String dataSourceDb, TransactionContext transactionContext, ObjectMapper objectMapper) {
+        super(dataSourceUri, dataSourceDb, transactionContext, objectMapper);
+    }
+
+    /**
+     * Adds an {@code ContractOffer} to the store
+     */
+    @Override
+    public void save(Catalog catalog) {
+        transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                var id = ofNullable(catalog.getProperties().get(CatalogConstants.PROPERTY_ORIGINATOR))
+                        .map(Object::toString)
+                        .orElse(catalog.getId());
+                upsertInternal(connection, id, catalog);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    /**
+     * Queries the store for {@code ContractOffer}s
+     *
+     * @param query A list of criteria the asset must fulfill
+     * @return A collection of assets that are already in the store and that satisfy a given list of criteria.
+     */
+    @Override
+    public Collection<Catalog> query(QuerySpec query) {
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                return queryInternal(connection, query);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    /**
+     * Deletes all entries from the cache that are marked as "expired"
+     */
+    @Override
+    public void deleteExpired() {
+        transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                deleteByMarkedTemplateInternal(connection);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+
+    /**
+     * Marks all entries as "expired", i.e. marks them for deletion
+     */
+    @Override
+    public void expireAll() {
+        transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                expireAllInternal(connection);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    private Catalog findByIdInternal(MongoClient connection, String id) {
+        Bson filter = Filters.eq(getIdField(), id);
+        var document = getCollection(connection).find(filter).first();
+        return document != null ? fromJson(document.toJson(), Catalog.class) : null;
+    }
+
+    private Collection<Catalog> queryInternal(MongoClient connection, QuerySpec querySpec) {
+        Bson filter = createFilter(querySpec);
+        Bson sort = createSort(querySpec);
+
+        // Apply filter and sort (if specified) to the query
+        FindIterable<Document> query = getCollection(connection).find(filter);
+        if (sort != null) {
+            query = query.sort(sort);
+        }
+
+        // Apply pagination
+        query = query.skip(querySpec.getOffset()).limit(querySpec.getLimit());
+
+        // Convert results to the specified type
+        var results = new java.util.ArrayList<Catalog>();
+        query.forEach(doc -> results.add(fromJson(doc.toJson(), Catalog.class)));
+        return results;
+
+    }
+
+    private void upsertInternal(MongoClient connection, String id, Catalog catalog) {
+        Bson filter = Filters.eq(getIdField(), id);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        Document catalogDoc = Document.parse(toJson(catalog)).append(getIdField(), id);
+        // Create a new document with just the fields we want to set
+        Document setDoc = new Document();
+
+        // Add each field from the catalog document to our set document
+        for (String key : catalogDoc.keySet()) {
+            setDoc.append(key, catalogDoc.get(key));
+        }
+        setDoc.append(getIdField(), id);
+
+        Bson update = new Document("$set", setDoc);
+        MongoCollection<Document> collection = getCollection(connection);
+        collection.updateOne(filter, update, options);
+    }
+
+    private void deleteByMarkedTemplateInternal(MongoClient connection) {
+        Bson filter = Filters.eq(getMarkedField(), true);
+        MongoCollection<Document> collection =  getCollection(connection);
+        collection.deleteMany(filter);
+    }
+
+    private void expireAllInternal(MongoClient connection) {
+        UpdateOptions options = new UpdateOptions().upsert(false);
+        Document doc = Document.parse("{ $set: { " + getMarkedField() + ": true } }");
+        MongoCollection<Document> collection =  getCollection(connection);
+        collection.updateMany(Filters.empty(), doc, options);
+    }
+
+    private Bson createEmptyFilter(QuerySpec querySpec) {
+        return Filters.empty();
+    }
+
+    /**
+     * Creates a MongoDB BSON filter from the given QuerySpec
+     *
+     * @param querySpec The query specification containing filter criteria
+     * @return A BSON filter that can be used with MongoDB queries
+     */
+    public Bson createFilter(QuerySpec querySpec) {
+        if (querySpec == null || querySpec.getFilterExpression().isEmpty()) {
+            // Return a filter that matches all documents if no criteria are specified
+            return Filters.empty();
+        }
+
+        List<Bson> filters = new ArrayList<>();
+
+        // Process each criterion in the filter expression
+        for (Criterion criterion : querySpec.getFilterExpression()) {
+            String operator = criterion.getOperator();
+            Object leftOperand = criterion.getOperandLeft();
+            Object rightOperand = criterion.getOperandRight();
+
+            // Convert the left operand to a field path string
+            String fieldPath = leftOperand.toString();
+
+            // Special handling for nested fields - MongoDB uses dot notation for nested fields
+            if (fieldPath.contains(":")) {
+                // Assuming Eclipse EDC uses ":" for nested properties, convert to MongoDB dot notation
+                fieldPath = fieldPath.replace(":", ".");
+            }
+
+            // Convert criterion to appropriate MongoDB filter
+            switch (operator) {
+                case "=":
+                    filters.add(Filters.eq(fieldPath, rightOperand));
+                    break;
+                case "!=":
+                    filters.add(Filters.ne(fieldPath, rightOperand));
+                    break;
+                case ">":
+                    filters.add(Filters.gt(fieldPath, rightOperand));
+                    break;
+                case ">=":
+                    filters.add(Filters.gte(fieldPath, rightOperand));
+                    break;
+                case "<":
+                    filters.add(Filters.lt(fieldPath, rightOperand));
+                    break;
+                case "<=":
+                    filters.add(Filters.lte(fieldPath, rightOperand));
+                    break;
+                case "in":
+                    // Handle 'in' operator - convert right operand to a collection if it's not already
+                    if (rightOperand instanceof Collection) {
+                        filters.add(Filters.in(fieldPath, (Collection<?>) rightOperand));
+                    } else if (rightOperand instanceof Object[]) {
+                        filters.add(Filters.in(fieldPath, Arrays.asList((Object[]) rightOperand)));
+                    } else {
+                        // If it's a single value, create a singleton list
+                        filters.add(Filters.in(fieldPath, Collections.singletonList(rightOperand)));
+                    }
+                    break;
+                case "like":
+                case "contains":
+                    // For 'like' and 'contains' queries, convert SQL-like patterns to regex
+                    String pattern = rightOperand.toString();
+                    if (!pattern.startsWith("%")) {
+                        pattern = "^" + pattern; // Anchor to start if no leading wildcard
+                    } else {
+                        pattern = pattern.substring(1); // Remove leading %
+                    }
+                    if (!pattern.endsWith("%")) {
+                        pattern = pattern + "$"; // Anchor to end if no trailing wildcard
+                    } else {
+                        pattern = pattern.substring(0, pattern.length() - 1); // Remove trailing %
+                    }
+                    // Replace SQL wildcards with regex patterns
+                    pattern = pattern.replace("%", ".*").replace("_", ".");
+                    filters.add(Filters.regex(fieldPath, pattern, "i")); // "i" for case-insensitive
+                    break;
+                case "exists":
+                    boolean exists = Boolean.parseBoolean(rightOperand.toString());
+                    filters.add(exists ? Filters.exists(fieldPath) : Filters.exists(fieldPath, false));
+                    break;
+                case "between":
+                    // Assuming the right operand is an array or collection with exactly two elements
+                    if (rightOperand instanceof Object[] array && array.length == 2) {
+                        filters.add(Filters.and(
+                                Filters.gte(fieldPath, array[0]),
+                                Filters.lte(fieldPath, array[1])
+                        ));
+                    } else if (rightOperand instanceof Collection coll && coll.size() == 2) {
+                        Iterator<?> iterator = coll.iterator();
+                        Object lower = iterator.next();
+                        Object upper = iterator.next();
+                        filters.add(Filters.and(
+                                Filters.gte(fieldPath, lower),
+                                Filters.lte(fieldPath, upper)
+                        ));
+                    } else {
+                        throw new IllegalArgumentException("Between operator requires exactly two values for comparison");
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported operator: " + operator);
+            }
+        }
+
+        // Combine all filters with AND operator
+        return filters.isEmpty() ? Filters.empty() : Filters.and(filters);
+    }
+
+    /**
+     * Creates a MongoDB BSON sort parameter from the given QuerySpec
+     *
+     * @param querySpec The query specification containing sort field and order
+     * @return A BSON sort object that can be used with MongoDB queries, or null if no sorting is specified
+     */
+    public Bson createSort(QuerySpec querySpec) {
+        if (querySpec == null || querySpec.getSortField() == null || querySpec.getSortField().isEmpty()) {
+            // Return null if no sort field is specified
+            return null;
+        }
+
+        String sortField = querySpec.getSortField();
+
+        // Special handling for nested fields - MongoDB uses dot notation for nested fields
+        if (sortField.contains(":")) {
+            // Assuming Eclipse EDC uses ":" for nested properties, convert to MongoDB dot notation
+            sortField = sortField.replace(":", ".");
+        }
+
+        // Create sort based on the specified sort order
+        SortOrder sortOrder = querySpec.getSortOrder();
+        if (sortOrder == null) {
+            sortOrder = SortOrder.ASC; // Default to ascending if not specified
+        }
+
+        // Convert SortOrder to MongoDB sort direction
+        return switch (sortOrder) {
+            case ASC -> Sorts.ascending(sortField);
+            case DESC -> Sorts.descending(sortField);
+            default -> throw new IllegalArgumentException("Unsupported sort order: " + sortOrder);
+        };
+    }
+
+}
+
+

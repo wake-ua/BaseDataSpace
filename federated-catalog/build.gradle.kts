@@ -46,14 +46,20 @@ dependencies {
     implementation(libs.postgres)
 
     // fc sql storage
-    implementation(libs.edc.fc.cache.sql)
+    // implementation(libs.edc.fc.cache.sql)
+
+    // mongodb cache storage
+    implementation(libs.edc.fc.spi.core)
+    implementation("org.mongodb:mongodb-driver-sync:5.5.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
 
     // consumer
     runtimeOnly(project(":consumers:consumer"))
 }
 
 application {
-    mainClass.set("org.eclipse.edc.boot.system.runtime.BaseRuntime")
+    mainClass.set("$group.boot.system.runtime.BaseRuntime")
 }
 
 var distTar = tasks.getByName("distTar")
