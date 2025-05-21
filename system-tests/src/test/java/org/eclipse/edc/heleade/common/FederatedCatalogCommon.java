@@ -28,18 +28,10 @@ import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
-import org.postgresql.PGProperty;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Map;
-import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
-import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileFromRelativePath;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
 import static org.eclipse.edc.heleade.util.ConfigPropertiesLoader.fromPropertiesFile;
@@ -50,8 +42,6 @@ import static org.hamcrest.Matchers.emptyString;
 public class FederatedCatalogCommon {
     private static final String EMBEDDED_FC = "federated-catalog";
     private static final String FC_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/fc-test-configuration.properties";
-    private static final String PROVIDER_SQL_FILE_PATH = "system-tests/src/test/resources/sql/database.sql";
-    private static final String FC_SQL_FILE_PATH = "system-tests/src/test/resources/sql/fc-database.sql";
 
     private static final String CRAWLER_EXECUTION_DELAY = "edc.catalog.cache.execution.delay.seconds";
     public static final int CRAWLER_EXECUTION_DELAY_VALUE = 5;
@@ -77,7 +67,6 @@ public class FederatedCatalogCommon {
             String configPropertiesFilePath
     ) {
         Config config = ConfigPropertiesLoader.fromPropertiesFile(configPropertiesFilePath).get();
-        startPostgresqlDb(config);
         startMongodbCollection(config);
         return new RuntimePerClassExtension(new EmbeddedRuntime(moduleName, modulePath)
                 .configurationProvider(fromPropertiesFile(configPropertiesFilePath))
@@ -103,49 +92,6 @@ public class FederatedCatalogCommon {
                 .extract()
                 .jsonPath()
                 .get(jsonPath);
-    }
-
-    public static void startPostgresqlDb(Config config) {
-        try {
-
-            // Get parameters
-            String username = config.getString("edc.datasource.default.user");
-            String password = config.getString("edc.datasource.default.password");
-            String jdbcUrl = config.getString("edc.datasource.default.url");
-
-            Properties props = org.postgresql.Driver.parseURL(jdbcUrl, null);
-            String host = props.getProperty(PGProperty.PG_HOST.getName());
-            String port = props.getProperty(PGProperty.PG_PORT.getName());
-            String name = props.getProperty(PGProperty.PG_DBNAME.getName());
-            String urlNoDb = "jdbc:postgresql://" + host + ":" + port + "/";
-
-            // get DB creation script
-            var filePath = getFileFromRelativePath(PROVIDER_SQL_FILE_PATH).toURI();
-            var stream = filePath.toURL().openStream();
-            String sqlScript = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-
-            // get DB creation script
-            var filePathFc = getFileFromRelativePath(FC_SQL_FILE_PATH).toURI();
-            var streamFc = filePathFc.toURL().openStream();
-            sqlScript += new String(streamFc.readAllBytes(), StandardCharsets.UTF_8);
-
-
-            // Connect to the database
-            Class.forName("org.postgresql.Driver");
-
-            // get empty database
-            Connection connectionAux = DriverManager.getConnection(urlNoDb, username, password);
-            int dropResult = connectionAux.createStatement().executeUpdate("DROP DATABASE IF EXISTS " + name);
-            int createResult = connectionAux.createStatement().executeUpdate(" CREATE DATABASE " + name + " WITH ENCODING = 'UTF8';");
-            connectionAux.close();
-
-            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-            connection.prepareStatement(sqlScript).execute();
-            connection.close();
-
-        } catch (ClassNotFoundException | NullPointerException | SQLException | IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static void startMongodbCollection(Config config) {

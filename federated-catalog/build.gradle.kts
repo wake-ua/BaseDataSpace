@@ -37,17 +37,6 @@ dependencies {
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
 
-    // sql storage
-    implementation(libs.edc.spi.transaction.datasource)
-    implementation(libs.bundles.edc.sqlstores)
-    implementation(libs.edc.transaction.local)
-    implementation(libs.edc.sql.pool)
-    implementation(libs.edc.sql.core)
-    implementation(libs.postgres)
-
-    // fc sql storage
-    // implementation(libs.edc.fc.cache.sql)
-
     // mongodb cache storage
     implementation(libs.edc.fc.spi.core)
     implementation("org.mongodb:mongodb-driver-sync:5.5.0")
