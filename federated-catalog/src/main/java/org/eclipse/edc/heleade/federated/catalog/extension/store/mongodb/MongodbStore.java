@@ -29,6 +29,7 @@ import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -79,6 +80,13 @@ public class MongodbStore {
                 .build();
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(dataSourceUri))
+                .applyToSocketSettings(builder ->
+                        builder.connectTimeout(30, TimeUnit.SECONDS)
+                                .readTimeout(30, TimeUnit.SECONDS))
+                .applyToClusterSettings(builder ->
+                        builder.serverSelectionTimeout(30, TimeUnit.SECONDS))
+                .retryWrites(true)
+                .retryReads(true)
                 .serverApi(serverApi)
                 .build();
         // Create a new client and connect to the server
@@ -96,7 +104,7 @@ public class MongodbStore {
      * @return the MongoCollection representing the "edc_federated_catalog" collection in the configured database
      */
     protected MongoCollection<Document> getCollection(MongoClient connection) {
-        MongoDatabase database = getConnection().getDatabase(dataSourceDb);
+        MongoDatabase database = connection.getDatabase(dataSourceDb);
         return database.getCollection(getFederatedCatalogCollectionName());
     }
 
