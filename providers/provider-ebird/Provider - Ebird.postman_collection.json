@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "94f7e276-013d-49c1-a269-6a0d20092049",
+		"_postman_id": "4f00853d-7ffe-4095-957a-2f9414aedf1b",
 		"name": "Provider - Ebird",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28863133",
-		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-94f7e276-013d-49c1-a269-6a0d20092049?action=share&source=collection_link&creator=28863133"
+		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-4f00853d-7ffe-4095-957a-2f9414aedf1b?action=share&source=collection_link&creator=28863133"
 	},
 	"item": [
 		{
@@ -31,7 +31,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"assetId2\",\r\n  \"properties\": {\r\n    \"name\": \"Recent observations in Spain\",\r\n    \"contenttype\": \"application/json\",\r\n    \"dcterms:name\": \"test tile\",\r\n    \"special\": \"test\"\r\n    },\r\n  \"dataAddress\": [{\r\n    \"type\": \"HttpData\",\r\n    \"name\": \"Test asset distribution\",\r\n    \"baseUrl\": \"https://api.ebird.org/v2/data/obs/ES/recent\",\r\n    \"proxyPath\": \"true\"\r\n  }]\r\n}\r\n",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"1010\",\r\n  \"properties\": {\r\n    \"name\": \"Weekly accident Activiy\",\r\n    \"contenttype\": \"application/json\",\r\n    \"dcterms:name\": \"Health and Care NHS\",\r\n    \"special\": \"test\"\r\n    },\r\n  \"dataAddress\": [{\r\n    \"type\": \"HttpData\",\r\n    \"name\": \"Test asset distribution\",\r\n    \"baseUrl\": \"https://www.opendata.nhs.scot/dataset/0d57311a-db66-4eaa-bd6d-cc622b6cbdfa/resource/a5f7ca94-c810-41b5-a7c9-25c18d43e5a4/download/weekly_ae_activity_20250511.csv\",\r\n    \"proxyPath\": \"true\"\r\n  }]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"assetId3\",\r\n  \"properties\": {\r\n    \"name\": \"Recent observations in Spain\",\r\n    \"contenttype\": \"application/json\",\r\n    \"dcterms:name\": \"test tile\",\r\n    \"special\": \"test\"\r\n    },\r\n  \"dataAddress\": [{\r\n    \"type\": \"HttpData\",\r\n    \"name\": \"Test asset distribution\",\r\n    \"baseUrl\": \"https://api.ebird.org/v2/data/obs/ES/recent\",\r\n    \"authKey\": \"x-ebirdapitoken\",\r\n    \"authCode\": \"{{AUTH-CODE}}\",\r\n    \"proxyPath\": \"true\"\r\n  }]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,7 +124,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\r\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\r\n  },\r\n  \"@id\": \"aPolicy\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\r\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\r\n  },\r\n  \"@id\": \"aPolicy1\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -110,7 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"01\",\r\n  \"accessPolicyId\": \"aPolicy\",\r\n  \"contractPolicyId\": \"aPolicy\",\r\n  \"assetsSelector\": []\r\n}\r\n",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"123\",\r\n  \"accessPolicyId\": \"policy001\",\r\n  \"contractPolicyId\": \"policy001\",\r\n  \"assetsSelector\": []\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -151,6 +194,150 @@
 							"path": [
 								"api",
 								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transfer",
+			"item": [
+				{
+					"name": "Get Provider Catalog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"protocol\": \"dataspace-protocol-http\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negociate Contract",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@type\": \"ContractRequest\",\r\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"protocol\": \"dataspace-protocol-http\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\r\n    \"@type\": \"Offer\",\r\n    \"assigner\": \"provider-ebird\",\r\n    \"target\": \"{{ASSET_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Contract",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations",
+								"{{CONTRACT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@type\": \"TransferRequestDto\",\r\n  \"connectorId\": \"provider-ebird\",\r\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\r\n  \"assetId\": \"{{ASSET_ID}}\",\r\n  \"protocol\": \"dataspace-protocol-http\",\r\n  \"transferType\": \"HttpData-PUSH\",\r\n  \"dataDestination\": {\r\n    \"type\": \"HttpData\",\r\n    \"baseUrl\": \"http://localhost:4000/api/consumer/store\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"transferprocesses"
 							]
 						}
 					},
@@ -220,6 +407,11 @@
 		{
 			"key": "PROVIDER-HTTP_PORT",
 			"value": "17191",
+			"type": "string"
+		},
+		{
+			"key": "AUTH-CODE",
+			"value": "otpbcu933m6f",
 			"type": "string"
 		}
 	]
