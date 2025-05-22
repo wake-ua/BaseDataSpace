@@ -17,6 +17,8 @@ package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
 import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
+import org.eclipse.edc.jsonld.JsonLdExtension;
+import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
@@ -26,6 +28,18 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
+import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
+
+import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_PREFIX;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_PREFIX;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_SCHEMA;
+import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_PREFIX;
+import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 /**
  * This extension integrates a MongoDB-based implementation of a federated catalog cache into the
@@ -70,6 +84,8 @@ public class MongodbFederatedCatalogCacheExtension implements ServiceExtension {
     private Monitor monitor;
     private String dataSourceUri;
     private String dataSourceDb;
+    private JsonLd jsonLd;
+
 
     @Inject
     private DataSourceRegistry dataSourceRegistry;
@@ -77,6 +93,8 @@ public class MongodbFederatedCatalogCacheExtension implements ServiceExtension {
     private TransactionContext trxContext;
     @Inject
     private TypeManager typeManager;
+    @Inject
+    private TypeTransformerRegistry transformerRegistry;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
@@ -85,7 +103,17 @@ public class MongodbFederatedCatalogCacheExtension implements ServiceExtension {
         dataSourceDb = context.getConfig().getString(FEDERATED_CATALOG_DB_PROPERTY, FEDERATED_CATALOG_DB_DEFAULT);
         monitor = context.getMonitor();
 
-        var store = new MongodbFederatedCatalogCache(dataSourceUri, dataSourceDb, trxContext, typeManager.getMapper());
+        jsonLd = new JsonLdExtension().createJsonLdService(context);
+        jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
+        jsonLd.registerNamespace(DCAT_PREFIX, DCAT_SCHEMA);
+        jsonLd.registerNamespace(DCT_PREFIX, DCT_SCHEMA);
+        jsonLd.registerNamespace(DSPACE_PREFIX, DSPACE_SCHEMA);
+        jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA);
+        jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
+        jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA);
+
+        var store = new MongodbFederatedCatalogCache(dataSourceUri, dataSourceDb, trxContext, typeManager.getMapper(), jsonLd, transformerRegistry);
+        monitor.info("MongoDB Store Ready");
         context.registerService(FederatedCatalogCache.class, store);
     }
 }

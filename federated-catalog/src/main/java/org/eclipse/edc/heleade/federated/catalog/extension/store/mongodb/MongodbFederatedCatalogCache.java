@@ -15,23 +15,31 @@
 package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Field;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.UpdateOptions;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.eclipse.edc.catalog.spi.CatalogConstants;
 import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
+import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.query.SortOrder;
 import org.eclipse.edc.transaction.spi.TransactionContext;
+import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,16 +57,25 @@ import static java.util.Optional.ofNullable;
  */
 public class MongodbFederatedCatalogCache extends MongodbStore implements FederatedCatalogCache {
 
+    private static final String DATASET_FIELD = "dcat:dataset";
+
+    private JsonLd jsonLd;
+    private TypeTransformerRegistry transformerRegistry;
+
     /**
-     * Constructs a new instance of {@code MongodbFederatedCatalogCache}.
+     * Represents a cache for federated catalog data stored in MongoDB.
      *
-     * @param dataSourceUri        the URI of the MongoDB data source
-     * @param dataSourceDb         the MongoDB database name
-     * @param transactionContext   the transaction context to use for database operations
-     * @param objectMapper         the object mapper used for JSON serialization and deserialization
+     * @param dataSourceUri the URI of the MongoDB data source to connect to
+     * @param dataSourceDb the name of the MongoDB database to use
+     * @param transactionContext the transaction context to manage database transactions
+     * @param objectMapper the object mapper for handling JSON serialization and deserialization
+     * @param jsonLd the JsonLd instance for processing JSON-LD data
+     * @param transformerRegistry the registry for type transformers
      */
-    public MongodbFederatedCatalogCache(String dataSourceUri, String dataSourceDb, TransactionContext transactionContext, ObjectMapper objectMapper) {
+    public MongodbFederatedCatalogCache(String dataSourceUri, String dataSourceDb, TransactionContext transactionContext, ObjectMapper objectMapper, JsonLd jsonLd, TypeTransformerRegistry transformerRegistry) {
         super(dataSourceUri, dataSourceDb, transactionContext, objectMapper);
+        this.jsonLd = jsonLd;
+        this.transformerRegistry = transformerRegistry;
     }
 
     /**
@@ -131,21 +148,62 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
     }
 
     private Collection<Catalog> queryInternal(MongoClient connection, QuerySpec querySpec) {
-        Bson filter = createFilter(querySpec);
+        Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
+        Bson filterInner = createFilterExpression(querySpec,  "$$this.");
+
         Bson sort = createSort(querySpec);
 
-        // Apply filter and sort (if specified) to the query
-        FindIterable<Document> query = getCollection(connection).find(filter);
+        // aggregation alternative
+        var resultsStr = new java.util.ArrayList<String>();
+        var results = new java.util.ArrayList<Catalog>();
+        var aggregations = new java.util.ArrayList<Bson>();
+        aggregations.add(Aggregates.match(filter));
+
+        // Create the filter expression for datasets using the MongoDB driver's filter API
+        Bson datasetsFilter = new Document("$filter",
+                new Document("input", "$" + DATASET_FIELD)
+                        .append("cond", filterInner));
+
+        // Create the project stage with the datasets filter
+        Bson addFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD, datasetsFilter));
+
+        aggregations.add(addFieldsStage);
+
+        aggregations.add(Aggregates.addFields(new Field<>("datasets_size", new Document("$size", "$" + DATASET_FIELD))));
+        aggregations.add(Aggregates.match(Filters.gt("datasets_size", 0L)));
+        aggregations.add(Aggregates.project(Document.parse("{_id: 0, datasets_size: 0}")));
+        if (querySpec.getOffset() > 0) {
+            aggregations.add(Aggregates.skip(querySpec.getOffset()));
+        }
+        if (querySpec.getLimit() > 0) {
+            aggregations.add(Aggregates.limit(querySpec.getLimit()));
+        }
         if (sort != null) {
-            query = query.sort(sort);
+            aggregations.add(Aggregates.sort(sort));
+        }
+        String aggregation = aggregations.toString();
+
+        // Transform pipeline stages to Documents and render to JSON
+        List<BsonDocument> pipelineInDocumentFormat = new ArrayList<>();
+        for (Bson bson : aggregations) {
+            BsonDocument document = bson.toBsonDocument();
+            pipelineInDocumentFormat.add(document);
+        }
+        System.out.println(pipelineInDocumentFormat.toString());
+
+        getCollection(connection).aggregate(
+                aggregations
+        ).forEach(doc -> resultsStr.add(doc.toJson()));
+
+        for (String s : resultsStr) {
+            JsonReader jsonReader = Json.createReader(new StringReader(s));
+            JsonObject result = jsonReader.readObject();
+            JsonObject resultExpanded = jsonLd.expand(result).getContent();
+            jsonReader.close();
+            Catalog catalog = this.transformerRegistry.transform(resultExpanded, Catalog.class).getContent();
+            results.add(catalog);
         }
 
-        // Apply pagination
-        query = query.skip(querySpec.getOffset()).limit(querySpec.getLimit());
-
-        // Convert results to the specified type
-        var results = new java.util.ArrayList<Catalog>();
-        query.forEach(doc -> results.add(fromJson(doc.toJson(), Catalog.class)));
         return results;
 
     }
@@ -153,7 +211,10 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
     private void upsertInternal(MongoClient connection, String id, Catalog catalog) {
         Bson filter = Filters.eq(getIdField(), id);
         UpdateOptions options = new UpdateOptions().upsert(true);
-        Document catalogDoc = Document.parse(toJson(catalog)).append(getIdField(), id);
+        JsonObject catalogJson = this.transformerRegistry.transform(catalog, JsonObject.class).getContent();
+        JsonObject catalogJsonCompacted = jsonLd.compact(catalogJson).getContent();
+        String test = catalogJsonCompacted.toString();
+        Document catalogDoc = Document.parse(catalogJsonCompacted.toString()).append(getIdField(), id);
         // Create a new document with just the fields we want to set
         Document setDoc = new Document();
 
@@ -189,9 +250,10 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
      * Creates a MongoDB BSON filter from the given QuerySpec
      *
      * @param querySpec The query specification containing filter criteria
+     * @param prefix Prefix to use for the fields
      * @return A BSON filter that can be used with MongoDB queries
      */
-    public Bson createFilter(QuerySpec querySpec) {
+    public Bson createFilter(QuerySpec querySpec, String prefix) {
         if (querySpec == null || querySpec.getFilterExpression().isEmpty()) {
             // Return a filter that matches all documents if no criteria are specified
             return Filters.empty();
@@ -206,13 +268,7 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
             Object rightOperand = criterion.getOperandRight();
 
             // Convert the left operand to a field path string
-            String fieldPath = leftOperand.toString();
-
-            // Special handling for nested fields - MongoDB uses dot notation for nested fields
-            if (fieldPath.contains(":")) {
-                // Assuming Eclipse EDC uses ":" for nested properties, convert to MongoDB dot notation
-                fieldPath = fieldPath.replace(":", ".");
-            }
+            String fieldPath = prefix + leftOperand.toString();
 
             // Convert criterion to appropriate MongoDB filter
             switch (operator) {
@@ -293,6 +349,66 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
 
         // Combine all filters with AND operator
         return filters.isEmpty() ? Filters.empty() : Filters.and(filters);
+    }
+
+    /**
+     * Creates a MongoDB BSON filter as an expression from the given QuerySpec
+     *
+     * @param querySpec The query specification containing filter criteria
+     * @param prefix Prefix to use for the fields
+     * @return A BSON filter expression that can be used with MongoDB queries
+     */
+    public Bson createFilterExpression(QuerySpec querySpec, String prefix) {
+        if (querySpec == null || querySpec.getFilterExpression().isEmpty()) {
+            return Document.parse("{}"); // Return an empty MongoDB expression
+        }
+
+        List<Document> filters = new ArrayList<>();
+
+        for (Criterion criterion : querySpec.getFilterExpression()) {
+            String operator = criterion.getOperator();
+            Object leftOperand = criterion.getOperandLeft();
+            Object rightOperand = criterion.getOperandRight();
+
+            String fieldPath = prefix + leftOperand.toString();
+
+            // Generate MongoDB expressions for each of the operators
+            switch (operator) {
+                case "=":
+                    filters.add(new Document("$eq", Arrays.asList(fieldPath, rightOperand)));
+                    break;
+                case "!=":
+                    filters.add(new Document("$ne", Arrays.asList(fieldPath, rightOperand)));
+                    break;
+                case ">":
+                    filters.add(new Document("$gt", Arrays.asList(fieldPath, rightOperand)));
+                    break;
+                case ">=":
+                    filters.add(new Document("$gte", Arrays.asList(fieldPath, rightOperand)));
+                    break;
+                case "<":
+                    filters.add(new Document("$lt", Arrays.asList(fieldPath, rightOperand)));
+                    break;
+                case "<=":
+                    filters.add(new Document("$lte", Arrays.asList(fieldPath, rightOperand)));
+                    break;
+                default:
+                    continue;
+            }
+        }
+
+        // Combine all filters with $and operator
+        if (!filters.isEmpty()) {
+            StringBuilder combined = new StringBuilder("{$and: [");
+            for (Document filter : filters) {
+                combined.append(filter.toJson()).append(",");
+            }
+            combined.setLength(combined.length() - 1); // remove trailing comma
+            combined.append("]}");
+            return Document.parse(combined.toString());
+        }
+
+        return Document.parse("{}");
     }
 
     /**
