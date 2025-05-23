@@ -25,7 +25,6 @@ import com.mongodb.client.model.UpdateOptions;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.eclipse.edc.catalog.spi.CatalogConstants;
@@ -46,6 +45,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Optional.ofNullable;
 
@@ -57,7 +57,12 @@ import static java.util.Optional.ofNullable;
  */
 public class MongodbFederatedCatalogCache extends MongodbStore implements FederatedCatalogCache {
 
-    private static final String DATASET_FIELD = "dcat:dataset";
+    /**
+     * Represents the field used to identify datasets in the DCAT context within
+     * the MongoDB Federated Catalog Cache. This field is used as a key to reference
+     * datasets stored or queried in the catalog under the "dcat:dataset" schema.
+     */
+    public static final String DATASET_FIELD = "dcat:dataset";
 
     private JsonLd jsonLd;
     private TypeTransformerRegistry transformerRegistry;
@@ -141,55 +146,11 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
         });
     }
 
-    private Catalog findByIdInternal(MongoClient connection, String id) {
-        Bson filter = Filters.eq(getIdField(), id);
-        var document = getCollection(connection).find(filter).first();
-        return document != null ? fromJson(document.toJson(), Catalog.class) : null;
-    }
 
     private Collection<Catalog> queryInternal(MongoClient connection, QuerySpec querySpec) {
-        Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
-        Bson filterInner = createFilterExpression(querySpec,  "$$this.");
-
-        Bson sort = createSort(querySpec);
-
-        // aggregation alternative
+        List<Bson> aggregations = createAggregationPipeline(querySpec);
         var resultsStr = new java.util.ArrayList<String>();
         var results = new java.util.ArrayList<Catalog>();
-        var aggregations = new java.util.ArrayList<Bson>();
-        aggregations.add(Aggregates.match(filter));
-
-        // Create the filter expression for datasets using the MongoDB driver's filter API
-        Bson datasetsFilter = new Document("$filter",
-                new Document("input", "$" + DATASET_FIELD)
-                        .append("cond", filterInner));
-
-        // Create the project stage with the datasets filter
-        Bson addFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD, datasetsFilter));
-
-        aggregations.add(addFieldsStage);
-
-        aggregations.add(Aggregates.addFields(new Field<>("datasets_size", new Document("$size", "$" + DATASET_FIELD))));
-        aggregations.add(Aggregates.match(Filters.gt("datasets_size", 0L)));
-        aggregations.add(Aggregates.project(Document.parse("{_id: 0, datasets_size: 0}")));
-        if (querySpec.getOffset() > 0) {
-            aggregations.add(Aggregates.skip(querySpec.getOffset()));
-        }
-        if (querySpec.getLimit() > 0) {
-            aggregations.add(Aggregates.limit(querySpec.getLimit()));
-        }
-        if (sort != null) {
-            aggregations.add(Aggregates.sort(sort));
-        }
-        String aggregation = aggregations.toString();
-
-        // Transform pipeline stages to Documents and render to JSON
-        List<BsonDocument> pipelineInDocumentFormat = new ArrayList<>();
-        for (Bson bson : aggregations) {
-            BsonDocument document = bson.toBsonDocument();
-            pipelineInDocumentFormat.add(document);
-        }
-        System.out.println(pipelineInDocumentFormat.toString());
 
         getCollection(connection).aggregate(
                 aggregations
@@ -205,7 +166,6 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
         }
 
         return results;
-
     }
 
     private void upsertInternal(MongoClient connection, String id, Catalog catalog) {
@@ -238,12 +198,59 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
     private void expireAllInternal(MongoClient connection) {
         UpdateOptions options = new UpdateOptions().upsert(false);
         Document doc = Document.parse("{ $set: { " + getMarkedField() + ": true } }");
-        MongoCollection<Document> collection =  getCollection(connection);
+        MongoCollection<Document> collection = getCollection(connection);
         collection.updateMany(Filters.empty(), doc, options);
     }
 
-    private Bson createEmptyFilter(QuerySpec querySpec) {
-        return Filters.empty();
+
+    /**
+     * Creates an aggregation pipeline for querying documents in a MongoDB collection based on the provided {@code QuerySpec}.
+     * The pipeline is built with stages to filter, sort, and paginate the results as per the query specification.
+     *
+     * @param querySpec The query specification containing filter, pagination, and sorting criteria.
+     * @return A list of BSON objects representing the aggregation pipeline for querying the MongoDB collection.
+     */
+    public static List<Bson> createAggregationPipeline(QuerySpec querySpec) {
+        // aggregation creation
+        var aggregations = new java.util.ArrayList<Bson>();
+
+        // Add basic filter to get catalogs with at least one dataset matching the filter criteria
+        Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
+
+        if (!(Objects.equals(filter, Filters.empty()))) {
+            aggregations.add(Aggregates.match(filter));
+
+            // Create the filter expression for datasets using the MongoDB driver's filter API
+            Bson filterInner = createFilterExpression(querySpec, "$$this.");
+            Bson datasetsFilter = new Document("$filter",
+                    new Document("input", "$" + DATASET_FIELD)
+                            .append("cond", filterInner));
+
+            // Create and add the "add fields" stage with the datasets filter
+            Bson addFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD, datasetsFilter));
+            aggregations.add(addFieldsStage);
+
+            // Filter out the catalogsw with no datasets matching the filter criteria
+            aggregations.add(Aggregates.addFields(new Field<>("datasets_size", new Document("$size", "$" + DATASET_FIELD))));
+            aggregations.add(Aggregates.match(Filters.gt("datasets_size", 0L)));
+        }
+
+        // Remove auxiliary fields
+        aggregations.add(Aggregates.project(Document.parse("{_id: 0, datasets_size: 0}")));
+
+        // Add pagination and sorting stages if necessary
+        if (querySpec.getOffset() > 0) {
+            aggregations.add(Aggregates.skip(querySpec.getOffset()));
+        }
+        if (querySpec.getLimit() > 0) {
+            aggregations.add(Aggregates.limit(querySpec.getLimit()));
+        }
+        Bson sort = createSort(querySpec);
+        if (sort != null) {
+            aggregations.add(Aggregates.sort(sort));
+        }
+
+        return aggregations;
     }
 
     /**
@@ -253,7 +260,7 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
      * @param prefix Prefix to use for the fields
      * @return A BSON filter that can be used with MongoDB queries
      */
-    public Bson createFilter(QuerySpec querySpec, String prefix) {
+    public static Bson createFilter(QuerySpec querySpec, String prefix) {
         if (querySpec == null || querySpec.getFilterExpression().isEmpty()) {
             // Return a filter that matches all documents if no criteria are specified
             return Filters.empty();
@@ -358,7 +365,7 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
      * @param prefix Prefix to use for the fields
      * @return A BSON filter expression that can be used with MongoDB queries
      */
-    public Bson createFilterExpression(QuerySpec querySpec, String prefix) {
+    public static Bson createFilterExpression(QuerySpec querySpec, String prefix) {
         if (querySpec == null || querySpec.getFilterExpression().isEmpty()) {
             return Document.parse("{}"); // Return an empty MongoDB expression
         }
@@ -393,7 +400,7 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
                     filters.add(new Document("$lte", Arrays.asList(fieldPath, rightOperand)));
                     break;
                 default:
-                    continue;
+                    // ignore unsupported operators
             }
         }
 
@@ -417,7 +424,7 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
      * @param querySpec The query specification containing sort field and order
      * @return A BSON sort object that can be used with MongoDB queries, or null if no sorting is specified
      */
-    public Bson createSort(QuerySpec querySpec) {
+    public static Bson createSort(QuerySpec querySpec) {
         if (querySpec == null || querySpec.getSortField() == null || querySpec.getSortField().isEmpty()) {
             // Return null if no sort field is specified
             return null;

@@ -47,7 +47,7 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 import static org.eclipse.edc.spi.types.domain.DataAddress.EDC_DATA_ADDRESS_TYPE_PROPERTY;
 
 
-public class AssetValidationExtensionTest {
+public class AssetJsonSchemaValidatorTest {
     private final JsonLd jsonLd = initializeJsonLd();
     private final Validator<JsonObject> validator = new AssetJsonSchemaValidator().getValidator(getTestJsonSchema(), jsonLd);
 

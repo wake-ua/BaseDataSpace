@@ -37,14 +37,7 @@ import java.util.concurrent.TimeUnit;
  * for database operations such as serialization, deserialization, and establishing connections.
  */
 public class MongodbStore {
-    /**
-     * Alias for datasets collection in MongoDB operations.
-     */
-    protected static final String DATASETS_ALIAS = "datasets";
-    /**
-     * Alias for data services collection in MongoDB operations.
-     */
-    protected static final String DATA_SERVICES_ALIAS = "dataServices";
+
     /**
      * Context for managing database transaction boundaries.
      * Final field initialized during construction.
@@ -167,14 +160,6 @@ public class MongodbStore {
         return "store_id";
     }
 
-    /**
-     * Retrieves the name of the field used to represent the catalog in the database.
-     *
-     * @return the string "catalog", representing the catalog field name.
-     */
-    public static String getCatalogField() {
-        return "catalog";
-    }
 
     /**
      * Returns the name of the field representing a marked entity or record.
