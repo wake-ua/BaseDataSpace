@@ -173,7 +173,6 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
         UpdateOptions options = new UpdateOptions().upsert(true);
         JsonObject catalogJson = this.transformerRegistry.transform(catalog, JsonObject.class).getContent();
         JsonObject catalogJsonCompacted = jsonLd.compact(catalogJson).getContent();
-        String test = catalogJsonCompacted.toString();
         Document catalogDoc = Document.parse(catalogJsonCompacted.toString()).append(getIdField(), id);
         // Create a new document with just the fields we want to set
         Document setDoc = new Document();

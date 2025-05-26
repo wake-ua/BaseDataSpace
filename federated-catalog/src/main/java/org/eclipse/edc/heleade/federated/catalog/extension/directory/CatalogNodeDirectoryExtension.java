@@ -15,16 +15,22 @@
 package org.eclipse.edc.heleade.federated.catalog.extension.directory;
 
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import org.eclipse.edc.jsonld.JsonLdExtension;
+import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
+import org.eclipse.edc.web.spi.WebService;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
+import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
 /**
@@ -34,6 +40,11 @@ public class CatalogNodeDirectoryExtension implements ServiceExtension {
     @Inject
     private TypeManager typeManager;
 
+    @Inject
+    WebService webService;
+
+    private CatalogNodeDirectory catalogNodeDirectory;
+    private JsonLd jsonLd;
     private String participantsFilePath;
     private Monitor monitor;
 
@@ -44,6 +55,22 @@ public class CatalogNodeDirectoryExtension implements ServiceExtension {
      */
     @Provider
     public TargetNodeDirectory federatedCacheNodeDirectory() {
+        return this.catalogNodeDirectory;
+    }
+
+    @Override
+    public void initialize(ServiceExtensionContext context) {
+        participantsFilePath = context.getConfig().getString("edc.catalog.participants.path", "participants.json");
+        monitor = context.getMonitor();
+        initializeCatalogNodeDirectory();
+
+        jsonLd = new JsonLdExtension().createJsonLdService(context);
+        jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
+
+        webService.registerResource(new CatalogNodeController(context.getMonitor(), this.catalogNodeDirectory, jsonLd));
+    }
+
+    private void initializeCatalogNodeDirectory() {
         monitor.info("Participant list file selected: " + participantsFilePath);
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -54,16 +81,10 @@ public class CatalogNodeDirectoryExtension implements ServiceExtension {
 
             String participantFileContent = new String(participantFileInputStream.readAllBytes(), StandardCharsets.UTF_8);
 
-            return new CatalogNodeDirectory(typeManager.getMapper(), participantFileContent);
+            this.catalogNodeDirectory = new CatalogNodeDirectory(typeManager.getMapper(), participantFileContent);
         } catch (IOException e) {
             throw new RuntimeException("Failed to read and map participant list file: " + participantsFilePath, e);
         }
-    }
-
-    @Override
-    public void initialize(ServiceExtensionContext context) {
-        participantsFilePath = context.getConfig().getString("edc.catalog.participants.path", "participants.json");
-        monitor = context.getMonitor();
     }
 }
 
