@@ -16,6 +16,7 @@ package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
 
 import org.bson.BsonDocument;
 import org.bson.conversions.Bson;
+import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.junit.jupiter.api.Test;
 
@@ -35,4 +36,23 @@ public class MongodbFederatedCatalogCacheTest {
         }
     }
 
+    @Test
+    void shouldProvidePipelineWhenQuerySpecProvided() {
+        QuerySpec querySpec = QuerySpec.Builder.newInstance().filter(Criterion.criterion("id", "=", "assetId")).build();
+
+        List<Bson> aggregation = MongodbFederatedCatalogCache.createAggregationPipeline(querySpec);
+        assert aggregation.size() > 3;
+
+        Bson matchStage = aggregation.get(0);
+        assert matchStage.toBsonDocument().containsKey("$match");
+
+        Bson addFieldsStage = aggregation.get(1);
+        assert addFieldsStage.toBsonDocument().containsKey("$addFields");
+
+        Bson addFieldsSizeStage = aggregation.get(2);
+        assert addFieldsSizeStage.toBsonDocument().containsKey("$addFields");
+
+        Bson matchStageSize = aggregation.get(3);
+        assert matchStageSize.toBsonDocument().containsKey("$match");
+    }
 }
