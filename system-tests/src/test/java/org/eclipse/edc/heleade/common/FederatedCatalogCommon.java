@@ -40,6 +40,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.emptyString;
 
 public class FederatedCatalogCommon {
+    public static final String PARTICIPANT_FILE_PATH = "system-tests/src/test/resources/federated-catalog/participant-test.json";
     private static final String EMBEDDED_FC = "federated-catalog";
     private static final String FC_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/fc-test-configuration.properties";
 
@@ -50,12 +51,14 @@ public class FederatedCatalogCommon {
     public static final int TIMEOUT = 5 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
     public static final String FC_CATALOG_API_ENDPOINT = "http://localhost:59195/api/catalog/v1alpha/catalog/query";
+    public static final String FEDERATED_CATALOG_MANAGEMENT_URL = "http://localhost:59193/management";
+    public static final String V_NODE_DIRECTORY_PATH = "/v1alpha/directory";
     public static final String EMPTY_QUERY_FILE_PATH = "system-tests/src/test/resources/federated-catalog/empty-query.json";
     public static final String TYPE = "[0].@type";
     public static final String CATALOG = "dcat:Catalog";
     public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
-
-    public static final String FC_MONGODB_COLLECTION = "edc_federated_catalog";
+    public static final String FC_CACHE_COLLECTION_NAME = "edc_federated_catalog";
+    public static final String FC_DIRECTORY_COLLECTION_NAME = "edc_node_directory";
 
     public static RuntimeExtension getEmbeddedFc(String modulePath) {
         return getRuntime(modulePath, EMBEDDED_FC, FC_CONFIG_PROPERTIES_FILE_PATH);
@@ -100,7 +103,8 @@ public class FederatedCatalogCommon {
             // Get parameters
             String uri = config.getString("org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.uri");
             String db = config.getString("org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.db");
-            String collection = FC_MONGODB_COLLECTION;
+            String collectionCache = FC_CACHE_COLLECTION_NAME;
+            String collectionDirectory = FC_DIRECTORY_COLLECTION_NAME;
 
             ServerApi serverApi = ServerApi.builder()
                     .version(ServerApiVersion.V1)
@@ -111,8 +115,11 @@ public class FederatedCatalogCommon {
                     .build();
             MongoClient mongoClient = MongoClients.create(settings);
 
-            mongoClient.getDatabase(db).getCollection(collection).drop();
-            mongoClient.getDatabase(db).createCollection(collection);
+            mongoClient.getDatabase(db).getCollection(collectionCache).drop();
+            mongoClient.getDatabase(db).createCollection(collectionCache);
+
+            mongoClient.getDatabase(db).getCollection(collectionDirectory).drop();
+            mongoClient.getDatabase(db).createCollection(collectionDirectory);
 
             mongoClient.close();
 

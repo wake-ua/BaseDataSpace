@@ -17,9 +17,14 @@ package org.eclipse.edc.heleade.util;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonStructure;
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 
+import java.io.StringReader;
 import java.time.Duration;
 
 import static io.restassured.RestAssured.given;
@@ -67,6 +72,31 @@ public class TransferUtil {
                 .jsonPath()
                 .get(jsonPath);
     }
+
+    /**
+     * Makes a GET request to the specified URL and returns the entire response body.
+     *
+     * @param url the URL to send the GET request to
+     * @return the response body as a String
+     */
+    public static JsonStructure getResponseBody(String url) {
+        String responseBody = given()
+                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(url)
+                .then()
+                .log().ifError()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .body()
+                .asString();
+
+        try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
+            return jsonReader.read();
+        }
+    }
+
 
     public static void post(String url, String requestBody) {
         given()
@@ -124,5 +154,19 @@ public class TransferUtil {
                     var state = get(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
                     assertThat(state).isEqualTo(status.name());
                 });
+    }
+
+    /**
+     * Gets the ID field from the first element of a JsonArray.
+     *
+     * @param nodeDirectory the JsonStructure containing the node directory (expected to be a JsonArray)
+     * @return the ID value as a String, or null if not found or if structure is invalid
+     */
+    public static JsonArray getAsJsonArray(JsonStructure nodeDirectory) {
+        if (nodeDirectory instanceof JsonArray) {
+            return (JsonArray) nodeDirectory;
+        }
+        // Return null if nodeDirectory is not a JsonArray
+        return null;
     }
 }

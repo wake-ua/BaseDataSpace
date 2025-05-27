@@ -14,6 +14,8 @@
 
 package org.eclipse.edc.heleade.federated.catalog;
 
+import jakarta.json.JsonArray;
+import org.eclipse.edc.heleade.common.FederatedCatalogCommon;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,9 @@ import static org.eclipse.edc.heleade.common.NegotiationCommon.createAsset;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getProvider;
+import static org.eclipse.edc.heleade.util.TransferUtil.getAsJsonArray;
+import static org.eclipse.edc.heleade.util.TransferUtil.getResponseBody;
+import static org.eclipse.edc.heleade.util.TransferUtil.post;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @EndToEndTest
@@ -77,6 +82,13 @@ public class FederatedCatalog01embeddedTest {
         String assetId = createAsset();
         createPolicy();
         createContractDefinition();
+
+        post(FederatedCatalogCommon.FEDERATED_CATALOG_MANAGEMENT_URL + FederatedCatalogCommon.V_NODE_DIRECTORY_PATH,
+                getFileContentFromRelativePath(FederatedCatalogCommon.PARTICIPANT_FILE_PATH));
+
+        JsonArray nodeDirectory = getAsJsonArray(getResponseBody(FederatedCatalogCommon.FEDERATED_CATALOG_MANAGEMENT_URL  + FederatedCatalogCommon.V_NODE_DIRECTORY_PATH));
+        assertThat(nodeDirectory).isNotNull();
+        assertThat(nodeDirectory.size()).isGreaterThanOrEqualTo(1);
 
         // call catalog API from standalone FC
         await()
