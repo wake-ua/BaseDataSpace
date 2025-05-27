@@ -4,11 +4,5 @@
     "id": "provider",
     "url": "http://localhost:19194/protocol",
     "supportedProtocols": ["dataspace-protocol-http"]
-  },
-  {
-    "name": "Template Provider",
-    "id": "provider-template",
-    "url": "http://localhost:18194/protocol",
-    "supportedProtocols": ["dataspace-protocol-http"]
   }
 ]

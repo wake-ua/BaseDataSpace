@@ -17,10 +17,14 @@ package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
 import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
+import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.cache.MongodbFederatedCatalogCache;
+import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.node.directory.MongodbFederatedCatalogNodeDirectory;
 import org.eclipse.edc.jsonld.JsonLdExtension;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -42,40 +46,13 @@ import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 /**
- * This extension integrates a MongoDB-based implementation of a federated catalog cache into the
- * Eclipse Dataspace Connector (EDC) framework. It registers the necessary components and
- * configuration settings for the federated catalog cache to interact with a MongoDB database.
- *
- * The provided federated catalog cache implementation supports storing and retrieving catalog
- * data using MongoDB as the underlying database. MongoDB connection parameters, such as
- * the URI and database name, are configurable through application settings.
- *
- * Key configuration properties:
- * - {@code org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.uri}:
- *   Specifies the connection URI for the MongoDB database. If not provided, defaults to
- *   {@code mongodb://localhost:27017/}.
- * - {@code org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.db}:
- *   Specifies the name of the MongoDB database to use. If not provided, defaults to
- *   {@code federatedcatalogdb}.
- *
- * This extension utilizes the following capabilities:
- * - {@code DataSourceRegistry}: Service to manage data source configurations.
- * - {@code TransactionContext}: Manages transactional operations for database interactions.
- * - {@code TypeManager}: Registers and manages data type mappings for catalog and dataset instances.
- *
- * Responsibilities:
- * - Configures MongoDB connection settings from the application context.
- * - Registers the {@code Catalog} and {@code Dataset} data types with the {@code TypeManager}.
- * - Initializes and registers the {@code FederatedCatalogCache} service implementation backed
- *   by MongoDB.
- * - Uses the provided monitor for logging and diagnostic purposes.
- *
- * Implements:
- * - {@link ServiceExtension}: EDC framework interface for extensions.
+ * This class is an implementation of a ServiceExtension providing a MongoDB-based Federated Catalog Cache.
+ * It defines configurations and initializes the required components for managing and interacting with a
+ * federated catalog stored in a MongoDB database.
  */
-@Provides(FederatedCatalogCache.class)
-@Extension(value = "MongoDB federated catalog cache")
-public class MongodbFederatedCatalogCacheExtension implements ServiceExtension {
+@Provides({FederatedCatalogCache.class, TargetNodeDirectory.class})
+@Extension(value = "MongoDB federated catalog extension")
+public class MongodbFederatedCatalogExtension implements ServiceExtension {
     private static final String FEDERATED_CATALOG_URI_PROPERTY = "org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.uri";
     private static final String FEDERATED_CATALOG_URI_DEFAULT = "mongodb://localhost:27017/";
     private static final String FEDERATED_CATALOG_DB_PROPERTY = "org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.db";
@@ -85,7 +62,7 @@ public class MongodbFederatedCatalogCacheExtension implements ServiceExtension {
     private String dataSourceUri;
     private String dataSourceDb;
     private JsonLd jsonLd;
-
+    private MongodbFederatedCatalogNodeDirectory catalogNodeDirectory;
 
     @Inject
     private DataSourceRegistry dataSourceRegistry;
@@ -95,6 +72,16 @@ public class MongodbFederatedCatalogCacheExtension implements ServiceExtension {
     private TypeManager typeManager;
     @Inject
     private TypeTransformerRegistry transformerRegistry;
+
+    /**
+     * Provides the TargetNodeDirectory component configured for use with the federated catalog.
+     *
+     * @return an instance of TargetNodeDirectory representing the node directory for the federated catalog.
+     */
+    @Provider
+    public TargetNodeDirectory federatedCacheNodeDirectory() {
+        return this.catalogNodeDirectory;
+    }
 
     @Override
     public void initialize(ServiceExtensionContext context) {
@@ -113,7 +100,11 @@ public class MongodbFederatedCatalogCacheExtension implements ServiceExtension {
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA);
 
         var store = new MongodbFederatedCatalogCache(dataSourceUri, dataSourceDb, trxContext, typeManager.getMapper(), jsonLd, transformerRegistry);
-        monitor.info("MongoDB Store Ready");
+        monitor.info("MongoDB Cache Store Ready");
         context.registerService(FederatedCatalogCache.class, store);
+
+        this.catalogNodeDirectory = new MongodbFederatedCatalogNodeDirectory(dataSourceUri, dataSourceDb, trxContext, typeManager.getMapper());
+        monitor.info("MongoDB Node Directory Store Ready");
+        context.registerService(TargetNodeDirectory.class, this.catalogNodeDirectory);
     }
 }

@@ -48,18 +48,18 @@ public class MongodbStore {
     private final ObjectMapper objectMapper;
 
     /**
-     * Constructs a new MongodbStore instance with the specified parameters.
+     * Constructs a new instance of MongodbStore, initializing it with the specified parameters.
      *
-     * @param dataSourceUri the URI of the MongoDB data source to connect to
-     * @param dataSourceDb the name of the MongoDB database to use
-     * @param transactionContext the transaction context to manage database transactions
-     * @param objectMapper the object mapper for handling JSON serialization and deserialization
+     * @param dataSourceUri       the connection URI for the data source; must not be null
+     * @param dataSourceDb        the name of the database to use; must not be null
+     * @param transactionContext  the context for handling transactions; must not be null
+     * @param objectMapper        the ObjectMapper instance for JSON serialization and deserialization; must not be null
      */
     public MongodbStore(String dataSourceUri, String dataSourceDb, TransactionContext transactionContext, ObjectMapper objectMapper) {
         this.dataSourceUri = Objects.requireNonNull(dataSourceUri);
         this.dataSourceDb = Objects.requireNonNull(dataSourceDb);
-        this.transactionContext = Objects.requireNonNull(transactionContext);
         this.objectMapper = Objects.requireNonNull(objectMapper);
+        this.transactionContext = Objects.requireNonNull(transactionContext);
     }
 
     /**
@@ -91,15 +91,17 @@ public class MongodbStore {
     }
 
     /**
-     * Retrieves a specific MongoDB collection from a MongoDB database associated with the provided connection.
+     * Retrieves a MongoDB collection from the specified database connection.
      *
-     * @param connection the MongoClient instance used to establish the database connection
-     * @return the MongoCollection representing the "edc_federated_catalog" collection in the configured database
+     * @param connection      the MongoClient instance representing the connection to the MongoDB server; must not be null
+     * @param collectionName  the name of the collection to retrieve; must not be null
+     * @return the MongoCollection representing the specified collection in the MongoDB database
      */
-    protected MongoCollection<Document> getCollection(MongoClient connection) {
+    protected MongoCollection<Document> getCollection(MongoClient connection, String collectionName) {
         MongoDatabase database = connection.getDatabase(dataSourceDb);
-        return database.getCollection(getFederatedCatalogCollectionName());
+        return database.getCollection(collectionName);
     }
+
 
     /**
      * Converts the provided object into its JSON string representation.
@@ -141,33 +143,4 @@ public class MongodbStore {
             throw new EdcPersistenceException(e);
         }
     }
-
-    /**
-     * Provides the name of the MongoDB collection used to store federated catalog data.
-     *
-     * @return the name of the collection as a String, which is "edc_federated_catalog"
-     */
-    public static String getFederatedCatalogCollectionName() {
-        return "edc_federated_catalog";
-    }
-
-    /**
-     * Retrieves the name of the identifier field used in the MongoDB store.
-     *
-     * @return the name of the identifier field, typically "store_id".
-     */
-    public static String getIdField() {
-        return "store_id";
-    }
-
-
-    /**
-     * Returns the name of the field representing a marked entity or record.
-     *
-     * @return the string "marked", indicating the field name.
-     */
-    public static String getMarkedField() {
-        return "marked";
-    }
-
 }

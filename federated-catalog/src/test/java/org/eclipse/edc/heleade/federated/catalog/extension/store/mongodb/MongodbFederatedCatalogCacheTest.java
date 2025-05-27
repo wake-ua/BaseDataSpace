@@ -16,6 +16,7 @@ package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
 
 import org.bson.BsonDocument;
 import org.bson.conversions.Bson;
+import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.cache.MongodbFederatedCatalogCache;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.junit.jupiter.api.Test;

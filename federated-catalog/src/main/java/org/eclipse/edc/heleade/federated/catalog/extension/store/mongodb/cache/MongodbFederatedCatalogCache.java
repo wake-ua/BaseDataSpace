@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
+package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
@@ -55,7 +55,7 @@ import static java.util.Optional.ofNullable;
  * This class handles operations such as saving catalog entries, querying them based on filters,
  * expiring all entries, and cleaning up expired entries from the cache.
  */
-public class MongodbFederatedCatalogCache extends MongodbStore implements FederatedCatalogCache {
+public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheStore implements FederatedCatalogCache {
 
     /**
      * Represents the field used to identify datasets in the DCAT context within
@@ -64,8 +64,8 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
      */
     public static final String DATASET_FIELD = "dcat:dataset";
 
-    private JsonLd jsonLd;
-    private TypeTransformerRegistry transformerRegistry;
+    private final JsonLd jsonLd;
+    private final TypeTransformerRegistry transformerRegistry;
 
     /**
      * Represents a cache for federated catalog data stored in MongoDB.
@@ -152,7 +152,7 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
         var resultsStr = new java.util.ArrayList<String>();
         var results = new java.util.ArrayList<Catalog>();
 
-        getCollection(connection).aggregate(
+        getCollection(connection, getFederatedCatalogCollectionName()).aggregate(
                 aggregations
         ).forEach(doc -> resultsStr.add(doc.toJson()));
 
@@ -184,20 +184,20 @@ public class MongodbFederatedCatalogCache extends MongodbStore implements Federa
         setDoc.append(getIdField(), id);
 
         Bson update = new Document("$set", setDoc);
-        MongoCollection<Document> collection = getCollection(connection);
+        MongoCollection<Document> collection = getCollection(connection, getFederatedCatalogCollectionName());
         collection.updateOne(filter, update, options);
     }
 
     private void deleteByMarkedTemplateInternal(MongoClient connection) {
         Bson filter = Filters.eq(getMarkedField(), true);
-        MongoCollection<Document> collection =  getCollection(connection);
+        MongoCollection<Document> collection =  getCollection(connection, getFederatedCatalogCollectionName());
         collection.deleteMany(filter);
     }
 
     private void expireAllInternal(MongoClient connection) {
         UpdateOptions options = new UpdateOptions().upsert(false);
         Document doc = Document.parse("{ $set: { " + getMarkedField() + ": true } }");
-        MongoCollection<Document> collection = getCollection(connection);
+        MongoCollection<Document> collection = getCollection(connection, getFederatedCatalogCollectionName());
         collection.updateMany(Filters.empty(), doc, options);
     }
 
