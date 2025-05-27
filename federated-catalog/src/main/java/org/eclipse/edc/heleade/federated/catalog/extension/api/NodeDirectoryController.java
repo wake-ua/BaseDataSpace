@@ -20,15 +20,21 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.node.directory.MongodbFederatedCatalogNodeDirectory;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +76,6 @@ public class NodeDirectoryController {
      */
     @GET
     public String getDirectory() {
-        monitor.info("FederatedCatalog received a get directory request");
-
         JsonArray directoryJson = targetNodeDirectory.getAll().stream()
                 .map(this::convertToJsonObject)
                 .collect(toJsonArray());
@@ -91,6 +95,29 @@ public class NodeDirectoryController {
         TargetNode targetNode = convertToTargetNode(node);
         targetNodeDirectory.insert(targetNode);
         return convertToJsonObject(targetNode);
+    }
+
+    /**
+     * Deletes a target node from the federated catalog node directory using its unique identifier.
+     * If the underlying target node directory supports MongoDB, the specified entry will be removed.
+     * Otherwise, an {@link UnsupportedOperationException} will be thrown.
+     *
+     * @param id the unique identifier of the node to be deleted
+     * @throws UnsupportedOperationException if the target node directory does not support deletion
+     */
+    @DELETE
+    @Path("{id}")
+    public void delete(@PathParam("id") String id) {
+        if (targetNodeDirectory instanceof MongodbFederatedCatalogNodeDirectory) {
+            try {
+                MongodbFederatedCatalogNodeDirectory mongodbDirectory = (MongodbFederatedCatalogNodeDirectory) targetNodeDirectory;
+                mongodbDirectory.delete(id);
+            } catch (EdcPersistenceException e) {
+                throw new WebApplicationException("Node not found", Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new UnsupportedOperationException("The target node directory does not support deletion");
+        }
     }
 
     /**

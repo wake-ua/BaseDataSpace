@@ -15,9 +15,16 @@
 package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.node.directory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.MongodbStore;
+import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
 import java.util.ArrayList;
@@ -71,19 +78,52 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
     /**
      * Persists the given {@code TargetNode} to the federated catalog node directory collection in MongoDB.
      * This method uses a transactional context for atomic operations, converts the {@code TargetNode}
-     * to its JSON representation, and inserts it as a document into the database.
+     * to its JSON representation, and upserts it as a document into the database.
      *
      * @param node the {@code TargetNode} to be saved in the MongoDB collection; must not be null
      */
     public void save(TargetNode node) {
         transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                var collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
-                var json = toJson(node);
-                collection.insertOne(Document.parse(json));
+                upsertInternal(connection, node);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
             }
-            return null;
         });
+    }
+
+    /**
+     * Deletes an entry from the federated catalog node directory in MongoDB by its unique identifier.
+     * This method uses a transactional context to ensure the operation is performed atomically.
+     *
+     * @param id the unique identifier of the entry to be deleted; must not be null
+     */
+    public void delete(String id) {
+        transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                deleteInternal(connection, id);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    private void deleteInternal(MongoClient connection, String id) {
+        Bson filter = Filters.eq(getIdField(), id);
+        MongoCollection<Document> collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
+        DeleteResult result = collection.deleteOne(filter);
+        if (result.getDeletedCount() < 1) {
+            throw new EdcPersistenceException("No node found for id " + id);
+        }
+    }
+
+    private void upsertInternal(MongoClient connection, TargetNode node) {
+        Bson filter = Filters.eq(getIdField(), node.id());
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        Document catalogDoc = Document.parse(toJson(node));
+        Bson update = new Document("$set", catalogDoc);
+        MongoCollection<Document> collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
+        collection.updateOne(filter, update, options);
     }
 
     /**
@@ -95,4 +135,12 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
         return "edc_node_directory";
     }
 
+    /**
+     * Retrieves the name of the identifier field used in the MongoDB store.
+     *
+     * @return the name of the identifier field, typically "store_id".
+     */
+    public static String getIdField() {
+        return "id";
+    }
 }
