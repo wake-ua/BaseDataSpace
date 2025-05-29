@@ -140,6 +140,17 @@ public class TransferUtil {
                 .get(jsonPath);
     }
 
+    public static void delete(String url) {
+        given()
+                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
+                .contentType(ContentType.JSON)
+                .when()
+                .delete(url)
+                .then()
+                .log().ifError()
+                .statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
     public static String startTransfer(String requestBody, String contractAgreementId) {
         requestBody = requestBody.replace(CONTRACT_AGREEMENT_ID_KEY, contractAgreementId);
         return post(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH, requestBody, ID);

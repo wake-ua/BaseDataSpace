@@ -25,6 +25,7 @@ import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.heleade.util.TransferUtil.POLL_INTERVAL;
 import static org.eclipse.edc.heleade.util.TransferUtil.TIMEOUT;
+import static org.eclipse.edc.heleade.util.TransferUtil.delete;
 import static org.eclipse.edc.heleade.util.TransferUtil.get;
 import static org.eclipse.edc.heleade.util.TransferUtil.post;
 import static org.eclipse.edc.heleade.util.TransferUtil.postJson;
@@ -53,9 +54,27 @@ public class NegotiationCommon {
         return createAsset(CREATE_ASSET_FILE_PATH);
     }
 
+    public static String createAssetWithId(String id) {
+        String existing = "\"@id\": \"assetId\"";
+        String replacement = "\"@id\": \"" + id + "\"";
+        String nameExisting = "\"name\": \"product description\"";
+        String nameReplacement = "\"name\": \"item name " + id + "\"";
+        String content = getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH)
+                .replace(existing, replacement).replace(nameExisting, nameReplacement);
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, content, ASSET_ID);
+    }
+
+    public static void deleteDataset(String id) {
+        delete(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH + "/" + id);
+    }
+
     public static String createAsset(String assetFilePath) {
         return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH,
                         getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+    }
+
+    public static void deleteAsset(String id) {
+        delete(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH + '/' + id);
     }
 
     public static void createPolicy() {
