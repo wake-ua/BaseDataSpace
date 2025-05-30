@@ -981,6 +981,35 @@
 					"response": []
 				},
 				{
+					"name": "Add Node Directory eBIRD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"name\": \"Template eBIRD\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://localhost:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v1alpha",
+								"directory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Node Directory",
 					"request": {
 						"method": "DELETE",
