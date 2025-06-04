@@ -15,21 +15,27 @@
         },
         "contenttype": {
           "type": "string"
-        },
-        "special": {
-          "type": "string"
         }
       },
       "required": [
         "name",
-        "contenttype",
-        "special"
+        "contenttype"
       ]
+    }
+  },
+  "dataAddress": {
+    "type": "object",
+    "properties": {
+      "type": "string",
+      "name": "string",
+      "baseUrl": "string",
+      "proxyPath": "string"
     }
   },
   "required": [
     "@id",
-    "properties"
+    "properties",
+    "dataAddress"
   ]
 }
 

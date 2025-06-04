@@ -27,13 +27,20 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
+import static org.eclipse.edc.iam.verifiablecredentials.spi.VcConstants.SCHEMA_ORG_NAMESPACE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
+import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_2024_1;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
@@ -42,17 +49,34 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  */
 public class AssetValidationExtension implements ServiceExtension {
 
+    /**
+     * Prefix used for Schema.org properties and types.
+     */
+    public static final String SCHEMA_ORG_PREFIX = "schema";
+    /**
+     * Prefix used for assets in the context-based management system.
+     */
+    public static final String CBM_PREFIX = "cbm";
+    /**
+     * Constant representing the schema URL for the CBM (Configuration Baseline Model) namespace.
+     */
+    public static final String CBM_SCHEMA = "https://w3id.org/cbm/v0.0.1/ns/";
+
+    static final String CONTROL_SCOPE = "CONTROL_API";
+    static final String MANAGEMENT_SCOPE = "MANAGEMENT_API";
+
     @Inject
     private JsonObjectValidatorRegistry validatorRegistry;
+
+    @Inject
+    private TypeTransformerRegistry transformerRegistry;
+
+    @Inject
+    private JsonLd jsonLdGlobal;
 
     private Monitor monitor;
     private JsonSchema assetSchema;
     private JsonLd jsonLd;
-
-    public void prepare() {
-        var validator = new AssetJsonSchemaValidator().getValidator(assetSchema, jsonLd);
-        validatorRegistry.register(Asset.EDC_ASSET_TYPE, validator);
-    }
 
     public void initialize(ServiceExtensionContext context) {
         monitor = context.getMonitor();
@@ -60,6 +84,20 @@ public class AssetValidationExtension implements ServiceExtension {
         assetSchema = getJsonSchemaFromFile(assetSchemaFilePath);
         jsonLd = new JsonLdExtension().createJsonLdService(context);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
+
+        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, DSP_SCOPE_V_08);
+        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, DSP_SCOPE_V_2024_1);
+        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, CONTROL_SCOPE);
+        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, MANAGEMENT_SCOPE);
+        jsonLdGlobal.registerNamespace(DCT_PREFIX, DCT_SCHEMA, MANAGEMENT_SCOPE);
+        for (String scope : Arrays.asList(DSP_SCOPE_V_08, DSP_SCOPE_V_2024_1, CONTROL_SCOPE, MANAGEMENT_SCOPE)) {
+            jsonLdGlobal.registerNamespace(CBM_PREFIX, CBM_SCHEMA, scope);
+        }
+    }
+
+    public void prepare() {
+        var validator = new AssetJsonSchemaValidator().getValidator(assetSchema, jsonLd);
+        validatorRegistry.register(Asset.EDC_ASSET_TYPE, validator);
     }
 
     private JsonSchema getJsonSchemaFromFile(String filePath) {

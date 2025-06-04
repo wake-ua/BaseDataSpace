@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.edc.validator.data.address.http.data)
     implementation(libs.edc.lib.validator)
     implementation(libs.edc.lib.json)
+    implementation(libs.edc.verifiable.credentials.spi)
 
     implementation(libs.edc.edr.cache.api)
     implementation(libs.edc.edr.store.core)
@@ -52,6 +53,7 @@ dependencies {
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
     implementation(libs.edc.data.plane.iam)
+    implementation(libs.edc.control.api.configuration)
 
     implementation("com.networknt:json-schema-validator:1.5.6")
 
