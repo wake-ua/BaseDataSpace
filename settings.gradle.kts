@@ -34,3 +34,6 @@ include("providers:provider-ebird")
 
 include(":consumers:consumer")
 include(":consumers:consumer-base")
+
+include("providers:control-plane-catalog")
+include("providers:control-plane-core")

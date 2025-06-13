@@ -26,7 +26,9 @@ edc-control-api-configuration = { module = "org.eclipse.edc:control-api-configur
 edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-client", version.ref = "edc" }
 edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.ref = "edc" }
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
+edc-control-plane-transfer = { module = "org.eclipse.edc:control-plane-transfer", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
+#edc-control-plane-catalog = { module = "org.eclipse.edc:control-plane-catalog", version.ref = "edc" }
 edc-controlplane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
 edc-controlplane-services = { module = "org.eclipse.edc:control-plane-aggregate-services", version.ref = "edc" }
 edc-data-plane-signaling-api = { module = "org.eclipse.edc:data-plane-signaling-api", version.ref = "edc" }
@@ -53,6 +55,9 @@ edc-json-ld-spi = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" 
 edc-lib-json = { module = "org.eclipse.edc:json-lib", version.ref = "edc" }
 edc-lib-jsonld = { "module" = "org.eclipse.edc:json-ld-lib", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
+edc-lib-query = { module = "org.eclipse.edc:query-lib", version.ref = "edc" }
+edc-lib-store = { module = "org.eclipse.edc:store-lib", version.ref = "edc" }
+edc-spi-core = {module = "org.eclipse.edc:core-spi", version.ref = "edc" }
 edc-verifiable-credentials-spi = { module = "org.eclipse.edc:verifiable-credentials-spi", version.ref = "edc" }
 edc-jsonld = { module = "org.eclipse.edc:json-ld", version.ref = "edc" }
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
@@ -65,7 +70,6 @@ edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "e
 edc-token-core = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
 edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
 edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
-edc-transfer-pull-http-dynamic-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
 edc-vault-hashicorp = { module = "org.eclipse.edc:vault-hashicorp", version.ref = "edc" }
 edc-validator-data-address-http-data = { module = "org.eclipse.edc:validator-data-address-http-data", version.ref = "edc" }
 edc-spi-validator = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
