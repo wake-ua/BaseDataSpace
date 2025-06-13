@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/providers" />
             <option value="$PROJECT_DIR$/providers/control-plane-catalog" />
             <option value="$PROJECT_DIR$/providers/control-plane-core" />
+            <option value="$PROJECT_DIR$/providers/data-address-http-data-spi" />
             <option value="$PROJECT_DIR$/providers/provider" />
             <option value="$PROJECT_DIR$/providers/provider-base" />
             <option value="$PROJECT_DIR$/providers/provider-ebird" />

@@ -43,7 +43,7 @@ public class CatalogDefaultServicesExtension implements ServiceExtension {
         dataServiceRegistry = new DataServiceRegistryImpl();
     }
 
-    @Provider
+    @Provider(isDefault = true)
     public DataServiceRegistry dataServiceRegistry() {
         return dataServiceRegistry;
     }

@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.control.plane.query.asset;
+package org.eclipse.edc.connector.controlplane.asset;
 
 import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
 import org.eclipse.edc.query.ReflectionPropertyLookup;

@@ -37,3 +37,4 @@ include(":consumers:consumer-base")
 
 include("providers:control-plane-catalog")
 include("providers:control-plane-core")
+include("providers:data-address-http-data-spi")

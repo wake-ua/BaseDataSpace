@@ -28,8 +28,13 @@ edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
 edc-control-plane-transfer = { module = "org.eclipse.edc:control-plane-transfer", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
-#edc-control-plane-catalog = { module = "org.eclipse.edc:control-plane-catalog", version.ref = "edc" }
+edc-asset-spi = { module = "org.eclipse.edc:asset-spi", version.ref = "edc" }
+edc-contract-spi = { module = "org.eclipse.edc:contract-spi", version.ref = "edc" }
+edc-transfer-spi = { module = "org.eclipse.edc:transfer-spi", version.ref = "edc" }
+edc-catalog-spi = { module = "org.eclipse.edc:catalog-spi", version.ref = "edc" }
+edc-control-plane-catalog = { module = "org.eclipse.edc:control-plane-catalog", version.ref = "edc" }
 edc-controlplane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
+edc-controlplane-contract = { module = "org.eclipse.edc:control-plane-contract", version.ref = "edc" }
 edc-controlplane-services = { module = "org.eclipse.edc:control-plane-aggregate-services", version.ref = "edc" }
 edc-data-plane-signaling-api = { module = "org.eclipse.edc:data-plane-signaling-api", version.ref = "edc" }
 edc-data-plane-signaling-client = { module = "org.eclipse.edc:data-plane-signaling-client", version.ref = "edc" }
@@ -45,6 +50,7 @@ edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-c
 edc-data-plane-self-registration = { module = "org.eclipse.edc:data-plane-self-registration", version.ref = "edc" }
 edc-data-plane-spi = { module = "org.eclipse.edc:data-plane-spi", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
+edc-dsp-catalog-http-api = { module = "org.eclipse.edc:dsp-catalog-http-api", version.ref = "edc" }
 edc-edr-cache-api = { module = "org.eclipse.edc:edr-cache-api", version.ref = "edc" }
 edc-edr-store-core = { module = "org.eclipse.edc:edr-store-core", version.ref = "edc" }
 edc-edr-store-receiver = { module = "org.eclipse.edc:edr-store-receiver", version.ref = "edc" }
@@ -53,6 +59,7 @@ edc-iam-mock = { module = "org.eclipse.edc:iam-mock", version.ref = "edc" }
 edc-json-ld-lib = { module = "org.eclipse.edc:json-ld-lib", version.ref = "edc" }
 edc-json-ld-spi = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-lib-json = { module = "org.eclipse.edc:json-lib", version.ref = "edc" }
+edc-lib-util = { module = "org.eclipse.edc:util-lib", version.ref = "edc" }
 edc-lib-jsonld = { "module" = "org.eclipse.edc:json-ld-lib", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-lib-query = { module = "org.eclipse.edc:query-lib", version.ref = "edc" }
@@ -61,6 +68,7 @@ edc-spi-core = {module = "org.eclipse.edc:core-spi", version.ref = "edc" }
 edc-verifiable-credentials-spi = { module = "org.eclipse.edc:verifiable-credentials-spi", version.ref = "edc" }
 edc-jsonld = { module = "org.eclipse.edc:json-ld", version.ref = "edc" }
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
+edc-lib-policy-engine = { module = "org.eclipse.edc:policy-engine-lib", version.ref = "edc" }
 edc-lib-transform = { module = "org.eclipse.edc:transform-lib", version.ref = "edc" }
 edc-management-api-lib = { module = "org.eclipse.edc:management-api-lib", version.ref = "edc" }
 edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
@@ -120,4 +128,3 @@ edc-sqlstores = ["edc-sql-assetindex", "edc-sql-contract-definition", "edc-sql-c
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version = "8.3.5" }
-

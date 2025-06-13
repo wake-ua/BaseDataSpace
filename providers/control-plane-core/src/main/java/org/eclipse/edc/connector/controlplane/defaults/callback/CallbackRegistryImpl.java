@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.control.plane.defaults.callback;
+package org.eclipse.edc.connector.controlplane.defaults.callback;
 
 import org.eclipse.edc.connector.controlplane.services.spi.callback.CallbackRegistry;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;

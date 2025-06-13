@@ -13,7 +13,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.control.plane.defaults.storage.contractdefinition;
+package org.eclipse.edc.connector.controlplane.defaults.storage.contractdefinition;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.offer.store.ContractDefinitionStore;
 import org.eclipse.edc.connector.controlplane.contract.spi.types.offer.ContractDefinition;

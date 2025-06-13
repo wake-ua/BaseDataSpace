@@ -12,24 +12,24 @@
  *
  */
 
-package org.eclipse.edc.heleade.control.plane;
+package org.eclipse.edc.connector.controlplane;
 
+import org.eclipse.edc.connector.controlplane.asset.AssetPropertyLookup;
 import org.eclipse.edc.connector.controlplane.asset.spi.index.AssetIndex;
 import org.eclipse.edc.connector.controlplane.asset.spi.index.DataAddressResolver;
 import org.eclipse.edc.connector.controlplane.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.controlplane.contract.spi.offer.store.ContractDefinitionStore;
+import org.eclipse.edc.connector.controlplane.defaults.callback.CallbackRegistryImpl;
+import org.eclipse.edc.connector.controlplane.defaults.protocol.ProtocolVersionRegistryImpl;
+import org.eclipse.edc.connector.controlplane.defaults.storage.assetindex.InMemoryAssetIndex;
+import org.eclipse.edc.connector.controlplane.defaults.storage.contractdefinition.InMemoryContractDefinitionStore;
+import org.eclipse.edc.connector.controlplane.defaults.storage.contractnegotiation.InMemoryContractNegotiationStore;
+import org.eclipse.edc.connector.controlplane.defaults.storage.policydefinition.InMemoryPolicyDefinitionStore;
+import org.eclipse.edc.connector.controlplane.defaults.storage.transferprocess.InMemoryTransferProcessStore;
 import org.eclipse.edc.connector.controlplane.policy.spi.store.PolicyDefinitionStore;
 import org.eclipse.edc.connector.controlplane.services.spi.callback.CallbackRegistry;
 import org.eclipse.edc.connector.controlplane.services.spi.protocol.ProtocolVersionRegistry;
 import org.eclipse.edc.connector.controlplane.transfer.spi.store.TransferProcessStore;
-import org.eclipse.edc.heleade.control.plane.defaults.callback.CallbackRegistryImpl;
-import org.eclipse.edc.heleade.control.plane.defaults.protocol.ProtocolVersionRegistryImpl;
-import org.eclipse.edc.heleade.control.plane.defaults.storage.assetindex.InMemoryAssetIndex;
-import org.eclipse.edc.heleade.control.plane.defaults.storage.contractdefinition.InMemoryContractDefinitionStore;
-import org.eclipse.edc.heleade.control.plane.defaults.storage.contractnegotiation.InMemoryContractNegotiationStore;
-import org.eclipse.edc.heleade.control.plane.defaults.storage.policydefinition.InMemoryPolicyDefinitionStore;
-import org.eclipse.edc.heleade.control.plane.defaults.storage.transferprocess.InMemoryTransferProcessStore;
-import org.eclipse.edc.heleade.control.plane.query.asset.AssetPropertyLookup;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;

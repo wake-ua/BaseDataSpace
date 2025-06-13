@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.control.plane.catalog;
+package org.eclipse.edc.heleade.provider.extension.content.based.catalog;
 
 import org.eclipse.edc.connector.controlplane.asset.spi.index.AssetIndex;
 import org.eclipse.edc.connector.controlplane.catalog.spi.DatasetResolver;
@@ -96,7 +96,7 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
      *
      * @return A configured {@code DatasetResolver} for content-based dataset resolution
      */
-    @Provider(isDefault = true)
+    @Provider
     public DatasetResolver datasetResolver() {
         this.monitor.info("Initializing Dataset Resolver");
         var contractDefinitionResolver = new ContentBasedContractDefinitionResolverImpl(contractDefinitionStore, policyEngine, policyDefinitionStore);

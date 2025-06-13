@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.control.plane.defaults.storage.assetindex;
+package org.eclipse.edc.connector.controlplane.defaults.storage.assetindex;
 
 import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
 import org.eclipse.edc.connector.controlplane.asset.spi.index.AssetIndex;

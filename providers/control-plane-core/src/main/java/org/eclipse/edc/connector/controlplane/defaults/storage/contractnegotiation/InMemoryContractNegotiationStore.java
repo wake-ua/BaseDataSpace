@@ -13,7 +13,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.control.plane.defaults.storage.contractnegotiation;
+package org.eclipse.edc.connector.controlplane.defaults.storage.contractnegotiation;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.controlplane.contract.spi.types.agreement.ContractAgreement;
