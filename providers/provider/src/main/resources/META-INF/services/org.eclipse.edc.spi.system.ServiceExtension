@@ -1,3 +1,4 @@
 org.eclipse.edc.heleade.provider.sample.runtime.SeedVaultExtension
 org.eclipse.edc.heleade.provider.extension.health.HealthEndpointExtension
 org.eclipse.edc.heleade.provider.extension.validation.AssetValidationExtension
+org.eclipse.edc.heleade.provider.extension.content.based.catalog.ContentBasedCatalogExtension

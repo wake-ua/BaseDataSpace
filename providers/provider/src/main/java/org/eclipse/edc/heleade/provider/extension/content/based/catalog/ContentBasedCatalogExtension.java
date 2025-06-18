@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2025 University of Alicante
+ *  Copyright (c) 2025 Universidad de Alicante
  *
  *  This program and the accompanying materials are made available under the
  *  terms of the Apache License, Version 2.0 which is available at
@@ -8,72 +8,59 @@
  *  SPDX-License-Identifier: Apache-2.0
  *
  *  Contributors:
- *       University of Alicante - Initial implementation
+ *       LdE - Universidad de Alicante - initial implementation
  *
  */
 
 package org.eclipse.edc.heleade.provider.extension.content.based.catalog;
 
-import org.eclipse.edc.connector.controlplane.asset.spi.index.AssetIndex;
-import org.eclipse.edc.connector.controlplane.catalog.spi.DatasetResolver;
-import org.eclipse.edc.connector.controlplane.catalog.spi.DistributionResolver;
-import org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext;
-import org.eclipse.edc.connector.controlplane.contract.spi.offer.store.ContractDefinitionStore;
-import org.eclipse.edc.connector.controlplane.policy.spi.store.PolicyDefinitionStore;
-import org.eclipse.edc.policy.engine.spi.PolicyEngine;
-import org.eclipse.edc.runtime.metamodel.annotation.Extension;
+import org.eclipse.edc.connector.controlplane.catalog.spi.DataService;
+import org.eclipse.edc.connector.controlplane.catalog.spi.DataServiceRegistry;
+import org.eclipse.edc.connector.controlplane.services.spi.catalog.CatalogProtocolService;
+import org.eclipse.edc.jsonld.spi.JsonLd;
+import org.eclipse.edc.jsonld.spi.JsonLdNamespace;
+import org.eclipse.edc.protocol.dsp.catalog.http.api.decorator.Base64continuationTokenSerDes;
+import org.eclipse.edc.protocol.dsp.catalog.http.api.decorator.ContinuationTokenManagerImpl;
+import org.eclipse.edc.protocol.dsp.http.spi.message.ContinuationTokenManager;
+import org.eclipse.edc.protocol.dsp.http.spi.message.DspRequestHandler;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
-import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
+import org.eclipse.edc.spi.protocol.ProtocolWebhook;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.edc.spi.types.TypeManager;
+import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
+import org.eclipse.edc.web.jersey.providers.jsonld.JerseyJsonLdInterceptor;
+import org.eclipse.edc.web.spi.WebService;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
 
+import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_NAMESPACE_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_TRANSFORMER_CONTEXT_V_08;
+import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 
-/**
- * Service extension that integrates content-based catalog functionality and initializes components
- * for dataset resolution within the catalog framework.
- * <p>
- * Key components:
- * - Asset Index: Manages access and indexing of assets
- * - Policy Definition Store: Handles policy definitions
- * - Contract Definition Store: Manages contract terms and asset associations
- * - Distribution Resolver: Resolves asset distribution mechanisms
- * - Criterion Operator Registry: Enables criteria-based filtering
- * - Policy Engine: Handles policy evaluation
- * <p>
- * The extension registers ContentBasedDatasetResolverImpl with content-based filtering capabilities.
- * It initializes by registering catalog policy context scope and provides a configured DatasetResolver.
- */
-@Extension(ContentBasedCatalogExtension.NAME)
 public class ContentBasedCatalogExtension implements ServiceExtension {
 
-    /**
-     * Represents the name identifier for the {@code ContentBasedCatalogExtension}.
-     * This constant serves as a unique name for the extension, providing a reference
-     * for identification and registration within the system framework.
-     */
-    public static final String NAME = "Content Based Catalog Core";
+    public static final String NAME = "Dataspace Protocol Content Based Catalog Extension";
 
+    @Inject
+    private WebService webService;
+    @Inject
+    private ProtocolWebhook protocolWebhook;
+    @Inject
+    private CatalogProtocolService service;
+    @Inject
+    private DataServiceRegistry dataServiceRegistry;
+    @Inject
+    private DspRequestHandler dspRequestHandler;
+    @Inject
+    private TypeTransformerRegistry transformerRegistry;
+    @Inject
     private Monitor monitor;
-
     @Inject
-    private AssetIndex assetIndex;
-
+    private TypeManager typeManager;
     @Inject
-    private PolicyDefinitionStore policyDefinitionStore;
-
-    @Inject
-    private DistributionResolver distributionResolver;
-
-    @Inject
-    private CriterionOperatorRegistry criterionOperatorRegistry;
-
-    @Inject
-    private ContractDefinitionStore contractDefinitionStore;
-
-    @Inject
-    private PolicyEngine policyEngine;
+    private JsonLd jsonLd;
 
     @Override
     public String name() {
@@ -82,26 +69,21 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        policyEngine.registerScope(CatalogPolicyContext.CATALOG_SCOPE, CatalogPolicyContext.class);
-        this.monitor = context.getMonitor();
+        var jsonLdMapper = typeManager.getMapper(JSON_LD);
+
+        webService.registerResource(ApiContext.PROTOCOL, new ContentBasedCatalogApiController(service, dspRequestHandler, continuationTokenManager(monitor, DSP_TRANSFORMER_CONTEXT_V_08, DSP_NAMESPACE_V_08), monitor));
+        webService.registerDynamicResource(ApiContext.PROTOCOL, ContentBasedCatalogApiController.class, new JerseyJsonLdInterceptor(jsonLd, jsonLdMapper, DSP_SCOPE_V_08));
+
+
+        dataServiceRegistry.register(DataService.Builder.newInstance()
+                .endpointDescription("dspace:connector")
+                .endpointUrl(protocolWebhook.url())
+                .build());
     }
 
-    /**
-     * Creates and initializes a new instance of {@code DatasetResolver} configured
-     * as a {@code ContentBasedDatasetResolverImpl} for resolving datasets using
-     * content-based filtering logic.
-     * <p>
-     * Initializes dependencies including contract definition resolver, asset index,
-     * policy stores and registries needed for dataset resolution.
-     *
-     * @return A configured {@code DatasetResolver} for content-based dataset resolution
-     */
-    @Provider
-    public DatasetResolver datasetResolver() {
-        this.monitor.info("Initializing Dataset Resolver");
-        var contractDefinitionResolver = new ContentBasedContractDefinitionResolverImpl(contractDefinitionStore, policyEngine, policyDefinitionStore);
-        return new ContentBasedDatasetResolverImpl(contractDefinitionResolver, assetIndex, policyDefinitionStore,
-                distributionResolver, criterionOperatorRegistry);
+    private ContinuationTokenManager continuationTokenManager(Monitor monitor, String version, JsonLdNamespace namespace) {
+        var continuationTokenSerDes = new Base64continuationTokenSerDes(transformerRegistry.forContext(version), jsonLd);
+        return new ContinuationTokenManagerImpl(continuationTokenSerDes, namespace, monitor);
     }
 
 }

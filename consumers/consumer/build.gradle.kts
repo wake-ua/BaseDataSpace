@@ -49,4 +49,7 @@ dependencies {
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
     implementation(libs.edc.data.plane.iam)
+
+    implementation(project(":providers:content-based-catalog-dispatcher"))
+
 }

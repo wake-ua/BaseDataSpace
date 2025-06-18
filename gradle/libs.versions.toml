@@ -11,6 +11,7 @@ restAssured = "5.5.0"
 rsApi = "4.0.0"
 testcontainers = "1.20.4"
 kafkaClients = "3.9.0"
+swagger = "2.2.27"
 
 [libraries]
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
@@ -23,8 +24,10 @@ edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-bui
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
 edc-connector-core = { module = "org.eclipse.edc:connector-core", version.ref = "edc" }
 edc-control-api-configuration = { module = "org.eclipse.edc:control-api-configuration", version.ref = "edc" }
+edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
 edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-client", version.ref = "edc" }
 edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.ref = "edc" }
+edc-catalog-api = { module = "org.eclipse.edc:catalog-api", version.ref = "edc" }
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
 edc-control-plane-transfer = { module = "org.eclipse.edc:control-plane-transfer", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
@@ -32,6 +35,10 @@ edc-asset-spi = { module = "org.eclipse.edc:asset-spi", version.ref = "edc" }
 edc-contract-spi = { module = "org.eclipse.edc:contract-spi", version.ref = "edc" }
 edc-transfer-spi = { module = "org.eclipse.edc:transfer-spi", version.ref = "edc" }
 edc-catalog-spi = { module = "org.eclipse.edc:catalog-spi", version.ref = "edc" }
+edc-participant-spi = { module = "org.eclipse.edc:participant-spi", version.ref = "edc" }
+edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.ref = "edc" }
+edc-request-policy-context-spi = { module = "org.eclipse.edc:request-policy-context-spi", version.ref = "edc" }
+edc-protocol-version-spi = { module = "org.eclipse.edc:protocol-version-spi", version.ref = "edc" }
 edc-control-plane-catalog = { module = "org.eclipse.edc:control-plane-catalog", version.ref = "edc" }
 edc-controlplane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
 edc-controlplane-contract = { module = "org.eclipse.edc:control-plane-contract", version.ref = "edc" }
@@ -51,6 +58,8 @@ edc-data-plane-self-registration = { module = "org.eclipse.edc:data-plane-self-r
 edc-data-plane-spi = { module = "org.eclipse.edc:data-plane-spi", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-dsp-catalog-http-api = { module = "org.eclipse.edc:dsp-catalog-http-api", version.ref = "edc" }
+edc-dsp-catalog = { module = "org.eclipse.edc:dsp-catalog", version.ref = "edc" }
+edc-jersey-providers-lib = { module = "org.eclipse.edc:jersey-providers-lib", version.ref = "edc" }
 edc-edr-cache-api = { module = "org.eclipse.edc:edr-cache-api", version.ref = "edc" }
 edc-edr-store-core = { module = "org.eclipse.edc:edr-store-core", version.ref = "edc" }
 edc-edr-store-receiver = { module = "org.eclipse.edc:edr-store-receiver", version.ref = "edc" }
@@ -128,3 +137,5 @@ edc-sqlstores = ["edc-sql-assetindex", "edc-sql-contract-definition", "edc-sql-c
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version = "8.3.5" }
+swagger = { id = "io.swagger.core.v3.swagger-gradle-plugin", version.ref = "swagger" }
+
