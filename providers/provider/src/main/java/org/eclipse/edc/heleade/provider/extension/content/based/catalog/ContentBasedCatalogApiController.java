@@ -65,6 +65,11 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
      * Used to extract datasets from JSON objects in {@code getDatasetJsonArray(JsonObject)}.
      */
     public static final String DATASETS_TAG = DCAT_SCHEMA + "dataset";
+
+    /**
+     * A constant representing the JSON-LD field name for distribution in the DCAT schema.
+     */
+    public static final String DISTRIBUTION_TAG = DCAT_SCHEMA + "distribution";
     /**
      * Key to identify dataset/entity type, used for marking sample datasets.
      * Value derived from {@code CREDENTIAL_STATUS_TYPE_PROPERTY}.
@@ -82,6 +87,11 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
      * Type identifier for CBM Sample, formed by appending "Sample" to CBM_SCHEMA.
      */
     public static final String CBM_SAMPLE = CBM_SCHEMA + "Sample";
+
+    /**
+     * Indicates the presence of a data dictionary in the content-based metadata (CBM) schema.
+     */
+    public static final String CBM_HAS_DATA_DICTIONARY = CBM_SCHEMA + "hasDataDictionary";
 
     /**
      * Constructs a new ContentBasedCatalogApiController instance.
@@ -116,10 +126,11 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
 
         // Modify the datasets to match CBM schema
         JsonObject object = ((JsonObject) response.getEntity());
-        JsonArray datasets = getDatasetJsonArray(object);
+        JsonArray datasets = getAsJsonArray(object, DATASETS_TAG);
         JsonArray modifiedSampleDatasets = modifySampleDatasets(datasets);
+        JsonArray modifiedDataDictionaryDatasets = moveDataDictionaryToDistribution(modifiedSampleDatasets);
 
-        var newObject = Json.createObjectBuilder(object).add(DATASETS_TAG, modifiedSampleDatasets).build();
+        var newObject = Json.createObjectBuilder(object).add(DATASETS_TAG, modifiedDataDictionaryDatasets).build();
         return Response.fromResponse(response)
                 .entity(newObject)
                 .build();
@@ -141,14 +152,42 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
         return modifiedDatasetBuilder.build();
     }
 
-    private JsonArray getDatasetJsonArray(JsonObject object) {
-        if (!object.containsKey(DATASETS_TAG)) {
+    private JsonArray moveDataDictionaryToDistribution(JsonArray datasets) {
+        var modifiedDatasetBuilder = Json.createArrayBuilder();
+        for (JsonObject dataset : datasets.getValuesAs(JsonObject.class)) {
+            if (dataset.containsKey(CBM_HAS_DATA_DICTIONARY)) {
+                JsonObject dataDictionary = dataset.getJsonObject(CBM_HAS_DATA_DICTIONARY);
+                JsonArray distributions = getAsJsonArray(dataset, DISTRIBUTION_TAG);
+
+                var modifiedDistributionBuilder = Json.createArrayBuilder();
+                for (JsonObject distribution : distributions.getValuesAs(JsonObject.class)) {
+                    JsonObject modifiedDistribution = Json.createObjectBuilder(distribution)
+                            .add(CBM_HAS_DATA_DICTIONARY, dataDictionary)
+                            .build();
+                    modifiedDistributionBuilder.add(modifiedDistribution);
+                }
+
+                JsonObject modifiedDataset = Json.createObjectBuilder(dataset)
+                        .remove(CBM_HAS_DATA_DICTIONARY)
+                        .add(DISTRIBUTION_TAG, modifiedDistributionBuilder.build())
+                        .build();
+                modifiedDatasetBuilder.add(modifiedDataset);
+            } else {
+                modifiedDatasetBuilder.add(dataset);
+            }
+        }
+
+        return modifiedDatasetBuilder.build();
+    }
+
+    private JsonArray getAsJsonArray(JsonObject object, String tag) {
+        if (!object.containsKey(tag)) {
             return JsonArray.EMPTY_JSON_ARRAY;
         }
-        if (object.get(DATASETS_TAG).getValueType().equals(jakarta.json.JsonValue.ValueType.ARRAY)) {
-            return object.getJsonArray(DATASETS_TAG);
+        if (object.get(tag).getValueType().equals(jakarta.json.JsonValue.ValueType.ARRAY)) {
+            return object.getJsonArray(tag);
         } else {
-            return Json.createArrayBuilder().add(object.get(DATASETS_TAG)).build();
+            return Json.createArrayBuilder().add(object.get(tag)).build();
         }
     }
 }
