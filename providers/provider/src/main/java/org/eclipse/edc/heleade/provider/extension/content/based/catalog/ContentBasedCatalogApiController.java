@@ -34,10 +34,14 @@ import org.eclipse.edc.spi.monitor.Monitor;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_HAS_DATA_DICTIONARY;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_IS_SAMPLE_OF;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DATASETS_TAG;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DISTRIBUTION_TAG;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.TYPE_TAG;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_BASE_PATH;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_CATALOG_REQUEST;
-import static org.eclipse.edc.iam.verifiablecredentials.spi.model.CredentialStatus.CREDENTIAL_STATUS_TYPE_PROPERTY;
-import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
 import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_NAMESPACE_V_08;
 
@@ -59,39 +63,6 @@ import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_NAMESPACE_V
 public class ContentBasedCatalogApiController extends BaseDspCatalogApiController {
 
     private final Monitor monitor;
-
-    /**
-     * Tag used to identify datasets in a JSON-LD structure, formed by appending "dataset" to DCAT schema.
-     * Used to extract datasets from JSON objects in {@code getDatasetJsonArray(JsonObject)}.
-     */
-    public static final String DATASETS_TAG = DCAT_SCHEMA + "dataset";
-
-    /**
-     * A constant representing the JSON-LD field name for distribution in the DCAT schema.
-     */
-    public static final String DISTRIBUTION_TAG = DCAT_SCHEMA + "distribution";
-    /**
-     * Key to identify dataset/entity type, used for marking sample datasets.
-     * Value derived from {@code CREDENTIAL_STATUS_TYPE_PROPERTY}.
-     */
-    public static final String TYPE_TAG = CREDENTIAL_STATUS_TYPE_PROPERTY;
-    /**
-     * Namespace URI for Content Based Metadata (CBM) schema.
-     */
-    public static final String CBM_SCHEMA = "https://w3id.org/cbm/v0.0.1/ns/";
-    /**
-     * Identifier for "isSampleOf" relationship in CBM schema, links dataset to original sample.
-     */
-    public static final String CBM_IS_SAMPLE_OF = CBM_SCHEMA + "isSampleOf";
-    /**
-     * Type identifier for CBM Sample, formed by appending "Sample" to CBM_SCHEMA.
-     */
-    public static final String CBM_SAMPLE = CBM_SCHEMA + "Sample";
-
-    /**
-     * Indicates the presence of a data dictionary in the content-based metadata (CBM) schema.
-     */
-    public static final String CBM_HAS_DATA_DICTIONARY = CBM_SCHEMA + "hasDataDictionary";
 
     /**
      * Constructs a new ContentBasedCatalogApiController instance.

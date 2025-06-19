@@ -20,8 +20,9 @@ plugins {
 
 dependencies {
     // base fc
-    runtimeOnly(libs.edc.fc.core)
     runtimeOnly(libs.edc.fc.ext.api)
+    implementation(libs.edc.fc.core)
+    implementation(project(":commons"))
 
     // catalog node directory
     implementation(libs.edc.fc.spi.crawler)
@@ -42,6 +43,7 @@ dependencies {
     implementation("org.mongodb:mongodb-driver-sync:5.5.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
+    implementation(libs.edc.verifiable.credentials.spi)
 
     // consumer
     runtimeOnly(project(":consumers:consumer"))

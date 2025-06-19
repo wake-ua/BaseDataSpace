@@ -30,10 +30,15 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
-import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_PREFIX;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.RDF_NAMESPACE;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.RDF_PREFIX;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.SCHEMA_PREFIX;
+import static org.eclipse.edc.iam.verifiablecredentials.spi.VcConstants.SCHEMA_ORG_NAMESPACE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
@@ -64,8 +69,6 @@ public class MongodbFederatedCatalogExtension implements ServiceExtension {
     private JsonLd jsonLd;
     private MongodbFederatedCatalogNodeDirectory catalogNodeDirectory;
 
-    @Inject
-    private DataSourceRegistry dataSourceRegistry;
     @Inject
     private TransactionContext trxContext;
     @Inject
@@ -98,6 +101,9 @@ public class MongodbFederatedCatalogExtension implements ServiceExtension {
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA);
+        jsonLd.registerNamespace(CBM_PREFIX, CBM_SCHEMA);
+        jsonLd.registerNamespace(SCHEMA_PREFIX, SCHEMA_ORG_NAMESPACE);
+        jsonLd.registerNamespace(RDF_PREFIX, RDF_NAMESPACE);
 
         var store = new MongodbFederatedCatalogCache(dataSourceUri, dataSourceDb, trxContext, typeManager.getMapper(), jsonLd, transformerRegistry);
         monitor.info("MongoDB Cache Store Ready");

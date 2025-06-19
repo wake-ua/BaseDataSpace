@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.edc.lib.json)
     implementation(libs.edc.verifiable.credentials.spi)
     implementation(project(":providers:content-based-catalog-dispatcher"))
+    implementation(project(":commons"))
 
     implementation(libs.edc.edr.cache.api)
     implementation(libs.edc.edr.store.core)
