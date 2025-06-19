@@ -39,8 +39,22 @@ import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_08;
 import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_TRANSFORMER_CONTEXT_V_08;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 
+/**
+ * The ContentBasedCatalogExtension class is a service extension that integrates a content-based
+ * catalog into the Dataspace Protocol framework. It provides functionality for managing and serving
+ * content-based metadata catalogs and registers necessary components to support this integration.
+ *
+ * The extension ensures that the catalog operations conform to content-based schemas by using
+ * custom controllers and APIs for request handling and response generation.
+ *
+ * This class implements the ServiceExtension interface and uses a dependency injection framework
+ * for its components.
+ */
 public class ContentBasedCatalogExtension implements ServiceExtension {
 
+    /**
+     * A constant representing the name of the Content Based Catalog Extension.
+     */
     public static final String NAME = "Dataspace Protocol Content Based Catalog Extension";
 
     @Inject
