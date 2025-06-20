@@ -34,12 +34,10 @@ import org.eclipse.edc.spi.monitor.Monitor;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_HAS_DATA_DICTIONARY;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_IS_SAMPLE_OF;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DATASETS_TAG;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DISTRIBUTION_TAG;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.TYPE_TAG;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.getAsJsonArray;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDatasetArray;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveDataDictionaryToDistributionDatasetArray;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_BASE_PATH;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_CATALOG_REQUEST;
 import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
@@ -98,8 +96,8 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
         // Modify the datasets to match CBM schema
         JsonObject object = ((JsonObject) response.getEntity());
         JsonArray datasets = getAsJsonArray(object, DATASETS_TAG);
-        JsonArray modifiedSampleDatasets = modifySampleDatasets(datasets);
-        JsonArray modifiedDataDictionaryDatasets = moveDataDictionaryToDistribution(modifiedSampleDatasets);
+        JsonArray modifiedSampleDatasets = modifySampleDatasetArray(datasets);
+        JsonArray modifiedDataDictionaryDatasets = moveDataDictionaryToDistributionDatasetArray(modifiedSampleDatasets);
 
         var newObject = Json.createObjectBuilder(object).add(DATASETS_TAG, modifiedDataDictionaryDatasets).build();
         return Response.fromResponse(response)
@@ -107,58 +105,4 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
                 .build();
     }
 
-    private JsonArray modifySampleDatasets(JsonArray datasets) {
-        var modifiedDatasetBuilder = Json.createArrayBuilder();
-        for (JsonObject dataset : datasets.getValuesAs(JsonObject.class)) {
-            if (dataset.containsKey(CBM_IS_SAMPLE_OF)) {
-                JsonObject modifiedDataset = Json.createObjectBuilder(dataset)
-                        .add(TYPE_TAG, CBM_SAMPLE)
-                        .build();
-                modifiedDatasetBuilder.add(modifiedDataset);
-            } else {
-                modifiedDatasetBuilder.add(dataset);
-            }
-        }
-
-        return modifiedDatasetBuilder.build();
-    }
-
-    private JsonArray moveDataDictionaryToDistribution(JsonArray datasets) {
-        var modifiedDatasetBuilder = Json.createArrayBuilder();
-        for (JsonObject dataset : datasets.getValuesAs(JsonObject.class)) {
-            if (dataset.containsKey(CBM_HAS_DATA_DICTIONARY)) {
-                JsonObject dataDictionary = dataset.getJsonObject(CBM_HAS_DATA_DICTIONARY);
-                JsonArray distributions = getAsJsonArray(dataset, DISTRIBUTION_TAG);
-
-                var modifiedDistributionBuilder = Json.createArrayBuilder();
-                for (JsonObject distribution : distributions.getValuesAs(JsonObject.class)) {
-                    JsonObject modifiedDistribution = Json.createObjectBuilder(distribution)
-                            .add(CBM_HAS_DATA_DICTIONARY, dataDictionary)
-                            .build();
-                    modifiedDistributionBuilder.add(modifiedDistribution);
-                }
-
-                JsonObject modifiedDataset = Json.createObjectBuilder(dataset)
-                        .remove(CBM_HAS_DATA_DICTIONARY)
-                        .add(DISTRIBUTION_TAG, modifiedDistributionBuilder.build())
-                        .build();
-                modifiedDatasetBuilder.add(modifiedDataset);
-            } else {
-                modifiedDatasetBuilder.add(dataset);
-            }
-        }
-
-        return modifiedDatasetBuilder.build();
-    }
-
-    private JsonArray getAsJsonArray(JsonObject object, String tag) {
-        if (!object.containsKey(tag)) {
-            return JsonArray.EMPTY_JSON_ARRAY;
-        }
-        if (object.get(tag).getValueType().equals(jakarta.json.JsonValue.ValueType.ARRAY)) {
-            return object.getJsonArray(tag);
-        } else {
-            return Json.createArrayBuilder().add(object.get(tag)).build();
-        }
-    }
 }

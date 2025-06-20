@@ -116,6 +116,7 @@ edc-fc-ext-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref
 edc-fc-spi-crawler = { module = "org.eclipse.edc:crawler-spi", version.ref = "edc" }
 edc-fc-cache-sql = { module = "org.eclipse.edc:federated-catalog-cache-sql", version.ref = "edc" }
 edc-fc-target-node-directory-sql = { module = "org.eclipse.edc:target-node-directory-sql", version.ref = "edc" }
+edc-catalog-util-lib = { module = "org.eclipse.edc:catalog-util-lib", version.ref = "edc" }
 
 # datasource sql
 edc-sql-assetindex = { module = "org.eclipse.edc:asset-index-sql", version.ref = "edc" }

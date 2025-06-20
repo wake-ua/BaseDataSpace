@@ -21,8 +21,26 @@ import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDataset;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveDataDictionaryToDistributionForDataset;
+
+/**
+ * A transformer class for converting datasets into JSON objects with additional processing
+ * specific to a federated catalog content-based implementations.
+ * Features:
+ * - Utilizes JSON and Jackson libraries to facilitate data transformation.
+ * - Ensures compatibility with a content-driven approach for dataset handling.
+ */
 public class JsonObjectFromDatasetContentBasedTransformer extends JsonObjectFromDatasetTransformer {
 
+    /**
+     * Constructs a JsonObjectFromDatasetContentBasedTransformer instance with the specified JSON builder factory
+     * and object mapper. This transformer is designed to handle content-based transformations of datasets
+     * within a federated catalog.
+     *
+     * @param jsonFactory the JSON builder factory used for constructing JSON objects
+     * @param mapper the Jackson object mapper for JSON serialization and deserialization
+     */
     public JsonObjectFromDatasetContentBasedTransformer(jakarta.json.JsonBuilderFactory jsonFactory, com.fasterxml.jackson.databind.ObjectMapper mapper) {
         super(jsonFactory, mapper);
     }
@@ -30,7 +48,10 @@ public class JsonObjectFromDatasetContentBasedTransformer extends JsonObjectFrom
     @Override
     public @Nullable JsonObject transform(@NotNull Dataset dataset, @NotNull TransformerContext context) {
         var object = super.transform(dataset, context);
-        var properties = dataset.getProperties();
-        return object;
+        if (object == null) {
+            return null;
+        }
+        JsonObject modifiedSampleObject = modifySampleDataset(object);
+        return moveDataDictionaryToDistributionForDataset(modifiedSampleObject);
     }
 }

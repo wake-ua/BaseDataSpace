@@ -26,6 +26,8 @@ dependencies {
 
     // catalog node directory
     implementation(libs.edc.fc.spi.crawler)
+    implementation(libs.edc.catalog.util.lib)
+    implementation(libs.edc.fc.ext.api)
 
     // consumer fc
     runtimeOnly(libs.edc.boot)

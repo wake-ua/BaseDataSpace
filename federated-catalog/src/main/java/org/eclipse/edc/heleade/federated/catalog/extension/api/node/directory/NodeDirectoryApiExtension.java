@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.federated.catalog.extension.api;
+package org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory;
 
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 import org.eclipse.edc.jsonld.JsonLdExtension;

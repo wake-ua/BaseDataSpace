@@ -23,7 +23,16 @@ import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Transformer class for converting a JSON object into a Dataset with additional content-based
+ * adjustments specific to federated catalog implementations.
+ *
+ * Features:
+ * - Extends {@code JsonObjectToDatasetTransformer} to inherit base transformation functionality.
+ * - Relocates data dictionary information from distribution arrays to the root dataset object when present.
+ */
 public class JsonObjectToDatasetContentBasedTransformer extends JsonObjectToDatasetTransformer {
+
     @Override
     public @Nullable Dataset transform(@NotNull JsonObject object, @NotNull TransformerContext context) {
         var modifiedObject = moveDataDictionaryToDataset(object);
