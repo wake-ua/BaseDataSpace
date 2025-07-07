@@ -35,6 +35,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_PREFIX;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.iam.verifiablecredentials.spi.VcConstants.SCHEMA_ORG_NAMESPACE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
@@ -53,14 +55,6 @@ public class AssetValidationExtension implements ServiceExtension {
      * Prefix used for Schema.org properties and types.
      */
     public static final String SCHEMA_ORG_PREFIX = "schema";
-    /**
-     * Prefix used for assets in the context-based management system.
-     */
-    public static final String CBM_PREFIX = "cbm";
-    /**
-     * Constant representing the schema URL for the CBM (Configuration Baseline Model) namespace.
-     */
-    public static final String CBM_SCHEMA = "https://w3id.org/cbm/v0.0.1/ns/";
 
     static final String CONTROL_SCOPE = "CONTROL_API";
     static final String MANAGEMENT_SCOPE = "MANAGEMENT_API";

@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.provider.extension.content.based.catalog;
+package org.eclipse.edc.heleade.provider.extension.content.based.api.catalog;
 
 import org.eclipse.edc.connector.controlplane.catalog.spi.DataService;
 import org.eclipse.edc.connector.controlplane.catalog.spi.DataServiceRegistry;

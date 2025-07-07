@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.provider.extension.content.based.catalog;
+package org.eclipse.edc.heleade.provider.extension.content.based.api.catalog;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
