@@ -173,7 +173,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"name\": \"item description\",\n    \"contenttype\": \"application/json\",\n    \"dcterms:name\": \"second item\",\n    \"special\": \"test\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset 2 distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"name\": \"item description\",\n    \"contenttype\": \"application/json\",\n    \"dct:name\": \"second item\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset 2 distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -190,6 +190,49 @@
 								"management",
 								"v3",
 								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 2 CBM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n\t\"@id\": \"assetId2\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"dct:name\": \"second item\",\n\t\"name\": \"item description\",\n\t\"id\": \"assetId2\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
 							]
 						}
 					},
@@ -239,12 +282,171 @@
 					"response": []
 				},
 				{
+					"name": "Create Asset 4 Ctxt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\"\n  },\n  \"@id\": \"assetId4\",\n  \"properties\": {\n    \"name\": \"product  4 description REIMPORT\",\n    \"contenttype\": \"application/json\",\n    \"schema:name\": \"test template 4 name\",\n    \"dcterms:title\": \"test template 4 name\",\n    \"cbm:hasSample\": [\"assetId4Sample\"],\n    \"cbm:hasDataDictionary\": {\n        \"cbm:hasField\": [\n            {\n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"rdfs:type\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"rdfs:type\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test  4 asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\",\n    \"extra\": \"extra\"\n  }]\n  \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 4 CBM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"@id\": \"assetId4\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"name\": \"product  4 description REIMPORT\",\n\t\"dct:title\": \"test template 4 name\",\n\t\"cbm:hasSample\": \"assetId4Sample\",\n\t\"id\": \"assetId4\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 4 Sample",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\"\n  },\n  \"@id\": \"assetId4Sample\",\n  \"properties\": {\n    \"name\": \"product  4 name SAMPLE\",\n    \"contenttype\": \"application/json\",\n    \"schema:name\": \"test template 4 name\",\n    \"dcterms:title\": \"test template 4 name\",\n    \"cbm:isSampleOf\": \"assetId4\",\n    \"schema:algorithm\": \"clustering\",\n    \"cbm:hasDataDictionary\": {\n        \"cbm:hasField\": [\n            {\n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"rdfs:type\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"rdfs:type\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test  4 sample asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\",\n    \"extra\": \"extra\"\n  }]\n  \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Asset",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets/{{ASSET_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets",
+								"{{ASSET_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Asset",
+					"request": {
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -330,6 +532,35 @@
 					"response": []
 				},
 				{
+					"name": "Create Policy Advanced",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"eu-policy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"constraint\": {\n          \"@type\": \"AtomicConstraint\",\n          \"leftOperand\": \"location\",\n          \"operator\": {\n            \"@id\": \"odrl:eq\"\n          },\n          \"rightOperand\": \"eu\"\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Contract Definition",
 					"request": {
 						"method": "POST",
@@ -337,6 +568,35 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"aPolicy\",\n  \"contractPolicyId\": \"aPolicy\",\n  \"assetsSelector\": []\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractdefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract Definition Advanced",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"2\",\n  \"accessPolicyId\": \"eu-policy\",\n  \"contractPolicyId\": \"eu-policy\",\n  \"assetsSelector\": [\n    {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"assetId2\"\n    }\n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -394,6 +654,91 @@
 								"management",
 								"v3",
 								"catalog",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider CBM Catalog",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog-cbm/request-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog-cbm",
+								"request-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider Dataset",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"@context\": { \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\" },\n    \"@type\": \"DatasetRequest\",\n    \"@id\": \"{{ASSET_ID}}\",\n    \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n    \"counterPartyId\": \"provider-base\",\n    \"protocol\": \"dataspace-protocol-http\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/dataset/request",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog",
+								"dataset",
 								"request"
 							]
 						}
@@ -655,6 +1000,37 @@
 								"v1alpha",
 								"catalog",
 								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Catalog Empty Query CBM",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+							"path": [
+								"api",
+								"catalog",
+								"v1alpha",
+								"catalog",
+								"query-cbm"
 							]
 						}
 					},
