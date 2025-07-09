@@ -46,6 +46,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
     implementation(libs.edc.verifiable.credentials.spi)
+    implementation(libs.edc.controlplane.transform)
 
     // consumer
     runtimeOnly(project(":consumers:consumer"))

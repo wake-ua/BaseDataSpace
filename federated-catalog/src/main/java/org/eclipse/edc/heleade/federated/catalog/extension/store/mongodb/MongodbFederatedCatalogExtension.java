@@ -17,6 +17,12 @@ package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb;
 import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
+import org.eclipse.edc.connector.controlplane.transform.odrl.to.JsonObjectToActionTransformer;
+import org.eclipse.edc.connector.controlplane.transform.odrl.to.JsonObjectToConstraintTransformer;
+import org.eclipse.edc.connector.controlplane.transform.odrl.to.JsonObjectToDutyTransformer;
+import org.eclipse.edc.connector.controlplane.transform.odrl.to.JsonObjectToOperatorTransformer;
+import org.eclipse.edc.connector.controlplane.transform.odrl.to.JsonObjectToPermissionTransformer;
+import org.eclipse.edc.connector.controlplane.transform.odrl.to.JsonObjectToProhibitionTransformer;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.cache.MongodbFederatedCatalogCache;
 import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.node.directory.MongodbFederatedCatalogNodeDirectory;
@@ -92,6 +98,13 @@ public class MongodbFederatedCatalogExtension implements ServiceExtension {
         dataSourceUri = context.getConfig().getString(FEDERATED_CATALOG_URI_PROPERTY, FEDERATED_CATALOG_URI_DEFAULT);
         dataSourceDb = context.getConfig().getString(FEDERATED_CATALOG_DB_PROPERTY, FEDERATED_CATALOG_DB_DEFAULT);
         monitor = context.getMonitor();
+
+        transformerRegistry.register(new JsonObjectToPermissionTransformer());
+        transformerRegistry.register(new JsonObjectToProhibitionTransformer());
+        transformerRegistry.register(new JsonObjectToActionTransformer());
+        transformerRegistry.register(new JsonObjectToConstraintTransformer());
+        transformerRegistry.register(new JsonObjectToDutyTransformer());
+        transformerRegistry.register(new JsonObjectToOperatorTransformer());
 
         jsonLd = new JsonLdExtension().createJsonLdService(context);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
