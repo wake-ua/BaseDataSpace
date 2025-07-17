@@ -25,8 +25,11 @@ import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_DATA_ADDRESS;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
+import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.PROPERTY_ID;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
@@ -77,16 +80,24 @@ public class CbmJsonObjectToJsonObjectAssetTransformer extends AbstractJsonLdTra
         // Process properties - extract properties that should go into the properties object
         var propertiesObjectBuilder = Json.createObjectBuilder();
 
+        AtomicBoolean propertiesValid = new AtomicBoolean(true);
         jsonObject.forEach((key, value) -> {
             if (!isIgnoredProperty(key)) {
-                // Create property object containing key and value
-                var propertyArray = Json.createArrayBuilder()
-                                .add(value).build();
-
-                // Add property object to array    
-                propertiesObjectBuilder.add(key, propertyArray);
+                if (isForbiddenProperty(key)) {
+                    context.problem()
+                            .invalidProperty()
+                            .property(key)
+                            .report();
+                    propertiesValid.set(false);
+                }
+                // Add property object to array
+                propertiesObjectBuilder.add(key, value);
             }
         });
+
+        if (!propertiesValid.get()) {
+            return null;
+        }
 
         // Add data address from original object
         if (jsonObject.containsKey(DCAT_DISTRIBUTION_ATTRIBUTE)) {
@@ -119,6 +130,14 @@ public class CbmJsonObjectToJsonObjectAssetTransformer extends AbstractJsonLdTra
     private boolean isIgnoredProperty(String key) {
         // Properties that should not go into the properties object
         return "@id".equals(key) || "@type".equals(key) || "@context".equals(key) || DCAT_DISTRIBUTION_ATTRIBUTE.equals(key) || ODRL_POLICY_ATTRIBUTE.equals(key);
+    }
+
+    /**
+     * Determines if a property is forbidden and method should fail.
+     */
+    private boolean isForbiddenProperty(String key) {
+        // Properties that are forbidden
+        return "id".equals(key) || PROPERTY_ID.equals(key);
     }
 
     private JsonArrayBuilder getDataAddress(JsonObject dataDistribution) {
