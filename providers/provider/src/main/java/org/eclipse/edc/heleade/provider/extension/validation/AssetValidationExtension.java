@@ -36,11 +36,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_PREFIX;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE_TYPE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.iam.verifiablecredentials.spi.VcConstants.SCHEMA_ORG_NAMESPACE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
+import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCAT_DATASET_TYPE;
 import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_08;
 import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_2024_1;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -70,12 +72,19 @@ public class AssetValidationExtension implements ServiceExtension {
 
     private Monitor monitor;
     private JsonSchema assetSchema;
+    private JsonSchema datasetSchema;
+    private JsonSchema sampleSchema;
     private JsonLd jsonLd;
 
     public void initialize(ServiceExtensionContext context) {
         monitor = context.getMonitor();
         String assetSchemaFilePath = context.getConfig().getString("edc.heleade.provider.validation.asset.schema.path", "asset.json");
+        String datasetSchemaFilePath = context.getConfig().getString("edc.heleade.provider.validation.dataset.schema.path", "dataset.json");
+        String sampleSchemaFilePath = context.getConfig().getString("edc.heleade.provider.validation.sample.schema.path", "sample.json");
         assetSchema = getJsonSchemaFromFile(assetSchemaFilePath);
+        datasetSchema = getJsonSchemaFromFile(datasetSchemaFilePath);
+        sampleSchema = getJsonSchemaFromFile(sampleSchemaFilePath);
+
         jsonLd = new JsonLdExtension().createJsonLdService(context);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
 
@@ -90,8 +99,14 @@ public class AssetValidationExtension implements ServiceExtension {
     }
 
     public void prepare() {
-        var validator = new AssetJsonSchemaValidator().getValidator(assetSchema, jsonLd);
-        validatorRegistry.register(Asset.EDC_ASSET_TYPE, validator);
+        var assetValidator = new AssetJsonSchemaValidator().getValidator(assetSchema, jsonLd);
+        validatorRegistry.register(Asset.EDC_ASSET_TYPE, assetValidator);
+
+        var datasetValidator = new DatasetJsonSchemaValidator().getValidator(datasetSchema, jsonLd);
+        validatorRegistry.register(DCAT_DATASET_TYPE, datasetValidator);
+
+        var sampleValidator = new SampleJsonSchemaValidator().getValidator(sampleSchema, jsonLd);
+        validatorRegistry.register(CBM_SAMPLE_TYPE, sampleValidator);
     }
 
     private JsonSchema getJsonSchemaFromFile(String filePath) {

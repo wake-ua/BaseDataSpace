@@ -50,7 +50,7 @@ public class CbmConstants {
     /**
      * Type identifier for CBM Sample, formed by appending "Sample" to CBM_SCHEMA.
      */
-    public static final String CBM_SAMPLE = CBM_SCHEMA + "Sample";
+    public static final String CBM_SAMPLE_TYPE = CBM_SCHEMA + "Sample";
     /**
      * A constant representing the prefix "cbm" used for Content Based Metadata (CBM).
      */

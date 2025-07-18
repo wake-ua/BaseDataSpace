@@ -1,0 +1,25 @@
+
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "@id": {
+      "type": "string"
+    },
+    "@type": {
+      "type": "string",
+      "enum": ["cbm:Sample", "https://w3id.org/cbm/v0.0.1/ns/Sample"]
+    },
+    "https://w3id.org/cbm/v0.0.1/ns/isSampleOf": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "@id",
+    "@type",
+    "https://w3id.org/cbm/v0.0.1/ns/isSampleOf"
+  ],
+  "not": { "required": [ "https://w3id.org/edc/v0.0.1/ns/id" ] }
+}
+

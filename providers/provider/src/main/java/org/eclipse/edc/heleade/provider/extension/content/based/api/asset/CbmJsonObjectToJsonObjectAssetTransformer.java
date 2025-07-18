@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_DATA_ADDRESS;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.PROPERTY_ID;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE_TYPE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
@@ -43,6 +44,12 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  * Converts from an {@link Dataset} as a {@link JsonObject} in JSON-LD expanded form of an {@link Asset}.
  */
 public class CbmJsonObjectToJsonObjectAssetTransformer extends AbstractJsonLdTransformer<JsonObject, JsonObject> {
+    /**
+     * Constructor for CbmJsonObjectToJsonObjectAssetTransformer.
+     * Configures the transformer to handle transformations from a JsonObject
+     * to another JsonObject, leveraging the base functionality provided
+     * by the AbstractJsonLdTransformer.
+     */
     public CbmJsonObjectToJsonObjectAssetTransformer() {
         super(JsonObject.class, JsonObject.class);
     }
@@ -50,7 +57,7 @@ public class CbmJsonObjectToJsonObjectAssetTransformer extends AbstractJsonLdTra
     @Override
     public @Nullable JsonObject transform(@NotNull JsonObject jsonObject, @NotNull TransformerContext context) {
         // Check if we have a valid Dataset
-        if (!DCAT_DATASET_TYPE.equals(nodeType(jsonObject))) {
+        if (!DCAT_DATASET_TYPE.equals(nodeType(jsonObject)) && !CBM_SAMPLE_TYPE.equals(nodeType(jsonObject))) {
             context.problem()
                     .unexpectedType()
                     .expected(DCAT_DATASET_TYPE)

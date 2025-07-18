@@ -1,0 +1,21 @@
+
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "@id": {
+      "type": "string"
+    },
+    "@type": {
+      "type": "string",
+      "enum": ["dcat:Dataset", "http://www.w3.org/ns/dcat#Dataset"]
+    }
+  },
+  "required": [
+    "@id",
+    "@type"
+  ],
+  "not": { "required": [ "id", "https://w3id.org/edc/v0.0.1/ns/id", "https://w3id.org/cbm/v0.0.1/ns/isSampleOf" ] }
+}
+

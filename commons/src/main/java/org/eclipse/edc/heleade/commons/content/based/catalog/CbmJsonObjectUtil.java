@@ -20,7 +20,7 @@ import jakarta.json.JsonObject;
 
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_HAS_DATA_DICTIONARY;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_IS_SAMPLE_OF;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE_TYPE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DISTRIBUTION_TAG;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.TYPE_TAG;
 
@@ -39,7 +39,7 @@ public class CbmJsonObjectUtil {
     public static JsonObject modifySampleDataset(JsonObject dataset) {
         if (dataset.containsKey(CBM_IS_SAMPLE_OF)) {
             return Json.createObjectBuilder(dataset)
-                    .add(TYPE_TAG, CBM_SAMPLE)
+                    .add(TYPE_TAG, CBM_SAMPLE_TYPE)
                     .build();
         }
         return dataset;

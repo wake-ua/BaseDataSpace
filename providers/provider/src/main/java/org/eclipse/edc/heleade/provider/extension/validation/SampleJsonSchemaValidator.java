@@ -16,7 +16,6 @@ package org.eclipse.edc.heleade.provider.extension.validation;
 
 import com.networknt.schema.JsonSchema;
 import jakarta.json.JsonObject;
-import org.eclipse.edc.connector.controlplane.api.management.asset.validation.AssetValidator;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.validator.jsonobject.JsonObjectValidator;
 import org.eclipse.edc.validator.spi.ValidationResult;
@@ -26,36 +25,31 @@ import org.eclipse.edc.validator.spi.Validator;
 /**
  * Contains the AssetEntryDto validator definition using a JsonSchema
  */
-public class AssetJsonSchemaValidator {
+public class SampleJsonSchemaValidator {
     /**
      * Returns a JSON Schema validator
      *
-     * @param assetSchema json schema parsed into a JsonSchema object
-     * @param jsonLd jsonld for compacting the asset
+     * @param sampleSchema json schema parsed into a JsonSchema object
+     * @param jsonLd jsonld for compacting the dataset
      * @return a validator including default and json schema
      */
-    public Validator<JsonObject> getValidator(JsonSchema assetSchema, JsonLd jsonLd) {
+    public Validator<JsonObject> getValidator(JsonSchema sampleSchema, JsonLd jsonLd) {
         return JsonObjectValidator.newValidator()
-                .verify(path -> new AssetJsonSchemaCompliance(assetSchema, jsonLd))
+                .verify(path -> new SampleJsonSchemaCompliance(sampleSchema, jsonLd))
                 .build();
     }
 
-    private static class AssetJsonSchemaCompliance implements Validator<JsonObject> {
+    private static class SampleJsonSchemaCompliance implements Validator<JsonObject> {
         private final Validator<JsonObject> jsonSchemaValidator;
 
-        AssetJsonSchemaCompliance(JsonSchema assetSchema, JsonLd jsonLd) {
-            this.jsonSchemaValidator = new JsonSchemaValidator().getValidator(assetSchema, jsonLd);
+        SampleJsonSchemaCompliance(JsonSchema sampleSchema, JsonLd jsonLd) {
+            this.jsonSchemaValidator = new JsonSchemaValidator().getValidator(sampleSchema, jsonLd);
 
         }
 
         @Override
-        public ValidationResult validate(JsonObject asset) {
-            // Validate first with the default validator
-            ValidationResult defaultValidatorResult = AssetValidator.instance().validate(asset);
-            if (defaultValidatorResult.failed()) {
-                return defaultValidatorResult;
-            }
-            return jsonSchemaValidator.validate(asset);
+        public ValidationResult validate(JsonObject sample) {
+            return jsonSchemaValidator.validate(sample);
         }
     }
 }
