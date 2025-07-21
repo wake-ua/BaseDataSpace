@@ -33,6 +33,14 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE_TYPE;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCAT_DATASET_TYPE;
 
+/**
+ * Controller for managing content-based assets via the Asset Management API.
+ * Extends the base AssetApiController and implements the AssetApi interface
+ * to provide additional handling for content-based assets.
+ * This controller supports the creation and updating of assets with JSON-LD
+ * representations, integrating validation and transformation processes specific
+ * to content-based assets.
+ */
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
 @Path("/v3/assets-cbm")
@@ -41,6 +49,14 @@ public class ContentBasedAssetApiController extends AssetApiController implement
     private final Monitor monitor;
     private final JsonObjectValidatorRegistry validator;
 
+    /**
+     * Constructs a ContentBasedAssetApiController instance.
+     *
+     * @param service the AssetService responsible for asset management operations.
+     * @param transformerRegistry the registry of type transformers used to convert asset representations.
+     * @param monitor the Monitor to log and track operations.
+     * @param validator the JsonObjectValidatorRegistry for validating JSON representations of assets.
+     */
     public ContentBasedAssetApiController(AssetService service, TypeTransformerRegistry transformerRegistry,
                                           Monitor monitor, JsonObjectValidatorRegistry validator) {
         super(service, transformerRegistry, monitor, validator);

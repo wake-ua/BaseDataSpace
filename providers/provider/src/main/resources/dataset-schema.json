@@ -10,12 +10,15 @@
     "@type": {
       "type": "string",
       "enum": ["dcat:Dataset", "http://www.w3.org/ns/dcat#Dataset"]
+    },
+    "https://w3id.org/cbm/v0.0.1/ns/isSampleOf": {
+      "type": "null"
     }
   },
   "required": [
     "@id",
     "@type"
   ],
-  "not": { "required": [ "id", "https://w3id.org/edc/v0.0.1/ns/id", "https://w3id.org/cbm/v0.0.1/ns/isSampleOf" ] }
+  "not": { "required": [ "id" ] }
 }
 

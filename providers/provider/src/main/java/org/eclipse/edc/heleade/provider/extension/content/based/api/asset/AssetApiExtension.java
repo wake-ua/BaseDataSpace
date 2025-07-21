@@ -31,9 +31,20 @@ import org.eclipse.edc.web.spi.configuration.ApiContext;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.spi.types.domain.DataAddress.EDC_DATA_ADDRESS_TYPE;
 
+/**
+ * Provides initialization and registration of the Asset Management API extension
+ * specifically for content-based assets.
+ * This extension integrates with the service runtime to register custom asset API controllers,
+ * validators, and transformers for processing content-based assets. It is designed to
+ * support the creation, update, and management of assets via JSON-LD representations.
+ */
 @Extension(value = AssetApiExtension.NAME)
 public class AssetApiExtension implements ServiceExtension {
 
+    /**
+     * Represents the name of the Content-Based Management API for handling asset-related operations.
+     * This constant is used to identify the Asset Management API extension focused on content-based assets.
+     */
     public static final String NAME = "Content Based Management API: Asset";
 
     @Inject
