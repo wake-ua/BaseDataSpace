@@ -69,6 +69,19 @@ public class ContentBasedAssetApiController extends AssetApiController implement
     @Override
     public JsonObject createAssetV3(JsonObject assetJson) {
         monitor.info("Received CBM asset creation request");
+        JsonObject edcAssetJson = transform(assetJson);
+        return super.createAssetV3(edcAssetJson);
+    }
+
+    @PUT
+    @Override
+    public void updateAssetV3(JsonObject assetJson) {
+        monitor.info("Received CBM asset modification request");
+        JsonObject edcAssetJson = transform(assetJson);
+        super.updateAssetV3(edcAssetJson);
+    }
+
+    private JsonObject transform(JsonObject assetJson) {
         if (assetJson.containsKey("@type") && CBM_SAMPLE_TYPE.equals(assetJson.getJsonArray("@type").getString(0))) {
             validator.validate(CBM_SAMPLE_TYPE, assetJson).orElseThrow(ValidationFailureException::new);
         } else {
@@ -76,12 +89,6 @@ public class ContentBasedAssetApiController extends AssetApiController implement
         }
         JsonObject edcAssetJson = transformerRegistry.transform(assetJson, JsonObject.class)
                 .orElseThrow(f -> new EdcException(f.getFailureDetail()));
-        return super.createAssetV3(edcAssetJson);
-    }
-
-    @PUT
-    @Override
-    public void updateAssetV3(JsonObject assetJson) {
-        super.updateAssetV3(assetJson);
+        return edcAssetJson;
     }
 }
