@@ -15,6 +15,9 @@
       "type": "string"
     }
   },
+  "https://w3id.org/cbm/v0.0.1/ns/hasSample": {
+    "type": "null"
+  },
   "required": [
     "@id",
     "@type",
