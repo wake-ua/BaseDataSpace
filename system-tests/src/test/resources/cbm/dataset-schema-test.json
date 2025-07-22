@@ -7,19 +7,18 @@
     },
     "@type": {
       "type": "string",
-      "enum": ["cbm:Sample", "https://w3id.org/cbm/v0.0.1/ns/Sample"]
+      "enum": ["dcat:Dataset", "http://www.w3.org/ns/dcat#Dataset"]
+    },
+    "https://w3id.org/cbm/v0.0.1/ns/hasSample": {
+      "type": ["string", "array"]
     },
     "https://w3id.org/cbm/v0.0.1/ns/isSampleOf": {
-      "type": "string"
+      "type": "null"
     }
-  },
-  "https://w3id.org/cbm/v0.0.1/ns/hasSample": {
-    "type": "null"
   },
   "required": [
     "@id",
-    "@type",
-    "https://w3id.org/cbm/v0.0.1/ns/isSampleOf"
+    "@type"
   ],
-  "not": { "required": [ "id"] }
+  "not": { "required": [ "id" ] }
 }

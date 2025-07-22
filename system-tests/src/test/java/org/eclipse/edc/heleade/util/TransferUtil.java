@@ -140,6 +140,17 @@ public class TransferUtil {
                 .get(jsonPath);
     }
 
+    public static Object postExpect(String url, String requestBody, int statusCode) {
+        return given()
+                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post(url)
+                .then()
+                .statusCode(statusCode);
+    }
+
     public static void delete(String url) {
         given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)

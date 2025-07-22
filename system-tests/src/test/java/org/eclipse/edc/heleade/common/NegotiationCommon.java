@@ -28,12 +28,14 @@ import static org.eclipse.edc.heleade.util.TransferUtil.TIMEOUT;
 import static org.eclipse.edc.heleade.util.TransferUtil.delete;
 import static org.eclipse.edc.heleade.util.TransferUtil.get;
 import static org.eclipse.edc.heleade.util.TransferUtil.post;
+import static org.eclipse.edc.heleade.util.TransferUtil.postExpect;
 import static org.eclipse.edc.heleade.util.TransferUtil.postJson;
 
 public class NegotiationCommon {
 
     private static final String CREATE_ASSET_FILE_PATH = "system-tests/src/test/resources/transfer/create-asset.json";
     private static final String V3_ASSETS_PATH = "/v3/assets";
+    private static final String V3_CBM_ASSETS_PATH = "/v3/assets-cbm";
     private static final String ASSET_ID = "@id";
     private static final String CREATE_POLICY_FILE_PATH = "system-tests/src/test/resources/transfer/create-policy.json";
     private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
@@ -64,13 +66,19 @@ public class NegotiationCommon {
         return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, content, ASSET_ID);
     }
 
-    public static void deleteDataset(String id) {
-        delete(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH + "/" + id);
-    }
-
     public static String createAsset(String assetFilePath) {
         return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH,
                         getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+    }
+
+    public static String createCbmAsset(String assetFilePath) {
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_CBM_ASSETS_PATH,
+                getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+    }
+
+    public static Object createCbmAssetExpect(String assetFilePath, int expectedStatus) {
+        return postExpect(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_CBM_ASSETS_PATH,
+                getFileContentFromRelativePath(assetFilePath), expectedStatus);
     }
 
     public static void deleteAsset(String id) {

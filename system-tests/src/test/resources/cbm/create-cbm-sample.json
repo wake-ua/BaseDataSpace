@@ -1,0 +1,54 @@
+{
+  "@id": "assetIdCbmSample",
+  "@type": "cbm:Sample",
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpData"
+      },
+      "name": "Test cbm dataset distribution",
+      "dcat:accessURL": "https://jsonplaceholder.typicode.com/posts",
+      "proxyPath": "true",
+      "cbm:hasDataDictionary": {
+        "cbm:hasField": [
+          {
+            "schema:name": "title",
+            "dct:title": "Post Title",
+            "rdf:type": "string",
+            "dct:description": "Title of the post",
+            "cbm:sampleValue": "eum et est occaecati"
+          },
+          {
+            "schema:name": "id",
+            "dct:title": "Post Identifier",
+            "rdf:type": "integer",
+            "dct:description": "Id of the post",
+            "cbm:sampleValue": "1"
+          }
+        ]
+      }
+    }
+  ],
+  "cbm:isSampleOf": "assetIdCbmOriginal",
+  "schema:algorithm": "clustering",
+  "schema:name": "posts cbm dataset",
+  "name": "posts cbm dataset",
+  "dct:title": "Post dataset for testing CBM endpoint",
+  "contenttype": "application/json",
+  "@context": {
+    "schema": "https://schema.org/",
+    "cbm": "https://w3id.org/cbm/v0.0.1/ns/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "rdf": "http://www.w3.org/2000/01/rdf-schema#"
+  }
+}
+
+
+
+
