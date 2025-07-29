@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "4f00853d-7ffe-4095-957a-2f9414aedf1b",
+		"_postman_id": "df9f816e-ffe2-4f06-802e-bf0e8de87f0a",
 		"name": "Provider - Ebird",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28863133",
-		"_collection_link": "https://warped-space-454507.postman.co/workspace/c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-4f00853d-7ffe-4095-957a-2f9414aedf1b?action=share&source=collection_link&creator=28863133"
+		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-df9f816e-ffe2-4f06-802e-bf0e8de87f0a?action=share&source=collection_link&creator=28863133"
 	},
 	"item": [
 		{
@@ -118,6 +118,49 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"@id\": \"assetId3\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test ebird name\",\n\t\"name\": \"test name\",\n\t\"dct:title\": \"test title\",\n\t\"cbm:hasSample\": \"assetId3Sample\",\n\t\"id\": \"assetId3\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset  CBM Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"@id\": \"auth-asset-cbm-test\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://api.ebird.org/v2/product/spplist/ES-CL-LN\",\n\t\t\t\"proxyPath\": \"true\",\n            \"authKey\": \"x-ebirdapitoken\",\n            \"authCode\": \"{{AUTH-CODE}}\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"species\",\n\t\t\t\t\t\t\"dct:title\": \"species\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"A list of species identifiers returned by the API\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"wooduc\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"Recent species observations leon\",\n\t\"name\": \"Recent species observations leon\",\n\t\"dct:title\": \"Recent species observations leon\",\n\t\"cbm:hasSample\": \"assetId3Sample\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -408,6 +451,27 @@
 			"item": [
 				{
 					"name": "Get Provider Catalog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+									"    if (Array.isArray(dcat_dataset)) {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+									"    } else {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
