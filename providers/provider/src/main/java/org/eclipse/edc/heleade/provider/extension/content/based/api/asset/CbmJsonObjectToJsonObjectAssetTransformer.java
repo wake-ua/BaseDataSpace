@@ -151,12 +151,18 @@ public class CbmJsonObjectToJsonObjectAssetTransformer extends AbstractJsonLdTra
         var dataAddressArrayBuilder = Json.createArrayBuilder();
         var dataAddressBuilder = Json.createObjectBuilder();
         dataAddressBuilder.add("@type", EDC_ASSET_DATA_ADDRESS);
-        dataAddressBuilder.add(EDC_NAMESPACE + "ProxyPath", getStringPropertyAsArray(dataDistribution.getJsonArray(EDC_NAMESPACE + "proxyPath").getJsonObject(0).getString("@value")));
+        dataAddressBuilder.add(EDC_NAMESPACE + "proxyPath", getStringPropertyAsArray(dataDistribution.getJsonArray(EDC_NAMESPACE + "proxyPath").getJsonObject(0).getString("@value")));
         dataAddressBuilder.add(EDC_NAMESPACE + "type", getStringPropertyAsArray(getDataAddressType(dataDistribution)));
         if (dataDistribution.containsKey(DCT_SCHEMA + "title")) {
             dataAddressBuilder.add(EDC_NAMESPACE + "name", getStringPropertyAsArray(dataDistribution.getJsonArray(DCT_SCHEMA + "title").getJsonObject(0).getString("@value")));
         }
         dataAddressBuilder.add(EDC_NAMESPACE + "baseUrl", getStringPropertyAsArray(dataDistribution.getJsonArray(DCAT_SCHEMA + "accessURL").getJsonObject(0).getString("@value")));
+        if (dataDistribution.containsKey(EDC_NAMESPACE + "authKey")) {
+            dataAddressBuilder.add(EDC_NAMESPACE + "authKey", getStringPropertyAsArray(dataDistribution.getJsonArray(EDC_NAMESPACE + "authKey").getJsonObject(0).getString("@value")));
+        }
+        if (dataDistribution.containsKey(EDC_NAMESPACE + "authCode")) {
+            dataAddressBuilder.add(EDC_NAMESPACE + "authCode", getStringPropertyAsArray(dataDistribution.getJsonArray(EDC_NAMESPACE + "authCode").getJsonObject(0).getString("@value")));
+        }
         dataAddressArrayBuilder.add(dataAddressBuilder.build());
         return dataAddressArrayBuilder;
     }
