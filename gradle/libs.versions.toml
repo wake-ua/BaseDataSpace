@@ -3,7 +3,7 @@ format.version = "1.1"
 
 [versions]
 awaitility = "4.2.2"
-edc = "0.11.1"
+edc = "0.12.0"
 jupiter = "5.11.3"
 okhttp-mockwebserver = "5.0.0-alpha.14"
 postgres = "42.7.5"
@@ -25,6 +25,8 @@ edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesys
 edc-connector-core = { module = "org.eclipse.edc:connector-core", version.ref = "edc" }
 edc-control-api-configuration = { module = "org.eclipse.edc:control-api-configuration", version.ref = "edc" }
 edc-api-core = { module = "org.eclipse.edc:api-core", version.ref = "edc" }
+edc-api-lib = { module = "org.eclipse.edc:api-lib", version.ref = "edc" }
+edc-api-secrets = { module = "org.eclipse.edc:secrets-api", version.ref = "edc" }
 edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-client", version.ref = "edc" }
 edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.ref = "edc" }
 edc-catalog-api = { module = "org.eclipse.edc:catalog-api", version.ref = "edc" }
@@ -43,6 +45,7 @@ edc-control-plane-catalog = { module = "org.eclipse.edc:control-plane-catalog", 
 edc-controlplane-transform = { module = "org.eclipse.edc:control-plane-transform", version.ref = "edc" }
 edc-controlplane-contract = { module = "org.eclipse.edc:control-plane-contract", version.ref = "edc" }
 edc-controlplane-services = { module = "org.eclipse.edc:control-plane-aggregate-services", version.ref = "edc" }
+edc-controlplane-base-bom = { module = "org.eclipse.edc:controlplane-base-bom", version.ref = "edc" }
 edc-data-plane-signaling-api = { module = "org.eclipse.edc:data-plane-signaling-api", version.ref = "edc" }
 edc-data-plane-signaling-client = { module = "org.eclipse.edc:data-plane-signaling-client", version.ref = "edc" }
 edc-data-plane-public-api = { module = "org.eclipse.edc:data-plane-public-api-v2", version.ref = "edc" }
@@ -57,7 +60,12 @@ edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-c
 edc-data-plane-self-registration = { module = "org.eclipse.edc:data-plane-self-registration", version.ref = "edc" }
 edc-data-plane-spi = { module = "org.eclipse.edc:data-plane-spi", version.ref = "edc" }
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
+edc-dsp-spi = { module = "org.eclipse.edc:dsp-spi", version.ref = "edc" }
+edc-dsp-http-spi = { module = "org.eclipse.edc:dsp-http-spi", version.ref = "edc" }
+edc-dsp-http-core = { module = "org.eclipse.edc:dsp-http-core", version.ref = "edc" }
 edc-dsp-catalog-http-api = { module = "org.eclipse.edc:dsp-catalog-http-api", version.ref = "edc" }
+edc-dsp-catalog-http-api-lib = { module = "org.eclipse.edc:dsp-catalog-http-api-lib", version.ref = "edc" }
+edc-dsp-catalog-validation-lib = { module = "org.eclipse.edc:dsp-catalog-validation-lib", version.ref = "edc" }
 edc-dsp-catalog = { module = "org.eclipse.edc:dsp-catalog", version.ref = "edc" }
 edc-jersey-providers-lib = { module = "org.eclipse.edc:jersey-providers-lib", version.ref = "edc" }
 edc-edr-cache-api = { module = "org.eclipse.edc:edr-cache-api", version.ref = "edc" }
@@ -74,6 +82,7 @@ edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-lib-query = { module = "org.eclipse.edc:query-lib", version.ref = "edc" }
 edc-lib-store = { module = "org.eclipse.edc:store-lib", version.ref = "edc" }
 edc-spi-core = {module = "org.eclipse.edc:core-spi", version.ref = "edc" }
+edc-spi-web = {module = "org.eclipse.edc:web-spi", version.ref = "edc" }
 edc-verifiable-credentials-spi = { module = "org.eclipse.edc:verifiable-credentials-spi", version.ref = "edc" }
 edc-jsonld = { module = "org.eclipse.edc:json-ld", version.ref = "edc" }
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
@@ -86,7 +95,7 @@ edc-monitor-jdk-logger = { module = "org.eclipse.edc:monitor-jdk-logger", versio
 edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "edc" }
 edc-token-core = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
 edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
-edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
+# edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
 edc-vault-hashicorp = { module = "org.eclipse.edc:vault-hashicorp", version.ref = "edc" }
 edc-validator-data-address-http-data = { module = "org.eclipse.edc:validator-data-address-http-data", version.ref = "edc" }
 edc-spi-validator = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }
@@ -132,6 +141,22 @@ edc-sql-pool = { module = "org.eclipse.edc:sql-pool-apache-commons", version.ref
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-spi-transaction-datasource = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
+
+# identity hub and issuer
+edc-bom-identityhub = { module = "org.eclipse.edc:identityhub-bom", version.ref = "edc" }
+edc-bom-identityhub-sql = { module = "org.eclipse.edc:identityhub-feature-sql-bom", version.ref = "edc" }
+edc-bom-issuerservice = { module = "org.eclipse.edc:issuerservice-bom", version.ref = "edc" }
+edc-bom-issuerservice-sql = { module = "org.eclipse.edc:issuerservice-feature-sql-bom", version.ref = "edc" }
+
+# identityhub SPI modules
+edc-ih-spi-did = { module = "org.eclipse.edc:did-spi", version.ref = "edc" }
+edc-ih-spi-credential = { module = "org.eclipse.edc:verifiable-credential-spi", version.ref = "edc" }
+edc-ih-spi = { module = "org.eclipse.edc:identity-hub-spi", version.ref = "edc" }
+
+# identityhub API modules
+edc-oauth2-client = { module = "org.eclipse.edc:oauth2-client", version.ref = "edc" }
+edc-ih-api-did = { module = "org.eclipse.edc:did-api", version.ref = "edc" }
+edc-ih-api-participants = { module = "org.eclipse.edc:participant-context-api", version.ref = "edc" }
 
 [bundles]
 edc-sqlstores = ["edc-sql-assetindex", "edc-sql-contract-definition", "edc-sql-contract-negotiation", "edc-sql-transferprocess", "edc-sql-policydef", "edc-sql-policy-monitor", "edc-sql-edrindex"]

@@ -24,9 +24,23 @@ import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
 
+/**
+ * The ContentBasedCatalogApiExtension serves as a service extension implementation that integrates
+ * a content-based catalog management API into the control plane. It registers a management API controller
+ * to handle catalog-related operations.
+ *
+ * This extension initializes required services such as the {@link WebService}, {@link TypeTransformerRegistry},
+ * {@link CatalogService}, and {@link JsonObjectValidatorRegistry}, and registers the API controller that
+ * processes requests to the v3 content-based catalog endpoint.
+ */
 @Extension(value = org.eclipse.edc.connector.controlplane.api.management.catalog.CatalogApiExtension.NAME)
 public class ContentBasedCatalogApiExtension implements ServiceExtension {
 
+    /**
+     * The constant representing the name of the Content Based Catalog Management API.
+     * Used as an identifier for the extension integrating the catalog functionality
+     * into the control plane's management API.
+     */
     public static final String NAME = "Management API: Content Based Catalog";
 
     @Inject

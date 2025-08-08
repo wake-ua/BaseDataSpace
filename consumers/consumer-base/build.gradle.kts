@@ -24,6 +24,10 @@ dependencies {
     implementation(libs.edc.http)
 
     runtimeOnly(project(":consumers:consumer"))
+//    runtimeOnly(libs.edc.bom.controlplane)
+//    runtimeOnly(libs.edc.api.secrets)
+//    runtimeOnly(libs.edc.bom.dataplane)
+//    runtimeOnly(libs.edc.data.plane.public.api)
 }
 application {
     mainClass.set("$group.boot.system.runtime.BaseRuntime")

@@ -30,10 +30,21 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_BASE_PATH;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_CATALOG_REQUEST;
 
+/**
+ * Controller class for handling API requests specific to the Content-Based Catalog functionality (version 3).
+ * Extends the BaseCatalogApiController and implements the ContentBasedCatalogApiV3 interface.
+ */
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
 @Path("/v3" + CBM_BASE_PATH)
 public class ContentBasedCatalogApiV3Controller extends BaseCatalogApiController implements ContentBasedCatalogApiV3 {
+    /**
+     * Constructs a ContentBasedCatalogApiV3Controller with the specified dependencies.
+     *
+     * @param service the catalog service to handle business logic for catalog operations
+     * @param transformerRegistry the registry to handle type transformations
+     * @param validatorRegistry the registry to validate JSON objects
+     */
     public ContentBasedCatalogApiV3Controller(CatalogService service, TypeTransformerRegistry transformerRegistry, JsonObjectValidatorRegistry validatorRegistry) {
         super(service, transformerRegistry, validatorRegistry);
     }

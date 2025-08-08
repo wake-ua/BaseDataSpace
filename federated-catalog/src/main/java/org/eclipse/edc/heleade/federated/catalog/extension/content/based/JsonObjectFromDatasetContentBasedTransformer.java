@@ -17,6 +17,7 @@ package org.eclipse.edc.heleade.federated.catalog.extension.content.based;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDatasetTransformer;
+import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,24 +26,31 @@ import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjec
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveDataDictionaryToDistributionForDataset;
 
 /**
- * A transformer class for converting datasets into JSON objects with additional processing
- * specific to a federated catalog content-based implementations.
- * Features:
- * - Utilizes JSON and Jackson libraries to facilitate data transformation.
- * - Ensures compatibility with a content-driven approach for dataset handling.
+ * A transformer class that extends the {@code JsonObjectFromDatasetTransformer} to provide
+ * additional content-based transformations for datasets represented as JSON objects.
+ *
+ * This transformer performs the following transformations:
+ * 1. Modifies datasets by tagging sample datasets with a specific type tag using
+ *    {@code modifySampleDataset(JsonObject)}.
+ * 2. Relocates the data dictionary from the dataset level to the distribution level using
+ *    {@code moveDataDictionaryToDistributionForDataset(JsonObject)}.
+ *
+ * Usage involves transforming a {@code Dataset} into a JSON object with applied content-based
+ * modifications tailored for federated catalog implementations.
  */
 public class JsonObjectFromDatasetContentBasedTransformer extends JsonObjectFromDatasetTransformer {
 
+
     /**
-     * Constructs a JsonObjectFromDatasetContentBasedTransformer instance with the specified JSON builder factory
-     * and object mapper. This transformer is designed to handle content-based transformations of datasets
-     * within a federated catalog.
+     * Constructs a {@code JsonObjectFromDatasetContentBasedTransformer} to enable transformations
+     * of datasets into JSON objects with additional content-based adjustments specific to federated catalog implementations.
      *
-     * @param jsonFactory the JSON builder factory used for constructing JSON objects
-     * @param mapper the Jackson object mapper for JSON serialization and deserialization
+     * @param jsonFactory The {@code JsonBuilderFactory} used for constructing JSON objects.
+     * @param typeManager The {@code TypeManager} to manage serialization and deserialization types.
+     * @param typeContext The context defining the type system within which the transformation occurs.
      */
-    public JsonObjectFromDatasetContentBasedTransformer(jakarta.json.JsonBuilderFactory jsonFactory, com.fasterxml.jackson.databind.ObjectMapper mapper) {
-        super(jsonFactory, mapper);
+    public JsonObjectFromDatasetContentBasedTransformer(jakarta.json.JsonBuilderFactory jsonFactory, TypeManager typeManager, String typeContext) {
+        super(jsonFactory, typeManager, typeContext);
     }
 
     @Override

@@ -17,8 +17,8 @@ package org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatc
 import org.eclipse.edc.connector.controlplane.catalog.spi.CatalogRequestMessage;
 import org.eclipse.edc.protocol.dsp.http.dispatcher.PostDspHttpRequestFactory;
 import org.eclipse.edc.protocol.dsp.http.serialization.ByteArrayBodyExtractor;
-import org.eclipse.edc.protocol.dsp.http.spi.DspProtocolParser;
 import org.eclipse.edc.protocol.dsp.http.spi.dispatcher.DspHttpRemoteMessageDispatcher;
+import org.eclipse.edc.protocol.dsp.http.spi.dispatcher.DspRequestBasePathProvider;
 import org.eclipse.edc.protocol.dsp.http.spi.serialization.JsonLdRemoteMessageSerializer;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
@@ -35,6 +35,10 @@ import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.d
 @Extension(value = DspContentBasedCatalogHttpDispatcherExtension.NAME)
 public class DspContentBasedCatalogHttpDispatcherExtension implements ServiceExtension {
 
+    /**
+     * The name of the extension responsible for creating and registering the HTTP dispatcher delegate
+     * for handling content-based catalog requests as per the Dataspace Protocol specification.
+     */
     public static final String NAME = "Dataspace Protocol Content Based Catalog HTTP Dispatcher Extension";
 
     @Inject
@@ -42,7 +46,7 @@ public class DspContentBasedCatalogHttpDispatcherExtension implements ServiceExt
     @Inject
     private JsonLdRemoteMessageSerializer remoteMessageSerializer;
     @Inject
-    private DspProtocolParser dspProtocolParser;
+    private DspRequestBasePathProvider dspRequestBasePathProvider;
 
     @Override
     public String name() {
@@ -55,7 +59,7 @@ public class DspContentBasedCatalogHttpDispatcherExtension implements ServiceExt
 
         messageDispatcher.registerMessage(
                 CatalogRequestMessage.class,
-                new PostDspHttpRequestFactory<>(remoteMessageSerializer, dspProtocolParser, m -> CBM_BASE_PATH + CBM_CATALOG_REQUEST),
+                new PostDspHttpRequestFactory<>(remoteMessageSerializer, dspRequestBasePathProvider, m -> CBM_BASE_PATH + CBM_CATALOG_REQUEST),
                 byteArrayBodyExtractor
         );
     }
@@ -65,7 +69,7 @@ public class DspContentBasedCatalogHttpDispatcherExtension implements ServiceExt
 
         messageDispatcher.registerMessage(
                 CatalogRequestMessage.class,
-                new PostDspHttpRequestFactory<>(remoteMessageSerializer, dspProtocolParser, m -> CBM_BASE_PATH + CBM_CATALOG_REQUEST),
+                new PostDspHttpRequestFactory<>(remoteMessageSerializer, dspRequestBasePathProvider, m -> CBM_BASE_PATH + CBM_CATALOG_REQUEST),
                 byteArrayBodyExtractor
         );
 

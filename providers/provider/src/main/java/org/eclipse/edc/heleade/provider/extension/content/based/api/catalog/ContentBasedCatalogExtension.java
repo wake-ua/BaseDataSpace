@@ -23,9 +23,13 @@ import org.eclipse.edc.protocol.dsp.catalog.http.api.decorator.Base64continuatio
 import org.eclipse.edc.protocol.dsp.catalog.http.api.decorator.ContinuationTokenManagerImpl;
 import org.eclipse.edc.protocol.dsp.http.spi.message.ContinuationTokenManager;
 import org.eclipse.edc.protocol.dsp.http.spi.message.DspRequestHandler;
+import org.eclipse.edc.runtime.metamodel.annotation.Configuration;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Setting;
+import org.eclipse.edc.runtime.metamodel.annotation.Settings;
 import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.edc.spi.protocol.ProtocolWebhook;
+import org.eclipse.edc.spi.protocol.ProtocolWebhookRegistry;
+import org.eclipse.edc.spi.system.Hostname;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
@@ -34,6 +38,8 @@ import org.eclipse.edc.web.jersey.providers.jsonld.JerseyJsonLdInterceptor;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
 
+import static java.lang.String.format;
+import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
 import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_NAMESPACE_V_08;
 import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_08;
 import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_TRANSFORMER_CONTEXT_V_08;
@@ -57,10 +63,13 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
      */
     public static final String NAME = "Dataspace Protocol Content Based Catalog Extension";
 
+    static final String DEFAULT_PROTOCOL_PATH = "/api/protocol";
+    static final int DEFAULT_PROTOCOL_PORT = 8282;
+
     @Inject
     private WebService webService;
     @Inject
-    private ProtocolWebhook protocolWebhook;
+    private ProtocolWebhookRegistry protocolWebhookRegistry;
     @Inject
     private CatalogProtocolService service;
     @Inject
@@ -75,6 +84,10 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
     private TypeManager typeManager;
     @Inject
     private JsonLd jsonLd;
+    @Inject
+    private Hostname hostname;
+    @Configuration
+    private CatalogApiConfiguration apiConfiguration;
 
     @Override
     public String name() {
@@ -83,21 +96,31 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var jsonLdMapper = typeManager.getMapper(JSON_LD);
-
+        String protocol = DATASPACE_PROTOCOL_HTTP;
         webService.registerResource(ApiContext.PROTOCOL, new ContentBasedCatalogApiController(service, dspRequestHandler, continuationTokenManager(monitor, DSP_TRANSFORMER_CONTEXT_V_08, DSP_NAMESPACE_V_08), monitor));
-        webService.registerDynamicResource(ApiContext.PROTOCOL, ContentBasedCatalogApiController.class, new JerseyJsonLdInterceptor(jsonLd, jsonLdMapper, DSP_SCOPE_V_08));
+        webService.registerDynamicResource(ApiContext.PROTOCOL, ContentBasedCatalogApiController.class, new JerseyJsonLdInterceptor(jsonLd, typeManager, JSON_LD, DSP_SCOPE_V_08));
 
+        var dspWebhookAddress = format("http://%s:%s%s", hostname.get(), apiConfiguration.port(), apiConfiguration.path());
 
-        dataServiceRegistry.register(DataService.Builder.newInstance()
+        dataServiceRegistry.register(protocol, DataService.Builder.newInstance()
                 .endpointDescription("dspace:connector")
-                .endpointUrl(protocolWebhook.url())
+                .endpointUrl(dspWebhookAddress)
                 .build());
     }
 
     private ContinuationTokenManager continuationTokenManager(Monitor monitor, String version, JsonLdNamespace namespace) {
         var continuationTokenSerDes = new Base64continuationTokenSerDes(transformerRegistry.forContext(version), jsonLd);
         return new ContinuationTokenManagerImpl(continuationTokenSerDes, namespace, monitor);
+    }
+
+    @Settings
+    record CatalogApiConfiguration(
+            @Setting(key = "web.http." + ApiContext.PROTOCOL + ".port", description = "Port for " + ApiContext.PROTOCOL + " api context", defaultValue = DEFAULT_PROTOCOL_PORT + "")
+            int port,
+            @Setting(key = "web.http." + ApiContext.PROTOCOL + ".path", description = "Path for " + ApiContext.PROTOCOL + " api context", defaultValue = DEFAULT_PROTOCOL_PATH)
+            String path
+    ) {
+
     }
 
 }

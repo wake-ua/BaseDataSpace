@@ -33,10 +33,21 @@ import static org.eclipse.edc.connector.controlplane.catalog.spi.CatalogRequest.
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.CONTEXT;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 
+/**
+ * Interface for managing the content-based catalog API version 3.
+ * Provides methods for handling requests related to catalog data exchange
+ * between connectors using predefined schemas and specifications.
+ */
 @OpenAPIDefinition(info = @Info(version = "v3"))
 @Tag(name = "Content Based Catalog V3")
 public interface ContentBasedCatalogApiV3 {
 
+    /**
+     * Handles a request to retrieve the catalog (contract offers) from a single connector.
+     *
+     * @param request The JSON object containing the request parameters, structured according to the `CatalogRequestSchema`.
+     * @param response The asynchronous response that will be populated with the catalog data, structured as `CatalogSchema`.
+     */
     @Operation(
             requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = CatalogRequestSchema.class))),
             responses = { @ApiResponse(
@@ -48,6 +59,14 @@ public interface ContentBasedCatalogApiV3 {
     )
     void requestCatalogV3(JsonObject request, @Suspended AsyncResponse response);
 
+    /**
+     * Represents the schema for a catalog request. This schema defines the structure and requirements
+     * of the request body when interacting with the content-based catalog API.
+     * Components:
+     * - Includes details such as context, request type, counterparty address, counterparty ID, protocol,
+     *   and query specifications.
+     * - Provides an example JSON representation for better understanding of the expected payload.
+     */
     @Schema(name = "CatalogRequest", example = CatalogRequestSchema.CATALOG_REQUEST_EXAMPLE)
     record CatalogRequestSchema(
             @Schema(name = CONTEXT, requiredMode = REQUIRED)
@@ -63,6 +82,15 @@ public interface ContentBasedCatalogApiV3 {
             String protocol,
             ApiCoreSchema.QuerySpecSchema querySpec) {
 
+        /**
+         * Example JSON representation of a catalog request.
+         * This string provides the structure for a typical catalog request, including:
+         * - Context metadata defining the namespace vocabulary.
+         * - Request type as "CatalogRequest".
+         * - Counterparty and protocol information.
+         * - Query specifications such as offset, limit, sort order, and filter expressions.
+         * Useful for illustrating the expected payload format for catalog interactions.
+         */
         public static final String CATALOG_REQUEST_EXAMPLE = """
                 {
                     "@context": { "@vocab": "https://w3id.org/edc/v0.0.1/ns/" },
@@ -81,9 +109,26 @@ public interface ContentBasedCatalogApiV3 {
                 """;
     }
 
+    /**
+     * Represents a data structure for a DCAT catalog schema.
+     * The `CatalogSchema` defines the structure and properties of a catalog
+     * following the DCAT and ODRL ontologies, including datasets, policies,
+     * distributions, data services, and metadata.
+     * The schema example provides a comprehensive JSON-LD representation of
+     * a catalog, including relational references, policy rules, and endpoint
+     * configurations.
+     */
     @Schema(name = "Catalog", description = "DCAT catalog", example = CatalogSchema.CATALOG_EXAMPLE)
     record CatalogSchema(
     ) {
+        /**
+         * Represents a sample string value of a catalog in JSON-LD format,
+         * formatted according to the DCAT and ODRL ontology specifications.
+         * This constant provides a predefined data structure containing catalog metadata,
+         * datasets, access policies, permissions, constraints, and service details.
+         * It serves as an example representation of a catalog's schema with specific
+         * attributes like dataset distribution, data service endpoints, and policy conditions.
+         */
         public static final String CATALOG_EXAMPLE = """
                 {
                     "@id": "7df65569-8c59-4013-b1c0-fa14f6641bf2",
@@ -152,9 +197,22 @@ public interface ContentBasedCatalogApiV3 {
                 """;
     }
 
+    /**
+     * Represents the schema definition for a dataset, following the structure and semantics
+     * defined by the DCAT (Data Catalog Vocabulary) and ODRL (Open Digital Rights Language) standards.
+     *
+     * This schema is used to define metadata for datasets, including attributes related to access policies,
+     * constraints, distributions, and context information.
+     */
     @Schema(name = "Dataset", description = "DCAT dataset", example = DatasetSchema.DATASET_EXAMPLE)
     record DatasetSchema(
     ) {
+        /**
+         * Represents an example dataset in JSON-LD format, compliant with DCAT and ODRL vocabularies.
+         * Used to demonstrate or validate dataset structures, including distribution, policy constraints,
+         * and access configurations.
+         * This variable is a constant and serves as a predefined template for referencing dataset schemas.
+         */
         public static final String DATASET_EXAMPLE = """
                 {
                     "@id": "bcca61be-e82e-4da6-bfec-9716a56cef35",

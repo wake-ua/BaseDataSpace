@@ -26,6 +26,7 @@ dependencies {
     api(libs.edc.dsp.catalog.http.api)
 
     implementation(libs.edc.api.core)
+    implementation(libs.edc.api.lib)
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.boot)
     implementation(libs.edc.http)

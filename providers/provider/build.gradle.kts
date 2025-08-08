@@ -19,8 +19,10 @@ plugins {
 
 dependencies {
     implementation(libs.edc.boot)
+    implementation(libs.edc.api.lib)
     implementation(libs.edc.connector.core)
     implementation(libs.jakarta.rsApi)
+
     implementation(libs.edc.controlplane.transform)
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
@@ -29,6 +31,7 @@ dependencies {
     implementation(libs.edc.control.plane.catalog)
     implementation(libs.edc.controlplane.services)
     implementation(libs.edc.control.plane.spi)
+
     implementation(libs.edc.catalog.spi)
     implementation(libs.edc.token.core)
     implementation(libs.edc.dsp)
@@ -38,7 +41,6 @@ dependencies {
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
-    implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.validator.data.address.http.data)
     implementation(libs.edc.lib.validator)
     implementation(libs.edc.lib.json)

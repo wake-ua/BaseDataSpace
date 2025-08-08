@@ -122,8 +122,8 @@ public class FederatedCatalogContentBasedApiExtension implements ServiceExtensio
         var jsonFactory = Json.createBuilderFactory(Map.of());
         var mapper = context.getService(TypeManager.class).getMapper(JSON_LD);
         var participantIdMapper = new NoOpParticipantIdMapper();
-        transformerRegistry.register(new JsonObjectFromCatalogTransformer(jsonFactory, mapper, participantIdMapper));
-        transformerRegistry.register(new JsonObjectFromDatasetContentBasedTransformer(jsonFactory, mapper));
+        transformerRegistry.register(new JsonObjectFromCatalogTransformer(jsonFactory, typeManager, JSON_LD, participantIdMapper));
+        transformerRegistry.register(new JsonObjectFromDatasetContentBasedTransformer(jsonFactory, typeManager, JSON_LD));
         transformerRegistry.register(new JsonObjectFromDistributionTransformer(jsonFactory));
         transformerRegistry.register(new JsonObjectFromDataServiceTransformer(jsonFactory));
     }

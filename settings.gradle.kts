@@ -27,20 +27,15 @@ include(":system-tests")
 
 include(":federated-catalog")
 
+include(":consumers:consumer")
+include(":consumers:consumer-base")
+
+include("providers:content-based-catalog-dispatcher")
 include(":providers:provider")
 include(":providers:provider-template")
 include(":providers:provider-base")
 include("providers:provider-ebird")
 
-include(":consumers:consumer")
-include(":consumers:consumer-base")
-
-include("providers:control-plane-catalog")
-include("providers:control-plane-core")
-include("providers:data-address-http-data-spi")
-include("providers:catalog-spi")
-include("providers:control-plane-spi")
-include("providers:dsp-catalog")
-include("providers:content-based-ctalog-dispatcher")
-include("providers:content-based-catalog-dispatcher")
 include("commons")
+
+//include("identity-hub")
