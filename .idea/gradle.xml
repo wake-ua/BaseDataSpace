@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/consumers/consumer" />
             <option value="$PROJECT_DIR$/consumers/consumer-base" />
             <option value="$PROJECT_DIR$/federated-catalog" />
+            <option value="$PROJECT_DIR$/identity-hub" />
             <option value="$PROJECT_DIR$/providers" />
             <option value="$PROJECT_DIR$/providers/content-based-catalog-dispatcher" />
             <option value="$PROJECT_DIR$/providers/provider" />

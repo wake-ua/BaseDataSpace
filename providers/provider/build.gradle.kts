@@ -23,13 +23,13 @@ dependencies {
     implementation(libs.edc.connector.core)
     implementation(libs.jakarta.rsApi)
 
-    implementation(libs.edc.controlplane.transform)
+    implementation(libs.edc.control.plane.transform)
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.control.plane.catalog)
-    implementation(libs.edc.controlplane.services)
+    implementation(libs.edc.control.plane.services)
     implementation(libs.edc.control.plane.spi)
 
     implementation(libs.edc.catalog.spi)
