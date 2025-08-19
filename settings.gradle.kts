@@ -38,4 +38,4 @@ include("providers:provider-ebird")
 
 include("commons")
 
-//include("identity-hub")
+include("identity-hub")
