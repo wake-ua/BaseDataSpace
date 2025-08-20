@@ -46,3 +46,6 @@ bin/
 
 ### TMP ###
 tmp/
+
+# deployment
+deployment/provider-base-postgresql/data/**

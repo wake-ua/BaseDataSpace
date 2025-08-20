@@ -27,7 +27,7 @@ export VAULT_ADDR=http://127.0.0.1:8200
 vault secrets enable -path=secret/ kv
 
 # save the key-value pairs
-vault kv put secret/accessKeyId content=consumer
+vault kv put secret/accessKeyId content=provider
 vault kv put secret/secretAccessKey content=password
 vault kv put secret/provider-key content=password
 
