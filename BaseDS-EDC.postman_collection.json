@@ -173,7 +173,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"name\": \"item description\",\n    \"contenttype\": \"application/json\",\n    \"dct:name\": \"second item\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset 2 distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"name\": \"second item\",\n    \"contenttype\": \"application/json\",\n    \"dct:name\": \"second item\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset 2 distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,7 +216,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n\t\"@id\": \"assetId2\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"dct:name\": \"second item\",\n\t\"name\": \"item description\",\n\t\"id\": \"assetId2\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"name\": \"second item\",\n\t\"dct:name\": \"second item\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 2 CBM Bad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n    \"cbm:isSampleOf\": \"ert\",\n\t\"name\": \"second item\",\n\t\"dct:name\": \"second item\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -298,7 +341,7 @@
 						}
 					],
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -345,7 +388,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId4\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"name\": \"product  4 description REIMPORT\",\n\t\"dct:title\": \"test template 4 name\",\n\t\"cbm:hasSample\": \"assetId4Sample\",\n\t\"id\": \"assetId4\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"raw": "{\n\t\"@id\": \"assetId4Cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t    \"name\": \"Test  4 sample asset distribution\",\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"name\": \"product  4 \",\n\t\"dct:title\": \"test template 4 name\",\n\t\"contenttype\": \"application/json\",\n    \"cbm:hasSample\": [\"assetId4Sample\", \"anotherSample\"],\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 5 CBM Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"@id\": \"assetId5\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t    \"name\": \"Test  4 sample asset distribution\",\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n            \"authKey\": \"x-ebirdapitoken\",\n            \"authCode\": \"authCode\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"name\": \"product  4 \",\n\t\"dct:title\": \"test template 4 name\",\n\t\"contenttype\": \"application/json\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -405,6 +491,49 @@
 								"management",
 								"v3",
 								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 4 Sample CBM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"@id\": \"assetId4Sample\",\n\t\"@type\": \"cbm:Sample\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t    \"name\": \"Test  4 sample asset distribution\",\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"cbm:isSampleOf\": \"assetId4\",\n\t\"name\": \"product  4 name SAMPLE\",\n\t\"dct:title\": \"test template 4 name\",\n\t\"contenttype\": \"application/json\",\n\t\"schema:algorithm\": \"clustering\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
 							]
 						}
 					},
@@ -638,6 +767,48 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider Catalog Docker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1483,6 +1654,68 @@
 					"response": []
 				},
 				{
+					"name": "Get Provider Catalog Docker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+									"    if (Array.isArray(dcat_dataset)) {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+									"    } else {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Negotiate Contract",
 					"event": [
 						{
@@ -1505,6 +1738,50 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1594,6 +1871,47 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://localhost:4000/api/consumer/store\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"transferprocesses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Transfer Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\n  }\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"

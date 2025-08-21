@@ -51,4 +51,16 @@ services:
       - provider-base-vault
     build: ./providers/provider-base
 
+  consumer-base:
+    container_name: consumer-base
+    ports:
+      - "29191:29191"
+      - "29193:29193"
+      - "29194:29194"
+    build: ./consumers/consumer-base
 
+  request-logger:
+    container_name: request-logger
+    ports:
+      - 4001:4000
+    build: ./util/http-request-logger
