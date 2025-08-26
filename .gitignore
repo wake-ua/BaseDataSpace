@@ -49,3 +49,4 @@ tmp/
 
 # deployment
 deployment/provider-base-postgresql/data/**
+deployment/fc-mongodb/data/**

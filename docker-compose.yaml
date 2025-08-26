@@ -64,3 +64,20 @@ services:
     ports:
       - 4001:4000
     build: ./util/http-request-logger
+
+  fc-mongodb:
+    container_name: fc-mongodb
+    image: mongo:6-jammy
+    ports:
+      - '27018:27017'
+    volumes:
+      - ./deployment/fc-mongodb/data/db:/data/db
+
+  federated-catalog:
+    container_name: federated-catalog
+    ports:
+      - "39191:39191"
+      - "39193:39193"
+      - "39194:39194"
+      - "39195:39195"
+    build: ./federated-catalog
