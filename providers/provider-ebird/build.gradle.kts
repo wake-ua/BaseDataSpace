@@ -22,7 +22,10 @@ dependencies {
     implementation(libs.jakarta.rsApi)
     implementation(libs.edc.boot)
     implementation(libs.edc.http)
+    api(libs.edc.data.plane.spi)
+    api(libs.edc.json.ld.spi)
 
+    implementation(project(":providers:policy-functions"));
     runtimeOnly(project(":providers:provider"))
 }
 
