@@ -1301,6 +1301,68 @@
 					"response": []
 				},
 				{
+					"name": "Get Provider Catalog from FC Docker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+									"    if (Array.isArray(dcat_dataset)) {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+									"    } else {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/catalog/request",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Negotiate Contract from FC",
 					"event": [
 						{
@@ -1323,6 +1385,50 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract from FC Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1438,6 +1544,51 @@
 					"response": []
 				},
 				{
+					"name": "Start Transfer from FC Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"transferprocesses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Node Directory",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1476,7 +1627,36 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+							"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v1alpha",
+								"directory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Node Directory Docker",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://provider-base:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1571,7 +1751,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory/provider-template",
+							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory/provider-base",
 							"host": [
 								"{{HOST_URL}}"
 							],
@@ -1580,7 +1760,7 @@
 								"management",
 								"v1alpha",
 								"directory",
-								"provider-template"
+								"provider-base"
 							]
 						}
 					},
