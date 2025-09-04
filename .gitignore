@@ -57,3 +57,14 @@ deployment/fc-mongodb/data/db/WiredTiger*
 deployment/fc-mongodb/data/db/storage*
 deployment/fc-mongodb/data/db/mongod.lock
 
+deployment/provider-base-postgresql/data/base
+deployment/provider-base-postgresql/data/global
+deployment/provider-base-postgresql/data/pg_*
+deployment/provider-base-postgresql/data/*.conf
+deployment/provider-base-postgresql/data/postmaster.opts
+deployment/provider-base-postgresql/data/PG_VERSION
+
+
+
+
+
