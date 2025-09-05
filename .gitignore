@@ -63,8 +63,10 @@ deployment/provider-base-postgresql/data/pg_*
 deployment/provider-base-postgresql/data/*.conf
 deployment/provider-base-postgresql/data/postmaster.opts
 deployment/provider-base-postgresql/data/PG_VERSION
+deployment/provider-base-postgresql/data/*.pid
 
-
-
-
+# vault
+resources/vault/vault-data/core
+resources/vault/vault-data/logical
+resources/vault/vault-data/sys
 
