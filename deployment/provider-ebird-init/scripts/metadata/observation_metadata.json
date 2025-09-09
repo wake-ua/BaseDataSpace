@@ -1,0 +1,85 @@
+{
+    "title": "Bird Observation Data",
+    "description": "Data on various bird species observed in different locations",
+    "theme": "Wildlife",
+    "columns": [
+        {
+            "name": "speciesCode",
+            "description": "Code representing the species",
+            "type": "string",
+            "sampleValue": "gnwtea"
+        },
+        {
+            "name": "comName",
+            "description": "Common name of the species",
+            "type": "string",
+            "sampleValue": "Green-winged Teal"
+        },
+        {
+            "name": "sciName",
+            "description": "Scientific name of the species",
+            "type": "string",
+            "sampleValue": "Anas crecca"
+        },
+        {
+            "name": "locId",
+            "description": "Location identifier",
+            "type": "string",
+            "sampleValue": "L1121994"
+        },
+        {
+            "name": "locName",
+            "description": "General location name",
+            "type": "string",
+            "sampleValue": "Punta Entinas ParNat"
+        },
+        {
+            "name": "obsDt",
+            "description": "Observation date and time",
+            "type": "string",
+            "sampleValue": "2025-05-21 17:45"
+        },
+        {
+            "name": "howMany",
+            "description": "Number of individuals observed",
+            "type": "number",
+            "sampleValue": "1"
+        },
+        {
+            "name": "lat",
+            "description": "Latitude of the observation location",
+            "type": "number",
+            "sampleValue": "36.7107"
+        },
+        {
+            "name": "lng",
+            "description": "Longitude of the observation location",
+            "type": "number",
+            "sampleValue": "-2.64993"
+        },
+        {
+            "name": "obsValid",
+            "description": "Indicates if the observation is valid",
+            "type": "boolean",
+            "sampleValue": "False"
+        },
+        {
+            "name": "obsReviewed",
+            "description": "Indicates if the observation has been reviewed",
+            "type": "boolean",
+            "sampleValue": "False"
+        },
+        {
+            "name": "locationPrivate",
+            "description": "Indicates if the location is private",
+            "type": "boolean",
+            "sampleValue": "False"
+        },
+        {
+            "name": "subId",
+            "description": "Submission identifier",
+            "type": "string",
+            "sampleValue": "S241122959"
+        }
+    ]
+}

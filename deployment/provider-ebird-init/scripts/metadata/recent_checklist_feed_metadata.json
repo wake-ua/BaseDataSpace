@@ -1,0 +1,145 @@
+{
+    "title": "Observation Records",
+    "description": "Records of species observations with location details",
+    "theme": "Biodiversity",
+    "columns": [
+        {
+            "name": "locId",
+            "description": "Location ID",
+            "type": "string",
+            "sampleValue": "L45591555"
+        },
+        {
+            "name": "subId",
+            "description": "Submission ID",
+            "type": "string",
+            "sampleValue": "S241415858"
+        },
+        {
+            "name": "userDisplayName",
+            "description": "Name of the user who submitted the observation",
+            "type": "string",
+            "sampleValue": "Anonymous eBirder"
+        },
+        {
+            "name": "numSpecies",
+            "description": "Number of species observed",
+            "type": "number",
+            "sampleValue": "1"
+        },
+        {
+            "name": "obsDt",
+            "description": "Observation date",
+            "type": "string",
+            "sampleValue": "23 May 2025"
+        },
+        {
+            "name": "obsTime",
+            "description": "Observation time",
+            "type": "string",
+            "sampleValue": "08:02"
+        },
+        {
+            "name": "isoObsDate",
+            "description": "ISO formatted observation date and time",
+            "type": "string",
+            "sampleValue": "2025-05-23 08:02"
+        },
+        {
+            "name": "locId_loc",
+            "description": "Location ID for the specific location",
+            "type": "string",
+            "sampleValue": "L45591555"
+        },
+        {
+            "name": "name_loc",
+            "description": "Name of the location",
+            "type": "string",
+            "sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217"
+        },
+        {
+            "name": "latitude_loc",
+            "description": "Latitude of the location",
+            "type": "number",
+            "sampleValue": "37.346"
+        },
+        {
+            "name": "longitude_loc",
+            "description": "Longitude of the location",
+            "type": "number",
+            "sampleValue": "-2.08217"
+        },
+        {
+            "name": "countryCode_loc",
+            "description": "Country code",
+            "type": "string",
+            "sampleValue": "ES"
+        },
+        {
+            "name": "countryName_loc",
+            "description": "Country name",
+            "type": "string",
+            "sampleValue": "Spain"
+        },
+        {
+            "name": "subnational1Name_loc",
+            "description": "First subnational division name",
+            "type": "string",
+            "sampleValue": "Andalucía"
+        },
+        {
+            "name": "subnational1Code_loc",
+            "description": "First subnational division code",
+            "type": "string",
+            "sampleValue": "ES-AN"
+        },
+        {
+            "name": "subnational2Code_loc",
+            "description": "Second subnational division code",
+            "type": "string",
+            "sampleValue": "ES-AN-AM"
+        },
+        {
+            "name": "subnational2Name_loc",
+            "description": "Second subnational division name",
+            "type": "string",
+            "sampleValue": "Almería"
+        },
+        {
+            "name": "isHotspot_loc",
+            "description": "Indicates if the location is a hotspot",
+            "type": "boolean",
+            "sampleValue": "False"
+        },
+        {
+            "name": "locID_loc",
+            "description": "Location ID for the specific location",
+            "type": "string",
+            "sampleValue": "L45591555"
+        },
+        {
+            "name": "lat_loc",
+            "description": "Latitude of the location",
+            "type": "number",
+            "sampleValue": "37.346"
+        },
+        {
+            "name": "lng_loc",
+            "description": "Longitude of the location",
+            "type": "number",
+            "sampleValue": "-2.08217"
+        },
+        {
+            "name": "locName_loc",
+            "description": "Full name of the location",
+            "type": "string",
+            "sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217"
+        },
+        {
+            "name": "hierarchicalName_loc",
+            "description": "Hierarchical name of the location",
+            "type": "string",
+            "sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217, Almería, Andalucía, ES"
+        }
+    ]
+}

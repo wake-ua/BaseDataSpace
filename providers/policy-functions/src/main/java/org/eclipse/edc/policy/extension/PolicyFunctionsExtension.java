@@ -37,7 +37,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
 
     @Override
     public String name() {
-        return "Sample policy functions";
+        return "Heleade policy functions";
     }
 
     @Override
@@ -45,7 +45,6 @@ public class PolicyFunctionsExtension implements ServiceExtension {
         var monitor = context.getMonitor();
 
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, ALL_SCOPES);
-        //NEGOTIATION SCOPE
         ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
         policyEngine.registerFunction(ContractNegotiationPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
     }

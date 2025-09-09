@@ -1,0 +1,16 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@id": "entity_type_contract",
+  "accessPolicyId": "entitytype-policy",
+  "contractPolicyId": "entitytype-policy",
+  "assetsSelector": [
+    {
+      "@type": "https://w3id.org/edc/v0.0.1/ns/Criterion",
+      "operandLeft": "id",
+      "operator": "in",
+      "operandRight": []
+    }
+  ]
+}

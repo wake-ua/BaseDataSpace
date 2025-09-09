@@ -1,0 +1,97 @@
+{
+    "title": "Bird Species Catalog",
+    "description": "Catalog of various bird species with their scientific and common names",
+    "theme": "Biology",
+    "columns": [
+        {
+            "name": "SCIENTIFIC_NAME",
+            "description": "Scientific name of the species",
+            "type": "string",
+            "sampleValue": "Casuarius casuarius"
+        },
+        {
+            "name": "COMMON_NAME",
+            "description": "Common name of the species",
+            "type": "string",
+            "sampleValue": "Dwarf Cassowary"
+        },
+        {
+            "name": "SPECIES_CODE",
+            "description": "Unique code for the species",
+            "type": "string",
+            "sampleValue": "soucas1"
+        },
+        {
+            "name": "CATEGORY",
+            "description": "Category of the species",
+            "type": "string",
+            "sampleValue": "species"
+        },
+        {
+            "name": "TAXON_ORDER",
+            "description": "Order of the taxon",
+            "type": "number",
+            "sampleValue": "10"
+        },
+        {
+            "name": "COM_NAME_CODES",
+            "description": "Common name codes",
+            "type": "string",
+            "sampleValue": "SOCA"
+        },
+        {
+            "name": "SCI_NAME_CODES",
+            "description": "Scientific name codes",
+            "type": "string",
+            "sampleValue": "CACA"
+        },
+        {
+            "name": "BANDING_CODES",
+            "description": "Banding codes for the species",
+            "type": "string",
+            "sampleValue": "None"
+        },
+        {
+            "name": "ORDER",
+            "description": "Taxonomic order",
+            "type": "string",
+            "sampleValue": "Casuariiformes"
+        },
+        {
+            "name": "FAMILY_COM_NAME",
+            "description": "Common name of the family",
+            "type": "string",
+            "sampleValue": "Cassowaries and Emu"
+        },
+        {
+            "name": "FAMILY_SCI_NAME",
+            "description": "Scientific name of the family",
+            "type": "string",
+            "sampleValue": "Casuariidae"
+        },
+        {
+            "name": "REPORT_AS",
+            "description": "Reporting status",
+            "type": "string",
+            "sampleValue": "None"
+        },
+        {
+            "name": "EXTINCT",
+            "description": "Extinction status",
+            "type": "string",
+            "sampleValue": "None"
+        },
+        {
+            "name": "EXTINCT_YEAR",
+            "description": "Year of extinction if applicable",
+            "type": "string",
+            "sampleValue": "None"
+        },
+        {
+            "name": "FAMILY_CODE",
+            "description": "Code for the family",
+            "type": "string",
+            "sampleValue": "casuar1"
+        }
+    ]
+}

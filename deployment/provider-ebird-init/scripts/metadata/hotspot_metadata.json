@@ -1,0 +1,61 @@
+{
+    "title": "Species Observation Data",
+    "description": "Data on species observed in various locations",
+    "theme": "Biodiversity",
+    "columns": [
+        {
+            "name": "locationId",
+            "description": "Unique identifier for the location",
+            "type": "string",
+            "sampleValue": "L2521366"
+        },
+        {
+            "name": "countryCode",
+            "description": "ISO country code",
+            "type": "string",
+            "sampleValue": "ES"
+        },
+        {
+            "name": "subnational1Code",
+            "description": "First level subnational administrative division code",
+            "type": "string",
+            "sampleValue": "ES-PV"
+        },
+        {
+            "name": "subnational2Code",
+            "description": "Second level subnational administrative division code",
+            "type": "string",
+            "sampleValue": "ES-PV-GP"
+        },
+        {
+            "name": "latitude",
+            "description": "Geographical latitude of the location",
+            "type": "number",
+            "sampleValue": "43.2809"
+        },
+        {
+            "name": "longitude",
+            "description": "Geographical longitude of the location",
+            "type": "number",
+            "sampleValue": "-1.78801"
+        },
+        {
+            "name": "locationName",
+            "description": "Name of the location",
+            "type": "string",
+            "sampleValue": "Aiako Harria PNat--Aiako Harriak"
+        },
+        {
+            "name": "observationDateTime",
+            "description": "Date and time of the observation",
+            "type": "string",
+            "sampleValue": "2025-05-18 10:30"
+        },
+        {
+            "name": "numSpeciesObserved",
+            "description": "Number of species observed at the location",
+            "type": "number",
+            "sampleValue": "131"
+        }
+    ]
+}

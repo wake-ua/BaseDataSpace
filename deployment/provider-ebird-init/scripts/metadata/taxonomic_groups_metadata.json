@@ -1,0 +1,25 @@
+{
+    "title": "Bird Taxonomy Groups",
+    "description": "Classification of various bird groups based on their order and taxon bounds",
+    "theme": "Biology",
+    "columns": [
+        {
+            "name": "groupName",
+            "description": "Name of the bird group",
+            "type": "string",
+            "sampleValue": "Kiwis"
+        },
+        {
+            "name": "groupOrder",
+            "description": "Order of the bird group",
+            "type": "number",
+            "sampleValue": "5"
+        },
+        {
+            "name": "taxonOrderBounds",
+            "description": "Bounds of the taxon order for the group",
+            "type": "string",
+            "sampleValue": "[[2.0, 8.0]]"
+        }
+    ]
+}

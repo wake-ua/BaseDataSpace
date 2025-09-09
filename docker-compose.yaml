@@ -51,6 +51,47 @@ services:
       - provider-base-vault
     build: ./providers/provider-base
 
+  provider-ebird-postgresql:
+    container_name: provider-ebird-postgresql
+    image: postgres:13
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=edc
+    volumes:
+      - ./deployment/provider-ebird-postgresql/data:/var/lib/postgresql/data
+
+  provider-ebird:
+    container_name: provider-ebird
+    ports:
+      - "17191:17191"
+      - "17193:17193"
+      - "17194:17194"
+    build: ./providers/provider-ebird
+
+  provider-ebird-init:
+    build:
+      context: ./deployment/provider-ebird-init
+      dockerfile: Dockerfile
+    depends_on:
+      - provider-ebird
+    env_file:
+      - ./deployment/provider-ebird-init/.env
+    restart: "no"
+    volumes:
+      - ./deployment/provider-ebird-init/scripts/samples/data:/app/samples/data
+
+  samples-server:
+    build:
+      context: deployment/provider-ebird-init/scripts/samples
+      dockerfile: Dockerfile
+    ports:
+      - "9099:9099"
+    volumes:
+      - ./deployment/provider-ebird-init/scripts/samples/data:/app
+
   consumer-base:
     container_name: consumer-base
     ports:

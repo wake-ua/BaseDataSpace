@@ -27,6 +27,10 @@ java -Dedc.fs.config=providers/provider-base/resources/configuration/provider-ba
 ```
 java -Dedc.fs.config=providers/provider-template/resources/configuration/provider-template-configuration.properties -jar providers/provider-template/build/libs/provider-template.jar --log-level=DEBUG
 ```
+* Provider Ebird
+```
+java -Dedc.fs.config=providers/provider-ebird/resources/configuration/provider-ebird-configuration.properties -jar providers/provider-ebird/build/libs/provider-ebird.jar --log-level=DEBUG
+```
 * Consumer Base
 ```
 java -Dedc.fs.config=consumers/consumer-base/resources/configuration/consumer-base-configuration.properties -jar consumers/consumer-base/build/libs/consumer-base.jar --log-level=DEBUG

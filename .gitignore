@@ -65,6 +65,18 @@ deployment/provider-base-postgresql/data/postmaster.opts
 deployment/provider-base-postgresql/data/PG_VERSION
 deployment/provider-base-postgresql/data/*.pid
 
+
+deployment/provider-ebird-postgresql/data/base
+deployment/provider-ebird-postgresql/data/global
+deployment/provider-ebird-postgresql/data/pg_*
+deployment/provider-ebird-postgresql/data/*.conf
+deployment/provider-ebird-postgresql/data/postmaster.opts
+deployment/provider-ebird-postgresql/data/PG_VERSION
+deployment/provider-ebird-postgresql/data/*.pid
+
+deployment/provider-ebird-init/scripts/samples/data/*
+!deployment/provider-ebird-init/scripts/samples/data/.gitkeep
+
 # vault
 resources/vault/vault-data/core
 resources/vault/vault-data/logical
