@@ -65,6 +65,11 @@ dependencies {
 
     implementation("com.networknt:json-schema-validator:1.5.6")
 
+    // auth
+    implementation(libs.edc.auth.tokenbased)
+    implementation(libs.edc.spi.auth)
+    implementation(libs.edc.auth.configuration)
+
     // sql storage
     implementation(libs.edc.spi.transaction.datasource)
     implementation(libs.bundles.edc.sqlstores)
@@ -72,6 +77,7 @@ dependencies {
     implementation(libs.edc.sql.pool)
     implementation(libs.edc.sql.core)
     implementation(libs.postgres)
+
 
     // test
     testImplementation(libs.restAssured)
