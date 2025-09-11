@@ -91,6 +91,8 @@ edc-policy-engine-spi = { module = "org.eclipse.edc:policy-engine-spi", version.
 edc-protocol-version-spi = { module = "org.eclipse.edc:protocol-version-spi", version.ref = "edc" }
 edc-request-policy-context-spi = { module = "org.eclipse.edc:request-policy-context-spi", version.ref = "edc" }
 edc-spi-core = {module = "org.eclipse.edc:core-spi", version.ref = "edc" }
+edc-spi-auth = {module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
+edc-auth-configuration = {module = "org.eclipse.edc:auth-configuration", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "edc" }
 edc-spi-validator = { module = "org.eclipse.edc:validator-spi", version.ref = "edc" }

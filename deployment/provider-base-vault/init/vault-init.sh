@@ -23,3 +23,4 @@ vault kv put secret/edc.datasource.default.password content=postgres
 vault kv put secret/edc.datasource.default.url content=jdbc:postgresql://provider-base-postgresql:5432/edc
 
 # vault kv get secret/edc.datasource.default.url
+vault kv put secret/web.http.management.auth.key content=managementApiKeyProviderBase

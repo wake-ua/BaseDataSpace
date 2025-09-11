@@ -50,6 +50,7 @@ services:
       - provider-base-vault-init
       - provider-base-vault
     build: ./providers/provider-base
+    restart: always
 
   provider-ebird-postgresql:
     container_name: provider-ebird-postgresql
@@ -70,6 +71,8 @@ services:
       - "17193:17193"
       - "17194:17194"
     build: ./providers/provider-ebird
+    depends_on:
+      - provider-ebird-postgresql
 
   provider-ebird-init:
     build:

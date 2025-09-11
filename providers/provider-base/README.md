@@ -69,6 +69,8 @@ vault kv put secret/edc.datasource.default.user content=postgres
 vault kv put secret/edc.datasource.default.password content=postgres
 vault kv put secret/edc.datasource.default.url content=jdbc:postgresql://localhost:5432/edc
 
+vault kv put secret/data/web.http.management.auth.key @management-apikey.json
+
 ```
 ### TROUBLESHOOTING
 If the above creates problems when running the provider, try creating the secrets using json as follows:
