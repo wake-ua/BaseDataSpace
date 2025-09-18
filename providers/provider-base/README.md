@@ -34,7 +34,10 @@ cd resources/vault
 server -config=config.hcl    
 ```
 
-Then go to http://localhost:8200 and finish the setup.
+Then go to http://localhost:8200 and finish the setup. Alternatively, use the commandline:
+```shell
+vault operator init
+```
 You can select just 1 for the number of keys.
 Write down or save the token (`root_token`) and the keys (`keys_base64`) for future usage.
 
@@ -69,7 +72,7 @@ vault kv put secret/edc.datasource.default.user content=postgres
 vault kv put secret/edc.datasource.default.password content=postgres
 vault kv put secret/edc.datasource.default.url content=jdbc:postgresql://localhost:5432/edc
 
-vault kv put secret/data/web.http.management.auth.key @management-apikey.json
+vault kv put secret/web.http.management.auth.key content=managementApiKeyProviderBase
 
 ```
 ### TROUBLESHOOTING
@@ -82,6 +85,7 @@ cd resources/vault
 vault kv put secret/data/edc.datasource.default.password @password.json     
 vault kv put secret/data/edc.datasource.default.user @user.json
 vault kv put secret/data/edc.datasource.default.url @url.json
+vault kv put secret/data/web.http.management.auth.key @management-apikey.json
 ```
 Afterward check that the output of calling `curl --header "X-Vault-Token: <TOKEN>" --request GET http://127.0.0.1:8200/v1/secret/data/edc.datasource.default.url`    
 is similar to this (note the data sections in JSON):

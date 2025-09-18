@@ -1,0 +1,32 @@
+services:
+
+  provider-base-postgresql:
+    container_name: provider-base-postgresql
+    image: postgres:13
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=edc
+    volumes:
+      - ./deployment/provider-base-postgresql/data:/var/lib/postgresql/data
+    networks:
+      - base-ds-network
+
+  provider-base:
+    container_name: provider-base
+    ports:
+      - "19191:19191"
+      - "19193:19193"
+      - "19194:19194"
+    depends_on:
+      - provider-base-postgresql
+    build: ./providers/provider-base
+    networks:
+      - base-ds-network
+
+networks:
+  base-ds-network:
+    name: base-ds-network
+    external: true

@@ -82,3 +82,6 @@ resources/vault/vault-data/core
 resources/vault/vault-data/logical
 resources/vault/vault-data/sys
 
+/deployment/provider-base-vault/prod/file/core/
+/deployment/provider-base-vault/prod/file/logical/
+/deployment/provider-base-vault/prod/file/sys/
