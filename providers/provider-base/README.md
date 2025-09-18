@@ -28,7 +28,7 @@ export VAULT_ADDR=http://127.0.0.1:8200
 ### Production mode for Hashicorp Vault (WIP)
 ```shell
 # go to the root project resources folder
-cd resources/vault
+cd resources/provider-base-vault
 
 # Start vault with provided config
 server -config=config.hcl    

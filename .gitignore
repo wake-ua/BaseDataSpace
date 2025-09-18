@@ -77,11 +77,11 @@ deployment/provider-ebird-postgresql/data/*.pid
 deployment/provider-ebird-init/scripts/samples/data/*
 !deployment/provider-ebird-init/scripts/samples/data/.gitkeep
 
-# vault
-resources/vault/vault-data/core
-resources/vault/vault-data/logical
-resources/vault/vault-data/sys
-
 /deployment/provider-base-vault/prod/file/core/
 /deployment/provider-base-vault/prod/file/logical/
 /deployment/provider-base-vault/prod/file/sys/
+
+# vault
+resources/provider-base-vault/vault-data/core
+resources/provider-base-vault/vault-data/logical
+resources/provider-base-vault/vault-data/sys
