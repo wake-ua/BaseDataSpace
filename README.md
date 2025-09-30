@@ -53,3 +53,6 @@ Start endpoint echo for transfers:
 docker build -t http-request-logger util/http-request-logger
 docker run -p 4000:4000 http-request-logger
 ```
+
+### Docker Deployment
+Docker compose deployment instructions: [README](./deployment/README.md)

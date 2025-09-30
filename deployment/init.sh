@@ -12,3 +12,16 @@ curl --location 'http://localhost:39193/management/v1alpha/directory' \
             "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
         }
     }'
+
+# Add the ebird provider base to the node directory
+curl --location 'http://localhost:39193/management/v1alpha/directory' \
+--header 'Content-Type: application/json' \
+--data-raw '  {
+    "name": "eBird Provider",
+    "id": "provider-ebird",
+    "url": "http://provider-ebird:17194/protocol",
+    "supportedProtocols": ["dataspace-protocol-http"],
+        "@context": {
+            "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+        }
+    }'
