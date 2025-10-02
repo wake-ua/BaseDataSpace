@@ -23,11 +23,13 @@ import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.eclipse.edc.crawler.spi.TargetNode;
+import org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory.ParticipantNode;
 import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.MongodbStore;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,13 +65,36 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
      *
      * @return a list of {@code TargetNode} objects representing the entries in the federated catalog node directory
      */
-    public List<TargetNode> queryAll() {
+    public List<TargetNode> queryAllTargetNodes() {
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                var collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
+                var findClause = new Document("url", new Document("$exists", true))
+                        .append("supportedProtocols", new Document("$not", new Document("$size", 0L)))
+                        .append("$expr", new Document("$gt", Arrays.asList(new Document("$strLenCP", "$url"), 0L)));
+
+                var nodes = collection.find(findClause).into(new ArrayList<>());
+                return nodes.stream()
+                        .map(doc -> fromJson(doc.toJson(), TargetNode.class))
+                        .toList();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a list of all {@code ParticipantNode} entries from the federated catalog node directory.
+     * This method uses a transactional context to interact with the MongoDB collection, deserializing
+     * the result into {@code ParticipantNode} objects.
+     *
+     * @return a list of {@code ParticipantNode} objects representing the entries in the federated catalog node directory
+     */
+    public List<ParticipantNode> queryAllParticipantNodes() {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
                 var collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
                 var nodes = collection.find().into(new ArrayList<>());
                 return nodes.stream()
-                        .map(doc -> fromJson(doc.toJson(), TargetNode.class))
+                        .map(doc -> fromJson(doc.toJson(), ParticipantNode.class))
                         .toList();
             }
         });
@@ -83,6 +108,17 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
      * @param node the {@code TargetNode} to be saved in the MongoDB collection; must not be null
      */
     public void save(TargetNode node) {
+        save(new ParticipantNode(node));
+    }
+
+    /**
+     * Persists the given {@code TargetNode} to the federated catalog node directory collection in MongoDB.
+     * This method uses a transactional context for atomic operations, converts the {@code TargetNode}
+     * to its JSON representation, and upserts it as a document into the database.
+     *
+     * @param node the {@code TargetNode} to be saved in the MongoDB collection; must not be null
+     */
+    public void save(ParticipantNode node) {
         transactionContext.execute(() -> {
             try (var connection = getConnection()) {
                 upsertInternal(connection, node);
@@ -117,7 +153,7 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
         }
     }
 
-    private void upsertInternal(MongoClient connection, TargetNode node) {
+    private void upsertInternal(MongoClient connection, ParticipantNode node) {
         Bson filter = Filters.eq(getIdField(), node.id());
         UpdateOptions options = new UpdateOptions().upsert(true);
         Document catalogDoc = Document.parse(toJson(node));

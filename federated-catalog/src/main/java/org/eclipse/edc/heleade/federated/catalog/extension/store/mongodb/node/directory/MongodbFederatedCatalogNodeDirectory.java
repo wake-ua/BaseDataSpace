@@ -17,6 +17,7 @@ package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.node.d
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory.ParticipantNode;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
 import java.util.List;
@@ -48,11 +49,31 @@ public class MongodbFederatedCatalogNodeDirectory extends MongodbFederatedCatalo
 
     @Override
     public List<TargetNode> getAll() {
-        return queryAll();
+        return queryAllTargetNodes();
     }
 
     @Override
     public void insert(TargetNode targetNode) {
         save(targetNode);
     }
+
+    /**
+     * Retrieves a list of all {@code ParticipantNode} objects from the federated catalog node directory.
+     *
+     * @return a list of {@code ParticipantNode} instances representing all participant nodes in the directory.
+     */
+    public List<ParticipantNode> getParticipantNodes() {
+        return queryAllParticipantNodes();
+    }
+
+    /**
+     * Inserts the provided {@code ParticipantNode} into the federated catalog node directory.
+     *
+     * @param participantNode the {@code ParticipantNode} to be inserted; must not be null
+     */
+    public void insert(ParticipantNode participantNode) {
+        save(participantNode);
+    }
+
+
 }

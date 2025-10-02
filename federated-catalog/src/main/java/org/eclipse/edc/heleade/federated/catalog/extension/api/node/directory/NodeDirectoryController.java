@@ -76,11 +76,17 @@ public class NodeDirectoryController {
      */
     @GET
     public String getDirectory() {
-        JsonArray directoryJson = targetNodeDirectory.getAll().stream()
-                .map(this::convertToJsonObject)
-                .collect(toJsonArray());
-
-        return directoryJson.toString();
+        if (targetNodeDirectory instanceof MongodbFederatedCatalogNodeDirectory) {
+            JsonArray directoryJson = ((MongodbFederatedCatalogNodeDirectory) targetNodeDirectory).getParticipantNodes().stream()
+                    .map(this::convertToJsonObject)
+                    .collect(toJsonArray());
+            return directoryJson.toString();
+        } else {
+            JsonArray directoryJson = targetNodeDirectory.getAll().stream()
+                    .map(this::convertToJsonObject)
+                    .collect(toJsonArray());
+            return directoryJson.toString();
+        }
     }
 
     /**
@@ -92,9 +98,15 @@ public class NodeDirectoryController {
      */
     @POST
     public JsonObject addNode(JsonObject node) {
-        TargetNode targetNode = convertToTargetNode(node);
-        targetNodeDirectory.insert(targetNode);
-        return convertToJsonObject(targetNode);
+        if (targetNodeDirectory instanceof MongodbFederatedCatalogNodeDirectory) {
+            ParticipantNode participantNode = convertToParticipantNode(node);
+            ((MongodbFederatedCatalogNodeDirectory) targetNodeDirectory).insert(participantNode);
+            return convertToJsonObject(participantNode);
+        } else {
+            TargetNode targetNode = convertToTargetNode(node);
+            targetNodeDirectory.insert(targetNode);
+            return convertToJsonObject(targetNode);
+        }
     }
 
     /**
@@ -153,6 +165,59 @@ public class NodeDirectoryController {
     }
 
     /**
+     * Converts a ParticipantNode object into a JsonObject.
+     *
+     * @param node the ParticipantNode to convert
+     * @return a JsonObject representation of the ParticipantNode
+     * @throws RuntimeException if there's an error during JSON conversion
+     */
+    private JsonObject convertToJsonObject(ParticipantNode node) {
+        try {
+            // Create a JSON object with the TargetNode properties
+            JsonObjectBuilder builder = Json.createObjectBuilder()
+                    .add(EDC_NAMESPACE + "name", node.name())
+                    .add(EDC_NAMESPACE + "id", node.id());
+
+            // Add the url if not null
+            if (node.targetUrl() != null) {
+                builder.add(EDC_NAMESPACE + "url", node.targetUrl());
+            }
+
+            // Add the supported protocols as an array
+            if (node.supportedProtocols() != null) {
+                JsonArrayBuilder protocolsArray = Json.createArrayBuilder();
+                for (String protocol : node.supportedProtocols()) {
+                    protocolsArray.add(protocol);
+                }
+                builder.add(EDC_NAMESPACE + "supportedProtocols", protocolsArray);
+            }
+            // Add the claims as an array
+            if (node.claims() != null) {
+                JsonArrayBuilder claimsArray = Json.createArrayBuilder();
+                for (String claim : node.claims()) {
+                    claimsArray.add(claim);
+                }
+                builder.add(EDC_NAMESPACE + "claims", claimsArray);
+            }
+            // Add the credentials as an array
+            if (node.credentials() != null) {
+                JsonArrayBuilder credentialsArray = Json.createArrayBuilder();
+                for (String credential : node.credentials()) {
+                    credentialsArray.add(credential);
+                }
+                builder.add(EDC_NAMESPACE + "credentials", credentialsArray);
+            }
+            // Build and return the JSON object
+            JsonObject jsonObject = builder.build();
+
+            return jsonLd.compact(jsonObject).getContent();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting TargetNode to JsonObject", e);
+        }
+    }
+
+    /**
      * Converts a JsonObject into a TargetNode object.
      *
      * @param jsonObject the JsonObject to convert
@@ -172,6 +237,33 @@ public class NodeDirectoryController {
 
             // Create and return a new TargetNode
             return new TargetNode(name, id, url, protocols);
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting JsonObject to TargetNode", e);
+        }
+    }
+
+    /**
+     * Converts a JsonObject into a ParticipantNode object.
+     *
+     * @param jsonObject the JsonObject to convert
+     * @return a ParticipantNode representation of the JsonObject
+     * @throws RuntimeException if there's an error during conversion
+     */
+    private ParticipantNode convertToParticipantNode(JsonObject jsonObject) {
+        try {
+            // First, expand the JSON object if it's in compact form
+            JsonObject expanded = jsonLd.expand(jsonObject).getContent();
+
+            // Extract values from the expanded JSON
+            String name = getStringValue(expanded, EDC_NAMESPACE + "name");
+            String id = getStringValue(expanded, EDC_NAMESPACE + "id");
+            String url = getStringValue(expanded, EDC_NAMESPACE + "url");
+            List<String> protocols = getStringArrayValues(expanded, EDC_NAMESPACE + "supportedProtocols");
+            List<String> claims = getStringArrayValues(expanded, EDC_NAMESPACE + "claims");
+            List<String> credentials = getStringArrayValues(expanded, EDC_NAMESPACE + "credentials");
+
+            // Create and return a new ParticipantNode
+            return new ParticipantNode(name, id, url, protocols, claims, credentials);
         } catch (Exception e) {
             throw new RuntimeException("Error converting JsonObject to TargetNode", e);
         }
