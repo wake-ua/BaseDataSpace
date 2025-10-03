@@ -6,7 +6,7 @@ Base Data Space for the Heleade project
 
 * PROVIDERS:
   * **Base Provider**: Ports 1919x
-  * **Base Provider Prod**: (under development) Ports 1819x
+  * **Base Provider Prod**: (under development) Ports 1919x (same as base provider)
   * **eBird Provider**: Ports 1719x
 * CONSUMERS:
   * **Base Consumer**: Ports 2919x

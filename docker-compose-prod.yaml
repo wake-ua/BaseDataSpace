@@ -14,7 +14,7 @@ services:
     networks:
       - base-ds-network
 
-  provider-base:
+  provider-base-prod:
     container_name: provider-base
     ports:
       - "19191:19191"
@@ -22,7 +22,7 @@ services:
       - "19194:19194"
     depends_on:
       - provider-base-postgresql
-    build: ./providers/provider-base
+    build: ./providers/provider-base-prod
     networks:
       - base-ds-network
 

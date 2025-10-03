@@ -19,11 +19,8 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.jakarta.rsApi)
-    implementation(libs.edc.boot)
-    implementation(libs.edc.http)
 
-    runtimeOnly(project(":providers:provider"))
+    runtimeOnly(project(":providers:provider-base"))
 
     // Hashicorp vault
     implementation(libs.edc.vault.hashicorp)
@@ -38,6 +35,6 @@ var distZip = tasks.getByName("distZip")
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("provider-base.jar")
+    archiveFileName.set("provider-base-prod.jar")
     dependsOn(distTar, distZip)
 }
