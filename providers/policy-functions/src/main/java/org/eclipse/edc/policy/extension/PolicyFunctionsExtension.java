@@ -27,6 +27,15 @@ import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_AT
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
+/**
+ * Extension responsible for initializing and registering policy-related functionality.
+ * Binds specific constraint keys to relevant policy scopes and registers implementations
+ * of atomic constraint rule functions for policy enforcement.docker comp
+ * Key features:
+ * - Binds the location constraint key to the contract negotiation scope.
+ * - Registers the {@link LocationConstraintFunction} to evaluate location-based constraints
+ *   in a policy enforcement context.
+ */
 public class PolicyFunctionsExtension implements ServiceExtension {
     private static final String LOCATION_CONSTRAINT_KEY = EDC_NAMESPACE + "location";
 

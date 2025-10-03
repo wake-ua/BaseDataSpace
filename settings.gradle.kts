@@ -32,8 +32,8 @@ include(":consumers:consumer-base")
 
 include("providers:content-based-catalog-dispatcher")
 include(":providers:provider")
-include(":providers:provider-template")
 include(":providers:provider-base")
+include(":providers:provider-base-prod")
 include("providers:provider-ebird")
 
 include("commons")

@@ -24,6 +24,9 @@ dependencies {
     implementation(libs.edc.http)
 
     runtimeOnly(project(":providers:provider"))
+
+    // Hashicorp vault
+    implementation(libs.edc.vault.hashicorp)
 }
 
 application {
@@ -35,6 +38,6 @@ var distZip = tasks.getByName("distZip")
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("provider-template.jar")
+    archiveFileName.set("provider-base.jar")
     dependsOn(distTar, distZip)
 }

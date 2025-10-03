@@ -3,6 +3,7 @@
 # Add the base provider base to the node directory
 curl --location 'http://localhost:39193/management/v1alpha/directory' \
 --header 'Content-Type: application/json' \
+--header 'x-api-key: managementApiKeyFederatedCatalog' \
 --data-raw '  {
     "name": "Default Base Provider",
     "id": "provider-base",
@@ -16,6 +17,7 @@ curl --location 'http://localhost:39193/management/v1alpha/directory' \
 # Add the ebird provider base to the node directory
 curl --location 'http://localhost:39193/management/v1alpha/directory' \
 --header 'Content-Type: application/json' \
+--header 'x-api-key: managementApiKeyFederatedCatalog' \
 --data-raw '  {
     "name": "eBird Provider",
     "id": "provider-ebird",

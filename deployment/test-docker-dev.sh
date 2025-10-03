@@ -3,6 +3,7 @@
 # get the FC catalog
 curl --location 'http://localhost:39195/api/catalog/v1alpha/catalog/query' \
 --header 'Content-Type: application/json' \
+--header 'x-api-key: managementApiKeyFederatedCatalog' \
 --data-raw '{
   "@context": {
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"

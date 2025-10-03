@@ -49,6 +49,11 @@ dependencies {
     implementation(libs.edc.data.plane.http)
     implementation(libs.edc.data.plane.iam)
 
+    // auth
+    implementation(libs.edc.auth.tokenbased)
+    implementation(libs.edc.spi.auth)
+    implementation(libs.edc.auth.configuration)
+
     implementation(project(":providers:content-based-catalog-dispatcher"))
 
 }

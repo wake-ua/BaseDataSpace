@@ -51,10 +51,6 @@ dependencies {
     // consumer
     runtimeOnly(project(":consumers:consumer"))
 
-    // auth
-    implementation(libs.edc.auth.tokenbased)
-    implementation(libs.edc.spi.auth)
-    implementation(libs.edc.auth.configuration)
 }
 
 application {

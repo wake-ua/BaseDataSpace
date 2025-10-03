@@ -1,33 +1,5 @@
 services:
 
-  provider-base-vault:
-    image: hashicorp/vault
-    container_name: provider-base-vault
-    ports:
-      - "8301:8201"
-      - "8300:8200/tcp"
-    environment:
-      VAULT_ADDR: "http://0.0.0.0:8200"
-      VAULT_API_ADDR: "http://0.0.0.0:8200"
-      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
-    cap_add:
-      - IPC_LOCK  # Lock memory to prevent sensitive data from swapping to disk
-    volumes:
-      - ./deployment/provider-base-vault/file:/vault/file:rw
-      - ./deployment/provider-base-vault/config:/vault/config
-    entrypoint: vault server -dev -dev-listen-address="0.0.0.0:8200" -dev-root-token-id="dev-only-token"
-#    entrypoint: vault server -config=/vault/config/vault-config.json
-
-  provider-base-vault-init:
-    container_name: provider-base-vault-init
-    image: hashicorp/vault
-    volumes:
-      - ./deployment/provider-base-vault/init/vault-init.sh:/vault-init.sh
-    depends_on:
-      - provider-base-vault
-    restart: "no"
-    entrypoint: ./vault-init.sh
-
   provider-base-postgresql:
     container_name: provider-base-postgresql
     image: postgres:13
@@ -47,8 +19,7 @@ services:
       - "19193:19193"
       - "19194:19194"
     depends_on:
-      - provider-base-vault-init
-      - provider-base-vault
+      - provider-base-postgresql
     build: ./providers/provider-base
     restart: always
 
@@ -75,6 +46,7 @@ services:
       - provider-ebird-postgresql
 
   provider-ebird-init:
+    container_name: provider-ebird-init
     build:
       context: ./deployment/provider-ebird-init
       dockerfile: Dockerfile
@@ -87,6 +59,7 @@ services:
       - ./deployment/provider-ebird-init/scripts/samples/data:/app/samples/data
 
   samples-server:
+    container_name: samples-server
     build:
       context: deployment/provider-ebird-init/scripts/samples
       dockerfile: Dockerfile

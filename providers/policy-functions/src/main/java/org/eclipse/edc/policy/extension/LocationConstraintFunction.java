@@ -24,10 +24,25 @@ import java.util.Objects;
 
 import static java.lang.String.format;
 
+/**
+ * Evaluates a location-specific constraint within a policy enforcement context.
+ * Designed to validate whether a participant's claims meet a defined location-based requirement.
+ * Implements an atomic constraint rule function that checks for equality between
+ * the region specified in the participant's claims and a provided value.
+ * Constructor initializes with a monitor for logging evaluation activity.
+ * Constraints evaluated are tied to the "ContractNegotiationPolicyContext."
+ * Only supports the equality operator (EQ); reports an issue if an invalid operator is used.
+ * Returns true if the participant's region matches the expected value, false otherwise.
+ */
 public class LocationConstraintFunction implements AtomicConstraintRuleFunction<Permission, ContractNegotiationPolicyContext> {
 
     private final Monitor monitor;
 
+    /**
+     * Constructs a LocationConstraintFunction with a specified monitor.
+     *
+     * @param monitor an instance of Monitor used for logging evaluation activity
+     */
     public LocationConstraintFunction(Monitor monitor) {
         this.monitor = monitor;
     }

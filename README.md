@@ -4,9 +4,13 @@ Base Data Space for the Heleade project
 
 ## Components
 
-* **Federated Catalog**: (link)
-* **Base Provider**: (link)
-* **Base Consumer**: (link)
+* PROVIDERS:
+  * **Base Provider**: Ports 1919x
+  * **Base Provider Prod**: (under development) Ports 1819x
+  * **eBird Provider**: Ports 1719x
+* CONSUMERS:
+  * **Base Consumer**: Ports 2919x
+* **Federated Catalog**: Ports 3919x
 
 ## Setup
 IntelliJ IDEA based
@@ -22,10 +26,6 @@ Execute the components:
 * Provider Base
 ```
 java -Dedc.fs.config=providers/provider-base/resources/configuration/provider-base-configuration.properties -jar providers/provider-base/build/libs/provider-base.jar --log-level=DEBUG
-```
-* Provider Template
-```
-java -Dedc.fs.config=providers/provider-template/resources/configuration/provider-template-configuration.properties -jar providers/provider-template/build/libs/provider-template.jar --log-level=DEBUG
 ```
 * Provider Ebird
 ```

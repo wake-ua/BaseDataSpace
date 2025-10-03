@@ -54,7 +54,7 @@ public record ParticipantNode(@JsonProperty("name") String name,
     public ParticipantNode(TargetNode targetNode) {
         this(targetNode.name(), targetNode.id(), targetNode.targetUrl(), targetNode.supportedProtocols(), List.of(), List.of());
     }
-    
+
     /**
      * Converts this ParticipantNode instance into a TargetNode instance.
      *

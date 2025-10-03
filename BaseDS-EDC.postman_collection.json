@@ -29,44 +29,6 @@
 					"response": []
 				},
 				{
-					"name": "Provider Template Health",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER-TEMPLATE_HTTP_PORT}}/api/health",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER-TEMPLATE_HTTP_PORT}}",
-							"path": [
-								"api",
-								"health"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Provider Template Health Template Endpoint",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER-TEMPLATE_HTTP_PORT}}/api/template",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER-TEMPLATE_HTTP_PORT}}",
-							"path": [
-								"api",
-								"template"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Consumer Health",
 					"request": {
 						"method": "GET",
@@ -540,6 +502,35 @@
 					"response": []
 				},
 				{
+					"name": "Create Asset FAIL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetIdBad\",\n  \"properties\": {\n    \"name\": \"product description\",\n    \"contenttype\": \"application/json\",\n    \"description\": \"THIS CALL SHOULD FAIL - ValidationFailure\",\n    \"special\": 5\n  },\n  \"privateProperties\": {\n    \"name2\": 1\n  },\n  \"dataAddress\": {\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Asset",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -603,13 +594,28 @@
 					"response": []
 				},
 				{
-					"name": "Create Asset FAIL",
+					"name": "Get Provider Dataset",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetIdBad\",\n  \"properties\": {\n    \"name\": \"product description\",\n    \"contenttype\": \"application/json\",\n    \"description\": \"THIS CALL SHOULD FAIL - ValidationFailure\",\n    \"special\": 5\n  },\n  \"privateProperties\": {\n    \"name2\": 1\n  },\n  \"dataAddress\": {\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }\n}\n",
+							"raw": "{\n    \"@context\": { \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\" },\n    \"@type\": \"DatasetRequest\",\n    \"@id\": \"{{ASSET_ID}}\",\n    \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n    \"counterPartyId\": \"provider-base\",\n    \"protocol\": \"dataspace-protocol-http\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -617,15 +623,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/dataset/request",
 							"host": [
 								"{{HOST_URL}}"
 							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
 							"path": [
 								"management",
 								"v3",
-								"assets"
+								"catalog",
+								"dataset",
+								"request"
 							]
 						}
 					},
@@ -757,11 +765,27 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "managementApiKeyConsumerBase",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -804,6 +828,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -841,11 +868,27 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "managementApiKeyConsumerBase",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -874,7 +917,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Provider Dataset",
+					"name": "Get Provider CBM Catalog Docker",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -883,458 +926,27 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"@context\": { \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\" },\n    \"@type\": \"DatasetRequest\",\n    \"@id\": \"{{ASSET_ID}}\",\n    \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n    \"counterPartyId\": \"provider-base\",\n    \"protocol\": \"dataspace-protocol-http\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "managementApiKeyConsumerBase",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
 								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/dataset/request",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"catalog",
-								"dataset",
-								"request"
 							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Create Asset Template Provider",
-			"item": [
-				{
-					"name": "Create Asset",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetIdTemplate 1\",\n  \"properties\": {\n    \"name\": \"product template description\",\n    \"contenttype\": \"application/json\",\n    \"dcterms:name\": \"test template title\",\n    \"special\": \"test template\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset template distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
 						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetIdtemplate 2\",\n  \"properties\": {\n    \"name\": \"product template 2 description\",\n    \"contenttype\": \"application/json\",\n    \"dcterms:name\": \"test template 2 name\",\n    \"special\": \"test\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test template 2 asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Asset",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}/management/v3/assets/{{ASSET_ID}}",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets",
-								"{{ASSET_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Policy",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"aPolicyTemplate\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}/management/v3/policydefinitions",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"policydefinitions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Contract Definition",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"aPolicyTemplate\",\n  \"contractPolicyId\": \"aPolicyTemplate\",\n  \"assetsSelector\": []\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER-TEMPLATE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractdefinitions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Provider Catalog",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER-TEMPLATE_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"catalog",
-								"request"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Federated Catalog",
-			"item": [
-				{
-					"name": "Catalog Empty Query",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
-							"path": [
-								"api",
-								"catalog",
-								"v1alpha",
-								"catalog",
-								"query"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Catalog Empty Query CBM",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query-cbm",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
-							"path": [
-								"api",
-								"catalog",
-								"v1alpha",
-								"catalog",
-								"query-cbm"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Catalog id Query",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetIdTemplate 1\"\n        }\n    ]\n  \n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
-							"path": [
-								"api",
-								"catalog",
-								"v1alpha",
-								"catalog",
-								"query"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Provider Catalog from FC",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
-									"    if (Array.isArray(dcat_dataset)) {",
-									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
-									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
-									"    } else {",
-									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
-									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
-									"    }",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/catalog/request",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"catalog",
-								"request"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Provider Catalog from FC Docker",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
-									"    if (Array.isArray(dcat_dataset)) {",
-									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
-									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
-									"    } else {",
-									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
-									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
-									"    }",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -1347,424 +959,764 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/catalog/request",
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog-cbm/request-cbm",
 							"host": [
 								"{{HOST_URL}}"
 							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
 							"path": [
 								"management",
 								"v3",
-								"catalog",
-								"request"
+								"catalog-cbm",
+								"request-cbm"
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "managementApiKeyProviderBase",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				},
 				{
-					"name": "Negotiate Contract from FC",
-					"event": [
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Federated Catalog",
+			"item": [
+				{
+					"name": "Catalog Query",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Catalog Empty Query",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+									"path": [
+										"api",
+										"catalog",
+										"v1alpha",
+										"catalog",
+										"query"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractnegotiations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Negotiate Contract from FC Docker",
-					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Catalog Empty Query CBM",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query-cbm",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+									"path": [
+										"api",
+										"catalog",
+										"v1alpha",
+										"catalog",
+										"query-cbm"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractnegotiations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Check Contract from FC",
-					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Catalog id Query",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        }\n    ]\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+									"path": [
+										"api",
+										"catalog",
+										"v1alpha",
+										"catalog",
+										"query"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractnegotiations",
-								"{{CONTRACT_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Start Transfer from FC",
-					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-									"",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://localhost:4000/api/consumer/store\"\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Get Provider Catalog from FC",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+											"    if (Array.isArray(dcat_dataset)) {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+											"    } else {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/transferprocesses",
-							"host": [
-								"{{HOST_URL}}"
 							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"transferprocesses"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Start Transfer from FC Docker",
-					"event": [
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/catalog/request",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"catalog",
+										"request"
+									]
+								}
+							},
+							"response": []
+						},
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-									"",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Get Provider Catalog from FC Docker",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+											"    if (Array.isArray(dcat_dataset)) {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+											"    } else {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/transferprocesses",
-							"host": [
-								"{{HOST_URL}}"
 							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"transferprocesses"
-							]
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/catalog/request",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"catalog",
+										"request"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Get Node Directory",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "FC Transfer",
+					"item": [
+						{
+							"name": "Negotiate Contract from FC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
-							"host": [
-								"{{HOST_URL}}"
 							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v1alpha",
-								"directory"
-							]
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Negotiate Contract from FC Docker",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Contract from FC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations",
+										"{{CONTRACT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Start Transfer from FC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+											"",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://localhost:4000/api/consumer/store\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"transferprocesses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Start Transfer from FC Docker",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+											"",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"transferprocesses"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Add Node Directory",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "Participant Directory",
+					"item": [
+						{
+							"name": "Get Node Directory",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v1alpha",
-								"directory"
-							]
+						{
+							"name": "Add Node Directory",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Node Directory Docker",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://provider-base:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Node Directory Consumer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    },\n    \"claims\": [\"{\\\"location\\\": \\\"eu\\\"}\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Node Directory eBIRD",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"name\": \"Template eBIRD\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://localhost:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Node Directory eBIRD Docker",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"name\": \"Template eBIRD\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://provider-ebird:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Node Directory",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory/consumer-base",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory",
+										"consumer-base"
+									]
+								}
+							},
+							"response": []
 						}
+					]
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
 					},
-					"response": []
+					{
+						"key": "value",
+						"value": "managementApiKeyFederatedCatalog",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				},
 				{
-					"name": "Add Node Directory Docker",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://provider-base:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v1alpha",
-								"directory"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Node Directory Template",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "    {\n        \"name\": \"Template Provider\",\n        \"id\": \"provider-template\",\n        \"url\": \"http://localhost:18194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v1alpha",
-								"directory"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Node Directory eBIRD",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "    {\n        \"name\": \"Template eBIRD\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://localhost:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v1alpha",
-								"directory"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Node Directory",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory/provider-base",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v1alpha",
-								"directory",
-								"provider-base"
-							]
-						}
-					},
-					"response": []
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -2112,6 +2064,45 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					},
+					{
+						"key": "value",
+						"value": "managementApiKeyConsumerBase",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
