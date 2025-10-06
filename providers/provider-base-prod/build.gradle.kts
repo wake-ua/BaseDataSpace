@@ -20,7 +20,7 @@ plugins {
 
 dependencies {
 
-    runtimeOnly(project(":providers:provider-base"))
+    runtimeOnly(project(":providers:provider"))
 
     // Hashicorp vault
     implementation(libs.edc.vault.hashicorp)
