@@ -823,13 +823,26 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "managementApiKeyConsumerBase",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -1892,51 +1905,7 @@
 					"response": []
 				},
 				{
-					"name": "Negotiate Contract Docker",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractnegotiations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Check Contract",
+					"name": "Check Contract Negotiation",
 					"event": [
 						{
 							"listen": "test",
@@ -1978,6 +1947,50 @@
 								"v3",
 								"contractnegotiations",
 								"{{CONTRACT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
 							]
 						}
 					},
@@ -2113,6 +2126,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -2123,6 +2137,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -2131,64 +2146,40 @@
 	],
 	"variable": [
 		{
-			"key": "PROVIDER_HTTP_PORT",
-			"value": "19191",
-			"type": "string"
-		},
-		{
-			"key": "PROVIDER-TEMPLATE_HTTP_PORT",
-			"value": "18191",
-			"type": "string"
+			"key": "HOST_URL",
+			"value": "http://localhost"
 		},
 		{
 			"key": "CONSUMER_HTTP_PORT",
-			"value": "29191",
-			"type": "string"
-		},
-		{
-			"key": "FEDERATED_CATALOG_HTTP",
-			"value": "39191",
-			"type": "string"
-		},
-		{
-			"key": "HOST_URL",
-			"value": "http://localhost",
-			"type": "string"
-		},
-		{
-			"key": "PROVIDER_MANAGEMENT_PORT",
-			"value": "19193",
-			"type": "string"
+			"value": "29191"
 		},
 		{
 			"key": "CONSUMER_MANAGEMENT_PORT",
-			"value": "29193",
-			"type": "string"
+			"value": "29193"
 		},
 		{
-			"key": "FEDERATED_CATALOG_QUERY_PORT",
-			"value": "39195",
-			"type": "string"
+			"key": "PROVIDER_HTTP_PORT",
+			"value": "19191"
+		},
+		{
+			"key": "PROVIDER_MANAGEMENT_PORT",
+			"value": "19193"
 		},
 		{
 			"key": "PROVIDER_PROTOCOL_PORT",
-			"value": "19194",
-			"type": "string"
+			"value": "19194"
 		},
 		{
-			"key": "PROVIDER-TEMPLATE_PROTOCOL_PORT",
-			"value": "18194",
-			"type": "string"
+			"key": "FEDERATED_CATALOG_HTTP",
+			"value": "39191"
+		},
+		{
+			"key": "FEDERATED_CATALOG_QUERY_PORT",
+			"value": "39195"
 		},
 		{
 			"key": "FEDERATED_CATALOG_MANAGEMENT_PORT",
-			"value": "39193",
-			"type": "string"
-		},
-		{
-			"key": "PROVIDER-TEMPLATE_MANAGEMENT_PORT",
-			"value": "18193",
-			"type": "string"
+			"value": "39193"
 		}
 	]
 }
