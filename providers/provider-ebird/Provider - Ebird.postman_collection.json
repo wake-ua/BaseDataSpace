@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "531b501d-51c2-4d1e-9e25-ec60d7386bed",
+		"_postman_id": "6eb0464c-02b4-4bae-a23c-54e3732de19d",
 		"name": "Provider - Ebird",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28863133",
-		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-531b501d-51c2-4d1e-9e25-ec60d7386bed?action=share&source=collection_link&creator=28863133"
+		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-6eb0464c-02b4-4bae-a23c-54e3732de19d?action=share&source=collection_link&creator=28863133"
 	},
 	"item": [
 		{
@@ -365,6 +365,21 @@
 					"response": []
 				}
 			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{API-KEY}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					}
+				]
+			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -436,7 +451,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -883,7 +899,7 @@
 				"apikey": [
 					{
 						"key": "value",
-						"value": "managementApiKeyConsumerBase",
+						"value": "{{API-KEY}}",
 						"type": "string"
 					},
 					{
@@ -919,21 +935,6 @@
 			]
 		}
 	],
-	"auth": {
-		"type": "apikey",
-		"apikey": [
-			{
-				"key": "key",
-				"value": "x-api-key",
-				"type": "string"
-			},
-			{
-				"key": "value",
-				"value": "managementApiKeyProviderEbird",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -996,8 +997,8 @@
 			"value": "otpbcu933m6f"
 		},
 		{
-			"key": "PROVIDER_HOST",
-			"value": ""
+			"key": "API-KEY",
+			"value": "managementApiKeyConsumerBase"
 		}
 	]
 }
