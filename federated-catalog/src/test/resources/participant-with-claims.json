@@ -1,0 +1,49 @@
+{
+  "https://w3id.org/edc/v0.0.1/ns/name": [
+    {
+      "@value": "Test Consumer"
+    }
+  ],
+  "https://w3id.org/edc/v0.0.1/ns/id": [
+    {
+      "@value": "consumer-test"
+    }
+  ],
+  "https://w3id.org/edc/v0.0.1/ns/claims": [
+    {
+      "https://w3id.org/edc/v0.0.1/ns/location": [
+        {
+          "@value": "eu"
+        }
+      ],
+      "https://w3id.org/edc/v0.0.1/ns/membership": [
+        {
+          "https://w3id.org/edc/v0.0.1/ns/level": [
+            {
+              "@value": "gold"
+            }
+          ],
+          "https://w3id.org/edc/v0.0.1/ns/branch": [
+            {
+              "@value": "operator"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "https://w3id.org/edc/v0.0.1/ns/attributes": [
+    {
+      "https://w3id.org/edc/v0.0.1/ns/description": [
+        {
+          "@value": "testing purposes"
+        }
+      ],
+      "https://w3id.org/edc/v0.0.1/ns/role": [
+        {
+          "@value": "testing"
+        }
+      ]
+    }
+  ]
+}

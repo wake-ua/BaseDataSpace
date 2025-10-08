@@ -36,9 +36,6 @@ import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static jakarta.json.stream.JsonCollectors.toJsonArray;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
@@ -172,49 +169,7 @@ public class NodeDirectoryController {
      * @throws RuntimeException if there's an error during JSON conversion
      */
     private JsonObject convertToJsonObject(ParticipantNode node) {
-        try {
-            // Create a JSON object with the TargetNode properties
-            JsonObjectBuilder builder = Json.createObjectBuilder()
-                    .add(EDC_NAMESPACE + "name", node.name())
-                    .add(EDC_NAMESPACE + "id", node.id());
-
-            // Add the url if not null
-            if (node.targetUrl() != null) {
-                builder.add(EDC_NAMESPACE + "url", node.targetUrl());
-            }
-
-            // Add the supported protocols as an array
-            if (node.supportedProtocols() != null) {
-                JsonArrayBuilder protocolsArray = Json.createArrayBuilder();
-                for (String protocol : node.supportedProtocols()) {
-                    protocolsArray.add(protocol);
-                }
-                builder.add(EDC_NAMESPACE + "supportedProtocols", protocolsArray);
-            }
-            // Add the claims as an array
-            if (node.claims() != null) {
-                JsonArrayBuilder claimsArray = Json.createArrayBuilder();
-                for (String claim : node.claims()) {
-                    claimsArray.add(claim);
-                }
-                builder.add(EDC_NAMESPACE + "claims", claimsArray);
-            }
-            // Add the credentials as an array
-            if (node.credentials() != null) {
-                JsonArrayBuilder credentialsArray = Json.createArrayBuilder();
-                for (String credential : node.credentials()) {
-                    credentialsArray.add(credential);
-                }
-                builder.add(EDC_NAMESPACE + "credentials", credentialsArray);
-            }
-            // Build and return the JSON object
-            JsonObject jsonObject = builder.build();
-
-            return jsonLd.compact(jsonObject).getContent();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error converting TargetNode to JsonObject", e);
-        }
+        return jsonLd.compact(node.asJsonObject()).getContent();
     }
 
     /**
@@ -225,21 +180,7 @@ public class NodeDirectoryController {
      * @throws RuntimeException if there's an error during conversion
      */
     private TargetNode convertToTargetNode(JsonObject jsonObject) {
-        try {
-            // First, expand the JSON object if it's in compact form
-            JsonObject expanded = jsonLd.expand(jsonObject).getContent();
-
-            // Extract values from the expanded JSON
-            String name = getStringValue(expanded, EDC_NAMESPACE + "name");
-            String id = getStringValue(expanded, EDC_NAMESPACE + "id");
-            String url = getStringValue(expanded, EDC_NAMESPACE + "url");
-            List<String> protocols = getStringArrayValues(expanded, EDC_NAMESPACE + "supportedProtocols");
-
-            // Create and return a new TargetNode
-            return new TargetNode(name, id, url, protocols);
-        } catch (Exception e) {
-            throw new RuntimeException("Error converting JsonObject to TargetNode", e);
-        }
+        return convertToParticipantNode(jsonObject).asTargetNode();
     }
 
     /**
@@ -247,76 +188,10 @@ public class NodeDirectoryController {
      *
      * @param jsonObject the JsonObject to convert
      * @return a ParticipantNode representation of the JsonObject
-     * @throws RuntimeException if there's an error during conversion
      */
     private ParticipantNode convertToParticipantNode(JsonObject jsonObject) {
-        try {
-            // First, expand the JSON object if it's in compact form
-            JsonObject expanded = jsonLd.expand(jsonObject).getContent();
-
-            // Extract values from the expanded JSON
-            String name = getStringValue(expanded, EDC_NAMESPACE + "name");
-            String id = getStringValue(expanded, EDC_NAMESPACE + "id");
-            String url = getStringValue(expanded, EDC_NAMESPACE + "url");
-            List<String> protocols = getStringArrayValues(expanded, EDC_NAMESPACE + "supportedProtocols");
-            List<String> claims = getStringArrayValues(expanded, EDC_NAMESPACE + "claims");
-            List<String> credentials = getStringArrayValues(expanded, EDC_NAMESPACE + "credentials");
-
-            // Create and return a new ParticipantNode
-            return new ParticipantNode(name, id, url, protocols, claims, credentials);
-        } catch (Exception e) {
-            throw new RuntimeException("Error converting JsonObject to TargetNode", e);
-        }
-    }
-
-    /**
-     * Helper method to extract a string value from a JSON object.
-     */
-    private String getStringValue(JsonObject jsonObject, String key) {
-        if (jsonObject.containsKey(key)) {
-            var valueArray = jsonObject.getJsonArray(key);
-            if (valueArray != null && !valueArray.isEmpty()) {
-                var firstValue = valueArray.get(0);
-                if (firstValue instanceof JsonObject valueObj && valueObj.containsKey("@value")) {
-                    return valueObj.getString("@value");
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Helper method to extract string array values from a JSON object.
-     */
-    private List<String> getStringArrayValues(JsonObject jsonObject, String key) {
-        List<String> results = new ArrayList<>();
-
-        if (jsonObject.containsKey(key)) {
-            var valueArray = jsonObject.getJsonArray(key);
-            if (valueArray != null) {
-                for (var i = 0; i < valueArray.size(); i++) {
-                    var item = valueArray.get(i);
-                    if (item instanceof JsonObject itemObj) {
-                        // Handle case where array items are objects with @value
-                        if (itemObj.containsKey("@value")) {
-                            results.add(itemObj.getString("@value"));
-                        } else if (itemObj.containsKey("@list")) {
-                            // Handle case where the array is represented as @list
-                            var listArray = itemObj.getJsonArray("@list");
-                            for (var j = 0; j < listArray.size(); j++) {
-                                var listItem = listArray.get(j);
-                                if (listItem instanceof JsonObject listItemObj && listItemObj.containsKey("@value")) {
-                                    results.add(listItemObj.getString("@value"));
-                                }
-                            }
-                        }
-                    } else if (item.getValueType().toString().equals("STRING")) {
-                        // Simple string value
-                        results.add(item.toString().replace("\"", ""));
-                    }
-                }
-            }
-        }
-        return results;
+        // First, expand the JSON object if it's in compact form
+        JsonObject expanded = jsonLd.expand(jsonObject).getContent();
+        return ParticipantNode.fromJsonObject(expanded);
     }
 }

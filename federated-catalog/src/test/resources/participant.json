@@ -1,0 +1,6 @@
+{
+  "https://w3id.org/edc/v0.0.1/ns/name":[{"@value":"Test Provider"}],
+  "https://w3id.org/edc/v0.0.1/ns/id":[{"@value":"provider-test"}],
+  "https://w3id.org/edc/v0.0.1/ns/url":[{"@value":"http://localhost:19194/protocol"}],
+  "https://w3id.org/edc/v0.0.1/ns/supportedProtocols":[{"@value":"dataspace-protocol-http"}, {"@value":"dataspace-protocol-https"}]
+}
