@@ -17,6 +17,7 @@ load_dotenv()
 
 BASE_URL = os.getenv("BASE_URL")
 API_KEY = os.getenv("API_KEY")
+X_API_KEY = os.getenv("X_API_KEY")
 SAMPLE_BASE_URL = os.getenv("SAMPLE_BASE_URL")
 POLICY_DEFINITIONS_URL = f"{BASE_URL}/management/v3/policydefinitions"
 CONTRACT_DEFINITIONS_URL = f"{BASE_URL}/management/v3/contractdefinitions"
@@ -181,7 +182,7 @@ def create_policy(filename):
    with open(filepath) as f:
     data = json.load(f)
     data['@id'] = policy_id
-   created = post_json(POLICY_DEFINITIONS_URL, data)
+   created = post_json(POLICY_DEFINITIONS_URL, data, X_API_KEY)
    if not created:
         return None
    else:
@@ -198,7 +199,7 @@ def create_contract_definition(filename, access_policy_id, contract_policy_id, a
     data["contractPolicyId"] = contract_policy_id
     data["assetsSelector"][0]["operandRight"] = asset_ids
     json.dumps(data)
-    created = post_json(CONTRACT_DEFINITIONS_URL, data)
+    created = post_json(CONTRACT_DEFINITIONS_URL, data, X_API_KEY)
     if not created:
         return None
     else:
@@ -208,7 +209,7 @@ def create_contract_definition(filename, access_policy_id, contract_policy_id, a
 
 def create_asset_and_sample(metadata, url, name,province=None, response_type="json"):
     asset_id, asset_payload = build_asset(url, metadata, name, API_KEY, province)
-    created = post_json(ASSETS_URL, asset_payload)
+    created = post_json(ASSETS_URL, asset_payload, X_API_KEY)
     if not created:
         return None
     
@@ -216,7 +217,7 @@ def create_asset_and_sample(metadata, url, name,province=None, response_type="js
     if sample:
         save_parsed_data(f"sample-{asset_id}", response_type, sample)
         sample_payload = build_sample_asset(metadata, name, asset_id, SAMPLE_BASE_URL, response_type, province)
-        post_json(SAMPLES_URL, sample_payload)
+        post_json(SAMPLES_URL, sample_payload, X_API_KEY)
     return created["@id"]
 
 

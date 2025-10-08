@@ -33,10 +33,11 @@ def fetch_sample_data(url, api_key, response_type):
     return None
 
 
-def post_json(url, payload):
+def post_json(url, payload, apikey):
     try:
         headers = {
         'Content-Type': 'application/json',
+         'x-api-key': apikey
         }
         print(url)
         response = requests.post(url, headers=headers, json=payload)
