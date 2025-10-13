@@ -81,6 +81,20 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
         });
     }
 
+    public ParticipantNode queryParticipantNodeById(String participantId) {
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                var collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
+                var findClause = Filters.eq("id", participantId);
+                var nodes = collection.find(findClause).into(new ArrayList<>());
+                if (nodes.size() == 0) {
+                    return null;
+                }
+                return fromJson(nodes.get(0).toJson(), ParticipantNode.class);
+            }
+        });
+    }
+
     /**
      * Retrieves a list of all {@code ParticipantNode} entries from the federated catalog node directory.
      * This method uses a transactional context to interact with the MongoDB collection, deserializing

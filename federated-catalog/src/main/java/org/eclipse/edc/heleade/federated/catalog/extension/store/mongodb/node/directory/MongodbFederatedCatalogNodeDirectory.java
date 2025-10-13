@@ -75,5 +75,14 @@ public class MongodbFederatedCatalogNodeDirectory extends MongodbFederatedCatalo
         save(participantNode);
     }
 
+    /**
+     * Retrieves a {@code ParticipantNode} corresponding to the given participant identifier.
+     *
+     * @param participantId the unique identifier of the participant
+     * @return the {@code ParticipantNode} associated with the given identifier, or null if not found
+     */
+    public ParticipantNode getParticipantNode(String participantId) {
+        return queryParticipantNodeById(participantId);
+    }
 
 }

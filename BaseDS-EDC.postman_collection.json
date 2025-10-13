@@ -570,7 +570,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        }\n    ]\n  \n}",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ]\n  \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -773,6 +773,39 @@
 					"response": []
 				},
 				{
+					"name": "Get Policy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"aPolicy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions/{{POLICY_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions",
+								"{{POLICY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Policy Advanced",
 					"request": {
 						"method": "POST",
@@ -831,7 +864,69 @@
 					"response": []
 				},
 				{
-					"name": "Create Contract Definition Advanced",
+					"name": "Get Contract Definition",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"aPolicy\",\n  \"contractPolicyId\": \"aPolicy\",\n  \"assetsSelector\": []\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions/{{CONTRACT_DEFINITION_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractdefinitions",
+								"{{CONTRACT_DEFINITION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Contract Definition Advanced",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"2\",\n  \"accessPolicyId\": \"es-policy\",\n  \"contractPolicyId\": \"es-policy\",\n  \"assetsSelector\": [\n    {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"assetId2\"\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractdefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract Definition Advanced Copy",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1590,7 +1685,23 @@
 					"name": "Participant Directory",
 					"item": [
 						{
-							"name": "Get Node Directory",
+							"name": "Get All Nodes in Directory",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"NODE_ID\", jsonData[0][\"id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -1616,6 +1727,39 @@
 										"management",
 										"v1alpha",
 										"directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Node in Directory by id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory/{{NODE_ID}}",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory",
+										"{{NODE_ID}}"
 									]
 								}
 							},
@@ -1686,7 +1830,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    },\n    \"claims\": [\"{\\\"location\\\": \\\"eu\\\"}\"]\n}",
+									"raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"claims\": {\n        \"location\": \"eu\",\n        \"membership\": {\n            \"level\": \"GOLD\",\n            \"branch\": \"operator\" \n            }\n        },\n    \"attributes\": {\"description\": \"consumer node\",\n                    \"role\": \"consumer with claims\"},\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"

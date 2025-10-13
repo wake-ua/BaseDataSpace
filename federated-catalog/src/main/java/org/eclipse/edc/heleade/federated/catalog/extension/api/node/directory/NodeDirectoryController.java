@@ -107,6 +107,36 @@ public class NodeDirectoryController {
     }
 
     /**
+     * Retrieves a specific node from the target node directory using its unique identifier.
+     * If the directory supports MongoDB, the method fetches the corresponding {@code ParticipantNode}
+     * and converts it to a {@code JsonObject}. If the node is not found, a {@code WebApplicationException}
+     * is thrown with a {@code NOT_FOUND} status. For unsupported directory implementations, an
+     * {@code UnsupportedOperationException} is thrown.
+     *
+     * @param id the unique identifier of the node to retrieve
+     * @return a {@code JsonObject} representation of the target node
+     * @throws WebApplicationException if the node is not found
+     * @throws UnsupportedOperationException if the directory does not support ID-based queries
+     */
+    @GET
+    @Path("{id}")
+    public JsonObject getNode(@PathParam("id") String id) {
+        if (targetNodeDirectory instanceof MongodbFederatedCatalogNodeDirectory) {
+            try {
+                MongodbFederatedCatalogNodeDirectory mongodbDirectory = (MongodbFederatedCatalogNodeDirectory) targetNodeDirectory;
+                ParticipantNode participantNode = mongodbDirectory.getParticipantNode(id);
+                return convertToJsonObject(participantNode);
+
+            } catch (EdcPersistenceException e) {
+                throw new WebApplicationException("Node not found", Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new UnsupportedOperationException("The target node directory does not support query by id");
+        }
+    }
+
+
+    /**
      * Deletes a target node from the federated catalog node directory using its unique identifier.
      * If the underlying target node directory supports MongoDB, the specified entry will be removed.
      * Otherwise, an {@link UnsupportedOperationException} will be thrown.
