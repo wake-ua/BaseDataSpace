@@ -81,6 +81,14 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
         });
     }
 
+    /**
+     * Queries the federated catalog node directory for a {@code ParticipantNode} with the specified identifier.
+     * This method uses a transactional context to interact with the MongoDB collection and deserializes the result
+     * into a {@code ParticipantNode} object if found.
+     *
+     * @param participantId the unique identifier of the {@code ParticipantNode} to be queried; must not be null
+     * @return the {@code ParticipantNode} object matching the given identifier, or null if no match is found
+     */
     public ParticipantNode queryParticipantNodeById(String participantId) {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
