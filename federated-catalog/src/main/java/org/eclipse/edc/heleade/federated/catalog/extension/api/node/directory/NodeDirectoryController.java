@@ -107,24 +107,28 @@ public class NodeDirectoryController {
     }
 
     /**
-     * Retrieves a specific node from the target node directory using its unique identifier.
-     * If the directory supports MongoDB, the method fetches the corresponding {@code ParticipantNode}
-     * and converts it to a {@code JsonObject}. If the node is not found, a {@code WebApplicationException}
-     * is thrown with a {@code NOT_FOUND} status. For unsupported directory implementations, an
-     * {@code UnsupportedOperationException} is thrown.
+     * Retrieves a participant node as a JSON object based on the provided unique identifier.
      *
-     * @param id the unique identifier of the node to retrieve
-     * @return a {@code JsonObject} representation of the target node
-     * @throws WebApplicationException if the node is not found
-     * @throws UnsupportedOperationException if the directory does not support ID-based queries
+     * @param id the unique identifier of the participant node to be retrieved; must not be null or blank
+     * @return the JSON object representation of the participant node corresponding to the given identifier
+     * @throws WebApplicationException if the id is invalid, the node is not found, or an error occurs while querying the node
+     * @throws UnsupportedOperationException if the target node directory does not support querying by id
      */
     @GET
     @Path("{id}")
     public JsonObject getNode(@PathParam("id") String id) {
+        if (id == null || id.isBlank()) {
+            throw new WebApplicationException("Invalid null or blank node id", Response.Status.BAD_REQUEST);
+        }
+
         if (targetNodeDirectory instanceof MongodbFederatedCatalogNodeDirectory) {
             try {
                 MongodbFederatedCatalogNodeDirectory mongodbDirectory = (MongodbFederatedCatalogNodeDirectory) targetNodeDirectory;
                 ParticipantNode participantNode = mongodbDirectory.getParticipantNode(id);
+                if (participantNode == null) {
+                    throw new WebApplicationException("Node not found", Response.Status.NOT_FOUND);
+                }
+
                 return convertToJsonObject(participantNode);
 
             } catch (EdcPersistenceException e) {
