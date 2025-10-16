@@ -30,7 +30,7 @@ dependencies {
     implementation(libs.edc.dsp)
     implementation(libs.edc.http)
     implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
+    //implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.validator.data.address.http.data)
@@ -55,5 +55,5 @@ dependencies {
     implementation(libs.edc.auth.configuration)
 
     implementation(project(":providers:content-based-catalog-dispatcher"))
-
+    implementation(project(":providers:iam-claims"));
 }

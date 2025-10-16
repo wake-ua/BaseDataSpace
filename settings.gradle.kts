@@ -41,3 +41,4 @@ include("commons")
 
 include("providers:policy-functions")
 include("identity-hub")
+include("providers:iam-claims")

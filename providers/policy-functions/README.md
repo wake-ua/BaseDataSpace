@@ -68,14 +68,10 @@ about the participant's location.
 We can then compare the location to the expected value depending on the operator used. 
 The function should return true, if the constraint is fulfilled, and false otherwise.
 
-One thing to keep in mind is that currently we are using iam-mock extension, 
-which  gets the region claim from the configuration file of the consumer.
-This extension  mocks an identity provider. 
+One thing to keep in mind is that currently we are using Iam-claims extension
+which generates and verifies the tokens. Claims are found  inside the token. 
 
-Depending on the identity provider used, different 
-claims may be present, or the same claim may have a different name.
 
-**In the future, this must be changed for a real identity provider.**
 
 ### TEST IT
 
@@ -474,6 +470,55 @@ DEBUG 2025-09-10T18:38:56.335353211 DSP: Service call failed: Contract offer is 
 In this case the policy was evaluated but was rejected since the region of the consumer
 was us instead of eu
 
-Note: We are not sure if the errorDetail is expected behaviour, so open an issue has been open in edc repo. 
+Note: The errorDetail is an EDC bug which has been reported.  
 
 [Check the official docs](https://github.com/eclipse-edc/Samples/tree/main/policy/policy-01-policy-enforcement)
+
+
+### About access policy and contract policy in Contract definition
+
+
+🔒 **Access policy**: determines whether a particular consumer
+is offered an asset when making a catalog request.
+For example, we may want to restrict certain assets such that only 
+consumers within a particular geography can see them. 
+Consumers outside that geography wouldn’t even have them in their catalog.
+
+
+🔒 **Contract policy**: determines the conditions for 
+initiating a contract negotiation for a particular asset. 
+Note that this only guarantees the successful initiation of a 
+contract negotiation, 
+it does not automatically guarantee the successful conclusion of it!
+
+
+Things to keep in mind:
+
+### - How to set  an access policy:
+
+1. Create policy
+2. Add policy as policy access in contract definition
+3. Create policy function inside the policy functions extension 
+4. Register policy function using catalog scope
+
+Each time a consumer requests the catalog, the access policy is evaluated. 
+If the consumer meets the policy requirements, 
+the corresponding offer will be included in the catalog; otherwise, 
+it will be excluded.
+
+⚠️ Every time that the Federated Catalog (FC) makes a request to get the assets of a provider, 
+this policy will be evaluated, if the FC meets the policies then will be able to scrap the asset otherwise will not be able to access it.
+
+⚠️  If only access policy is added on contract definition, 
+but this policy has not been registered in the catalog scope,  
+then this policy will not be evaluated.
+
+⚠️  If a policy funtion is bound to catalag scope
+and contractNegociation scope, 
+the accessPolicy and contract policy of contract definition will be respected.
+
+
+⚠️  A policy function cannot be bound to ALL SCOPES,  this works only for odrl action (use)
+
+Currently, we plan to bind policy functions to both scopes so contract definition can choose. 
+

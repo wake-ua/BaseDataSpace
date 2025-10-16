@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.edc.http)
     implementation(libs.edc.jersey.providers.lib)
     implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
+   // implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.validator.data.address.http.data)
@@ -78,7 +78,7 @@ dependencies {
     implementation(libs.edc.sql.core)
     implementation(libs.postgres)
 
-
+    implementation(project(":providers:iam-claims"));
     // test
     testImplementation(libs.restAssured)
     testImplementation(libs.awaitility)

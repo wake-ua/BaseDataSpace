@@ -27,6 +27,7 @@ dependencies {
 
     implementation(project(":providers:policy-functions"));
     runtimeOnly(project(":providers:provider"))
+
 }
 
 application {

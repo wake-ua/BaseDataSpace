@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.policy.extension;
 
+import org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext;
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
@@ -22,7 +23,7 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
-import static org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext.NEGOTIATION_SCOPE;
+import static org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext.CATALOG_SCOPE;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -37,7 +38,10 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  *   in a policy enforcement context.
  */
 public class PolicyFunctionsExtension implements ServiceExtension {
-    private static final String LOCATION_CONSTRAINT_KEY = EDC_NAMESPACE + "location";
+    private static final String LOCATION_KEY = "location";
+    private static final String ENTITY_KEY = "entityType";
+    private static final String LOCATION_CONSTRAINT_KEY = EDC_NAMESPACE + LOCATION_KEY;
+    private static final String ENTITY_CONSTRAINT_KEY = EDC_NAMESPACE + ENTITY_KEY;
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
@@ -52,10 +56,21 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
+        var participantId = context.getParticipantId();
+        var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url");
+        var participantRegistryApiKey = context.getConfig().getString("edc.participant.registry.apikey");
+
+        ParticipantClaimChecker claimChecker = new FcParticipantClaimChecker(monitor, participantRegistryUrl, participantRegistryApiKey);
 
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, ALL_SCOPES);
-        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
-        policyEngine.registerFunction(ContractNegotiationPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
+        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, ALL_SCOPES);
+        ruleBindingRegistry.bind(ENTITY_CONSTRAINT_KEY, CATALOG_SCOPE);
+
+        policyEngine.registerFunction(ContractNegotiationPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY,
+                new LocationConstraintFunction(monitor, participantId, LOCATION_KEY, claimChecker));
+
+        policyEngine.registerFunction(CatalogPolicyContext.class,
+                Permission.class, ENTITY_CONSTRAINT_KEY, new EntityConstraintFuction(monitor, participantId, ENTITY_KEY, claimChecker));
     }
 }
 

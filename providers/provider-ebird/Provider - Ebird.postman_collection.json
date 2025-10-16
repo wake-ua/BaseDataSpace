@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "6eb0464c-02b4-4bae-a23c-54e3732de19d",
+		"_postman_id": "b29f94a2-58c6-476b-974d-f5d2c697e7d8",
 		"name": "Provider - Ebird",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28863133",
-		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-6eb0464c-02b4-4bae-a23c-54e3732de19d?action=share&source=collection_link&creator=28863133"
+		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-b29f94a2-58c6-476b-974d-f5d2c697e7d8?action=share&source=collection_link&creator=28863133"
 	},
 	"item": [
 		{
@@ -32,7 +32,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"assetId1\",\r\n  \"properties\": {\r\n    \"name\": \"Example dataset\",\r\n    \"contenttype\": \"application/json\",\r\n    \"dcterms:name\": \"example example\",\r\n    \"special\": \"test\"\r\n    },\r\n  \"dataAddress\": [{\r\n    \"type\": \"HttpData\",\r\n    \"name\": \"Test asset distribution\",\r\n    \"baseUrl\": \"https://www.opendata.nhs.scot/dataset/0d57311a-db66-4eaa-bd6d-cc622b6cbdfa/resource/a5f7ca94-c810-41b5-a7c9-25c18d43e5a4/download/weekly_ae_activity_20250511.csv\",\r\n    \"proxyPath\": \"true\"\r\n  }]\r\n}\r\n",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"assetId2\",\r\n  \"properties\": {\r\n    \"name\": \"Example dataset 2\",\r\n    \"contenttype\": \"application/json\",\r\n    \"dcterms:name\": \"example example\",\r\n    \"special\": \"test\"\r\n    },\r\n  \"dataAddress\": [{\r\n    \"type\": \"HttpData\",\r\n    \"name\": \"Test asset distribution\",\r\n    \"baseUrl\": \"https://www.opendata.nhs.scot/dataset/0d57311a-db66-4eaa-bd6d-cc622b6cbdfa/resource/a5f7ca94-c810-41b5-a7c9-25c18d43e5a4/download/weekly_ae_activity_20250511.csv\",\r\n    \"proxyPath\": \"true\"\r\n  }]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -278,6 +278,39 @@
 					"response": []
 				},
 				{
+					"name": "Get Policy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"aPolicy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions/{{POLICY_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions",
+								"{{POLICY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Policy Eq Location",
 					"request": {
 						"method": "POST",
@@ -301,6 +334,97 @@
 								"management",
 								"v3",
 								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Policy Eq Entity",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"entityType-policy\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"entityType\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:eq\"\r\n          },\r\n          \"rightOperand\": \"public\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Policy Evaluation Plan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"policyScope\": \"request.catalog\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3.1alpha/policydefinitions/location-policy/evaluationplan",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3.1alpha",
+								"policydefinitions",
+								"location-policy",
+								"evaluationplan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Policy Validation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@type\": \"PolicyDefinition\",\r\n\t\"@id\": \"2\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"or\": [\r\n            {\r\n              \"leftOperand\": \"location\",\r\n              \"operator\": \"eq\",\r\n              \"rightOperand\": \"eu\"\r\n            }         \r\n          ]\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3.1alpha/policydefinitions/{{POLICY_ID}}/validate",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3.1alpha",
+								"policydefinitions",
+								"{{POLICY_ID}}",
+								"validate"
 							]
 						}
 					},
@@ -336,13 +460,42 @@
 					"response": []
 				},
 				{
-					"name": "Create Contract Definition Eq Location",
+					"name": "Create Contract Definition Policy Access",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"location-contract\",\r\n  \"accessPolicyId\": \"location-policy\",\r\n  \"contractPolicyId\": \"location-policy\",\r\n  \"assetsSelector\": [{\r\n    \"@type\": \"CriterionDto\",\r\n    \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\r\n    \"operator\": \"=\",\r\n    \"operandRight\": \"assetId1\"\r\n  }]\r\n}\r\n",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"contract-1\",\r\n  \"accessPolicyId\": \"entityType-policy\",\r\n  \"contractPolicyId\": \"location-policy\",\r\n  \"assetsSelector\": [{\r\n    \"@type\": \"CriterionDto\",\r\n    \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\r\n    \"operator\": \"=\",\r\n    \"operandRight\": \"assetId2\"\r\n  }]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractdefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract Definition Location Policy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"contract-2\",\r\n  \"accessPolicyId\": \"location-policy\",\r\n  \"contractPolicyId\": \"location-policy\",\r\n  \"assetsSelector\": [{\r\n    \"@type\": \"CriterionDto\",\r\n    \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\r\n    \"operator\": \"=\",\r\n    \"operandRight\": \"assetId1\"\r\n  }]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -370,7 +523,7 @@
 				"apikey": [
 					{
 						"key": "value",
-						"value": "{{API-KEY}}",
+						"value": "{{API-KEY-PROVIDER}}",
 						"type": "string"
 					},
 					{
@@ -723,7 +876,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -812,7 +966,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -899,7 +1054,7 @@
 				"apikey": [
 					{
 						"key": "value",
-						"value": "{{API-KEY}}",
+						"value": "{{API-KEY-CONSUMER}}",
 						"type": "string"
 					},
 					{
@@ -997,8 +1152,19 @@
 			"value": "otpbcu933m6f"
 		},
 		{
-			"key": "API-KEY",
+			"key": "API-KEY-PROVIDER",
+			"value": "managementApiKeyProviderEbird"
+		},
+		{
+			"key": "API-KEY-CONSUMER",
 			"value": "managementApiKeyConsumerBase"
+		},
+		{
+			"key": "POLICY_ID",
+			"value": "location-policy"
+		},
+		{
+			"value": ""
 		}
 	]
 }
