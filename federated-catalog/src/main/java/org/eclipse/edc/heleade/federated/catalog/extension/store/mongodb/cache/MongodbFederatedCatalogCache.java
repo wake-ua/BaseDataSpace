@@ -21,6 +21,7 @@ import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Field;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.UnwindOptions;
 import com.mongodb.client.model.UpdateOptions;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -30,6 +31,7 @@ import org.bson.conversions.Bson;
 import org.eclipse.edc.catalog.spi.CatalogConstants;
 import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
+import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.spi.query.Criterion;
@@ -118,6 +120,22 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     }
 
     /**
+     * Queries datasets from the federated catalog cache based on the provided query specification.
+     *
+     * @param query the query specification containing filtering, sorting, and pagination criteria
+     * @return a collection of datasets that match the criteria specified in the query
+     */
+    public Collection<Dataset> queryDatasets(QuerySpec query) {
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                return queryInternalDatasets(connection, query);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    /**
      * Deletes all entries from the cache that are marked as "expired"
      */
     @Override
@@ -163,6 +181,27 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
             jsonReader.close();
             Catalog catalog = this.transformerRegistry.transform(resultExpanded, Catalog.class).getContent();
             results.add(catalog);
+        }
+
+        return results;
+    }
+
+    private Collection<Dataset> queryInternalDatasets(MongoClient connection, QuerySpec querySpec) {
+        List<Bson> aggregations = createDatasetAggregationPipeline(querySpec);
+        var resultsStr = new java.util.ArrayList<String>();
+        var results = new java.util.ArrayList<Dataset>();
+
+        getCollection(connection, getFederatedCatalogCollectionName()).aggregate(
+                aggregations
+        ).forEach(doc -> resultsStr.add(doc.toJson()));
+
+        for (String s : resultsStr) {
+            JsonReader jsonReader = Json.createReader(new StringReader(s));
+            JsonObject result = jsonReader.readObject();
+            JsonObject resultExpanded = jsonLd.expand(result).getContent();
+            jsonReader.close();
+            Dataset dataset = this.transformerRegistry.transform(resultExpanded, Dataset.class).getContent();
+            results.add(dataset);
         }
 
         return results;
@@ -251,6 +290,68 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
 
         return aggregations;
     }
+
+    /**
+     * Creates an aggregation pipeline for querying datasets in a MongoDB collection based on the provided {@code QuerySpec}.
+     * The pipeline includes filtering, sorting, pagination, and various transformations to process datasets as per the query specification.
+     *
+     * @param querySpec The query specification containing filter criteria, pagination, and sorting options.
+     * @return A list of BSON objects representing the aggregation pipeline for querying datasets in the MongoDB collection.
+     */
+    public static List<Bson> createDatasetAggregationPipeline(QuerySpec querySpec) {
+        // aggregation creation
+        var aggregations = new java.util.ArrayList<Bson>();
+
+        // Add basic filter to get catalogs with at least one dataset matching the filter criteria
+        Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
+
+        if (!(Objects.equals(filter, Filters.empty()))) {
+            aggregations.add(Aggregates.match(filter));
+
+            // Create the filter expression for datasets using the MongoDB driver's filter API
+            Bson filterInner = createFilterExpression(querySpec, "$$this.");
+            Bson datasetsFilter = new Document("$filter",
+                    new Document("input", "$" + DATASET_FIELD)
+                            .append("cond", filterInner));
+
+            // Create and add the "add fields" stage with the datasets filter
+            Bson addFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD, datasetsFilter));
+            aggregations.add(addFieldsStage);
+
+            // Filter out the catalogs with no datasets matching the filter criteria
+            aggregations.add(Aggregates.addFields(new Field<>("datasets_size", new Document("$size", "$" + DATASET_FIELD))));
+            aggregations.add(Aggregates.match(Filters.gt("datasets_size", 0L)));
+        }
+
+        // Unwind
+        UnwindOptions unwindOptions = new UnwindOptions().preserveNullAndEmptyArrays(false);
+        aggregations.add(Aggregates.unwind("$dcat:dataset", unwindOptions));
+
+        // Keep context from Catalog object
+        aggregations.add(Aggregates.addFields(new Field<>("dcat:dataset.@context", "$@context")));
+
+        // Replace root
+        aggregations.add(Aggregates.replaceRoot("$dcat:dataset"));
+
+
+        // Remove auxiliary fields
+        aggregations.add(Aggregates.project(Document.parse("{_id: 0, datasets_size: 0}")));
+
+        // Add pagination and sorting stages if necessary
+        if (querySpec.getOffset() > 0) {
+            aggregations.add(Aggregates.skip(querySpec.getOffset()));
+        }
+        if (querySpec.getLimit() > 0) {
+            aggregations.add(Aggregates.limit(querySpec.getLimit()));
+        }
+        Bson sort = createSort(querySpec);
+        if (sort != null) {
+            aggregations.add(Aggregates.sort(sort));
+        }
+
+        return aggregations;
+    }
+
 
     /**
      * Creates a MongoDB BSON filter from the given QuerySpec

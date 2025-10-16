@@ -25,6 +25,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.catalog.api.query.FederatedCatalogApi;
 import org.eclipse.edc.catalog.spi.QueryService;
+import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.federatedcatalog.util.FederatedCatalogUtil;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.AbstractResult;
@@ -84,5 +85,36 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
                 .filter(Result::succeeded)
                 .map(AbstractResult::getContent)
                 .collect(toJsonArray());
+    }
+
+    /**
+     * Retrieves cached datasets based on the provided query parameters.
+     *
+     * @param catalogQuery the query parameters as a JsonObject; if null, a default query specification is used
+     * @return a JsonArray containing the matching datasets
+     * @throws InvalidRequestException if the catalogQuery transformation to QuerySpec fails
+     * @throws IllegalStateException if the QueryService or cache is not of the correct type
+     */
+    @Path("/datasets")
+    @POST
+    public JsonArray getCachedDatasets(JsonObject catalogQuery) {
+        if (queryService instanceof HeleadeQueryServiceImpl) {
+            HeleadeQueryServiceImpl heleadeQueryService = (HeleadeQueryServiceImpl) queryService;
+            var querySpec = catalogQuery == null
+                    ? QuerySpec.Builder.newInstance().build()
+                    : transformerRegistry.transform(catalogQuery, QuerySpec.class)
+                    .orElseThrow(InvalidRequestException::new);
+
+            var datasets = heleadeQueryService.getDatasets(querySpec)
+                    .orElseThrow(ServiceResultHandler.exceptionMapper(Dataset.class));
+
+            return datasets.stream()
+                    .map(c -> transformerRegistry.transform(c, JsonObject.class))
+                    .filter(Result::succeeded)
+                    .map(AbstractResult::getContent)
+                    .collect(toJsonArray());
+        } else {
+            throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");
+        }
     }
 }
