@@ -98,3 +98,11 @@ services:
       - "39194:39194"
       - "39195:39195"
     build: ./federated-catalog
+
+  search-service:
+    container_name: search-service
+    ports:
+      - "27191:27191"
+      - "27193:27193"
+      - "27194:27194"
+    build: ./consumers/search-service
