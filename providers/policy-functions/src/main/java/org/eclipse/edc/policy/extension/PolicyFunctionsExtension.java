@@ -24,6 +24,7 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
 import static org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext.CATALOG_SCOPE;
+import static org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext.NEGOTIATION_SCOPE;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -63,7 +64,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
         ParticipantClaimChecker claimChecker = new FcParticipantClaimChecker(monitor, participantRegistryUrl, participantRegistryApiKey);
 
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, ALL_SCOPES);
-        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, ALL_SCOPES);
+        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
         ruleBindingRegistry.bind(ENTITY_CONSTRAINT_KEY, CATALOG_SCOPE);
 
         policyEngine.registerFunction(ContractNegotiationPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY,
