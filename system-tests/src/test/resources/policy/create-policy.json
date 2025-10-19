@@ -1,0 +1,25 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@id": "{{policy-id}}",
+  "policy": {
+    "@context": "http://www.w3.org/ns/odrl.jsonld",
+    "@type": "Set",
+    "permission": [
+      {
+        "action": "use",
+        "constraint": {
+          "@type": "AtomicConstraint",
+          "leftOperand": "{{left-operand}}",
+          "operator": {
+            "@id": "odrl:eq"
+          },
+          "rightOperand": "{{right-operand}}"
+        }
+      }
+    ],
+    "prohibition": [],
+    "obligation": []
+  }
+}
