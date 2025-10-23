@@ -10,16 +10,30 @@
     "properties": {
       "type": "object",
       "properties": {
-        "name": {
+        "http://purl.org/dc/terms/title": {
+          "type": "string"
+        },
+        "http://purl.org/dc/terms/description": {
           "type": "string"
         },
         "contenttype": {
           "type": "string"
+        },
+        "http://purl.org/dc/terms/modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "http://purl.org/dc/terms/issued": {
+          "type": "string",
+          "format": "date-time"
         }
       },
       "required": [
-        "name",
-        "contenttype"
+        "http://purl.org/dc/terms/title",
+        "http://purl.org/dc/terms/description",
+        "contenttype",
+        "http://purl.org/dc/terms/issued",
+        "http://purl.org/dc/terms/modified"
       ]
     }
   },

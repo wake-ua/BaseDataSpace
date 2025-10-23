@@ -11,15 +11,33 @@
     },
     "https://w3id.org/cbm/v0.0.1/ns/isSampleOf": {
       "type": "string"
+    },
+    "https://w3id.org/cbm/v0.0.1/ns/hasSample": {
+      "type": "null"
+    },
+    "http://purl.org/dc/terms/title": {
+      "type": "string"
+    },
+    "http://purl.org/dc/terms/description": {
+      "type": "string"
+    },
+    "http://purl.org/dc/terms/modified": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "http://purl.org/dc/terms/issued": {
+      "type": "string",
+      "format": "date-time"
     }
-  },
-  "https://w3id.org/cbm/v0.0.1/ns/hasSample": {
-    "type": "null"
   },
   "required": [
     "@id",
     "@type",
-    "https://w3id.org/cbm/v0.0.1/ns/isSampleOf"
+    "https://w3id.org/cbm/v0.0.1/ns/isSampleOf",
+    "http://purl.org/dc/terms/title",
+    "http://purl.org/dc/terms/description",
+    "http://purl.org/dc/terms/modified",
+    "http://purl.org/dc/terms/issued"
   ],
   "not": { "required": [ "id"] }
 }
