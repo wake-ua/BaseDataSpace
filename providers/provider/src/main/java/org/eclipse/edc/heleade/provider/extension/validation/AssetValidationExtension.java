@@ -40,6 +40,8 @@ import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.iam.verifiablecredentials.spi.VcConstants.SCHEMA_ORG_NAMESPACE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_PREFIX;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCAT_DATASET_TYPE;
@@ -88,13 +90,11 @@ public class AssetValidationExtension implements ServiceExtension {
         jsonLd = new JsonLdExtension().createJsonLdService(context);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
 
-        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, DSP_SCOPE_V_08);
-        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, DSP_SCOPE_V_2024_1);
-        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, CONTROL_SCOPE);
-        jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, MANAGEMENT_SCOPE);
-        jsonLdGlobal.registerNamespace(DCT_PREFIX, DCT_SCHEMA, MANAGEMENT_SCOPE);
         for (String scope : Arrays.asList(DSP_SCOPE_V_08, DSP_SCOPE_V_2024_1, CONTROL_SCOPE, MANAGEMENT_SCOPE)) {
+            jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, scope);
             jsonLdGlobal.registerNamespace(CBM_PREFIX, CBM_SCHEMA, scope);
+            jsonLdGlobal.registerNamespace(DCT_PREFIX, DCT_SCHEMA, scope);
+            jsonLdGlobal.registerNamespace(DCAT_PREFIX, DCAT_SCHEMA, scope);
         }
     }
 
