@@ -48,6 +48,25 @@
 					"response": []
 				},
 				{
+					"name": "Search Service Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{SEARCH_SERVICE_HTTP_PORT}}/api/health",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{SEARCH_SERVICE_HTTP_PORT}}",
+							"path": [
+								"api",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Federated Catalog Health",
 					"request": {
 						"method": "GET",
@@ -83,7 +102,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -92,7 +112,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"name\": \"product description\",\n    \"contenttype\": \"application/json\",\n    \"dcterms:name\": \"test name\",\n    \"special\": \"test\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -126,7 +146,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -135,136 +156,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"name\": \"second item\",\n    \"contenttype\": \"application/json\",\n    \"dct:name\": \"second item\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset 2 distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset 2 CBM",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"name\": \"second item\",\n\t\"dct:name\": \"second item\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets-cbm"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset 2 CBM Bad",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n    \"cbm:isSampleOf\": \"ert\",\n\t\"name\": \"second item\",\n\t\"dct:name\": \"second item\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets-cbm"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset 3",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetId3\",\n  \"properties\": {\n    \"name\": \"item description\",\n    \"contenttype\": \"application/json\",\n    \"dcterms:name\": \"third item\",\n    \"special\": \"test\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset 3 distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset 2 distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -298,7 +190,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -307,7 +200,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\"\n  },\n  \"@id\": \"assetId4\",\n  \"properties\": {\n    \"name\": \"product  4 description REIMPORT\",\n    \"contenttype\": \"application/json\",\n    \"schema:name\": \"test template 4 name\",\n    \"dcterms:title\": \"test template 4 name\",\n    \"cbm:hasSample\": [\"assetId4Sample\"],\n    \"cbm:hasDataDictionary\": {\n        \"cbm:hasField\": [\n            {\n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"rdfs:type\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"rdfs:type\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test  4 asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\",\n    \"extra\": \"extra\"\n  }]\n  \n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\"\n  },\n  \"@id\": \"assetId4\",\n  \"properties\": {\n    \"dcterms:title\": \"product  4 description\",\n    \"dcterms:description\": \"test description\",\n    \"contenttype\": \"application/json\",\n    \"dcterms:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"cbm:hasSample\": [\"assetId4Sample\"],\n    \"cbm:hasDataDictionary\": {\n        \"cbm:hasField\": [\n            {\n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"rdfs:type\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"rdfs:type\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test  4 asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\",\n    \"extra\": \"extra\"\n  }]\n  \n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -330,6 +223,138 @@
 					"response": []
 				},
 				{
+					"name": "Create Asset 4 Sample",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\"\n  },\n  \"@id\": \"assetId4Sample\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dcterms:title\": \"test template 4 name\",\n    \"dcterms:description\": \"test description\",\n    \"dcterms:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:license\": \"https://opendefinition.org/licenses/odc-pddl\",\n    \"cbm:isSampleOf\": \"assetId4\",\n    \"schema:algorithm\": \"clustering\",\n    \"cbm:hasDataDictionary\": {\n        \"cbm:hasField\": [\n            {\n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"rdfs:type\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"dcterms:type\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test  4 sample asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\",\n    \"extra\": \"extra\"\n  }]\n  \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 2 CBM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"dct:title\": \"second item\",\n\t\"dct:description\": \"this is a second item\",\n    \"dcat:keyword\": [\"TEST\", \"SECOND\"],\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset CBM Bad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n\t\"@id\": \"assetIdBadcbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:title\": \"Test asset 2 distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n    \"cbm:isSampleOf\": \"ert\",\n\t\"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"@context\": {\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Asset 4 CBM",
 					"event": [
 						{
@@ -341,7 +366,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -350,7 +376,51 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId4Cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t    \"name\": \"Test  4 sample asset distribution\",\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"name\": \"product  4 \",\n\t\"dct:title\": \"test template 4 name\",\n\t\"contenttype\": \"application/json\",\n    \"cbm:hasSample\": [\"assetId4Sample\", \"anotherSample\"],\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"raw": "{\n\t\"@id\": \"assetId4Cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dct:title\": \"Test  4 sample asset distribution\",\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:type\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"id\",\n                            \"dct:title\": \"User Identifier\",\n                            \"cbm:type\": \"integer\",\n                            \"dct:description\": \"Id of the user\",\n                            \"cbm:sampleValue\": \"1\"\n                        }\n                    ]\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"cbm:hasSample\": [\"assetId4SampleCbm\"],\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset 4 Sample CBM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"@id\": \"assetId4SampleCbm\",\n\t\"@type\": \"cbm:Sample\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t    \"name\": \"Test  4 sample asset distribution\",\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"cbm:isSampleOf\": \"assetId4\",\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n\t\"schema:algorithm\": \"clustering\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -384,7 +454,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -393,7 +464,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId5\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t    \"name\": \"Test  4 sample asset distribution\",\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n            \"authKey\": \"x-ebirdapitoken\",\n            \"authCode\": \"authCode\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"name\": \"product  4 \",\n\t\"dct:title\": \"test template 4 name\",\n\t\"contenttype\": \"application/json\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"raw": "{\n\t\"@id\": \"assetId5\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dct:title\": \"Test  4 sample asset distribution\",\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"authKey\": \"x-ebirdapitoken\",\n                \"authCode\": \"authCode\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:type\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"id\",\n                            \"dct:title\": \"User Identifier\",\n                            \"cbm:type\": \"integer\",\n                            \"dct:description\": \"Id of the user\",\n                            \"cbm:sampleValue\": \"1\"\n                        }\n                    ]\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -410,121 +481,6 @@
 								"management",
 								"v3",
 								"assets-cbm"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset 4 Sample",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\"\n  },\n  \"@id\": \"assetId4Sample\",\n  \"properties\": {\n    \"name\": \"product  4 name SAMPLE\",\n    \"contenttype\": \"application/json\",\n    \"schema:name\": \"test template 4 name\",\n    \"dcterms:title\": \"test template 4 name\",\n    \"cbm:isSampleOf\": \"assetId4\",\n    \"schema:algorithm\": \"clustering\",\n    \"cbm:hasDataDictionary\": {\n        \"cbm:hasField\": [\n            {\n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"rdfs:type\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"rdfs:type\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test  4 sample asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\",\n    \"extra\": \"extra\"\n  }]\n  \n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset 4 Sample CBM",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId4Sample\",\n\t\"@type\": \"cbm:Sample\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t    \"name\": \"Test  4 sample asset distribution\",\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test template 4 name\",\n\t\"cbm:isSampleOf\": \"assetId4\",\n\t\"name\": \"product  4 name SAMPLE\",\n\t\"dct:title\": \"test template 4 name\",\n\t\"contenttype\": \"application/json\",\n\t\"schema:algorithm\": \"clustering\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets-cbm"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset FAIL",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetIdBad\",\n  \"properties\": {\n    \"name\": \"product description\",\n    \"contenttype\": \"application/json\",\n    \"description\": \"THIS CALL SHOULD FAIL - ValidationFailure\",\n    \"special\": 5\n  },\n  \"privateProperties\": {\n    \"name2\": 1\n  },\n  \"dataAddress\": {\n    \"type\": \"HttpData\",\n    \"name\": \"Test asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
 							]
 						}
 					},
@@ -565,42 +521,28 @@
 				},
 				{
 					"name": "Query All Assets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"ASSET_ID\", jsonData[0][\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ]\n  \n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets/request",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets",
-								"request"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Query Assets by id",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"{{ASSET_ID}}\"\n        }\n    ]\n  \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1989,7 +1931,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory/consumer-base",
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory/{{NODE_ID}}",
 									"host": [
 										"{{HOST_URL}}"
 									],
@@ -1998,7 +1940,7 @@
 										"management",
 										"v1alpha",
 										"directory",
-										"consumer-base"
+										"{{NODE_ID}}"
 									]
 								}
 							},
@@ -2720,6 +2662,10 @@
 		{
 			"key": "FEDERATED_CATALOG_MANAGEMENT_PORT",
 			"value": "39193"
+		},
+		{
+			"key": "SEARCH_SERVICE_HTTP_PORT",
+			"value": ""
 		}
 	]
 }
