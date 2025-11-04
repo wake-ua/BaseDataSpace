@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:17-ea-slim
 
 COPY build/libs/provider-ebird.jar provider-ebird.jar
 COPY resources/configuration/provider-ebird-docker-configuration.properties provider-ebird-docker-configuration.properties

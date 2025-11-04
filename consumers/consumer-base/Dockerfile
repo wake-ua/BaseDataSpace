@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:17-ea-slim
 
 COPY build/libs/consumer-base.jar consumer-base.jar
 COPY resources/configuration/consumer-base-docker-configuration.properties consumer-base-docker-configuration.properties

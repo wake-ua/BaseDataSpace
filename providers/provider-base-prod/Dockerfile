@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:17-ea-slim
 
 COPY build/libs/provider-base-prod.jar provider-base-prod.jar
 COPY resources/configuration/provider-base-prod-docker-configuration.properties provider-base-prod-docker-configuration.properties

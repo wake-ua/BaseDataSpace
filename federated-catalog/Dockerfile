@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:17-ea-slim
 
 COPY build/libs/federated-catalog.jar federated-catalog.jar
 COPY resources/configuration/fc-docker-configuration.properties fc-docker-configuration.properties

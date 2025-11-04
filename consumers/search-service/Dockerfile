@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:17-ea-slim
 
 COPY build/libs/search-service.jar search-service.jar
 COPY resources/configuration/search-service-docker-configuration.properties search-service-docker-configuration.properties
