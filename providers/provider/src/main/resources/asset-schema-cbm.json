@@ -4,9 +4,13 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+    "@type": {
+      "type": "string"
+    },
     "@id": {
       "type": "string"
     },
+    "@context": {},
     "properties": {
       "type": "object",
       "properties": {
@@ -26,30 +30,130 @@
         "http://purl.org/dc/terms/issued": {
           "type": "string",
           "format": "date-time"
+        },
+        "http://purl.org/dc/terms/accessRights": {
+          "type": "string",
+          "format": "uri"
+        },
+        "http://www.w3.org/ns/dcat#keyword": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "https://w3id.org/cbm/v0.0.1/ns/hasSample": {
+          "type": ["string", "array"]
+        },
+        "https://w3id.org/cbm/v0.0.1/ns/isSampleOf": {
+          "type": "string"
+        },
+        "https://schema.org/algorithm": {
+          "type": "string"
+        },
+        "https://w3id.org/cbm/v0.0.1/ns/hasDataDictionary": {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "enum": ["cbm:DataDictionary", "https://w3id.org/cbm/v0.0.1/ns/DataDictionary"]
+            },
+            "https://w3id.org/cbm/v0.0.1/ns/hasField": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "@type": {
+                      "type": "string",
+                      "enum": ["cbm:Field", "https://w3id.org/cbm/v0.0.1/ns/Field"]
+                    },
+                    "https://schema.org/name": {
+                      "type": "string"
+                    },
+                    "http://purl.org/dc/terms/title": {
+                      "type": "string"
+                    },
+                    "http://purl.org/dc/terms/description": {
+                      "type": "string"
+                    },
+                    "https://w3id.org/cbm/v0.0.1/ns/sampleValue": {
+                    },
+                    "https://w3id.org/cbm/v0.0.1/ns/type": {
+                      "type": "string",
+                      "enum": ["boolean", "date", "dateTime", "decimal", "double", "float", "integer", "string", "time"]
+                    }
+                  },
+                  "required": [
+                    "@type",
+                    "https://schema.org/name"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "@type",
+            "https://w3id.org/cbm/v0.0.1/ns/hasField"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
         "http://purl.org/dc/terms/title",
         "http://purl.org/dc/terms/description",
-        "contenttype",
         "http://purl.org/dc/terms/issued",
-        "http://purl.org/dc/terms/modified"
-      ]
-    }
-  },
-  "dataAddress": {
-    "type": "object",
-    "properties": {
-      "type": "string",
-      "name": "string",
-      "baseUrl": "string",
-      "proxyPath": "string"
+        "http://purl.org/dc/terms/modified",
+        "http://purl.org/dc/terms/accessRights"
+      ],
+      "additionalProperties": false
+    },
+    "dataAddress": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        },
+        "type": "string",
+        "baseUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "proxyPath": {
+          "type": "string",
+          "enum": [
+            "true",
+            "false"
+          ]
+        },
+        "authKey": {
+          "type": "string"
+        },
+        "authCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "baseUrl"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
     "@id",
     "properties",
     "dataAddress"
-  ]
+  ],
+  "additionalProperties": false
 }
 

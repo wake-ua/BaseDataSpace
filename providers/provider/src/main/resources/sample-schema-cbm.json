@@ -51,102 +51,120 @@
     "http://purl.org/dc/terms/accessRights": {
       "type": "string",
       "format": "uri"
-    }
-  },
-  "contenttype": {
-    "type": "string"
-  },
-  "http://www.w3.org/ns/dcat#distribution": {
-    "type": "object",
-    "properties": {
-      "@type": {
-        "type": "string",
-        "enum": ["dcat:Distribution", "http://www.w3.org/ns/dcat#Distribution"]
-      },
-      "name": {
-        "type": "string"
-      },
-      "http://purl.org/dc/terms/title": {
-        "type": "string"
-      },
-      "http://www.w3.org/ns/dcat#accessURL": {
-        "type": "string",
-        "format": "uri"
-      },
-      "proxyPath": {
-        "type": "string",
-        "enum": ["true", "false"]
-      },
-      "http://purl.org/dc/terms/format": {
-        "type": "object",
-        "properties": {
-          "@id": {
-            "type": "string",
-            "enum": ["HttpData"]
-          }
-        }
-      },
-      "authKey": {
-        "type": "string"
-      },
-      "authCode": {
-        "type": "string"
-      },
-      "https://w3id.org/cbm/v0.0.1/ns/hasDataDictionary": {
-        "type": "object",
-        "properties": {
-          "@type": {
-            "type": "string",
-            "enum": ["cbm:DataDictionary", "https://w3id.org/cbm/v0.0.1/ns/DataDictionary"]
-          },
-          "https://w3id.org/cbm/v0.0.1/ns/hasField": {
-            "type": "array",
-            "items": [
-              {
-                "type": "object",
-                "properties": {
-                  "@type": {
-                    "type": "string",
-                    "enum": ["cbm:Field", "https://w3id.org/cbm/v0.0.1/ns/Field"]
-                  },
-                  "https://schema.org/name": {
-                    "type": "string"
-                  },
-                  "http://purl.org/dc/terms/title": {
-                    "type": "string"
-                  },
-                  "http://purl.org/dc/terms/description": {
-                    "type": "string"
-                  },
-                  "https://w3id.org/cbm/v0.0.1/ns/sampleValue": {
-                  },
-                  "https://w3id.org/cbm/v0.0.1/ns/type": {
-                    "type": "string",
-                    "enum": ["boolean", "date", "dateTime", "decimal", "double", "float", "integer", "string", "time"]
-                  }
-                },
-                "required": [
-                  "@type",
-                  "https://schema.org/name"
-                ],
-                "additionalProperties": false
-              }
-            ]
+    },
+    "contenttype": {
+      "type": "string"
+    },
+    "http://www.w3.org/ns/dcat#distribution": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "enum": [
+            "dcat:Distribution",
+            "http://www.w3.org/ns/dcat#Distribution"
+          ]
+        },
+        "http://www.w3.org/ns/dcat#accessURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "proxyPath": {
+          "type": "string",
+          "enum": [
+            "true",
+            "false"
+          ]
+        },
+        "http://purl.org/dc/terms/format": {
+          "type": "object",
+          "properties": {
+            "@id": {
+              "type": "string",
+              "enum": [
+                "HttpData"
+              ]
+            }
           }
         },
-        "required": [
-          "@type",
-          "https://w3id.org/cbm/v0.0.1/ns/hasField"
-        ],
-        "additionalProperties": false
-      }
-    },
-    "required": [
-      "@type",
-      "http://www.w3.org/ns/dcat#accessURL",
-      "http://purl.org/dc/terms/format"
-    ],
-    "additionalProperties": false
+        "authKey": {
+          "type": "string"
+        },
+        "authCode": {
+          "type": "string"
+        },
+        "https://w3id.org/cbm/v0.0.1/ns/hasDataDictionary": {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "enum": [
+                "cbm:DataDictionary",
+                "https://w3id.org/cbm/v0.0.1/ns/DataDictionary"
+              ]
+            },
+            "https://w3id.org/cbm/v0.0.1/ns/hasField": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "@type": {
+                      "type": "string",
+                      "enum": [
+                        "cbm:Field",
+                        "https://w3id.org/cbm/v0.0.1/ns/Field"
+                      ]
+                    },
+                    "https://schema.org/name": {
+                      "type": "string"
+                    },
+                    "http://purl.org/dc/terms/title": {
+                      "type": "string"
+                    },
+                    "http://purl.org/dc/terms/description": {
+                      "type": "string"
+                    },
+                    "https://w3id.org/cbm/v0.0.1/ns/sampleValue": {
+                    },
+                    "https://w3id.org/cbm/v0.0.1/ns/type": {
+                      "type": "string",
+                      "enum": [
+                        "boolean",
+                        "date",
+                        "dateTime",
+                        "decimal",
+                        "double",
+                        "float",
+                        "integer",
+                        "string",
+                        "time"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "@type",
+                    "https://schema.org/name"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "@type",
+            "https://w3id.org/cbm/v0.0.1/ns/hasField"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "@type",
+        "http://www.w3.org/ns/dcat#accessURL",
+        "http://purl.org/dc/terms/format"
+      ],
+      "additionalProperties": false
+    }
   },
   "required": [
     "@id",
@@ -159,5 +177,5 @@
     "http://purl.org/dc/terms/accessRights",
     "http://www.w3.org/ns/dcat#distribution"
   ],
-  "not": { "required": [ "id"] }
+  "additionalProperties": false
 }

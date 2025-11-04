@@ -59,12 +59,6 @@
           "type": "string",
           "enum": ["dcat:Distribution", "http://www.w3.org/ns/dcat#Distribution"]
         },
-        "name": {
-          "type": "string"
-        },
-        "http://purl.org/dc/terms/title": {
-          "type": "string"
-        },
         "http://www.w3.org/ns/dcat#accessURL": {
           "type": "string",
           "format": "uri"
@@ -155,7 +149,6 @@
     "http://purl.org/dc/terms/accessRights",
     "http://www.w3.org/ns/dcat#distribution"
   ],
-  "not": { "required": [ "id" ] },
   "additionalProperties": false
 }
 
