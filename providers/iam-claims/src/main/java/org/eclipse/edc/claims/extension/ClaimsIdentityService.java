@@ -25,14 +25,36 @@ import org.eclipse.edc.spi.types.TypeManager;
 
 import java.util.Map;
 
-
+/**
+ * Defines an IdentityServices implementation that issues and verifies claim-based tokens.
+ */
 public class ClaimsIdentityService implements IdentityService {
 
+    /**
+     * Provides JSON serialization and deserialization utilities.
+     * */
     private final TypeManager typeManager;
+    /**
+     * The id of the client.
+     */
     private final String clientId;
+    /**
+     * The monitor used for logging.
+     */
     private final Monitor monitor;
+    /**
+     * Participant claims.
+     */
     Map<String, Object> claims;
 
+    /**
+     * Creates a new claims identity service.
+     *
+     * @param typeManager the type manager used for JSON serialization and deserialization
+     * @param monitor the monitor used for logging
+     * @param claims the participant claims included in the token
+     * @param clientId the unique identifier of the client
+     */
     public ClaimsIdentityService(TypeManager typeManager, Monitor monitor,
                                  Map<String, Object> claims,
                                  String clientId) {

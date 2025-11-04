@@ -32,11 +32,13 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 /**
  * Extension responsible for initializing and registering policy-related functionality.
  * Binds specific constraint keys to relevant policy scopes and registers implementations
- * of atomic constraint rule functions for policy enforcement.docker comp
+ * of atomic constraint rule functions for policy enforcement
  * Key features:
  * - Binds the location constraint key to the contract negotiation scope.
+ * - Binds the entityType constraint key to the contract catalog scope.
  * - Registers the {@link LocationConstraintFunction} to evaluate location-based constraints
- *   in a policy enforcement context.
+ * - Registers the {@link EntityConstraintFunction} to evaluate entity-based constraints
+ * in a policy enforcement context.
  */
 public class PolicyFunctionsExtension implements ServiceExtension {
     private static final String LOCATION_KEY = "location";
@@ -71,7 +73,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
                 new LocationConstraintFunction(monitor, participantId, LOCATION_KEY, claimChecker));
 
         policyEngine.registerFunction(CatalogPolicyContext.class,
-                Permission.class, ENTITY_CONSTRAINT_KEY, new EntityConstraintFuction(monitor, participantId, ENTITY_KEY, claimChecker));
+                Permission.class, ENTITY_CONSTRAINT_KEY, new EntityConstraintFunction(monitor, participantId, ENTITY_KEY, claimChecker));
     }
 }
 

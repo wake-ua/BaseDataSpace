@@ -36,6 +36,11 @@ public class FileParticipantClaimsLoader implements ParticipantClaimsLoader {
     private final ObjectMapper mapper = new ObjectMapper();
     private final  Monitor  monitor;
 
+    /**
+      Loads participant claims from the specified JSON file path.
+      *
+      * @param monitor the monitor used for logging
+     */
     public FileParticipantClaimsLoader(Monitor monitor) {
         this.monitor = monitor;
     }

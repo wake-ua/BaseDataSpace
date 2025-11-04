@@ -14,12 +14,16 @@
 
 package org.eclipse.edc.policy.extension;
 
+/**
+ * Defines the contract for validating participant claims
+ * within the policy evaluation process.
+ */
 public interface ParticipantClaimChecker {
     /**
      * Checks if a participant's claim is true
      *
-     * @param claimKey the claim key
-     * @param claimValue the claim value
+     * @param claimKey      the claim key
+     * @param claimValue    the claim value
      * @param participantId the participant ID
      * @return true if the claim is valid
      */

@@ -16,8 +16,17 @@ package org.eclipse.edc.claims.extension;
 
 import java.util.Map;
 
+/**
+ * Defines the contract for loading participant claims from a given source.
+ */
 public interface ParticipantClaimsLoader {
 
+    /**
+     * Loads participant claims from the specified path.
+     *
+     * @param path the file system path or resource location from which to load the claims
+     * @return a map containing the participant's claims; never {@code null}, but may be empty
+     */
     Map<String, Object> loadClaims(String path);
 
 }

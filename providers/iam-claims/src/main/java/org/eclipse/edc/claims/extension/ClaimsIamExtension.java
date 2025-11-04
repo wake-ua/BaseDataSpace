@@ -26,21 +26,36 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
 
 
-
+/**
+ * Defines a service extension that provides an Identity Service
+ */
 @Provides(IdentityService.class)
 @Extension(value = ClaimsIamExtension.NAME)
 public class ClaimsIamExtension implements ServiceExtension {
 
+    /**
+     * The name of this extension.
+     */
     public static final String NAME = "Credentials IAM";
-
+    /**
+     * Provides JSON serialization and deserialization utilities.
+     */
     @Inject
     private TypeManager typeManager;
 
+    /**
+     * Returns the name of the extension.
+     *
+     * @return the name of this extension
+     */
     @Override
     public String name() {
         return NAME;
     }
 
+    /**
+     * Initializes the Claims IAM extension by loading participant claims and registering
+     */
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
@@ -57,6 +72,11 @@ public class ClaimsIamExtension implements ServiceExtension {
                 new ClaimsIdentityService(typeManager, monitor, claims, participantId));
     }
 
+    /**
+     * Provides the default {@link AudienceResolver} implementation.
+     *
+     * @return a resolver that uses the counterparty address as the audience
+     */
     @Provider
     public AudienceResolver audienceResolver() {
         return (msg) -> Result.success(msg.getCounterPartyAddress());

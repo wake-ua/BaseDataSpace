@@ -23,13 +23,38 @@ import org.eclipse.edc.spi.monitor.Monitor;
 
 import java.util.Map;
 
-public abstract class AbstractConstraintFunction<C extends PolicyContext  & ParticipantAgentPolicyContext> implements AtomicConstraintRuleFunction<Permission, C> {
-
+/**
+ * Base class for implementing policy constraint functions that evaluate
+ * participant claims within the EDC policy engine.
+ * This abstract class provides common logic for retrieving and validating
+ * participant claims
+ */
+public abstract class AbstractConstraintFunction<C extends PolicyContext & ParticipantAgentPolicyContext> implements AtomicConstraintRuleFunction<Permission, C> {
+    /**
+     * The monitor used for logging.
+     */
     protected final Monitor monitor;
+    /**
+     * The ID of the participant being checked.
+     */
     protected final String participantId;
+    /**
+     * The key of the claim to evaluate.
+     */
     protected final String claimKey;
+    /**
+     * The checker used to validate participant claims.
+     */
     protected final ParticipantClaimChecker participantClaimChecker;
 
+    /**
+     * Creates a new abstract constraint function.
+     *
+     * @param monitor                 the monitor used for logging
+     * @param participantId           the ID of the participant being checked
+     * @param claimKey                the key of the claim to evaluate
+     * @param participantClaimChecker the checker used to validate participant claims
+     */
     protected AbstractConstraintFunction(Monitor monitor, String participantId, String claimKey,
                                          ParticipantClaimChecker participantClaimChecker) {
         this.monitor = monitor;
@@ -70,6 +95,13 @@ public abstract class AbstractConstraintFunction<C extends PolicyContext  & Part
 
     /**
      * Subclasses implement this to define how to compare the claim to the rightValue.
+     *
+     * @param operator   the comparison operator
+     * @param claimValue the value of the participant's claim
+     * @param rightValue the expected value of the constraint
+     * @param rule       the permission rule being evaluated
+     * @param context    the current policy context
+     * @return true if the claim satisfies the constraint; false otherwise
      */
     protected abstract boolean evaluateClaim(Operator operator, String claimValue, Object rightValue,
                                              Permission rule, C context);

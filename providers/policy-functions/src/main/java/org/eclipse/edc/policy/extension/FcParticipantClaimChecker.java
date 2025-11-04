@@ -24,16 +24,21 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 /**
- * Implementation of {@link ParticipantClaimChecker} that validates participant claims
- * by retrieving participant information from Participant List Registry.
+ *  Implementation of {@link ParticipantClaimChecker} that validates participant claims
+ *  by retrieving participant information from Participant List Registry.
  */
-
 public class FcParticipantClaimChecker implements ParticipantClaimChecker {
     private final Monitor monitor;
     private final String baseUrl;
     private final String apiKey;
 
-
+    /**
+     * Creates a new instance of {@code FcParticipantClaimChecker}.
+     *
+     * @param monitor the monitor used for logging or tracking claim checks
+     * @param baseUrl the base URL of the FC used as a participant registry
+     * @param apiKey  the API key used for authentication in registry
+     */
     public FcParticipantClaimChecker(Monitor monitor, String baseUrl, String apiKey) {
         this.monitor = monitor;
         this.baseUrl = baseUrl;
@@ -45,11 +50,10 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
      * matching the specified key and value. The check is performed by querying the
      * participant registry service and comparing the retrieved data.
      *
-     * @param claimKey     the key of the claim to verify
-     * @param claimValue   the provided user claim value
+     * @param claimKey      the key of the claim to verify
+     * @param claimValue    the provided user claim value
      * @param participantId the identifier of the participant
-     * @return {@code true} if the participant's claim matches the verified value,
-     *         {@code false} otherwise or if an error occurs while retrieving the claims
+     * @return {@code true} if the participant's claim matches the verified value, {@code false} otherwise or if an error occurs while retrieving the claims
      */
     @Override
     public boolean checkClaim(String claimKey, String claimValue, String participantId) {

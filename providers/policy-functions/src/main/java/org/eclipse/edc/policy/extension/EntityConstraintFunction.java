@@ -21,14 +21,34 @@ import org.eclipse.edc.spi.monitor.Monitor;
 
 import static java.lang.String.format;
 
-public class EntityConstraintFuction extends AbstractConstraintFunction<CatalogPolicyContext> {
+/**
+ * Defines a policy function that evaluates the entity type policy.
+ */
+public class EntityConstraintFunction extends AbstractConstraintFunction<CatalogPolicyContext> {
 
-
-    public EntityConstraintFuction(Monitor monitor, String participantId, String claimKey,
-                                   ParticipantClaimChecker participantClaimChecker) {
+    /**
+     * This function is responsible for evaluating a participant’s entity type -related claim.
+     *
+     * @param monitor The monitor for logging
+     * @param participantId The participant id
+     * @param claimKey the claim key of the claim to check
+     * @param participantClaimChecker the participant claims instance to check claims
+     */
+    public EntityConstraintFunction(Monitor monitor, String participantId, String claimKey,
+                                    ParticipantClaimChecker participantClaimChecker) {
         super(monitor, participantId, claimKey, participantClaimChecker);
     }
 
+    /**
+     * Defines a location
+     *
+     * @param operator   the comparison operator
+     * @param claimValue the value of the participant's claim
+     * @param rightValue the expected value of the constraint
+     * @param rule       the permission rule being evaluated
+     * @param context    the current policy context
+     * @return true if the claim satisfies the constraint; false otherwise
+     */
     @Override
     protected boolean evaluateClaim(Operator operator, String claimValue, Object rightValue,
                                     Permission rule, CatalogPolicyContext context) {
