@@ -127,7 +127,7 @@
                     },
                     "https://w3id.org/cbm/v0.0.1/ns/sampleValue": {
                     },
-                    "https://w3id.org/cbm/v0.0.1/ns/type": {
+                    "https://w3id.org/cbm/v0.0.1/ns/datatype": {
                       "type": "string",
                       "enum": [
                         "boolean",
@@ -174,7 +174,6 @@
     "http://purl.org/dc/terms/description",
     "http://purl.org/dc/terms/modified",
     "http://purl.org/dc/terms/issued",
-    "http://purl.org/dc/terms/accessRights",
     "http://www.w3.org/ns/dcat#distribution"
   ],
   "additionalProperties": false
