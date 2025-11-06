@@ -36,6 +36,7 @@ include(":providers:provider")
 include(":providers:provider-base")
 include(":providers:provider-base-prod")
 include("providers:provider-ebird")
+include("providers:provider-mastral")
 
 include("commons")
 
