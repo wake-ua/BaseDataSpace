@@ -1,85 +1,111 @@
 {
-    "title": "Bird Observation Data",
-    "description": "Data on various bird species observed in different locations",
-    "theme": "Wildlife",
-    "columns": [
-        {
-            "name": "speciesCode",
-            "description": "Code representing the species",
-            "type": "string",
-            "sampleValue": "gnwtea"
-        },
-        {
-            "name": "comName",
-            "description": "Common name of the species",
-            "type": "string",
-            "sampleValue": "Green-winged Teal"
-        },
-        {
-            "name": "sciName",
-            "description": "Scientific name of the species",
-            "type": "string",
-            "sampleValue": "Anas crecca"
-        },
-        {
-            "name": "locId",
-            "description": "Location identifier",
-            "type": "string",
-            "sampleValue": "L1121994"
-        },
-        {
-            "name": "locName",
-            "description": "General location name",
-            "type": "string",
-            "sampleValue": "Punta Entinas ParNat"
-        },
-        {
-            "name": "obsDt",
-            "description": "Observation date and time",
-            "type": "string",
-            "sampleValue": "2025-05-21 17:45"
-        },
-        {
-            "name": "howMany",
-            "description": "Number of individuals observed",
-            "type": "number",
-            "sampleValue": "1"
-        },
-        {
-            "name": "lat",
-            "description": "Latitude of the observation location",
-            "type": "number",
-            "sampleValue": "36.7107"
-        },
-        {
-            "name": "lng",
-            "description": "Longitude of the observation location",
-            "type": "number",
-            "sampleValue": "-2.64993"
-        },
-        {
-            "name": "obsValid",
-            "description": "Indicates if the observation is valid",
-            "type": "boolean",
-            "sampleValue": "False"
-        },
-        {
-            "name": "obsReviewed",
-            "description": "Indicates if the observation has been reviewed",
-            "type": "boolean",
-            "sampleValue": "False"
-        },
-        {
-            "name": "locationPrivate",
-            "description": "Indicates if the location is private",
-            "type": "boolean",
-            "sampleValue": "False"
-        },
-        {
-            "name": "subId",
-            "description": "Submission identifier",
-            "type": "string",
-            "sampleValue": "S241122959"
-        }
-    ]
+  "title": "Bird Observation Data",
+  "description": "Data on various bird species observed in different locations",
+  "theme": "Wildlife",
+  "columns": [
+    {
+      "@type": "cbm:Field",
+      "schema:name": "speciesCode",
+      "dct:description": "Code representing the species",
+      "dct:title": "speciesCode",
+      "cbm:sampleValue": "gnwtea",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "comName",
+      "dct:description": "Common name of the species",
+      "dct:title": "comName",
+      "cbm:sampleValue": "Green-winged Teal",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "sciName",
+      "dct:description": "Scientific name of the species",
+      "dct:title": "sciName",
+      "cbm:sampleValue": "Anas crecca",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locId",
+      "dct:description": "Location identifier",
+      "dct:title": "locId",
+      "cbm:sampleValue": "L1121994",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locName",
+      "dct:description": "General location name",
+      "dct:title": "locName",
+      "cbm:sampleValue": "Punta Entinas ParNat",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "obsDt",
+      "dct:description": "Observation date and time",
+      "dct:title": "obsDt",
+      "cbm:sampleValue": "2025-05-21 17:45",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "howMany",
+      "dct:description": "Number of individuals observed",
+      "dct:title": "howMany",
+      "cbm:sampleValue": "1",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "lat",
+      "dct:description": "Latitude of the observation location",
+      "dct:title": "lat",
+      "cbm:sampleValue": "36.7107",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "lng",
+      "dct:description": "Longitude of the observation location",
+      "dct:title": "lng",
+      "cbm:sampleValue": "-2.64993",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "obsValid",
+      "dct:description": "Indicates if the observation is valid",
+      "dct:title": "obsValid",
+      "cbm:sampleValue": "False",
+      "cbm:datatype": "boolean"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "obsReviewed",
+      "dct:description": "Indicates if the observation has been reviewed",
+      "dct:title": "obsReviewed",
+      "cbm:sampleValue": "False",
+      "cbm:datatype": "boolean"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locationPrivate",
+      "dct:description": "Indicates if the location is private",
+      "dct:title": "locationPrivate",
+      "cbm:sampleValue": "False",
+      "cbm:datatype": "boolean"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subId",
+      "dct:description": "Submission identifier",
+      "dct:title": "subId",
+      "cbm:sampleValue": "S241122959",
+      "cbm:datatype": "string"
+    }
+  ]
 }

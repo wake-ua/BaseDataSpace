@@ -3,12 +3,10 @@ import csv
 from io import StringIO
 import logging
 
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
 
 def fetch_sample_data(url, api_key, response_type):
     headers = {'x-ebirdapitoken': api_key}
@@ -37,17 +35,18 @@ def post_json(url, payload, apikey):
     try:
         headers = {
         'Content-Type': 'application/json',
-         'x-api-key': apikey
+        'x-api-key': apikey
         }
-        print(url)
         response = requests.post(url, headers=headers, json=payload)
         print("Status:", response.status_code)
         print("Response:", response.text)
-        print(payload)
+        print(f"\033[34m{response.status_code}\033[0m")
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         logging.exception(e)
         return None
+
+
 
 

@@ -1,145 +1,191 @@
 {
-    "title": "Observation Records",
-    "description": "Records of species observations with location details",
-    "theme": "Biodiversity",
-    "columns": [
-        {
-            "name": "locId",
-            "description": "Location ID",
-            "type": "string",
-            "sampleValue": "L45591555"
-        },
-        {
-            "name": "subId",
-            "description": "Submission ID",
-            "type": "string",
-            "sampleValue": "S241415858"
-        },
-        {
-            "name": "userDisplayName",
-            "description": "Name of the user who submitted the observation",
-            "type": "string",
-            "sampleValue": "Anonymous eBirder"
-        },
-        {
-            "name": "numSpecies",
-            "description": "Number of species observed",
-            "type": "number",
-            "sampleValue": "1"
-        },
-        {
-            "name": "obsDt",
-            "description": "Observation date",
-            "type": "string",
-            "sampleValue": "23 May 2025"
-        },
-        {
-            "name": "obsTime",
-            "description": "Observation time",
-            "type": "string",
-            "sampleValue": "08:02"
-        },
-        {
-            "name": "isoObsDate",
-            "description": "ISO formatted observation date and time",
-            "type": "string",
-            "sampleValue": "2025-05-23 08:02"
-        },
-        {
-            "name": "locId_loc",
-            "description": "Location ID for the specific location",
-            "type": "string",
-            "sampleValue": "L45591555"
-        },
-        {
-            "name": "name_loc",
-            "description": "Name of the location",
-            "type": "string",
-            "sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217"
-        },
-        {
-            "name": "latitude_loc",
-            "description": "Latitude of the location",
-            "type": "number",
-            "sampleValue": "37.346"
-        },
-        {
-            "name": "longitude_loc",
-            "description": "Longitude of the location",
-            "type": "number",
-            "sampleValue": "-2.08217"
-        },
-        {
-            "name": "countryCode_loc",
-            "description": "Country code",
-            "type": "string",
-            "sampleValue": "ES"
-        },
-        {
-            "name": "countryName_loc",
-            "description": "Country name",
-            "type": "string",
-            "sampleValue": "Spain"
-        },
-        {
-            "name": "subnational1Name_loc",
-            "description": "First subnational division name",
-            "type": "string",
-            "sampleValue": "Andalucía"
-        },
-        {
-            "name": "subnational1Code_loc",
-            "description": "First subnational division code",
-            "type": "string",
-            "sampleValue": "ES-AN"
-        },
-        {
-            "name": "subnational2Code_loc",
-            "description": "Second subnational division code",
-            "type": "string",
-            "sampleValue": "ES-AN-AM"
-        },
-        {
-            "name": "subnational2Name_loc",
-            "description": "Second subnational division name",
-            "type": "string",
-            "sampleValue": "Almería"
-        },
-        {
-            "name": "isHotspot_loc",
-            "description": "Indicates if the location is a hotspot",
-            "type": "boolean",
-            "sampleValue": "False"
-        },
-        {
-            "name": "locID_loc",
-            "description": "Location ID for the specific location",
-            "type": "string",
-            "sampleValue": "L45591555"
-        },
-        {
-            "name": "lat_loc",
-            "description": "Latitude of the location",
-            "type": "number",
-            "sampleValue": "37.346"
-        },
-        {
-            "name": "lng_loc",
-            "description": "Longitude of the location",
-            "type": "number",
-            "sampleValue": "-2.08217"
-        },
-        {
-            "name": "locName_loc",
-            "description": "Full name of the location",
-            "type": "string",
-            "sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217"
-        },
-        {
-            "name": "hierarchicalName_loc",
-            "description": "Hierarchical name of the location",
-            "type": "string",
-            "sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217, Almería, Andalucía, ES"
-        }
-    ]
+  "title": "Observation Records",
+  "description": "Records of species observations with location details",
+  "theme": "Biodiversity",
+  "columns": [
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locId",
+      "dct:description": "Location ID",
+      "dct:title": "locId",
+      "cbm:sampleValue": "L45591555",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subId",
+      "dct:description": "Submission ID",
+      "dct:title": "subId",
+      "cbm:sampleValue": "S241415858",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "userDisplayName",
+      "dct:description": "Name of the user who submitted the observation",
+      "dct:title": "userDisplayName",
+      "cbm:sampleValue": "Anonymous eBirder",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "numSpecies",
+      "dct:description": "Number of species observed",
+      "dct:title": "numSpecies",
+      "cbm:sampleValue": "1",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "obsDt",
+      "dct:description": "Observation date",
+      "dct:title": "obsDt",
+      "cbm:sampleValue": "23 May 2025",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "obsTime",
+      "dct:description": "Observation time",
+      "dct:title": "obsTime",
+      "cbm:sampleValue": "08:02",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "isoObsDate",
+      "dct:description": "ISO formatted observation date and time",
+      "dct:title": "isoObsDate",
+      "cbm:sampleValue": "2025-05-23 08:02",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locId_loc",
+      "dct:description": "Location ID for the specific location",
+      "dct:title": "locId_loc",
+      "cbm:sampleValue": "L45591555",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "name_loc",
+      "dct:description": "Name of the location",
+      "dct:title": "name_loc",
+      "cbm:sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "latitude_loc",
+      "dct:description": "Latitude of the location",
+      "dct:title": "latitude_loc",
+      "cbm:sampleValue": "37.346",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "longitude_loc",
+      "dct:description": "Longitude of the location",
+      "dct:title": "longitude_loc",
+      "cbm:sampleValue": "-2.08217",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "countryCode_loc",
+      "dct:description": "Country code",
+      "dct:title": "countryCode_loc",
+      "cbm:sampleValue": "ES",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "countryName_loc",
+      "dct:description": "Country name",
+      "dct:title": "countryName_loc",
+      "cbm:sampleValue": "Spain",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subnational1Name_loc",
+      "dct:description": "First subnational division name",
+      "dct:title": "subnational1Name_loc",
+      "cbm:sampleValue": "Andalucía",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subnational1Code_loc",
+      "dct:description": "First subnational division code",
+      "dct:title": "subnational1Code_loc",
+      "cbm:sampleValue": "ES-AN",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subnational2Code_loc",
+      "dct:description": "Second subnational division code",
+      "dct:title": "subnational2Code_loc",
+      "cbm:sampleValue": "ES-AN-AM",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subnational2Name_loc",
+      "dct:description": "Second subnational division name",
+      "dct:title": "subnational2Name_loc",
+      "cbm:sampleValue": "Almería",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "isHotspot_loc",
+      "dct:description": "Indicates if the location is a hotspot",
+      "dct:title": "isHotspot_loc",
+      "cbm:sampleValue": "False",
+      "cbm:datatype": "boolean"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locID_loc",
+      "dct:description": "Location ID for the specific location",
+      "dct:title": "locID_loc",
+      "cbm:sampleValue": "L45591555",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "lat_loc",
+      "dct:description": "Latitude of the location",
+      "dct:title": "lat_loc",
+      "cbm:sampleValue": "37.346",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "lng_loc",
+      "dct:description": "Longitude of the location",
+      "dct:title": "lng_loc",
+      "cbm:sampleValue": "-2.08217",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locName_loc",
+      "dct:description": "Full name of the location",
+      "dct:title": "locName_loc",
+      "cbm:sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "hierarchicalName_loc",
+      "dct:description": "Hierarchical name of the location",
+      "dct:title": "hierarchicalName_loc",
+      "cbm:sampleValue": "Avenida del Apeadero, 19, Arboleas ES-Almería 37.34605, -2.08217, Almería, Andalucía, ES",
+      "cbm:datatype": "string"
+    }
+  ]
 }

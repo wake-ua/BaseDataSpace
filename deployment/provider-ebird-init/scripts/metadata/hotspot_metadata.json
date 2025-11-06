@@ -1,61 +1,79 @@
 {
-    "title": "Species Observation Data",
-    "description": "Data on species observed in various locations",
-    "theme": "Biodiversity",
-    "columns": [
-        {
-            "name": "locationId",
-            "description": "Unique identifier for the location",
-            "type": "string",
-            "sampleValue": "L2521366"
-        },
-        {
-            "name": "countryCode",
-            "description": "ISO country code",
-            "type": "string",
-            "sampleValue": "ES"
-        },
-        {
-            "name": "subnational1Code",
-            "description": "First level subnational administrative division code",
-            "type": "string",
-            "sampleValue": "ES-PV"
-        },
-        {
-            "name": "subnational2Code",
-            "description": "Second level subnational administrative division code",
-            "type": "string",
-            "sampleValue": "ES-PV-GP"
-        },
-        {
-            "name": "latitude",
-            "description": "Geographical latitude of the location",
-            "type": "number",
-            "sampleValue": "43.2809"
-        },
-        {
-            "name": "longitude",
-            "description": "Geographical longitude of the location",
-            "type": "number",
-            "sampleValue": "-1.78801"
-        },
-        {
-            "name": "locationName",
-            "description": "Name of the location",
-            "type": "string",
-            "sampleValue": "Aiako Harria PNat--Aiako Harriak"
-        },
-        {
-            "name": "observationDateTime",
-            "description": "Date and time of the observation",
-            "type": "string",
-            "sampleValue": "2025-05-18 10:30"
-        },
-        {
-            "name": "numSpeciesObserved",
-            "description": "Number of species observed at the location",
-            "type": "number",
-            "sampleValue": "131"
-        }
-    ]
+  "title": "Species Observation Data",
+  "description": "Data on species observed in various locations",
+  "theme": "Biodiversity",
+  "columns": [
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locationId",
+      "dct:description": "Unique identifier for the location",
+      "dct:title": "locationId",
+      "cbm:sampleValue": "L2521366",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "countryCode",
+      "dct:description": "ISO country code",
+      "dct:title": "countryCode",
+      "cbm:sampleValue": "ES",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subnational1Code",
+      "dct:description": "First level subnational administrative division code",
+      "dct:title": "subnational1Code",
+      "cbm:sampleValue": "ES-PV",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "subnational2Code",
+      "dct:description": "Second level subnational administrative division code",
+      "dct:title": "subnational2Code",
+      "cbm:sampleValue": "ES-PV-GP",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "latitude",
+      "dct:description": "Geographical latitude of the location",
+      "dct:title": "latitude",
+      "cbm:sampleValue": "43.2809",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "longitude",
+      "dct:description": "Geographical longitude of the location",
+      "dct:title": "longitude",
+      "cbm:sampleValue": "-1.78801",
+      "cbm:datatype": "number"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "locationName",
+      "dct:description": "Name of the location",
+      "dct:title": "locationName",
+      "cbm:sampleValue": "Aiako Harria PNat--Aiako Harriak",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "observationDateTime",
+      "dct:description": "Date and time of the observation",
+      "dct:title": "observationDateTime",
+      "cbm:sampleValue": "2025-05-18 10:30",
+      "cbm:datatype": "string"
+    },
+    {
+      "@type": "cbm:Field",
+      "schema:name": "numSpeciesObserved",
+      "dct:description": "Number of species observed at the location",
+      "dct:title": "numSpeciesObserved",
+      "cbm:sampleValue": "131",
+      "cbm:datatype": "number"
+    }
+  ]
 }

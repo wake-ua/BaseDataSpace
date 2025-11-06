@@ -1,194 +1,194 @@
 [
-    {
-        "code": "ES-GA-AC",
-        "name": "A Coruña"
-    },
-    {
-        "code": "ES-CM-AB",
-        "name": "Albacete"
-    },
-    {
-        "code": "ES-VC-AN",
-        "name": "Alicante"
-    },
-    {
-        "code": "ES-AN-AM",
-        "name": "Almería"
-    },
-    {
-        "code": "ES-PV-AA",
-        "name": "Araba"
-    },
-    {
-        "code": "ES-EX-BD",
-        "name": "Badajoz"
-    },
-    {
-        "code": "ES-CT-BR",
-        "name": "Barcelona"
-    },
-    {
-        "code": "ES-PV-VZ",
-        "name": "Bizkaia"
-    },
-    {
-        "code": "ES-CL-BU",
-        "name": "Burgos"
-    },
-    {
-        "code": "ES-VC-CS",
-        "name": "Castellón"
-    },
-    {
-        "code": "ES-CM-CR",
-        "name": "Ciudad Real"
-    },
-    {
-        "code": "ES-CM-CU",
-        "name": "Cuenca"
-    },
-    {
-        "code": "ES-EX-CC",
-        "name": "Cáceres"
-    },
-    {
-        "code": "ES-AN-CD",
-        "name": "Cádiz"
-    },
-    {
-        "code": "ES-AN-CO",
-        "name": "Córdoba"
-    },
-    {
-        "code": "ES-CN-HIE",
-        "name": "El Hierro"
-    },
-    {
-        "code": "ES-CN-FVT",
-        "name": "Fuerteventura"
-    },
-    {
-        "code": "ES-PV-GP",
-        "name": "Gipuzkoa"
-    },
-    {
-        "code": "ES-CT-GN",
-        "name": "Girona"
-    },
-    {
-        "code": "ES-CN-GRC",
-        "name": "Gran Canaria"
-    },
-    {
-        "code": "ES-AN-GD",
-        "name": "Granada"
-    },
-    {
-        "code": "ES-CM-GJ",
-        "name": "Guadalajara"
-    },
-    {
-        "code": "ES-AN-HL",
-        "name": "Huelva"
-    },
-    {
-        "code": "ES-AR-HS",
-        "name": "Huesca"
-    },
-    {
-        "code": "ES-AN-JA",
-        "name": "Jaén"
-    },
-    {
-        "code": "ES-CN-GOM",
-        "name": "La Gomera"
-    },
-    {
-        "code": "ES-CN-PAL",
-        "name": "La Palma"
-    },
-    {
-        "code": "ES-CN-LZR",
-        "name": "Lanzarote"
-    },
-    {
-        "code": "ES-CL-LN",
-        "name": "León"
-    },
-    {
-        "code": "ES-CT-LD",
-        "name": "Lleida"
-    },
-    {
-        "code": "ES-GA-LG",
-        "name": "Lugo"
-    },
-    {
-        "code": "ES-AN-MG",
-        "name": "Málaga"
-    },
-    {
-        "code": "ES-GA-OR",
-        "name": "Ourense"
-    },
-    {
-        "code": "ES-CL-PL",
-        "name": "Palencia"
-    },
-    {
-        "code": "ES-GA-PV",
-        "name": "Pontevedra"
-    },
-    {
-        "code": "ES-CL-SL",
-        "name": "Salamanca"
-    },
-    {
-        "code": "ES-CL-SG",
-        "name": "Segovia"
-    },
-    {
-        "code": "ES-AN-SV",
-        "name": "Sevilla"
-    },
-    {
-        "code": "ES-CL-SR",
-        "name": "Soria"
-    },
-    {
-        "code": "ES-CT-TG",
-        "name": "Tarragona"
-    },
-    {
-        "code": "ES-CN-TEN",
-        "name": "Tenerife"
-    },
-    {
-        "code": "ES-AR-TE",
-        "name": "Teruel"
-    },
-    {
-        "code": "ES-CM-TD",
-        "name": "Toledo"
-    },
-    {
-        "code": "ES-VC-VN",
-        "name": "Valencia"
-    },
-    {
-        "code": "ES-CL-VD",
-        "name": "Valladolid"
-    },
-    {
-        "code": "ES-CL-ZM",
-        "name": "Zamora"
-    },
-    {
-        "code": "ES-AR-ZG",
-        "name": "Zaragoza"
-    },
-    {
-        "code": "ES-CL-AV",
-        "name": "Ávila"
-    }
+  {
+    "code": "ES-GA-AC",
+    "name": "A Coruna"
+  },
+  {
+    "code": "ES-CM-AB",
+    "name": "Albacete"
+  },
+  {
+    "code": "ES-VC-AN",
+    "name": "Alicante"
+  },
+  {
+    "code": "ES-AN-AM",
+    "name": "Almeria"
+  },
+  {
+    "code": "ES-PV-AA",
+    "name": "Araba"
+  },
+  {
+    "code": "ES-EX-BD",
+    "name": "Badajoz"
+  },
+  {
+    "code": "ES-CT-BR",
+    "name": "Barcelona"
+  },
+  {
+    "code": "ES-PV-VZ",
+    "name": "Bizkaia"
+  },
+  {
+    "code": "ES-CL-BU",
+    "name": "Burgos"
+  },
+  {
+    "code": "ES-VC-CS",
+    "name": "Castellon"
+  },
+  {
+    "code": "ES-CM-CR",
+    "name": "Ciudad Real"
+  },
+  {
+    "code": "ES-CM-CU",
+    "name": "Cuenca"
+  },
+  {
+    "code": "ES-EX-CC",
+    "name": "Caceres"
+  },
+  {
+    "code": "ES-AN-CD",
+    "name": "Cadiz"
+  },
+  {
+    "code": "ES-AN-CO",
+    "name": "Cordoba"
+  },
+  {
+    "code": "ES-CN-HIE",
+    "name": "El Hierro"
+  },
+  {
+    "code": "ES-CN-FVT",
+    "name": "Fuerteventura"
+  },
+  {
+    "code": "ES-PV-GP",
+    "name": "Gipuzkoa"
+  },
+  {
+    "code": "ES-CT-GN",
+    "name": "Girona"
+  },
+  {
+    "code": "ES-CN-GRC",
+    "name": "Gran Canaria"
+  },
+  {
+    "code": "ES-AN-GD",
+    "name": "Granada"
+  },
+  {
+    "code": "ES-CM-GJ",
+    "name": "Guadalajara"
+  },
+  {
+    "code": "ES-AN-HL",
+    "name": "Huelva"
+  },
+  {
+    "code": "ES-AR-HS",
+    "name": "Huesca"
+  },
+  {
+    "code": "ES-AN-JA",
+    "name": "Jaen"
+  },
+  {
+    "code": "ES-CN-GOM",
+    "name": "La Gomera"
+  },
+  {
+    "code": "ES-CN-PAL",
+    "name": "La Palma"
+  },
+  {
+    "code": "ES-CN-LZR",
+    "name": "Lanzarote"
+  },
+  {
+    "code": "ES-CL-LN",
+    "name": "Leon"
+  },
+  {
+    "code": "ES-CT-LD",
+    "name": "Lleida"
+  },
+  {
+    "code": "ES-GA-LG",
+    "name": "Lugo"
+  },
+  {
+    "code": "ES-AN-MG",
+    "name": "Malaga"
+  },
+  {
+    "code": "ES-GA-OR",
+    "name": "Ourense"
+  },
+  {
+    "code": "ES-CL-PL",
+    "name": "Palencia"
+  },
+  {
+    "code": "ES-GA-PV",
+    "name": "Pontevedra"
+  },
+  {
+    "code": "ES-CL-SL",
+    "name": "Salamanca"
+  },
+  {
+    "code": "ES-CL-SG",
+    "name": "Segovia"
+  },
+  {
+    "code": "ES-AN-SV",
+    "name": "Sevilla"
+  },
+  {
+    "code": "ES-CL-SR",
+    "name": "Soria"
+  },
+  {
+    "code": "ES-CT-TG",
+    "name": "Tarragona"
+  },
+  {
+    "code": "ES-CN-TEN",
+    "name": "Tenerife"
+  },
+  {
+    "code": "ES-AR-TE",
+    "name": "Teruel"
+  },
+  {
+    "code": "ES-CM-TD",
+    "name": "Toledo"
+  },
+  {
+    "code": "ES-VC-VN",
+    "name": "Valencia"
+  },
+  {
+    "code": "ES-CL-VD",
+    "name": "Valladolid"
+  },
+  {
+    "code": "ES-CL-ZM",
+    "name": "Zamora"
+  },
+  {
+    "code": "ES-AR-ZG",
+    "name": "Zaragoza"
+  },
+  {
+    "code": "ES-CL-AV",
+    "name": "Avila"
+  }
 ]
