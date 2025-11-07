@@ -3,10 +3,12 @@ import csv
 from io import StringIO
 import logging
 
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
 
 def fetch_sample_data(url, api_key, response_type):
     headers = {'x-ebirdapitoken': api_key}
@@ -31,6 +33,35 @@ def fetch_sample_data(url, api_key, response_type):
     return None
 
 
+def send_request(url, payload, apikey):
+
+    try:
+        headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': apikey
+        }
+        response = requests.post(url, headers=headers, json=payload)
+        print(f"\033[34m POST Status: {response.status_code}\033[0m")
+        print("POST Response:", response.text)
+
+        if response.status_code != 409:
+            return response.json()['@id']
+
+        if response.status_code == 409:
+            print("Conflict detected (409). Retrying with PUT...")
+            response = requests.put(url, headers=headers, json=payload)
+            print(f"\033[34m PUT Status: {response.status_code}\033[0m")
+            print("PUT Response:", response.text)
+            if response.status_code == 204:
+                return payload["@id"]
+
+        response.raise_for_status()
+    except requests.RequestException as e:
+        logging.exception(e)
+        return None
+
+
+
 def post_json(url, payload, apikey):
     try:
         headers = {
@@ -41,12 +72,13 @@ def post_json(url, payload, apikey):
         print("Status:", response.status_code)
         print("Response:", response.text)
         print(f"\033[34m{response.status_code}\033[0m")
-        response.raise_for_status()
-        return response.json()
+        if response.status_code != 409:
+            return response.json()
+        if response.status_code == 409:
+            return payload['@id']
+
+
     except requests.RequestException as e:
         logging.exception(e)
         return None
-
-
-
 

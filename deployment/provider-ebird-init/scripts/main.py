@@ -2,14 +2,18 @@ from dotenv import load_dotenv
 import os
 import json
 from ebird_assets import build_asset, build_sample_asset
-from network_utils import fetch_sample_data, post_json
+from network_utils import fetch_sample_data, send_request, post_json
 from create_files import save_parsed_data
 import logging
 import re
 from pathlib import Path
 
+
+
 logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(levelname)s - %(message)s")
 load_dotenv()
+
+
 
 BASE_URL = os.getenv("BASE_URL")
 API_KEY = os.getenv("API_KEY")
@@ -21,6 +25,7 @@ ASSETS_URL = f"{BASE_URL}/management/v3/assets-cbm"
 SAMPLES_URL = f"{BASE_URL}/management/v3/assets-cbm"
 ASSETS_IDS = ["1"]
 SAMPLES_IDS = ["2"]
+
 
 
 ASSET_ID_MAP = {
@@ -164,7 +169,7 @@ def create_contract_definition(filename, access_policy_id, contract_policy_id, a
     data["contractPolicyId"] = contract_policy_id
     data["assetsSelector"][0]["operandRight"] = asset_ids
     json.dumps(data)
-    created = post_json(CONTRACT_DEFINITIONS_URL, data, X_API_KEY)
+    created = send_request(CONTRACT_DEFINITIONS_URL, data, X_API_KEY)
     if not created:
         return None
     else:
@@ -174,7 +179,7 @@ def create_contract_definition(filename, access_policy_id, contract_policy_id, a
 
 def create_asset_and_sample(metadata, url, name, desc, province=None, response_type="json"):
     asset_id, asset_payload = build_asset(url, metadata, desc, name, API_KEY, province)
-    created = post_json(ASSETS_URL, asset_payload, X_API_KEY)
+    created = send_request(ASSETS_URL, asset_payload, X_API_KEY)
     if not created:
         return None
 
@@ -182,8 +187,8 @@ def create_asset_and_sample(metadata, url, name, desc, province=None, response_t
     if sample:
         save_parsed_data(f"sample-{asset_id}", response_type, sample)
         sample_payload = build_sample_asset(metadata, name, desc, asset_id, SAMPLE_BASE_URL, response_type, province)
-        post_json(SAMPLES_URL, sample_payload, X_API_KEY)
-    return created["@id"]
+        send_request(SAMPLES_URL, sample_payload, X_API_KEY)
+    return created
 
 
 def main():
