@@ -68,6 +68,28 @@ services:
     volumes:
       - ./deployment/provider-ebird-init/scripts/samples/data:/app
 
+  provider-mastral-postgresql:
+    container_name: provider-mastral-postgresql
+    image: postgres:13
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=edc
+    volumes:
+      - ./deployment/provider-mastral-postgresql/data:/var/lib/postgresql/data
+
+  provider-mastral:
+    container_name: provider-mastral
+    ports:
+      - "18191:18191"
+      - "18193:18193"
+      - "18194:18194"
+    build: ./providers/provider-mastral
+    depends_on:
+      - provider-mastral-postgresql
+
   consumer-base:
     container_name: consumer-base
     ports:

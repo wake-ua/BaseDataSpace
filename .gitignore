@@ -57,22 +57,13 @@ deployment/fc-mongodb/data/db/WiredTiger*
 deployment/fc-mongodb/data/db/storage*
 deployment/fc-mongodb/data/db/mongod.lock
 
-deployment/provider-base-postgresql/data/base
-deployment/provider-base-postgresql/data/global
-deployment/provider-base-postgresql/data/pg_*
-deployment/provider-base-postgresql/data/*.conf
-deployment/provider-base-postgresql/data/postmaster.opts
-deployment/provider-base-postgresql/data/PG_VERSION
-deployment/provider-base-postgresql/data/*.pid
-
-
-deployment/provider-ebird-postgresql/data/base
-deployment/provider-ebird-postgresql/data/global
-deployment/provider-ebird-postgresql/data/pg_*
-deployment/provider-ebird-postgresql/data/*.conf
-deployment/provider-ebird-postgresql/data/postmaster.opts
-deployment/provider-ebird-postgresql/data/PG_VERSION
-deployment/provider-ebird-postgresql/data/*.pid
+deployment/provider-*-postgresql/data/base
+deployment/provider-*-postgresql/data/global
+deployment/provider-*-postgresql/data/pg_*
+deployment/provider-*-postgresql/data/*.conf
+deployment/provider-*-postgresql/data/postmaster.opts
+deployment/provider-*-postgresql/data/PG_VERSION
+deployment/provider-*-postgresql/data/*.pid
 
 deployment/provider-ebird-init/scripts/samples/data/*
 !deployment/provider-ebird-init/scripts/samples/data/.gitkeep
