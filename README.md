@@ -12,6 +12,7 @@ Base Data Space for the Heleade project
 * CONSUMERS:
   * **Base Consumer**: Ports 2919x / 2929x
   * **Search Service**: Ports 2719x / 2729x
+  * **Climate Service**: Ports 2819x / 2829x
 * **Federated Catalog**: Ports 3919x / 3929x
 
 ## Setup

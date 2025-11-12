@@ -128,3 +128,11 @@ services:
       - "27193:27193"
       - "27194:27194"
     build: ./consumers/search-service
+
+  climate-service:
+    container_name: climate-service
+    ports:
+      - "28191:28191"
+      - "28193:28193"
+      - "28194:28194"
+    build: ./consumers/climate-service
