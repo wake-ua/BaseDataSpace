@@ -1,7 +1,7 @@
 services:
 
-  provider-base-postgresql:
-    container_name: provider-base-postgresql
+  bds-postgresql:
+    container_name: bds-postgresql
     image: postgres:13
     ports:
       - "5434:5432"
@@ -10,7 +10,13 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=edc
     volumes:
-      - ./deployment/provider-base-postgresql/data:/var/lib/postgresql/data
+      - ./deployment/bds-postgresql/data:/var/lib/postgresql/data
+      - ./deployment/bds-postgresql/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d edc_provider-base"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   provider-base:
     container_name: provider-base
@@ -19,21 +25,9 @@ services:
       - "19193:19193"
       - "19194:19194"
     depends_on:
-      - provider-base-postgresql
+      - bds-postgresql
     build: ./providers/provider-base
-    restart: always
-
-  provider-ebird-postgresql:
-    container_name: provider-ebird-postgresql
-    image: postgres:13
-    ports:
-      - "5435:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=edc
-    volumes:
-      - ./deployment/provider-ebird-postgresql/data:/var/lib/postgresql/data
+    restart: on-failure:5
 
   provider-ebird:
     container_name: provider-ebird
@@ -43,7 +37,8 @@ services:
       - "17194:17194"
     build: ./providers/provider-ebird
     depends_on:
-      - provider-ebird-postgresql
+      - bds-postgresql
+    restart: on-failure:5
 
   provider-ebird-init:
     container_name: provider-ebird-init
@@ -51,7 +46,7 @@ services:
       context: ./deployment/provider-ebird-init
       dockerfile: Dockerfile
     depends_on:
-      - provider-ebird
+      - bds-postgresql
     env_file:
       - ./deployment/provider-ebird-init/.env
     restart: "no"
@@ -68,18 +63,6 @@ services:
     volumes:
       - ./deployment/provider-ebird-init/scripts/samples/data:/app
 
-  provider-mastral-postgresql:
-    container_name: provider-mastral-postgresql
-    image: postgres:13
-    ports:
-      - "5436:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=edc
-    volumes:
-      - ./deployment/provider-mastral-postgresql/data:/var/lib/postgresql/data
-
   provider-mastral:
     container_name: provider-mastral
     ports:
@@ -88,7 +71,8 @@ services:
       - "18194:18194"
     build: ./providers/provider-mastral
     depends_on:
-      - provider-mastral-postgresql
+      - bds-postgresql
+    restart: on-failure:5
 
   consumer-base:
     container_name: consumer-base

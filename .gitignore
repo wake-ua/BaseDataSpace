@@ -57,22 +57,8 @@ deployment/fc-mongodb/data/db/WiredTiger*
 deployment/fc-mongodb/data/db/storage*
 deployment/fc-mongodb/data/db/mongod.lock
 
-deployment/provider-*-postgresql/data/base
-deployment/provider-*-postgresql/data/global
-deployment/provider-*-postgresql/data/pg_*
-deployment/provider-*-postgresql/data/*.conf
-deployment/provider-*-postgresql/data/postmaster.opts
-deployment/provider-*-postgresql/data/PG_VERSION
-deployment/provider-*-postgresql/data/*.pid
+deployment/*-postgresql/data
 
 deployment/provider-ebird-init/scripts/samples/data/*
 !deployment/provider-ebird-init/scripts/samples/data/.gitkeep
 
-/deployment/provider-base-vault/prod/file/core/
-/deployment/provider-base-vault/prod/file/logical/
-/deployment/provider-base-vault/prod/file/sys/
-
-# vault
-resources/provider-base-vault/vault-data/core
-resources/provider-base-vault/vault-data/logical
-resources/provider-base-vault/vault-data/sys

@@ -67,6 +67,25 @@
 					"response": []
 				},
 				{
+					"name": "Climate Service Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{CLIMATE_SERVICE_HTTP_PORT}}/api/health",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CLIMATE_SERVICE_HTTP_PORT}}",
+							"path": [
+								"api",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Federated Catalog Health",
 					"request": {
 						"method": "GET",
