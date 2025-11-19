@@ -131,7 +131,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -175,7 +175,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T14:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T16:04:33+00:00\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -747,6 +747,36 @@
 					"response": []
 				},
 				{
+					"name": "Edit Policy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"aPolicy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions/{{POLICY_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions",
+								"{{POLICY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Policy",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1306,7 +1336,38 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        }\n    ]\n  \n}",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"@id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+									"path": [
+										"api",
+										"catalog",
+										"v1alpha",
+										"catalog",
+										"query"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Catalog recent Query",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:modified\",\n            \"operator\": \">=\",\n            \"operandRight\": \"2025-10-22T14:04:33+00:00\"\n        }\n    ]\n  \n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1337,7 +1398,39 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        }\n    ]\n  \n}",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"@id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query-cbm/datasets",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+									"path": [
+										"api",
+										"catalog",
+										"v1alpha",
+										"catalog",
+										"query-cbm",
+										"datasets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Datasets Recent Query CBM Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:modified\",\n            \"operator\": \">=\",\n            \"operandRight\": \"2025-10-22T14:04:33+00:00\"\n        }\n    ]\n  \n}",
 									"options": {
 										"raw": {
 											"language": "json"
