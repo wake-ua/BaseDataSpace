@@ -42,18 +42,25 @@ public class MongodbFederatedCatalogCacheTest {
         QuerySpec querySpec = QuerySpec.Builder.newInstance().filter(Criterion.criterion("id", "=", "assetId")).build();
 
         List<Bson> aggregation = MongodbFederatedCatalogCache.createAggregationPipeline(querySpec);
+
+        // Just for dev purposes
+        String aggregationsJsonString = MongodbFederatedCatalogCache.getAggregationPipelineAsJson(aggregation);
+
         assert aggregation.size() > 3;
 
-        Bson matchStage = aggregation.get(0);
+        Bson addCatalogFieldsStage = aggregation.get(0);
+        assert addCatalogFieldsStage.toBsonDocument().containsKey("$addFields");
+
+        Bson matchStage = aggregation.get(1);
         assert matchStage.toBsonDocument().containsKey("$match");
 
-        Bson addFieldsStage = aggregation.get(1);
+        Bson addFieldsStage = aggregation.get(2);
         assert addFieldsStage.toBsonDocument().containsKey("$addFields");
 
-        Bson addFieldsSizeStage = aggregation.get(2);
+        Bson addFieldsSizeStage = aggregation.get(3);
         assert addFieldsSizeStage.toBsonDocument().containsKey("$addFields");
 
-        Bson matchStageSize = aggregation.get(3);
+        Bson matchStageSize = aggregation.get(4);
         assert matchStageSize.toBsonDocument().containsKey("$match");
     }
 }

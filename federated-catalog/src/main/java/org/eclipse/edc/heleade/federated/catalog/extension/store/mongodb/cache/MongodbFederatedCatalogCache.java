@@ -15,6 +15,7 @@
 package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
@@ -26,8 +27,10 @@ import com.mongodb.client.model.UpdateOptions;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.json.JsonWriterSettings;
 import org.eclipse.edc.catalog.spi.CatalogConstants;
 import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
@@ -48,6 +51,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 
@@ -65,6 +69,11 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
      * datasets stored or queried in the catalog under the "dcat:dataset" schema.
      */
     public static final String DATASET_FIELD = "dcat:dataset";
+
+    /**
+     * Field name used to represent a participant's identifier in the federated catalog stored in MongoDB.
+     */
+    public static final String PARTICIPANT_FIELD = "dspace:participantId";
 
     private final JsonLd jsonLd;
     private final TypeTransformerRegistry transformerRegistry;
@@ -256,6 +265,11 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
 
         if (!(Objects.equals(filter, Filters.empty()))) {
+
+            // Add catalog fields to dataset
+            Bson addCatalogFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD + "." + PARTICIPANT_FIELD, "$" + PARTICIPANT_FIELD));
+            aggregations.add(addCatalogFieldsStage);
+
             aggregations.add(Aggregates.match(filter));
 
             // Create the filter expression for datasets using the MongoDB driver's filter API
@@ -306,6 +320,11 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
 
         if (!(Objects.equals(filter, Filters.empty()))) {
+
+            // Add catalog fields to dataset
+            Bson addCatalogFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD + "." + PARTICIPANT_FIELD, "$" + PARTICIPANT_FIELD));
+            aggregations.add(addCatalogFieldsStage);
+
             aggregations.add(Aggregates.match(filter));
 
             // Create the filter expression for datasets using the MongoDB driver's filter API
@@ -551,6 +570,31 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
             default -> throw new IllegalArgumentException("Unsupported sort order: " + sortOrder);
         };
     }
+
+    /**
+     * Converts a list of MongoDB aggregation pipeline stages represented as BSON objects into a JSON string.
+     * The resulting JSON string includes formatted indentation for improved readability.
+     *
+     * @param aggregations the list of BSON aggregation pipeline stages to convert into a JSON representation
+     * @return a JSON string representing the aggregation pipeline
+     */
+    public static String getAggregationPipelineAsJson(List<Bson> aggregations) {
+        var codecRegistry = MongoClientSettings.getDefaultCodecRegistry();
+        List<BsonDocument> bsonDocuments = aggregations.stream()
+                .map(agg -> agg.toBsonDocument(BsonDocument.class, codecRegistry))
+                .collect(Collectors.toList());
+
+        // Use JsonWriterSettings to control the JSON formatting
+        JsonWriterSettings settings = JsonWriterSettings.builder()
+                .indent(true)  // Optional: for pretty printing
+                .build();
+
+        // Convert to JSON string
+        return bsonDocuments.stream()
+                .map(doc -> doc.toJson(settings))
+                .collect(Collectors.joining(",\n", "[\n", "\n]"));
+    }
+
 
 }
 
