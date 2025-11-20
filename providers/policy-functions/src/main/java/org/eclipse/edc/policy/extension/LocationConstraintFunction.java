@@ -33,12 +33,12 @@ public class LocationConstraintFunction extends AbstractConstraintFunction<Contr
      * This function is responsible for evaluating a participant’s entity type -related claim.
      *
      * @param monitor The monitor for logging
-     * @param participantId The participant ID
+     *
      * @param locationKey the key of the claim to check
      * @param participantClaimChecker the participant claims instance
      */
-    public LocationConstraintFunction(Monitor monitor, String participantId, String locationKey, ParticipantClaimChecker participantClaimChecker) {
-        super(monitor, participantId, locationKey, participantClaimChecker);
+    public LocationConstraintFunction(Monitor monitor, String locationKey, ParticipantClaimChecker participantClaimChecker) {
+        super(monitor, locationKey, participantClaimChecker);
     }
 
 

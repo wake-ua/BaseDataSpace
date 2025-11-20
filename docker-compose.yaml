@@ -120,3 +120,5 @@ services:
       - "28193:28193"
       - "28194:28194"
     build: ./consumers/climate-service
+    volumes:
+      - ./deployment/assets/consumer:/app/consumer
