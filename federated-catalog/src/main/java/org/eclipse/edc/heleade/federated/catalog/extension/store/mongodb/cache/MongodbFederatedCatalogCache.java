@@ -56,10 +56,8 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 
 /**
- * The MongodbFederatedCatalogCache is a MongoDB-based implementation of the FederatedCatalogCache interface.
- * It provides functionality to manage and query a catalog cache using MongoDB as the backend storage.
- * This class handles operations such as saving catalog entries, querying them based on filters,
- * expiring all entries, and cleaning up expired entries from the cache.
+ * Represents a MongoDB-based cache for federated catalog data, providing functionalities
+ * for storing, querying, and managing `ContractOffer` and dataset information.
  */
 public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheStore implements FederatedCatalogCache {
 
@@ -175,7 +173,7 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
 
 
     private Collection<Catalog> queryInternal(MongoClient connection, QuerySpec querySpec) {
-        List<Bson> aggregations = createAggregationPipeline(querySpec);
+        List<Bson> aggregations = createAggregationPipeline(querySpec, false);
         var resultsStr = new java.util.ArrayList<String>();
         var results = new java.util.ArrayList<Catalog>();
 
@@ -249,26 +247,25 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         collection.updateMany(Filters.empty(), doc, options);
     }
 
-
     /**
-     * Creates an aggregation pipeline for querying documents in a MongoDB collection based on the provided {@code QuerySpec}.
-     * The pipeline is built with stages to filter, sort, and paginate the results as per the query specification.
+     * Creates a MongoDB aggregation pipeline based on the provided query specification and optional dataset unwinding.
      *
-     * @param querySpec The query specification containing filter, pagination, and sorting criteria.
-     * @return A list of BSON objects representing the aggregation pipeline for querying the MongoDB collection.
+     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
+     * @param unwindDatasets a flag indicating whether to unwind dataset entries in the pipeline
+     * @return a list of BSON objects representing the aggregation pipeline
      */
-    public static List<Bson> createAggregationPipeline(QuerySpec querySpec) {
+    private static List<Bson> createAggregationPipeline(QuerySpec querySpec, boolean unwindDatasets) {
         // aggregation creation
         var aggregations = new java.util.ArrayList<Bson>();
+
+        // Add catalog fields to dataset
+        Bson addCatalogFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD + "." + PARTICIPANT_FIELD, "$" + PARTICIPANT_FIELD));
+        aggregations.add(addCatalogFieldsStage);
 
         // Add basic filter to get catalogs with at least one dataset matching the filter criteria
         Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
 
         if (!(Objects.equals(filter, Filters.empty()))) {
-
-            // Add catalog fields to dataset
-            Bson addCatalogFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD + "." + PARTICIPANT_FIELD, "$" + PARTICIPANT_FIELD));
-            aggregations.add(addCatalogFieldsStage);
 
             aggregations.add(Aggregates.match(filter));
 
@@ -285,6 +282,18 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
             // Filter out the catalogsw with no datasets matching the filter criteria
             aggregations.add(Aggregates.addFields(new Field<>("datasets_size", new Document("$size", "$" + DATASET_FIELD))));
             aggregations.add(Aggregates.match(Filters.gt("datasets_size", 0L)));
+        }
+
+        if (unwindDatasets) {
+            // Unwind
+            UnwindOptions unwindOptions = new UnwindOptions().preserveNullAndEmptyArrays(false);
+            aggregations.add(Aggregates.unwind("$dcat:dataset", unwindOptions));
+
+            // Keep context from Catalog object
+            aggregations.add(Aggregates.addFields(new Field<>("dcat:dataset.@context", "$@context")));
+
+            // Replace root
+            aggregations.add(Aggregates.replaceRoot("$dcat:dataset"));
         }
 
         // Remove auxiliary fields
@@ -306,69 +315,23 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     }
 
     /**
-     * Creates an aggregation pipeline for querying datasets in a MongoDB collection based on the provided {@code QuerySpec}.
-     * The pipeline includes filtering, sorting, pagination, and various transformations to process datasets as per the query specification.
+     * Creates a MongoDB aggregation pipeline for catalog queries based on the provided query specification.
      *
-     * @param querySpec The query specification containing filter criteria, pagination, and sorting options.
-     * @return A list of BSON objects representing the aggregation pipeline for querying datasets in the MongoDB collection.
+     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
+     * @return a list of BSON objects representing the catalog aggregation pipeline
+     */
+    public static List<Bson> createCatalogAggregationPipeline(QuerySpec querySpec) {
+        return createAggregationPipeline(querySpec, false);
+    }
+
+    /**
+     * Creates a MongoDB aggregation pipeline for dataset queries based on the provided query specification.
+     *
+     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
+     * @return a list of BSON objects representing the dataset aggregation pipeline
      */
     public static List<Bson> createDatasetAggregationPipeline(QuerySpec querySpec) {
-        // aggregation creation
-        var aggregations = new java.util.ArrayList<Bson>();
-
-        // Add basic filter to get catalogs with at least one dataset matching the filter criteria
-        Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
-
-        if (!(Objects.equals(filter, Filters.empty()))) {
-
-            // Add catalog fields to dataset
-            Bson addCatalogFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD + "." + PARTICIPANT_FIELD, "$" + PARTICIPANT_FIELD));
-            aggregations.add(addCatalogFieldsStage);
-
-            aggregations.add(Aggregates.match(filter));
-
-            // Create the filter expression for datasets using the MongoDB driver's filter API
-            Bson filterInner = createFilterExpression(querySpec, "$$this.");
-            Bson datasetsFilter = new Document("$filter",
-                    new Document("input", "$" + DATASET_FIELD)
-                            .append("cond", filterInner));
-
-            // Create and add the "add fields" stage with the datasets filter
-            Bson addFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD, datasetsFilter));
-            aggregations.add(addFieldsStage);
-
-            // Filter out the catalogs with no datasets matching the filter criteria
-            aggregations.add(Aggregates.addFields(new Field<>("datasets_size", new Document("$size", "$" + DATASET_FIELD))));
-            aggregations.add(Aggregates.match(Filters.gt("datasets_size", 0L)));
-        }
-
-        // Unwind
-        UnwindOptions unwindOptions = new UnwindOptions().preserveNullAndEmptyArrays(false);
-        aggregations.add(Aggregates.unwind("$dcat:dataset", unwindOptions));
-
-        // Keep context from Catalog object
-        aggregations.add(Aggregates.addFields(new Field<>("dcat:dataset.@context", "$@context")));
-
-        // Replace root
-        aggregations.add(Aggregates.replaceRoot("$dcat:dataset"));
-
-
-        // Remove auxiliary fields
-        aggregations.add(Aggregates.project(Document.parse("{_id: 0, datasets_size: 0}")));
-
-        // Add pagination and sorting stages if necessary
-        if (querySpec.getOffset() > 0) {
-            aggregations.add(Aggregates.skip(querySpec.getOffset()));
-        }
-        if (querySpec.getLimit() > 0) {
-            aggregations.add(Aggregates.limit(querySpec.getLimit()));
-        }
-        Bson sort = createSort(querySpec);
-        if (sort != null) {
-            aggregations.add(Aggregates.sort(sort));
-        }
-
-        return aggregations;
+        return createAggregationPipeline(querySpec, true);
     }
 
 
