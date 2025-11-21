@@ -6,18 +6,12 @@ secrets:
   postgres_password:
     external: true
 
-networks:
-  ua_data_space_net:
-    external: true
-
 services:
   # ---------------------------------------------------------
   # 1. MONGODB
   # ---------------------------------------------------------
   fc-mongodb:
     image: mongo:6-jammy
-    networks:
-      - ua_data_space_net
     deploy:
       replicas: 1
       restart_policy:
@@ -37,8 +31,6 @@ services:
   # ---------------------------------------------------------
   fc-postgres:
     image: postgres:15
-    networks:
-      - ua_data_space_net
     deploy:
       replicas: 1
       restart_policy:
