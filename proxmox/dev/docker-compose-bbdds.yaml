@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   # ---------------------------------------------------------
   # 1. MONGODB
@@ -12,7 +10,7 @@ services:
       - /srv/data/mongodb:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: "wake"
-      MONGO_INITDB_ROOT_PASSWORD: "changeme_mongo"
+      MONGO_INITDB_ROOT_PASSWORD: "VERY_SECRET_PASSWORD"
 
   # ---------------------------------------------------------
   # 2. POSTGRESQL
@@ -25,8 +23,8 @@ services:
       - /srv/data/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: "wake"
-      POSTGRES_PASSWORD: "changeme_postgres"
-      POSTGRES_DB: "mydatabase"
+      POSTGRES_PASSWORD: "VERY_SECRET_PASSWORD"
+      POSTGRES_DB: "edc"
 
 volumes:
   fc_mongo_data:
