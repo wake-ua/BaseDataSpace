@@ -76,3 +76,7 @@ deployment/provider-ebird-init/scripts/samples/data/*
 resources/provider-base-vault/vault-data/core
 resources/provider-base-vault/vault-data/logical
 resources/provider-base-vault/vault-data/sys
+
+
+# Docker Swarm Data
+swarm/data/*
