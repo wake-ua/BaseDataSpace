@@ -59,6 +59,7 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
     public boolean checkClaim(String claimKey, String claimValue, String participantId) {
         try {
             String url = baseUrl + participantId;
+            monitor.info("Checking participant node: " + participantId);
             var client = HttpClient.newHttpClient();
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(url))

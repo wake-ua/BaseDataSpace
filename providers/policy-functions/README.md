@@ -522,3 +522,12 @@ the accessPolicy and contract policy of contract definition will be respected.
 
 Currently, we plan to bind policy functions to both scopes so contract definition can choose. 
 
+------------------------------------
+### Reminder:
+
+To enable the provider to verify participant claims against the validated claims stored in the Participant Registry (FC), the following properties must be added in the provider config file. 
+
+edc.participant.registry.url={{url}}
+
+edc.participant.registry.apikey={{apikey}}
+

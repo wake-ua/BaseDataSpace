@@ -34,10 +34,7 @@ public abstract class AbstractConstraintFunction<C extends PolicyContext & Parti
      * The monitor used for logging.
      */
     protected final Monitor monitor;
-    /**
-     * The ID of the participant being checked.
-     */
-    protected final String participantId;
+
     /**
      * The key of the claim to evaluate.
      */
@@ -51,14 +48,12 @@ public abstract class AbstractConstraintFunction<C extends PolicyContext & Parti
      * Creates a new abstract constraint function.
      *
      * @param monitor                 the monitor used for logging
-     * @param participantId           the ID of the participant being checked
      * @param claimKey                the key of the claim to evaluate
      * @param participantClaimChecker the checker used to validate participant claims
      */
-    protected AbstractConstraintFunction(Monitor monitor, String participantId, String claimKey,
+    protected AbstractConstraintFunction(Monitor monitor, String claimKey,
                                          ParticipantClaimChecker participantClaimChecker) {
         this.monitor = monitor;
-        this.participantId = participantId;
         this.claimKey = claimKey;
         this.participantClaimChecker = participantClaimChecker;
     }
@@ -67,6 +62,7 @@ public abstract class AbstractConstraintFunction<C extends PolicyContext & Parti
     @Override
     public final boolean evaluate(Operator operator, Object rightValue, Permission rule, C context) {
         var participantClaims = context.participantAgent().getClaims();
+        var participantId = participantClaims.get("client_id").toString();
 
         @SuppressWarnings("unchecked")
         Map<String, Object> claimsMap = (Map<String, Object>) participantClaims.get("claims");

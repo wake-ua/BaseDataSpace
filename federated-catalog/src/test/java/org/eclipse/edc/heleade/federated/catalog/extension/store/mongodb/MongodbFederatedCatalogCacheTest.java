@@ -26,34 +26,84 @@ import java.util.List;
 public class MongodbFederatedCatalogCacheTest {
 
     @Test
-    void shouldProvideEmptyPipelineWhenEmptyQuerySpecProvided() {
+    void catalogShouldProvideEmptyPipelineWhenEmptyQuerySpecProvided() {
         QuerySpec querySpecEmpty = QuerySpec.Builder.newInstance().build();
-        List<Bson> aggregation = MongodbFederatedCatalogCache.createAggregationPipeline(querySpecEmpty);
-        assert aggregation.size() <= 2;
+        List<Bson> aggregation = MongodbFederatedCatalogCache.createCatalogAggregationPipeline(querySpecEmpty);
+        assert aggregation.size() <= 3;
         for (Bson stage : aggregation) {
             BsonDocument stageDocument = stage.toBsonDocument();
-            assert stageDocument.containsKey("$limit") || stageDocument.containsKey("$skip") ||
-                    stageDocument.containsKey("$project");
+            assert !stageDocument.containsKey("$match");
+            assert stageDocument.containsKey("$addFields") || stageDocument.containsKey("$limit") ||
+                   stageDocument.containsKey("$skip") || stageDocument.containsKey("$project");
         }
     }
 
     @Test
-    void shouldProvidePipelineWhenQuerySpecProvided() {
+    void catalogShouldProvidePipelineWhenQuerySpecProvided() {
         QuerySpec querySpec = QuerySpec.Builder.newInstance().filter(Criterion.criterion("id", "=", "assetId")).build();
 
-        List<Bson> aggregation = MongodbFederatedCatalogCache.createAggregationPipeline(querySpec);
+        List<Bson> aggregation = MongodbFederatedCatalogCache.createCatalogAggregationPipeline(querySpec);
+
+        // Just for dev purposes
+        String aggregationsJsonString = MongodbFederatedCatalogCache.getAggregationPipelineAsJson(aggregation);
+
         assert aggregation.size() > 3;
 
-        Bson matchStage = aggregation.get(0);
+        Bson addCatalogFieldsStage = aggregation.get(0);
+        assert addCatalogFieldsStage.toBsonDocument().containsKey("$addFields");
+
+        Bson matchStage = aggregation.get(1);
         assert matchStage.toBsonDocument().containsKey("$match");
 
-        Bson addFieldsStage = aggregation.get(1);
+        Bson addFieldsStage = aggregation.get(2);
         assert addFieldsStage.toBsonDocument().containsKey("$addFields");
 
-        Bson addFieldsSizeStage = aggregation.get(2);
+        Bson addFieldsSizeStage = aggregation.get(3);
         assert addFieldsSizeStage.toBsonDocument().containsKey("$addFields");
 
-        Bson matchStageSize = aggregation.get(3);
+        Bson matchStageSize = aggregation.get(4);
+        assert matchStageSize.toBsonDocument().containsKey("$match");
+    }
+
+    @Test
+    void datasetShouldProvideEmptyPipelineWhenEmptyQuerySpecProvided() {
+        QuerySpec querySpecEmpty = QuerySpec.Builder.newInstance().build();
+        List<Bson> aggregation = MongodbFederatedCatalogCache.createDatasetAggregationPipeline(querySpecEmpty);
+
+        // Just for dev purposes
+        String aggregationsJsonString = MongodbFederatedCatalogCache.getAggregationPipelineAsJson(aggregation);
+
+        assert aggregation.size() <= 6;
+        for (Bson stage : aggregation) {
+            BsonDocument stageDocument = stage.toBsonDocument();
+            assert !stageDocument.containsKey("$match");
+        }
+    }
+
+    @Test
+    void datasetShouldProvidePipelineWhenQuerySpecProvided() {
+        QuerySpec querySpec = QuerySpec.Builder.newInstance().filter(Criterion.criterion("id", "=", "assetId")).build();
+
+        List<Bson> aggregation = MongodbFederatedCatalogCache.createDatasetAggregationPipeline(querySpec);
+
+        // Just for dev purposes
+        String aggregationsJsonString = MongodbFederatedCatalogCache.getAggregationPipelineAsJson(aggregation);
+
+        assert aggregation.size() > 3;
+
+        Bson addCatalogFieldsStage = aggregation.get(0);
+        assert addCatalogFieldsStage.toBsonDocument().containsKey("$addFields");
+
+        Bson matchStage = aggregation.get(1);
+        assert matchStage.toBsonDocument().containsKey("$match");
+
+        Bson addFieldsStage = aggregation.get(2);
+        assert addFieldsStage.toBsonDocument().containsKey("$addFields");
+
+        Bson addFieldsSizeStage = aggregation.get(3);
+        assert addFieldsSizeStage.toBsonDocument().containsKey("$addFields");
+
+        Bson matchStageSize = aggregation.get(4);
         assert matchStageSize.toBsonDocument().containsKey("$match");
     }
 }

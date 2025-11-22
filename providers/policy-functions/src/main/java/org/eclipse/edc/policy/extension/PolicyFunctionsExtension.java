@@ -59,7 +59,6 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-        var participantId = context.getParticipantId();
         var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url");
         var participantRegistryApiKey = context.getConfig().getString("edc.participant.registry.apikey");
 
@@ -70,10 +69,9 @@ public class PolicyFunctionsExtension implements ServiceExtension {
         ruleBindingRegistry.bind(ENTITY_CONSTRAINT_KEY, CATALOG_SCOPE);
 
         policyEngine.registerFunction(ContractNegotiationPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY,
-                new LocationConstraintFunction(monitor, participantId, LOCATION_KEY, claimChecker));
+                new LocationConstraintFunction(monitor, LOCATION_KEY, claimChecker));
 
-        policyEngine.registerFunction(CatalogPolicyContext.class,
-                Permission.class, ENTITY_CONSTRAINT_KEY, new EntityConstraintFunction(monitor, participantId, ENTITY_KEY, claimChecker));
+        policyEngine.registerFunction(CatalogPolicyContext.class, Permission.class, ENTITY_CONSTRAINT_KEY, new EntityConstraintFunction(monitor, ENTITY_KEY, claimChecker));
     }
 }
 

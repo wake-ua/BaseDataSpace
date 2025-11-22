@@ -30,13 +30,12 @@ public class EntityConstraintFunction extends AbstractConstraintFunction<Catalog
      * This function is responsible for evaluating a participant’s entity type -related claim.
      *
      * @param monitor The monitor for logging
-     * @param participantId The participant id
      * @param claimKey the claim key of the claim to check
      * @param participantClaimChecker the participant claims instance to check claims
      */
-    public EntityConstraintFunction(Monitor monitor, String participantId, String claimKey,
+    public EntityConstraintFunction(Monitor monitor, String claimKey,
                                     ParticipantClaimChecker participantClaimChecker) {
-        super(monitor, participantId, claimKey, participantClaimChecker);
+        super(monitor, claimKey, participantClaimChecker);
     }
 
     /**

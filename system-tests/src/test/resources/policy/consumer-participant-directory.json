@@ -1,11 +1,11 @@
 {
     "name": "https://w3id.org/edc/v0.0.1/ns/",
-    "id": "provider",
+    "id": "consumer",
      "claims": {
       "location": "eu",
        "entityType": "public"
     },
-    "url": "http://localhost:49194/protocol",
+    "url": "http://localhost:39194/protocol",
     "supportedProtocols": ["dataspace-protocol-http"],
     "@context": {
       "@vocab": "https://w3id.org/edc/v0.0.1/ns/"

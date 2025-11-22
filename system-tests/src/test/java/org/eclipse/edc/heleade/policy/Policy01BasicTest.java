@@ -46,7 +46,8 @@ import static org.eclipse.edc.heleade.util.TransferUtil.POLL_INTERVAL;
 public class Policy01BasicTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(190);
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
-    private static final String NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/participant-directory.json";
+    private static final String PROVIDER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/provider-participant-directory.json";
+    private static final String CONSUMER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/consumer-participant-directory.json";
     private static final String CATALOG_REQUEST_FILE_PATH = RESOURCES_FOLDER + "/catalog-request.json";
     private static final String EU = "eu";
     private static final String US = "us";
@@ -74,7 +75,8 @@ public class Policy01BasicTest {
 
     @BeforeAll
     static void beforeAll() {
-        addNodeToDirectory(NODE_DIRECTORY_PATH);
+        addNodeToDirectory(PROVIDER_NODE_DIRECTORY_PATH);
+        addNodeToDirectory(CONSUMER_NODE_DIRECTORY_PATH);
     }
 
     @Test

@@ -36,3 +36,37 @@ Here’s an example structure:
   }
 }
 ```
+
+### Reminder
+When creating a participant—especially a consumer:
+
+Be sure to specify the path to the JSON file that contains the participant’s credentials:
+edc.participant.claims = {path to JSON credentials file}
+Without this, the participant will not have any claims in the token.
+
+Also remember that for contract negotiation to work, the consumer participant node must be located in the node directory with the necessary claims for verification.
+
+In a production environment, this process will be handled by the dataspace authority.
+
+Example:
+``` json
+{
+    "name": "Default Base Consumer",
+    "id": "search-service",
+    "supportedProtocols": [],
+    "claims": {
+    "membership": {
+    "level": "SILVER",
+    "branch": "operator"
+    },
+    "location": "eu"
+    },
+    "attributes": {
+    "role": "consumer with claims",
+    "description": "consumer node"
+    },
+    "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    }
+}
+```

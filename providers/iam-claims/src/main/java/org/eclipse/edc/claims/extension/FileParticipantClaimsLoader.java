@@ -55,9 +55,10 @@ public class FileParticipantClaimsLoader implements ParticipantClaimsLoader {
     @Override
     public Map<String, Object> loadClaims(String path) {
         try {
+            monitor.debug("Trying to load claims from: " + new File(path).getAbsolutePath());
             return mapper.readValue(new File(path), Map.class);
         } catch (Exception e) {
-            monitor.warning("Error reading claims file: ");
+            monitor.warning("Error reading claims file: " + new File(path).getAbsolutePath());
             return Map.of();
         }
     }

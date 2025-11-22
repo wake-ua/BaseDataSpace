@@ -3,18 +3,29 @@
 ### Development environment
 It is composed of the following containers:
 
-* provider-base-postgresql: PostgreSQL database for the provider-base container. Please delete the file [.gitignore](provider-base-postgresql/data/.gitignore) when starting the database and add it back later.
-* provider-base: Provider Base with this [configuration](../providers/provider-base/resources/configuration/provider-base-docker-configuration.properties).  
-* consumer-base: Consumer base with the [configuration](../consumers/consumer-base/resources/configuration/consumer-base-docker-configuration.properties).
-* request-logger: Echo web server to check the data transfer.
-* fc-mongodb: MongoDB database for the federated catalog 
-* federated-catalog: Federated catalog. Please execute the [initialization script](init.sh) to add the _provider-base_ to the node directory. 
-* provider-ebird-postgresql: PostgreSQL database for the provider-ebird container.
-* provider-ebird: E-Bird Provider.
-* provider-ebird-init: Initialization script
-* samples-server: Server for the dataset samples
+* Providers
+  * *provider-base*: Provider Base with this [configuration](../providers/provider-base/resources/configuration/provider-base-docker-configuration.properties).  
+  * eBird Provider:
+    * *provider-ebird*: E-Bird Provider.
+    * *provider-ebird-init*: Initialization script
+    * *samples-server*: Server for the dataset samples
+  * *provider-mastral*: Provider for the Mastral project
+* Consumers:
+  * *consumer-base*: Consumer base with the [configuration](../consumers/consumer-base/resources/configuration/consumer-base-docker-configuration.properties).
+  * *search-service*: Search services connector for the catalog.
+  * *climate service*: Services for climate shelters.
+* *federated-catalog*: Federated catalog and participant registry.
+* Other:
+    * *bds-postgresql*: Shared PostgreSQL server for all the providers (only for dev purposes). 
+                        Databases are created through entrypoint: [init script](./bds-postgresql/initdb/init-bds-postgresql-dev.sh)
+                        Any changes on entrypoint require deleting the data directory to be excuted again. 
+    * *fc-mongodb*: MongoDB database for the federated catalog
+    * *request-logger*: Echo web server to check the data transfer (testing purposes).
 
 The data space can be started with docker-compose from the file [docker-compose.yaml](../docker-compose.yaml) from the project root.
+
+Please execute the [initialization script](init.sh) to add the _provider-base_ to the node directory to the federated catalog.
+
 ```shell
   docker compose up
 ```
@@ -25,8 +36,4 @@ You can find some calls to test the setup in the [test-docker-dev.sh](test-docke
 ### Production environment
 
 (under development)
-
-First launch the provider-base-vault from its subdirectory using the file: [docker-compose-provider-base-vault](./provider-base-vault/docker-compose-provider-base-vault.yaml).
-The vault has to be initialized and unsealed. Once unsealed, you have to add the secrets by hand or run the [initialization script](./provider-base-vault/init/vault-init.sh)
-
-Then launch the rest of the dataspace with the file [docker-compose-prod.yaml](../docker-compose-prod.yaml)
+t of the dataspace with the file [docker-compose-prod.yaml](../docker-compose-prod.yaml)
