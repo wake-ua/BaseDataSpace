@@ -3,7 +3,7 @@ services:
   # 1. MONGODB
   # ---------------------------------------------------------
   fc-mongodb:
-    image: mongo:6-jammy
+    image: mongo:4.4
     ports:
       - "27018:27017"
     volumes:
