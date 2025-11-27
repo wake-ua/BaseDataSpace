@@ -1,0 +1,119 @@
+{
+  "identifier": "sample-184758db-48b5-4517-b312-b37f69ffa752",
+  "type": "cbm:Sample",
+  "title": "Bird Observation Data",
+  "description": "1",
+  "isSampleOf": "184758db-48b5-4517-b312-b37f69ffa752",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "speciesCode"
+          },
+          {
+            "name": "comName"
+          },
+          {
+            "name": "sciName"
+          },
+          {
+            "name": "locId"
+          },
+          {
+            "name": "locName"
+          },
+          {
+            "name": "obsDt"
+          },
+          {
+            "name": "howMany"
+          },
+          {
+            "name": "lat"
+          },
+          {
+            "name": "lng"
+          },
+          {
+            "name": "obsValid"
+          },
+          {
+            "name": "obsReviewed"
+          },
+          {
+            "name": "locationPrivate"
+          },
+          {
+            "name": "subId"
+          }
+        ]
+      },
+      "header_count": 13,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "speciesCode"
+          },
+          {
+            "name": "comName"
+          },
+          {
+            "name": "sciName"
+          },
+          {
+            "name": "locId"
+          },
+          {
+            "name": "locName"
+          },
+          {
+            "name": "obsDt"
+          },
+          {
+            "name": "howMany"
+          },
+          {
+            "name": "lat"
+          },
+          {
+            "name": "lng"
+          },
+          {
+            "name": "obsValid"
+          },
+          {
+            "name": "obsReviewed"
+          },
+          {
+            "name": "locationPrivate"
+          },
+          {
+            "name": "subId"
+          }
+        ]
+      },
+      "header_count": 13,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 13,
+    "content": 1
+  }
+}

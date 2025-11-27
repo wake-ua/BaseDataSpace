@@ -1,0 +1,6 @@
+.env
+__pycache__/
+.ipynb_checkpoints
+buscador_server.log
+query_clasifier.pickle
+query_log.csv

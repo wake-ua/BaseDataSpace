@@ -6,9 +6,9 @@ services:
     ports:
       - "5434:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=edc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: edc
     volumes:
       - ./deployment/bds-postgresql/data:/var/lib/postgresql/data
       - ./deployment/bds-postgresql/initdb:/docker-entrypoint-initdb.d
@@ -87,7 +87,7 @@ services:
   request-logger:
     container_name: request-logger
     ports:
-      - 4001:4000
+      - "4001:4000"
     build: ./util/http-request-logger
 
   fc-mongodb:
@@ -106,15 +106,7 @@ services:
       - "39194:39194"
       - "39195:39195"
     build: ./federated-catalog
-
-  search-service:
-    container_name: search-service
-    ports:
-      - "27191:27191"
-      - "27193:27193"
-      - "27194:27194"
-    build: ./consumers/search-service
-
+    
   climate-service:
     container_name: climate-service
     ports:
@@ -124,3 +116,62 @@ services:
     build: ./consumers/climate-service
     volumes:
       - ./deployment/assets/consumer:/app/consumer
+
+  qdrant:
+    container_name: qdrant
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant-storage:/qdrant/storage
+      - ./consumers/qdrant:/qdrant/config
+
+  search-service:
+    container_name: search-service
+    build:
+      context: ./consumers/search-service
+      dockerfile: Dockerfile
+    depends_on:
+      - qdrant
+      - federated-catalog
+    environment:
+      API_URL: http://qdrant:6333
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_API_KEY: ""
+      FC_QUERY_URL: http://federated-catalog:39195/api/catalog/v1alpha/catalog/query
+      OUT_DIR: /app/datos
+      OPENAI_API_KEY: ""
+      API_KEY: "123"
+    volumes:
+      - ./consumers/search-service/OpenDataSearch/datos:/app/datos
+    ports:
+      - "8002:8002"
+    restart: unless-stopped
+
+  indexer-service:
+    container_name: indexer-service
+    build:
+      context: ./consumers/indexer-service
+      dockerfile: Dockerfile
+    depends_on:
+      - qdrant
+      - federated-catalog
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_API_KEY: ""
+      FC_QUERY_URL: http://federated-catalog:39195/api/catalog/v1alpha/catalog/query
+      DATA_DIR: /app/datos
+      OUT_DIR: /app/datos
+      INDEX_DEBUG: "true"
+      INDEX_SOLO_UN_RECURSO: "true"
+      LIMIT: "200"
+      WRITE_SAMPLES: "false"
+    volumes:
+      - ./consumers/indexer-service/OpenDataIndexer/datos:/app/datos
+    restart: "no"
+
+volumes:
+  qdrant-storage:
+    driver: local

@@ -1,0 +1,84 @@
+Ejemplo:
+PUT /collections/ejemplo
+{
+  "shard_number": 3, # Particiones base de datos
+  "replication_factor": 2, # Copias de cada partición
+  "write_consistency_factor": 1, # Número de réplicas que deben confirmar una escritura antes de considerarla exitosa. Podríamos probar con = 2
+  "on_disk_payload": false por defecto (RAM) o true (Disco). (Ojo con esto, es más rápido pero puede chuparse toda la RAM en un pliqui)
+  "vectors": {
+    "size": 384, # Tamaño de los embeddings del modelo
+    "distance": "Cosine"# Distancia coseno
+  },
+"OPCIONAL"
+  "hnsw_config": {
+  	"m": 16, # Número de conexiones por nodo en el grafo
+  	"ef_construct": 100, # Precisión durante construcción
+  	"full_scan_threshold": 10000 # Si el número de puntos es menor a este valor, se hace una búsqueda lineal en lugar de HNSW
+	"max_indexing_threads": 0, # Con 0 se usan todos los hilos para indexar
+	"on_disk: false por defecto (RAM) o true (Disco) 
+  }
+  "quantization_config": { Reduce tamaño de los vectores, cuidao que puede afectar a la precisión.
+  	"scalar": { # scalar, product o binary
+    		"type": "int8",
+    		"quantile": 0.99,
+    		"always_ram": true
+  		}
+	}
+  "optimizer_config": {
+  	"deleted_threshold": 0.2, # No creo que usemos porque no borramos. Proporción de puntos eliminados que activa una optimización del segmento. Si más del 20% está borrado, se reorganiza.
+  	"vacuum_min_vector_number": 1000, # Nº mínimo de vectores para ejecutar una limpieza (vacuum) de segmentos.
+  	"default_segment_number": 0, # Que es esto de segmentos?. Nº inicial de segmentos al crear la colección. Si 0, Qdrant decide.
+  	"max_segment_size": null, # Tamaño máximo (en puntos) antes de dividir un segmento. Si null, Qdrant estima automáticamente.
+  	"memmap_threshold": null, # Nº de vectores a partir del cual se usa memmap (acceso por mapeo de archivos) en vez de RAM directa. Reduce uso de RAM.
+  	"indexing_threshold": 10000, # Nº de vectores mínimo para construir un índice (si menor, se usa búsqueda lineal).
+  	"flush_interval_sec": 5, # Intervalo (en segundos) para guardar cambios en disco. Menor valor = más seguridad ante apagones, pero más I/O.
+  	"max_optimization_threads": null # Nº máximo de hilos paralelos para optimizar segmentos. Si null, se autodetecta.
+   }
+}
+
+
+PUT /collections/titulos
+{
+  "shard_number": 3,
+  "replication_factor": 2,
+  "write_consistency_factor": 1,
+  "vectors": {
+    "size": 384,
+    "distance": "Cosine"
+  }
+}
+
+PUT /collections/descripciones
+{
+  "shard_number": 3,
+  "replication_factor": 2,
+  "write_consistency_factor": 1,
+  "vectors": {
+    "size": 384,
+    "distance": "Cosine"
+  }
+}
+
+
+PUT /collections/cabeceras
+{
+  "shard_number": 3,
+  "replication_factor": 2,
+  "write_consistency_factor": 1,
+  "vectors": {
+    "size": 384,
+    "distance": "Cosine"
+  }
+}
+
+
+PUT /collections/contenidos
+{
+  "shard_number": 3,
+  "replication_factor": 2,
+  "write_consistency_factor": 1,
+  "vectors": {
+    "size": 384,
+    "distance": "Cosine"
+  }
+}

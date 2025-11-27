@@ -1,0 +1,59 @@
+{
+  "identifier": "sample-0a9375e1-9b6f-405c-88c2-600954fe55d8",
+  "type": "cbm:Sample",
+  "title": "Bird Taxonomy Groups",
+  "description": "1",
+  "isSampleOf": "0a9375e1-9b6f-405c-88c2-600954fe55d8",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "groupName"
+          },
+          {
+            "name": "groupOrder"
+          },
+          {
+            "name": "taxonOrderBounds"
+          }
+        ]
+      },
+      "header_count": 3,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "groupName"
+          },
+          {
+            "name": "groupOrder"
+          },
+          {
+            "name": "taxonOrderBounds"
+          }
+        ]
+      },
+      "header_count": 3,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 3,
+    "content": 1
+  }
+}

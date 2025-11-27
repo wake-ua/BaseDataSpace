@@ -1,0 +1,29 @@
+{
+  "identifier": "sample-asset-hotspots-in-lleida::unknown",
+  "title": "hotspots-in-lleida",
+  "description": "Get a list of hotspots in Lleida",
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 1,
+    "content": 1
+  },
+  "resources": [
+    {
+      "name": "dummy_resource",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "path": "",
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ]
+}

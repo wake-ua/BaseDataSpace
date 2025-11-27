@@ -1,0 +1,29 @@
+{
+  "identifier": "sample-asset-hotspots-in-burgos::unknown",
+  "title": "hotspots-in-burgos",
+  "description": "Get a list of hotspots in Burgos",
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 1,
+    "content": 1
+  },
+  "resources": [
+    {
+      "name": "dummy_resource",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "path": "",
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ]
+}

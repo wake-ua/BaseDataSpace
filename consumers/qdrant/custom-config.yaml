@@ -1,0 +1,27 @@
+cluster:
+  # Use `enabled: true` to run Qdrant in distributed deployment mode
+  enabled: true
+  # Configuration of the inter-cluster communication
+  p2p:
+    # Port for internal communication between peers
+    port: 6335
+    enable_tls: true
+
+  # Configuration related to distributed consensus algorithm
+  consensus:
+    # How frequently peers should ping each other.
+    tick_period_ms: 100
+
+service:
+  api_key: "123"
+  enable_tls: true
+  verify_https_client_certificate: false
+
+tls:
+  # Server certificate chain file
+  cert: ./tls/cert.pem
+
+  # Server private key file
+  key: ./tls/key.pem
+
+  ca_cert: ./tls/cacert.pem

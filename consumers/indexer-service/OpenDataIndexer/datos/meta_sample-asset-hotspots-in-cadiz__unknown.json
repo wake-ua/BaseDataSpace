@@ -1,0 +1,29 @@
+{
+  "identifier": "sample-asset-hotspots-in-cadiz::unknown",
+  "title": "hotspots-in-cadiz",
+  "description": "Get a list of hotspots in Cadiz",
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 1,
+    "content": 1
+  },
+  "resources": [
+    {
+      "name": "dummy_resource",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "path": "",
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ]
+}

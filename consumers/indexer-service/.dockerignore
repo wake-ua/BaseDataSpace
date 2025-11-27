@@ -1,0 +1,8 @@
+build/
+resources/
+**/__pycache__/
+**/*.pyc
+**/*.log
+**/*.pickle
+OpenDataIndexer/datos/*
+OpenDataIndexer/tls/*
