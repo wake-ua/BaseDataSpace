@@ -45,5 +45,14 @@
         }
       ]
     }
+  ],
+  "https://w3id.org/edc/v0.0.1/ns/security": [
+    {
+      "https://w3id.org/edc/v0.0.1/ns/secret": [
+        {
+          "@value": "token"
+        }
+      ]
+    }
   ]
 }

@@ -42,7 +42,8 @@ public record ParticipantNode(@JsonProperty("name") String name,
                               @JsonProperty("url") String targetUrl,
                               @JsonProperty("supportedProtocols") List<String> supportedProtocols,
                               @JsonProperty("claims") Map<String, Object> claims,
-                              @JsonProperty("attributes") Map<String, String> attributes) {
+                              @JsonProperty("attributes") Map<String, String> attributes,
+                              @JsonProperty("security")  Map<String, String> security) {
 
     /**
      * Constructs a new instance of ParticipantNode.
@@ -53,6 +54,7 @@ public record ParticipantNode(@JsonProperty("name") String name,
      * @param supportedProtocols the list of supported protocols for the participant
      * @param claims the list of claims associated with the participant
      * @param attributes the list of credentials associated with the participant
+     * @param security the list of private security info associated with the participant
      */
     @JsonCreator
     public ParticipantNode {
@@ -64,7 +66,7 @@ public record ParticipantNode(@JsonProperty("name") String name,
      * @param targetNode the TargetNode instance containing name, id, target URL, and supported protocols
      */
     public ParticipantNode(TargetNode targetNode) {
-        this(targetNode.name(), targetNode.id(), targetNode.targetUrl(), targetNode.supportedProtocols(), Map.of(), Map.of());
+        this(targetNode.name(), targetNode.id(), targetNode.targetUrl(), targetNode.supportedProtocols(), Map.of(), Map.of(), Map.of());
     }
 
     /**
@@ -103,9 +105,10 @@ public record ParticipantNode(@JsonProperty("name") String name,
         List<String> protocols = getStringArrayValues(jsonObject, EDC_NAMESPACE + "supportedProtocols");
         Map<String, Object> claims = getMapFromJsonObject(jsonObject, EDC_NAMESPACE + "claims");
         Map<String, String> attributes = getStringMapFromJsonObject(jsonObject, EDC_NAMESPACE + "attributes");
+        Map<String, String> security = getStringMapFromJsonObject(jsonObject, EDC_NAMESPACE + "security");
 
         // Create and return a new ParticipantNode
-        return new ParticipantNode(name, id, url, protocols, claims, attributes);
+        return new ParticipantNode(name, id, url, protocols, claims, attributes, security);
     }
 
     private static ParticipantNode fromArrayJsonObject(JsonObject jsonObject) {
@@ -118,9 +121,10 @@ public record ParticipantNode(@JsonProperty("name") String name,
         List<String> protocols = getStringArrayValues(jsonObject, EDC_NAMESPACE + "supportedProtocols");
         Map<String, Object> claims = getMapFromArrayJsonObject(jsonObject, EDC_NAMESPACE + "claims");
         Map<String, String> attributes = getStringMapFromArrayJsonObject(jsonObject, EDC_NAMESPACE + "attributes");
+        Map<String, String> security = getStringMapFromArrayJsonObject(jsonObject, EDC_NAMESPACE + "security");
 
         // Create and return a new ParticipantNode
-        return new ParticipantNode(name, id, url, protocols, claims, attributes);
+        return new ParticipantNode(name, id, url, protocols, claims, attributes, security);
     }
 
     /**
@@ -129,6 +133,19 @@ public record ParticipantNode(@JsonProperty("name") String name,
      * @return a JsonObject containing the name, id, targetUrl, supportedProtocols, claims, and attributes of the instance
      */
     public JsonObject asJsonObject() {
+        return asJsonObject(false);
+    }
+
+    /**
+     * Converts the current instance into a JsonObject representation containing its properties.
+     *
+     * @return a JsonObject containing the name, id, targetUrl, supportedProtocols, claims, and attributes of the instance
+     */
+    public JsonObject asPublicJsonObject() {
+        return asJsonObject(true);
+    }
+
+    private JsonObject asJsonObject(boolean asPublic) {
         try {
             // Create a JSON object with the TargetNode properties
             JsonObjectBuilder builder = Json.createObjectBuilder()
@@ -162,6 +179,18 @@ public record ParticipantNode(@JsonProperty("name") String name,
                 }
                 builder.add(EDC_NAMESPACE + "attributes", attributesObject);
             }
+
+            if (!asPublic) {
+                // Add the security as an array
+                if (this.security() != null) {
+                    JsonObjectBuilder securityObject = Json.createObjectBuilder();
+                    for (Map.Entry<String, String> item : this.security().entrySet()) {
+                        securityObject.add(item.getKey(), Json.createValue(item.getValue()));
+                    }
+                    builder.add(EDC_NAMESPACE + "security", securityObject);
+                }
+            }
+
             // Build and return the JSON object
             JsonObject jsonObject = builder.build();
 

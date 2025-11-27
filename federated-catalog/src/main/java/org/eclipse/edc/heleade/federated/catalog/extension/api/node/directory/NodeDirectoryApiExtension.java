@@ -14,14 +14,10 @@
 
 package org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory;
 
-import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
-import org.eclipse.edc.catalog.spi.QueryService;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
-import org.eclipse.edc.heleade.federated.catalog.extension.api.query.HeleadeQueryServiceImpl;
 import org.eclipse.edc.jsonld.JsonLdExtension;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
-import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -59,20 +55,6 @@ public class NodeDirectoryApiExtension implements ServiceExtension {
     @Inject
     WebService webService;
 
-    @Inject
-    private FederatedCatalogCache store;
-
-    /**
-     * Provides the default implementation of the {@link QueryService} using the {@link HeleadeQueryServiceImpl}.
-     * This method initializes and returns a query engine that operates on a federated catalog cache.
-     *
-     * @return the default {@link QueryService} implementation for querying datasets from the federated catalog
-     */
-    @Provider
-    public QueryService defaultQueryEngine() {
-        return new HeleadeQueryServiceImpl(store);
-    }
-
     private JsonLd jsonLd;
     private Monitor monitor;
 
@@ -84,6 +66,7 @@ public class NodeDirectoryApiExtension implements ServiceExtension {
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
 
         webService.registerResource(ApiContext.MANAGEMENT, new NodeDirectoryController(monitor, targetNodeDirectory, jsonLd));
+        webService.registerResource(new NodeDirectoryPublicController(monitor, targetNodeDirectory, jsonLd));
     }
 
 }

@@ -15,6 +15,7 @@
 package org.eclipse.edc.heleade.federated.catalog.extension.api.query;
 
 import jakarta.json.Json;
+import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.catalog.spi.QueryService;
 import org.eclipse.edc.connector.core.agent.NoOpParticipantIdMapper;
 import org.eclipse.edc.heleade.federated.catalog.extension.content.based.JsonObjectFromDatasetContentBasedTransformer;
@@ -24,6 +25,7 @@ import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDataSer
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDistributionTransformer;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.apiversion.ApiVersionService;
@@ -97,10 +99,23 @@ public class FederatedCatalogContentBasedApiExtension implements ServiceExtensio
     private ApiVersionService apiVersionService;
     @Inject
     private PortMappingRegistry portMappingRegistry;
+    @Inject
+    private FederatedCatalogCache store;
 
     @Override
     public String name() {
         return NAME;
+    }
+
+    /**
+     * Provides the default implementation of the {@link QueryService} using the {@link HeleadeQueryServiceImpl}.
+     * This method initializes and returns a query engine that operates on a federated catalog cache.
+     *
+     * @return the default {@link QueryService} implementation for querying datasets from the federated catalog
+     */
+    @Provider
+    public QueryService defaultQueryEngine() {
+        return new HeleadeQueryServiceImpl(store);
     }
 
     @Override

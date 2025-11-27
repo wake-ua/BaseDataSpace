@@ -33,8 +33,9 @@ public class ParticipantNodeTest {
         List<String> supportedProtocols = List.of("dataspace-protocol-http", "dataspace-protocol-https");
         Map<String, Object> claims = Map.of("membership", Map.of("level", "gold"));
         Map<String, String> attributes = Map.of("description", "testing purposes");
+        Map<String, String> security = Map.of("secret", "token");
         String url = "http://localhost:19194/protocol";
-        ParticipantNode node = new ParticipantNode("test provider", "test-provider", url, supportedProtocols, claims, attributes);
+        ParticipantNode node = new ParticipantNode("test provider", "test-provider", url, supportedProtocols, claims, attributes, security);
         JsonObject object = node.asJsonObject();
 
         ParticipantNode nodeFromJsonObject = ParticipantNode.fromJsonObject(object);
@@ -45,6 +46,7 @@ public class ParticipantNodeTest {
         assert node.supportedProtocols().equals(nodeFromJsonObject.supportedProtocols());
         assert node.claims().get("membership").equals(nodeFromJsonObject.claims().get("membership"));
         assert node.attributes().get("description").equals(nodeFromJsonObject.attributes().get("description"));
+        assert node.security().get("secret").equals(nodeFromJsonObject.security().get("secret"));
     }
 
     @Test
@@ -90,8 +92,9 @@ public class ParticipantNodeTest {
         List<String> supportedProtocols = List.of("http", "https");
         Map<String, Object> claims = Map.of("membership", Map.of("level", "gold"));
         Map<String, String> attributes = Map.of("description", "testing purposes");
+        Map<String, String> security = Map.of("secret", "token");
         String url = "http://localhost:19194/protocol";
-        ParticipantNode node = new ParticipantNode("test participant", "test-provider", url, supportedProtocols, claims, attributes);
+        ParticipantNode node = new ParticipantNode("test participant", "test-provider", url, supportedProtocols, claims, attributes, security);
 
         JsonObject object = node.asJsonObject();
 
@@ -107,5 +110,35 @@ public class ParticipantNodeTest {
         assert jsonStringClaims.equals("{\"membership\":{\"level\":\"gold\"}}");
         String jsonStringAttributes = object.get(EDC_NAMESPACE + "attributes").toString();
         assert jsonStringAttributes.equals("{\"description\":\"testing purposes\"}");
+        String jsonStringSecurity = object.get(EDC_NAMESPACE + "security").toString();
+        assert jsonStringSecurity.equals("{\"secret\":\"token\"}");
+    }
+
+    @Test
+    void shouldGeneratePublicJsonObjectFromParticipantNode() {
+        List<String> supportedProtocols = List.of("http", "https");
+        Map<String, Object> claims = Map.of("membership", Map.of("level", "gold"));
+        Map<String, String> attributes = Map.of("description", "testing purposes");
+        Map<String, String> security = Map.of("secret", "token");
+        String url = "http://localhost:19194/protocol";
+        ParticipantNode node = new ParticipantNode("test participant", "test-provider", url, supportedProtocols, claims, attributes, security);
+
+        JsonObject object = node.asPublicJsonObject();
+
+        String jsonStringTitle = object.get(EDC_NAMESPACE + "name").toString();
+        assert jsonStringTitle.equals("\"" + node.name() + "\"");
+        String jsonStringProviderId = object.get(EDC_NAMESPACE + "id").toString();
+        assert jsonStringProviderId.equals("\"" + node.id() + "\"");
+        String jsonStringUrl = object.get(EDC_NAMESPACE + "url").toString();
+        assert jsonStringUrl.equals("\"" + node.targetUrl() + "\"");
+        String jsonStringSupportedProtocols = object.get(EDC_NAMESPACE + "supportedProtocols").toString();
+        assert jsonStringSupportedProtocols.equals("[\"http\",\"https\"]");
+        String jsonStringClaims = object.get(EDC_NAMESPACE + "claims").toString();
+        assert jsonStringClaims.equals("{\"membership\":{\"level\":\"gold\"}}");
+        String jsonStringAttributes = object.get(EDC_NAMESPACE + "attributes").toString();
+        assert jsonStringAttributes.equals("{\"description\":\"testing purposes\"}");
+        // check it has security but it is not returned
+        assert node.asJsonObject().get(EDC_NAMESPACE + "security") != null;
+        assert object.get(EDC_NAMESPACE + "security") == null;
     }
 }
