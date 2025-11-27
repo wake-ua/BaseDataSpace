@@ -1,0 +1,118 @@
+{
+  "identifier": "70fbaa17-b778-49a3-baf1-9e59ee6a2fa8",
+  "type": "dcat:Dataset",
+  "title": "Bird Observation Data",
+  "description": "1",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "speciesCode"
+          },
+          {
+            "name": "comName"
+          },
+          {
+            "name": "sciName"
+          },
+          {
+            "name": "locId"
+          },
+          {
+            "name": "locName"
+          },
+          {
+            "name": "obsDt"
+          },
+          {
+            "name": "howMany"
+          },
+          {
+            "name": "lat"
+          },
+          {
+            "name": "lng"
+          },
+          {
+            "name": "obsValid"
+          },
+          {
+            "name": "obsReviewed"
+          },
+          {
+            "name": "locationPrivate"
+          },
+          {
+            "name": "subId"
+          }
+        ]
+      },
+      "header_count": 13,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "speciesCode"
+          },
+          {
+            "name": "comName"
+          },
+          {
+            "name": "sciName"
+          },
+          {
+            "name": "locId"
+          },
+          {
+            "name": "locName"
+          },
+          {
+            "name": "obsDt"
+          },
+          {
+            "name": "howMany"
+          },
+          {
+            "name": "lat"
+          },
+          {
+            "name": "lng"
+          },
+          {
+            "name": "obsValid"
+          },
+          {
+            "name": "obsReviewed"
+          },
+          {
+            "name": "locationPrivate"
+          },
+          {
+            "name": "subId"
+          }
+        ]
+      },
+      "header_count": 13,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 13,
+    "content": 1
+  }
+}

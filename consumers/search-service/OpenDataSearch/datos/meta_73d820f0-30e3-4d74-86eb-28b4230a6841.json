@@ -1,0 +1,46 @@
+{
+  "identifier": "73d820f0-30e3-4d74-86eb-28b4230a6841",
+  "type": "dcat:Dataset",
+  "title": "List Species",
+  "description": "1",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "header_count": 1,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "header_count": 1,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 1,
+    "content": 1
+  }
+}

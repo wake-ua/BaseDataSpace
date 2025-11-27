@@ -1,0 +1,47 @@
+{
+  "identifier": "sample-9a4df442-54da-41bc-8198-4d8db0297c35",
+  "type": "cbm:Sample",
+  "title": "List Species",
+  "description": "1",
+  "isSampleOf": "9a4df442-54da-41bc-8198-4d8db0297c35",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "header_count": 1,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "header_count": 1,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 1,
+    "content": 1
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "identifier": "sample-cb50de71-e348-4b91-b567-31530f2a159f",
+  "type": "cbm:Sample",
+  "title": "Species Observation Data",
+  "description": "1",
+  "isSampleOf": "cb50de71-e348-4b91-b567-31530f2a159f",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "locationId"
+          },
+          {
+            "name": "countryCode"
+          },
+          {
+            "name": "subnational1Code"
+          },
+          {
+            "name": "subnational2Code"
+          },
+          {
+            "name": "latitude"
+          },
+          {
+            "name": "longitude"
+          },
+          {
+            "name": "locationName"
+          },
+          {
+            "name": "observationDateTime"
+          },
+          {
+            "name": "numSpeciesObserved"
+          }
+        ]
+      },
+      "header_count": 9,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "locationId"
+          },
+          {
+            "name": "countryCode"
+          },
+          {
+            "name": "subnational1Code"
+          },
+          {
+            "name": "subnational2Code"
+          },
+          {
+            "name": "latitude"
+          },
+          {
+            "name": "longitude"
+          },
+          {
+            "name": "locationName"
+          },
+          {
+            "name": "observationDateTime"
+          },
+          {
+            "name": "numSpeciesObserved"
+          }
+        ]
+      },
+      "header_count": 9,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 9,
+    "content": 1
+  }
+}

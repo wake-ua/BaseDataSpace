@@ -1,0 +1,47 @@
+{
+  "identifier": "sample-asset-hotspots-in-sevilla",
+  "type": "cbm:Sample",
+  "title": "hotspots-in-sevilla",
+  "description": "Get a list of hotspots in Sevilla",
+  "isSampleOf": "asset-hotspots-in-sevilla",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "header_count": 1,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "header_count": 1,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 1,
+    "content": 1
+  }
+}

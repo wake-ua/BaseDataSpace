@@ -1,0 +1,178 @@
+{
+  "identifier": "704136ef-57fa-417e-be46-8b1e7a9ea554",
+  "type": "dcat:Dataset",
+  "title": "Observation Records",
+  "description": "1",
+  "resources": [
+    {
+      "name": "distribution_1",
+      "schema": {
+        "fields": [
+          {
+            "name": "locId"
+          },
+          {
+            "name": "subId"
+          },
+          {
+            "name": "userDisplayName"
+          },
+          {
+            "name": "numSpecies"
+          },
+          {
+            "name": "obsDt"
+          },
+          {
+            "name": "obsTime"
+          },
+          {
+            "name": "isoObsDate"
+          },
+          {
+            "name": "locId_loc"
+          },
+          {
+            "name": "name_loc"
+          },
+          {
+            "name": "latitude_loc"
+          },
+          {
+            "name": "longitude_loc"
+          },
+          {
+            "name": "countryCode_loc"
+          },
+          {
+            "name": "countryName_loc"
+          },
+          {
+            "name": "subnational1Name_loc"
+          },
+          {
+            "name": "subnational1Code_loc"
+          },
+          {
+            "name": "subnational2Code_loc"
+          },
+          {
+            "name": "subnational2Name_loc"
+          },
+          {
+            "name": "isHotspot_loc"
+          },
+          {
+            "name": "locID_loc"
+          },
+          {
+            "name": "lat_loc"
+          },
+          {
+            "name": "lng_loc"
+          },
+          {
+            "name": "locName_loc"
+          },
+          {
+            "name": "hierarchicalName_loc"
+          }
+        ]
+      },
+      "header_count": 23,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    },
+    {
+      "name": "distribution_2",
+      "schema": {
+        "fields": [
+          {
+            "name": "locId"
+          },
+          {
+            "name": "subId"
+          },
+          {
+            "name": "userDisplayName"
+          },
+          {
+            "name": "numSpecies"
+          },
+          {
+            "name": "obsDt"
+          },
+          {
+            "name": "obsTime"
+          },
+          {
+            "name": "isoObsDate"
+          },
+          {
+            "name": "locId_loc"
+          },
+          {
+            "name": "name_loc"
+          },
+          {
+            "name": "latitude_loc"
+          },
+          {
+            "name": "longitude_loc"
+          },
+          {
+            "name": "countryCode_loc"
+          },
+          {
+            "name": "countryName_loc"
+          },
+          {
+            "name": "subnational1Name_loc"
+          },
+          {
+            "name": "subnational1Code_loc"
+          },
+          {
+            "name": "subnational2Code_loc"
+          },
+          {
+            "name": "subnational2Name_loc"
+          },
+          {
+            "name": "isHotspot_loc"
+          },
+          {
+            "name": "locID_loc"
+          },
+          {
+            "name": "lat_loc"
+          },
+          {
+            "name": "lng_loc"
+          },
+          {
+            "name": "locName_loc"
+          },
+          {
+            "name": "hierarchicalName_loc"
+          }
+        ]
+      },
+      "header_count": 23,
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ],
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 23,
+    "content": 1
+  }
+}

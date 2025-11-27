@@ -1,0 +1,29 @@
+{
+  "identifier": "asset-recent-notable-observations-in-tarragona::unknown",
+  "title": "recent-notable-observations-in-tarragona",
+  "description": "Get the list of recent, notable observations (up to 30 days ago) of birds seen in Tarragona",
+  "levels": {
+    "title": 1,
+    "description": 1,
+    "headers": 1,
+    "content": 1
+  },
+  "resources": [
+    {
+      "name": "dummy_resource",
+      "schema": {
+        "fields": [
+          {
+            "name": "dummy_field"
+          }
+        ]
+      },
+      "path": "",
+      "dummy_content": [
+        {
+          "dummy_field": 1
+        }
+      ]
+    }
+  ]
+}
