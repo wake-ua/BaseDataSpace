@@ -1897,13 +1897,48 @@
 							"response": []
 						},
 						{
+							"name": "Get Public Node in Directory by id Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_HTTP}}/api/directory/{{NODE_ID}}",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_HTTP}}",
+									"path": [
+										"api",
+										"directory",
+										"{{NODE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Add Node Directory",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+									"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n    \"security\": {\"token\": \"secret_provider_base_token\"},\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1932,7 +1967,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://provider-base:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"raw": "  {\n    \"name\": \"Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://provider-base:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2725,6 +2760,64 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"admin@heleade.com\",\"password\":\"Y5Hy0*o!kmhj\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}:8000/login",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"port": "8000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}:8000/catalog/assets",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"port": "8000",
+					"path": [
+						"catalog",
+						"assets"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
