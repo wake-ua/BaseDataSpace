@@ -7,6 +7,7 @@ build/
 # Infraestructura
 proxmox/keys
 proxmox/pro/nginx
+proxmox/pro/bbdd/mongo/certs/*
 swarm
 
 
