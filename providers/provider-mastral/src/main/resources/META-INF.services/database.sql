@@ -2,8 +2,8 @@
 -- PostgreSQL database
 --
 
--- CREATE DATABASE edc WITH ENCODING = 'UTF8';
-\connect edc
+CREATE DATABASE edc_mastral WITH ENCODING = 'UTF8';
+\connect edc_mastral
 
 
 CREATE TABLE IF NOT EXISTS public.edc_asset (
