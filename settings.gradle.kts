@@ -41,6 +41,10 @@ include(":providers:provider-mastral")
 
 include("commons")
 
-include("providers:policy-functions")
+
 include("identity-hub")
 include("providers:iam-claims")
+include("providers:policy")
+include("providers:policy:policy-always-true")
+include("providers:policy:claims-checker")
+include("providers:policy:policy-evaluation")
