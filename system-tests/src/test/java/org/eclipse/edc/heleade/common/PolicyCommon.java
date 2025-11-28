@@ -20,7 +20,9 @@ import java.util.LinkedHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.heleade.util.TransferUtil.get;
 import static org.eclipse.edc.heleade.util.TransferUtil.post;
+
 
 public class PolicyCommon {
     private static final String V3_ASSETS_PATH = "/v3/assets";
@@ -45,6 +47,11 @@ public class PolicyCommon {
     private static final String LEFT_OPERAND_KEY = "{{left-operand}}";
     private static final String ID = "@id";
 
+
+    public static boolean checkPolicyById(String policyId) {
+        String response =  get(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH + "/" + policyId, ID);
+        return response != null && response.equals(policyId);
+    }
 
     public static String createAssetWithId(String assetId) {
         String content = getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH)

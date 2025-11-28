@@ -33,6 +33,7 @@ import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.getEmbeddedF
 import static org.eclipse.edc.heleade.common.NegotiationCommon.fetchCatalogDatasets;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.getContractNegotiationState;
 import static org.eclipse.edc.heleade.common.PolicyCommon.catalogContainsAssetId;
+import static org.eclipse.edc.heleade.common.PolicyCommon.checkPolicyById;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createAssetWithId;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createContractDefinitionWithParams;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createPolicyWithParams;
@@ -55,6 +56,7 @@ public class Policy01BasicTest {
     private static final String ENTITY_TYPE_PRIVATE = "private";
     private static final String LEFT_OPERAND_LOCATION = "location";
     private static final String LEFT_OPERAND_ENTITY_TYPE = "entityType";
+    private static final String POLICY_OPEN_ID = "always-true";
     private static final String POLICY_LOCATION_EU_ID = "policy-location-eu";
     private static final String POLICY_LOCATION_US_ID = "policy-location-us";
     private static final String POLICY_ENTITY_TYPE_PUBLIC_ID = "policy-entity-type-public";
@@ -80,11 +82,17 @@ public class Policy01BasicTest {
     }
 
     @Test
+    void testPolicyAlwaysTrueExist() {
+        boolean policyAlwaysTrueExist = checkPolicyById("always-true");
+        assertThat(policyAlwaysTrueExist).isTrue();
+    }
+
+    @Test
     void testPolicyEntityTypePrivateAssetIsNotInCatalog() {
         String id = UUID.randomUUID().toString();
         createAssetWithId(id);
         createPolicyWithParams(POLICY_ENTITY_TYPE_PRIVATE_ID, LEFT_OPERAND_ENTITY_TYPE, ENTITY_TYPE_PRIVATE);
-        createContractDefinitionWithParams(id, POLICY_ENTITY_TYPE_PRIVATE_ID, POLICY_ENTITY_TYPE_PRIVATE_ID, id);
+        createContractDefinitionWithParams(id, POLICY_ENTITY_TYPE_PRIVATE_ID, POLICY_OPEN_ID, id);
         ArrayList<LinkedHashMap> catalogDatasets = fetchCatalogDatasets(CATALOG_REQUEST_FILE_PATH);
         boolean catalogContainsAsset = catalogContainsAssetId(id, catalogDatasets);
         assertThat(catalogContainsAsset).isFalse();
@@ -96,7 +104,7 @@ public class Policy01BasicTest {
         String id = UUID.randomUUID().toString();
         createAssetWithId(id);
         createPolicyWithParams(POLICY_ENTITY_TYPE_PUBLIC_ID, LEFT_OPERAND_ENTITY_TYPE, ENTITY_TYPE_PUBLIC);
-        createContractDefinitionWithParams(id, POLICY_ENTITY_TYPE_PUBLIC_ID, POLICY_ENTITY_TYPE_PUBLIC_ID, id);
+        createContractDefinitionWithParams(id, POLICY_ENTITY_TYPE_PUBLIC_ID, POLICY_OPEN_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
         assertThat(catalogDatasetId).isNotEmpty();
     }
@@ -106,7 +114,7 @@ public class Policy01BasicTest {
         String id = UUID.randomUUID().toString();
         createAssetWithId(id);
         createPolicyWithParams(POLICY_LOCATION_EU_ID, LEFT_OPERAND_LOCATION, EU);
-        createContractDefinitionWithParams(id, POLICY_LOCATION_EU_ID, POLICY_LOCATION_EU_ID, id);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_LOCATION_EU_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
         var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_LOCATION, EU);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
@@ -118,7 +126,7 @@ public class Policy01BasicTest {
         String id = UUID.randomUUID().toString();
         createAssetWithId(id);
         createPolicyWithParams(POLICY_LOCATION_US_ID, LEFT_OPERAND_LOCATION, US);
-        createContractDefinitionWithParams(id, POLICY_LOCATION_US_ID, POLICY_LOCATION_US_ID, id);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_LOCATION_US_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
         var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_LOCATION, US);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)

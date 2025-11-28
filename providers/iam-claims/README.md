@@ -70,3 +70,17 @@ Example:
     }
 }
 ```
+
+
+#### Important:
+
+Since the Identity Hub was overly complex and not functioning correctly, 
+we decided not to use it. Instead, 
+this extension implements the IdentityService interface, 
+with a small modification to include claims in the generated token so 
+they are available to the participant agent.
+Because the Identity Service component in EDC is not well documented,
+much of this understanding 
+comes from community issues and discussions on Discord. 
+In the future, we can—and should—expand this implementation to 
+further improve identity handling.
