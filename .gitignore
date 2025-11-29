@@ -48,14 +48,7 @@ bin/
 tmp/
 
 # deployment
-deployment/fc-mongodb/data/db/diagnostic.data
-deployment/fc-mongodb/data/db/journal
-deployment/fc-mongodb/data/db/*.wt
-deployment/fc-mongodb/data/db/*.lock
-deployment/fc-mongodb/data/db/?.*
-deployment/fc-mongodb/data/db/WiredTiger*
-deployment/fc-mongodb/data/db/storage*
-deployment/fc-mongodb/data/db/mongod.lock
+deployment/fc-mongodb/data/db/*
 
 deployment/*-postgresql/data
 

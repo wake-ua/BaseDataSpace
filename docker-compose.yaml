@@ -90,9 +90,9 @@ services:
 
   fc-mongodb:
     container_name: fc-mongodb
-    image: mongo:6-jammy
+    image: mongodb/mongodb-community-server:8.0-ubi8
     ports:
-      - '27018:27017'
+      - "27018:27017"
     volumes:
       - ./deployment/fc-mongodb/data/db:/data/db
 
