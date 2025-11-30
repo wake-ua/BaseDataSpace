@@ -1,0 +1,31 @@
+secrets:
+  catalog_config_secret:
+    external: true
+
+networks:
+  shared-net:
+    external: true
+
+
+services:
+  federated-catalog:
+    image: federated-catalog:latest
+    ports:
+      - "39191:39191"
+      - "39193:39193"
+      - "39194:39194"
+      - "39195:39195"
+
+    secrets:
+      - catalog_config_secret
+
+    volumes:
+      - type: bind
+        source: /run/secrets/catalog_config_secret
+        target: /app/config/fc-docker-configuration.properties
+        read_only: true
+
+    networks:
+      - shared-net
+
+
