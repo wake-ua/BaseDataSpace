@@ -37,6 +37,10 @@
     "http://purl.org/dc/terms/description": {
       "type": "string"
     },
+    "http://purl.org/dc/terms/type": {
+      "type": "string",
+      "enum": ["Dataset", "Service"]
+    },
     "http://purl.org/dc/terms/modified": {
       "type": "string",
       "format": "date-time"
