@@ -21,6 +21,8 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 import static org.eclipse.edc.heleade.service.extension.ServiceDataPlaneExtension.SERVICE_TYPE;
 
 /**
@@ -32,6 +34,8 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
     private final Monitor monitor;
     private final String credentialServiceUrl;
     private final String credentials;
+
+    private HashMap<String, DataFlowStartMessage> requestCache = new HashMap<>();
 
     /**
      * Constructs a new instance of the ServiceDataSourceFactory to create ServiceDataSource objects.
@@ -53,17 +57,19 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
 
     @Override
     public DataSource createSource(DataFlowStartMessage request) {
-        monitor.info("creating ServiceDataSource with url: " + credentialServiceUrl + ", " + credentials);
-        return new ServiceDataSource(request, credentialServiceUrl, credentials);
+        monitor.info("creating ServiceDataSource with url: " + credentialServiceUrl +
+                " for request processId: " + request.getProcessId() + ", " + credentials);
+        DataFlowStartMessage originalRequest = requestCache.get(request.getProcessId());
+        requestCache.remove(request.getProcessId());
+        return new ServiceDataSource(request, credentialServiceUrl, credentials, originalRequest);
     }
 
     @Override
     public @NotNull Result<Void> validateRequest(DataFlowStartMessage request) {
-        try {
-            createSource(request);
-        } catch (Exception e) {
-            return Result.failure("Failed to build ServiceDataSource: " + e.getMessage());
+        if (request.getParticipantId() == null) {
+            return Result.failure("Failed to build ServiceDataSource: Missing participantId");
         }
+        requestCache.put(request.getProcessId(), request);
         return Result.success();
     }
 }
