@@ -53,5 +53,7 @@ deployment/fc-mongodb/data/db/*
 deployment/*-postgresql/data
 
 deployment/provider-ebird-init/scripts/samples/data/*
+deployment/samples-server/samples/provider-base/*
+deployment/samples-server/samples/provider-ebird/*
 !deployment/provider-ebird-init/scripts/samples/data/.gitkeep
 

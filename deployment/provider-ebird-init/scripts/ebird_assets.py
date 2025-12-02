@@ -54,7 +54,7 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, asset_ty
             {
                 "@type": "dcat:Distribution",
                 "dct:format": {"@id": "HttpData"},
-                "dcat:accessURL": f"{sample_base_url}/sample-{asset_id}.{asset_type}",
+                "dcat:accessURL": f"{sample_base_url}/provider-ebird/sample-{asset_id}.{asset_type}",
                 "edc:proxyPath": "true",
                 "cbm:hasDataDictionary": {"@type": "cbm:DataDictionary","cbm:hasField": metadata["columns"]}
             }

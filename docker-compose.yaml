@@ -51,17 +51,17 @@ services:
       - ./deployment/provider-ebird-init/.env
     restart: "no"
     volumes:
-      - ./deployment/provider-ebird-init/scripts/samples/data:/app/samples/data
+      - ./deployment/samples-server/samples/provider-ebird:/app/samples/data
 
   samples-server:
     container_name: samples-server
     build:
-      context: deployment/provider-ebird-init/scripts/samples
+      context: deployment/samples-server
       dockerfile: Dockerfile
     ports:
-      - "9099:9099"
+      - "9099:80"
     volumes:
-      - ./deployment/provider-ebird-init/scripts/samples/data:/app
+      - ./deployment/samples-server/samples:/usr/share/nginx/html
 
   provider-mastral:
     container_name: provider-mastral
