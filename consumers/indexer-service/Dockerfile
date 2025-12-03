@@ -43,4 +43,5 @@ ENV DATA_DIR=/app/datos \
     WRITE_SAMPLES=true
 
 # Es un job batch: ejecuta limpieza + indexado y sale
-CMD ["python", "run_indexer.py"]
+#CMD ["python", "run_indexer.py"]
+CMD ["tail", "-f", "/dev/null"]

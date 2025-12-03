@@ -23,38 +23,6 @@
         "contenttype": {
           "type": "string"
         },
-        "http://www.w3.org/ns/dcat#inSeries": {
-          "type": "string"
-        },
-        "http://purl.org/dc/terms/accrualPeriodicity": {
-          "type": "string"
-        },
-        "http://www.w3.org/ns/dcat#dcat:temporalResolution": {
-          "type": "string"
-        },
-        "http://www.w3.org/ns/dcat#dcat:spatialResolutionInMeters": {
-          "type": "number"
-        },
-        "http://purl.org/dc/terms/temporal": {
-          "type": "object",
-          "properties": {
-            "http://www.w3.org/ns/dcat#startDate": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "http://www.w3.org/ns/dcat#endDate": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          "required": [
-            "http://www.w3.org/ns/dcat#startDate"
-          ],
-          "additionalProperties": false
-        },
-        "http://purl.org/dc/terms/spatial": {
-          "type": "string"
-        },
         "http://purl.org/dc/terms/type": {
           "type": "string",
           "enum": ["Dataset", "Service"]

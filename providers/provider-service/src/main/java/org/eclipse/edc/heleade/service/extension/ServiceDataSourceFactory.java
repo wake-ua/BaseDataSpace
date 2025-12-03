@@ -16,7 +16,6 @@ package org.eclipse.edc.heleade.service.extension;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSourceFactory;
-import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
@@ -33,25 +32,22 @@ import static org.eclipse.edc.heleade.service.extension.ServiceDataPlaneExtensio
 public class ServiceDataSourceFactory implements DataSourceFactory {
 
     private final Monitor monitor;
-    private final EdcHttpClient httpClient;
     private final String credentialServiceUrl;
-    private final String defaultCredentials;
+    private final String credentials;
 
     private HashMap<String, DataFlowStartMessage> requestCache = new HashMap<>();
 
     /**
-     * Constructs a ServiceDataSourceFactory instance.
+     * Constructs a new instance of the ServiceDataSourceFactory to create ServiceDataSource objects.
      *
-     * @param monitor the monitor used for logging and tracing
-     * @param httpClient the HTTP client used for communication with external services
-     * @param credentialServiceUrl the URL of the credential service
-     * @param defaultCredentials the default credentials required to access the service
+     * @param monitor the monitor used for logging and diagnostics
+     * @param credentialServiceUrl the URL for the credentials service
+     * @param credentials the credentials required for accessing the service
      */
-    public ServiceDataSourceFactory(Monitor monitor, EdcHttpClient httpClient, String credentialServiceUrl, String defaultCredentials) {
+    public ServiceDataSourceFactory(Monitor monitor, String credentialServiceUrl, String credentials) {
         this.monitor = monitor;
         this.credentialServiceUrl = credentialServiceUrl;
-        this.defaultCredentials = defaultCredentials;
-        this.httpClient = httpClient;
+        this.credentials = credentials;
     }
 
     @Override
@@ -62,10 +58,10 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
     @Override
     public DataSource createSource(DataFlowStartMessage request) {
         monitor.info("creating ServiceDataSource with url: " + credentialServiceUrl +
-                " for request processId: " + request.getProcessId() + ", " + defaultCredentials);
+                " for request processId: " + request.getProcessId() + ", " + credentials);
         DataFlowStartMessage originalRequest = requestCache.get(request.getProcessId());
         requestCache.remove(request.getProcessId());
-        return new ServiceDataSource(httpClient, request, credentialServiceUrl, defaultCredentials, originalRequest);
+        return new ServiceDataSource(request, credentialServiceUrl, credentials, originalRequest);
     }
 
     @Override

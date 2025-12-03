@@ -1,13 +1,16 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -e
 
-for i in ebird mastral provider-base
-do
-    echo "Creating database: ${POSTGRES_DB}_${i}"
+arr_variable=("ebird" "mastral" "provider-base")
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<EOSQL
-CREATE DATABASE "${POSTGRES_DB}_${i}";
-GRANT ALL PRIVILEGES ON DATABASE "${POSTGRES_DB}_${i}" TO "$POSTGRES_USER";
+## now loop through above array
+for i in "${arr_variable[@]}"
+do
+   echo "Create DB: ${POSTGRES_DB}_$i"
+
+psql -v ON_ERROR_STOP=0 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+   CREATE DATABASE "${POSTGRES_DB}_$i";
+   GRANT ALL PRIVILEGES ON DATABASE "${POSTGRES_DB}_$i" TO "$POSTGRES_USER";
 EOSQL
 
 done

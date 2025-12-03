@@ -16,8 +16,8 @@ SAMPLES_DIR = os.getenv("SAMPLES_DIR", "/app/samples")
 LIMIT = int(os.getenv("LIMIT", "200"))
 WRITE_SAMPLES = True  # fuerza samples ON
 
-SAMPLES_BASE_URL = os.getenv("SAMPLES_BASE_URL", "http://samples-server:9099")
-
+#SAMPLES_BASE_URL = os.getenv("SAMPLES_BASE_URL", "http://samples-server:9099/provider-ebird")
+SAMPLES_BASE_URL = "http://host.docker.internal:9099/provider-ebird"
 DATA_SAMPLES_DIR = os.path.join(DATA_DIR, "samples")
 
 # ==========================================================================================

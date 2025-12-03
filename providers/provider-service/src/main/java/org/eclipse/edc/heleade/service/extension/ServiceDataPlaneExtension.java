@@ -15,11 +15,9 @@
 package org.eclipse.edc.heleade.service.extension;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
-import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-
 
 /**
  * ServiceDataPlaneExtension is an implementation of the ServiceExtension interface
@@ -38,19 +36,11 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
     @Inject
     PipelineService pipelineService;
 
-
-    @Inject
-    private EdcHttpClient httpClient;
-
     @Override
     public void initialize(ServiceExtensionContext context) {
-        String credentialServiceUrl = context.getConfig().getString("edc.heleade.service.dataservice.credentials.url", "");
-        String defaultCredentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials.default", "");
+        String credentialServiceUrl = context.getConfig().getString("edc.heleade.service.dataservice.url");
+        String credentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials");
 
-        if (credentialServiceUrl.isEmpty() && defaultCredentials.isEmpty()) {
-            throw new IllegalStateException("One of edc.heleade.service.dataservice.credentials.url or edc.heleade.service.dataservice.credentials.default must be set");
-        }
-
-        pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient, credentialServiceUrl, defaultCredentials));
+        pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), credentialServiceUrl, credentials));
     }
 }
