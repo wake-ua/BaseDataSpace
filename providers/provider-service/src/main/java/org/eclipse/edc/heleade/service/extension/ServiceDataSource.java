@@ -34,25 +34,37 @@ public class ServiceDataSource implements DataSource {
     private final String credentialsServiceUrl;
     private final String credentials;
     private final String baseUrl;
+    private final String participantId;
+    private final String assetId;
+    private final String agreementId;
+    private final String processId;
 
     /**
-     * Constructs a new ServiceDataSource using the provided request and credential information.
-     * It extracts the base URL from the request's source data address and initializes the data source.
+     * Constructs a new ServiceDataSource with required configurations for processing data.
      *
-     * @param request               the DataFlowStartMessage containing the source data address with the base URL
+     * @param request the data flow start message containing source details
      * @param credentialsServiceUrl the URL for the credentials service
-     * @param credentials           the credentials required for accessing the service
+     * @param credentials the credentials used to access the service
+     * @param originalRequest the original data flow start message for fallback values
      */
-    public ServiceDataSource(DataFlowStartMessage request, String credentialsServiceUrl, String credentials) {
+    public ServiceDataSource(DataFlowStartMessage request, String credentialsServiceUrl, String credentials, DataFlowStartMessage originalRequest) {
         this.credentialsServiceUrl = credentialsServiceUrl;
         this.credentials = credentials;
         this.baseUrl = request.getSourceDataAddress().getStringProperty("baseUrl");
+        this.processId = request.getProcessId();
+        this.agreementId = request.getAgreementId() == null ? originalRequest.getAgreementId() : request.getAgreementId();
+        this.participantId = request.getParticipantId() == null ? originalRequest.getParticipantId() : request.getParticipantId();
+        this.assetId = request.getAssetId() == null ? originalRequest.getAssetId() : request.getAssetId();
     }
 
     @Override
     public StreamResult<Stream<Part>> openPartStream() {
         String source = "{\"baseUrl\": \"" + baseUrl + "\", " +
                 "\"credentialsServiceUrl\": \"" + credentialsServiceUrl + "\", " +
+                "\"processId\": \"" + processId + "\", " +
+                "\"participantId\": \"" + participantId + "\", " +
+                "\"assetId\": \"" + assetId + "\", " +
+                "\"agreementId\": \"" + agreementId + "\", " +
                 "\"credentials\": " + credentials + "}";
         InputStream stream = new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8));
         InputStreamDataSource part = new InputStreamDataSource("ServiceDataSource", stream);
