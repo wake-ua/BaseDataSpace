@@ -20,6 +20,8 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -51,13 +53,31 @@ public class HttpRequestLoggerServer {
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            System.out.println("Incoming request");
+            // Get the current date and time
+            LocalDateTime now = LocalDateTime.now();
+            // Define the format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // Printout request
+            System.out.println("Incoming request (" + now.format(formatter) + "):");
             System.out.println("Method: " + exchange.getRequestMethod());
             System.out.println("Path: " + exchange.getRequestURI());
             System.out.println("Body:");
             System.out.println(new String(exchange.getRequestBody().readAllBytes()));
+            if (exchange.getRequestMethod().equals("POST") && exchange.getRequestURI().getPath().equals("/credentials")) {
+                String responseString = "{\"description\": \"Please check the API instructions in the homepage\", " +
+                        "\"url\": \"https://customservice.com/dashboard/realtime\", " +
+                        "\"apikey\": {\"x-api-key\": \"apikeytokenvalue\"}, " +
+                        "\"user\": \"provider_user\", " +
+                        "\"user\": \"provider_user\", " +
+                        "\"password\": \"1234567890\"}";
+                exchange.sendResponseHeaders(200, responseString.length());
+                exchange.getResponseBody().write(responseString.getBytes());
+                exchange.getResponseBody().close();
+                System.out.println("Response sent: " + responseString);
+            } else {
+                exchange.sendResponseHeaders(200, -1);
+            }
             System.out.println("=============");
-            exchange.sendResponseHeaders(200, -1);
         }
     }
 
