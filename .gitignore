@@ -54,6 +54,8 @@ deployment/*-postgresql/data
 
 deployment/provider-ebird-init/scripts/samples/data/*
 deployment/samples-server/samples/provider-base/*
+!deployment/samples-server/samples/provider-base/.gitkeep
 deployment/samples-server/samples/provider-ebird/*
+!deployment/samples-server/samples/provider-ebird/.gitkeep
 !deployment/provider-ebird-init/scripts/samples/data/.gitkeep
 
