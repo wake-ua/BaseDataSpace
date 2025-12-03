@@ -170,6 +170,7 @@ services:
       WRITE_SAMPLES: "false"
     volumes:
       - ./consumers/indexer-service/OpenDataIndexer/datos:/app/datos
+      - ./consumers/indexer-service/OpenDataIndexer/samples:/app/samples  
     restart: "no"
 
 volumes:

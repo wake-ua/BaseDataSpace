@@ -158,13 +158,12 @@ def extraer_texto_multilingue(campo, preferidas=('es', 'en')):
                     val = str(it.get('value', '')).strip()
                     if val:
                         return val
-        # Fallback: primer valor no vacío (string o dict con 'value')
+        # Fallback
         res = _primero_no_vacio_de_lista(campo)
         if res:
             return res
         return ''
 
-    # Tipos no contemplados
     return ''
 
 '''
@@ -247,7 +246,6 @@ def cargar_metadatos(dir_path):
             continue
 
         recursos = meta.get('resources') or []
-        # Soporta dict o list
         if isinstance(recursos, dict):
             recursos = recursos.values()
         res_files = [r.get('path') for r in recursos if r.get('path')]
@@ -289,16 +287,20 @@ Devuelve string con cabeceras normalizadas para el recurso.
 Prioriza schema.fields; si no, intenta leer la primera fila del CSV.
 '''
 def extraer_cabeceras_de_resource(resource):
-    # 1) Schema de los metadatos obtenido mediante Friction Less Data
     schema = resource.get('schema') or {}
     fields = schema.get('fields') or []
     names_schema = [str(f.get('name', '')).strip() for f in fields if isinstance(f, dict) and f.get('name')]
     if names_schema:
         return clip_for_model(normalizar_texto(' '.join(names_schema)))
 
-    # 2) Si el Schema no esta bien, se busca directamente en el fichero
     filename = resource.get('path')
-    ruta_csv = os.path.join(DATA_PATH, filename)
+
+    # 👇 PARCHE: soportar rutas absolutas o relativas
+    ruta_csv = filename if filename.startswith("/") else os.path.join(DATA_PATH, filename)
+
+    if DEBUG:
+        print(f"[FILECHECK] Cabeceras leyendo: {ruta_csv}")
+        print(f"[FILECHECK] Existe? {os.path.exists(ruta_csv)}")
 
     enc = resource.get('encoding')
     delim = resource.get('delimiter')
@@ -313,8 +315,8 @@ def extraer_cabeceras_de_resource(resource):
     except Exception as e:
         if DEBUG == True:
             print(f"[cabeceras] No se pudieron leer cabeceras de {ruta_csv}: {e}", flush=True)
-    return ''
 
+    return ''
 '''
 Procesa el CSV del recurso y devuelve:
     - mean_vec: media de embeddings por fila
@@ -324,7 +326,13 @@ Procesa el CSV del recurso y devuelve:
 '''
 def media_embeddings_contenido_csv(resource, model, batch_size=256, max_rows=None):
     filename = resource.get('path')
-    ruta_csv = os.path.join(DATA_PATH, filename)
+
+    # 👇 PARCHE: soportar rutas absolutas (/app/...) o relativas (samples/...)
+    ruta_csv = filename if filename.startswith("/") else os.path.join(DATA_PATH, filename)
+
+    if DEBUG:
+        print(f"[FILECHECK] Contenido leyendo: {ruta_csv}")
+        print(f"[FILECHECK] Existe? {os.path.exists(ruta_csv)}")
 
     enc = resource.get('encoding')
     total = 0
@@ -357,7 +365,7 @@ def media_embeddings_contenido_csv(resource, model, batch_size=256, max_rows=Non
 
     try:
         with open(ruta_csv, 'r', encoding=enc or 'utf-8', errors='ignore') as fh:
-            # Detectar dialecto y si hay cabecera
+            # Detectar dialecto
             sample = fh.read(8192)
             fh.seek(0)
             try:
@@ -365,7 +373,7 @@ def media_embeddings_contenido_csv(resource, model, batch_size=256, max_rows=Non
             except Exception:
                 dialect = csv.get_dialect('excel')
 
-            # Si el schema trae fields, asumimos que hay cabecera
+            # Cabecera
             schema = resource.get('schema') or {}
             fields = schema.get('fields') or []
             assume_header = bool(fields)
@@ -376,17 +384,15 @@ def media_embeddings_contenido_csv(resource, model, batch_size=256, max_rows=Non
 
             reader = csv.reader(fh, dialect)
 
-            # Saltar cabecera solo si realmente existe
+            # Saltar cabecera si existe
             if has_header:
                 _ = next(reader, None)
 
             buffer = []
             for row in reader:
-                # Texto 'real' para payload
                 raw_row = ','.join(_clip_cell(x) for x in row)
                 _append_text(raw_row)
 
-                # Texto para embedding (clip por modelo + normalizar)
                 raw_for_model = clip_for_model(raw_row)
                 line_txt = normalizar_texto(raw_for_model)
                 if not line_txt:
@@ -401,9 +407,9 @@ def media_embeddings_contenido_csv(resource, model, batch_size=256, max_rows=Non
                     sum_vec = embs.sum(axis=0) if sum_vec is None else (sum_vec + embs.sum(axis=0))
                     total += embs.shape[0]
                     buffer = []
-
                     del embs
                     torch.cuda.empty_cache()
+
                 if max_rows and total >= max_rows:
                     buffer = []
                     break
@@ -457,11 +463,12 @@ def indexar_recursos(dir_path, model, solo_un_recurso = SOLO_UN_RECURSO):
         resources = meta.get('resources') or []
         if isinstance(resources, dict):
             resources = resources.values()
+
         for res in resources:
             if solo_un_recurso and procesados >= 1:
                 break
-            # Solo considerar recursos descargados (con path)
-            if res.get('path'):
+
+            if res.get('path'):  # solo si hay archivo sample
                 res_uid = f"{dataset_uid}:::{res.get('path')}"
 
                 # ----- Cabeceras -----
@@ -471,13 +478,12 @@ def indexar_recursos(dir_path, model, solo_un_recurso = SOLO_UN_RECURSO):
                 cabeceras_ids.append(res_uid)
                 cabeceras_texts.append(cabeceras_text)
 
-                # Generación de extras de las cabeceras
                 res_name = normalizar_texto(extraer_texto_multilingue(res.get('name')))
 
                 buffer_extra = {
                     'dataset_uid': dataset_uid,
                 }
-                if DEBUG == True:
+                if DEBUG:
                     buffer_extra.update({
                         'resource_name': res_name,
                         'resource_path': res.get('path'),
@@ -485,6 +491,7 @@ def indexar_recursos(dir_path, model, solo_un_recurso = SOLO_UN_RECURSO):
                         'resource_mediaType': res.get('mediaType'),
                         'resource_encoding': res.get('encoding'),
                     })
+
                 cabeceras_extras.append((res_uid, buffer_extra))
 
                 # ----- Contenidos -----
@@ -496,24 +503,26 @@ def indexar_recursos(dir_path, model, solo_un_recurso = SOLO_UN_RECURSO):
                     contenido_ids.append(res_uid)
                     contenido_vectors.append(media_contenido)
                     contenido_texts.append(text_payload)
+
                     buffer_extra_contenido = dict(buffer_extra)
-                    if DEBUG == True:
-                        buffer_extra_contenido['num_rows_used'] = n_filas_index
-                        buffer_extra_contenido['payload_truncated'] = was_truncated
+                    if DEBUG:
+                        buffer_extra_contenido['num_rows_used']        = n_filas_index
+                        buffer_extra_contenido['payload_truncated']    = was_truncated
+
                     contenido_extras.append((res_uid, buffer_extra_contenido))
 
-        # ===== Upserts INMEDIATOS para este metadato =====
+        # ===== Upserts INMEDIATOS =====
         if cabeceras_texts:
             cabeceras_vectors = model.encode(cabeceras_texts, batch_size=BATCH_SIZE, normalize_embeddings=True).tolist()
-            qdrant_upsert(COL_CAB, cabeceras_ids, cabeceras_vectors, cabeceras_texts, extras={k: v for k, v in cabeceras_extras})
+            qdrant_upsert(COL_CAB, cabeceras_ids, cabeceras_vectors, cabeceras_texts,
+                          extras={k: v for k, v in cabeceras_extras})
 
         if contenido_vectors:
-            qdrant_upsert(COL_CON, contenido_ids, contenido_vectors, contenido_texts, extras={k: v for k, v in contenido_extras})
+            qdrant_upsert(COL_CON, contenido_ids, contenido_vectors, contenido_texts,
+                          extras={k: v for k, v in contenido_extras})
 
-        # Limpieza explícita de acumuladores
-        del cabeceras_ids, cabeceras_texts, cabeceras_extras, contenido_ids, contenido_vectors, contenido_texts, contenido_extras
-
-
+        del cabeceras_ids, cabeceras_texts, cabeceras_extras
+        del contenido_ids, contenido_vectors, contenido_texts, contenido_extras
 def guardar_estadisticas_modelo(tiempo):
     # Si no usas HTTPS/certificados, deja verify=False
     url = f"{API_URL.rstrip('/')}/metrics"
@@ -541,6 +550,7 @@ def guardar_estadisticas_modelo(tiempo):
     except Exception as e:
         if DEBUG:
             print(f"[estadisticas] No se pudieron guardar estadísticas: {e}", flush=True)
+
 
 
 if __name__ == '__main__':
@@ -574,30 +584,28 @@ if __name__ == '__main__':
 
     print("Modelo cargado correctamente. Ajustando precisión...", flush=True)
 
-
-
-
-
     if MODEL_TO_16:
-        model.to(torch.float16)  # Reducción de modelo OPCIONAL
+        model.to(torch.float16)  # Reducción del modelo (opcional)
 
     MODEL_MAX_TOKENS = get_model_max_tokens(model)
-    if DEBUG == True:
+    if DEBUG:
         print(f'Max tokens del modelo: {MODEL_MAX_TOKENS}', flush=True)
         print('Cargando metadatos…', flush=True)
-    ids, titulos, descripciones, extras_titles, extras_desc  = cargar_metadatos(DATA_PATH)
 
-    if DEBUG == True:
+    ids, titulos, descripciones, extras_titles, extras_desc = cargar_metadatos(DATA_PATH)
+
+    if DEBUG:
         print(f'Total metadatos: {len(ids)} (limitado por MAX_META_FILES={MAX_META_FILES})', flush=True)
 
     if not ids:
-        if DEBUG == True:
+        if DEBUG:
             print('No hay nada que indexar (títulos/descr vacíos o no se encontraron meta_*.json).', flush=True)
         raise SystemExit(0)
 
     # Indexación de títulos y descripciones
-    if DEBUG == True:
+    if DEBUG:
         print('Generando embeddings e insertando en Qdrant (títulos/descr)', flush=True)
+
     t0 = time.time()
 
     titulos_clip = [clip_for_model(t) for t in titulos]
@@ -612,16 +620,17 @@ if __name__ == '__main__':
         emb_tit  = model.encode(batch_tit,  batch_size=BATCH_SIZE, normalize_embeddings=True).tolist()
         emb_desc = model.encode(batch_desc, batch_size=BATCH_SIZE, normalize_embeddings=True).tolist()
 
-        # TITULOS -> extras completos (con theme/temporal/geo/...)
-        qdrant_upsert(COL_TIT,  batch_ids, emb_tit,  batch_tit,  extras=extras_titles)
-        # DESCRIPCIONES -> extras ligeros (sin theme/temporal/geo/license/img)
+        # TITULOS
+        qdrant_upsert(COL_TIT, batch_ids, emb_tit, batch_tit, extras=extras_titles)
+        # DESCRIPCIONES
         qdrant_upsert(COL_DESC, batch_ids, emb_desc, batch_desc, extras=extras_desc)
 
     # Recursos: cabeceras + contenidos
-    if DEBUG == True:
+    if DEBUG:
         print('Generando embeddings e insertando en Qdrant (cabeceras/contenidos por recurso)…', flush=True)
 
     indexar_recursos(DATA_PATH, model)
+
     t1 = time.time() - t0
     print(f'Listo. Tiempo total: {t1}s', flush=True)
 
