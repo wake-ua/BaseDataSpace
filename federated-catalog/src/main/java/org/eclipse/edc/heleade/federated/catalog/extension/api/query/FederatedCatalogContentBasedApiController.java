@@ -117,4 +117,28 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
             throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");
         }
     }
+
+    /**
+     * Counts the number of cached datasets based on the provided query parameters.
+     *
+     * @param catalogQuery the query parameters as a JsonObject; if null, a default query specification is used
+     * @return a String representing the number of datasets matching the query
+     * @throws InvalidRequestException if the catalogQuery transformation to QuerySpec fails
+     * @throws IllegalStateException if the QueryService is not of type HeleadeQueryServiceImpl
+     */
+    @Path("/datasets/count")
+    @POST
+    public String getCachedDatasetsCount(JsonObject catalogQuery) {
+        if (queryService instanceof HeleadeQueryServiceImpl) {
+            HeleadeQueryServiceImpl heleadeQueryService = (HeleadeQueryServiceImpl) queryService;
+            var querySpec = catalogQuery == null
+                    ? QuerySpec.Builder.newInstance().build()
+                    : transformerRegistry.transform(catalogQuery, QuerySpec.class)
+                    .orElseThrow(InvalidRequestException::new);
+
+            return heleadeQueryService.countDatasets(querySpec);
+        } else {
+            throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");
+        }
+    }
 }

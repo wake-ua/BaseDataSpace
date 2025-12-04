@@ -143,6 +143,22 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     }
 
     /**
+     * Counts the datasets in the federated catalog cache that match the criteria specified in the query.
+     *
+     * @param query the query specification containing filtering, sorting, and pagination criteria
+     * @return a JSON string representing the count of datasets that match the query
+     */
+    public String countDatasets(QuerySpec query) {
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                return countInternalDatasets(connection, query);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    /**
      * Deletes all entries from the cache that are marked as "expired"
      */
     @Override
@@ -212,6 +228,16 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         }
 
         return results;
+    }
+
+    private String countInternalDatasets(MongoClient connection, QuerySpec querySpec) {
+        List<Bson> aggregations = createDatasetAggregationPipeline(querySpec);
+        aggregations.add(Aggregates.count());
+
+        var document = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations).first();
+
+        String result = document == null ? "{}" : document.toJson();
+        return result;
     }
 
     private void upsertInternal(MongoClient connection, String id, Catalog catalog) {
