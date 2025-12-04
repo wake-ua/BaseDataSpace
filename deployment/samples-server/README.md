@@ -1,11 +1,11 @@
 
- ## Samples server with Nginx
+Samples server with Nginx
 ---
 The samples server uses **Nginx** to serve the static sample files via HTTP.
 
 - The server is available inside the Docker network as **`samples-server:80`**.
 - The server is exposed on **port 9099** of the local machine.  
-- When creating the sample, the **base-url** will be something like: http://samples-server/provider-ebird/sample-asset-recent-notable-observations-in-albacete.json
+- When creating the sample, the **base-url** will be something like: http://base-url/samples/sample-asset-recent-notable-observations-in-albacete.json
 
 
 ### How to enable a provider to use the sample server
@@ -36,6 +36,16 @@ This ensures the files are persisted on the host and available for the sample se
 The URL should be constructed as:
 
 ```
-http://samples-server/<provider-folder>/<file-name>
+http://samples-server/samples/<file-name>
 ```
 
+5. Access to the samples is secured through API keys.
+   Each provider is assigned a dedicated API key that maps to its own storage directory.
+
+To access any file under /samples/, the request must include:
+
+X-API-Key: <provider_api_key>
+
+
+NGINX validates the key and serves files only from the corresponding provider folder.
+Invalid or missing keys will result in a 401 Unauthorized response.

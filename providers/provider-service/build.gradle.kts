@@ -24,7 +24,7 @@ dependencies {
     implementation(libs.edc.http)
 
     implementation(libs.edc.data.plane.spi)
-
+    implementation(libs.edc.data.plane.http)
 
     runtimeOnly(project(":providers:provider"))
 }
