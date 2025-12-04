@@ -143,15 +143,16 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     }
 
     /**
-     * Counts the datasets in the federated catalog cache that match the criteria specified in the query.
+     * Counts the datasets in the federated catalog cache based on the provided query specification.
      *
-     * @param query the query specification containing filtering, sorting, and pagination criteria
-     * @return a JSON string representing the count of datasets that match the query
+     * @param query   the query specification containing filtering, sorting, and pagination criteria
+     * @param noLimit a flag indicating whether the limit stage should be omitted from the query
+     * @return a JSON string representing the count of datasets that match the query criteria
      */
-    public String countDatasets(QuerySpec query) {
+    public String countDatasets(QuerySpec query, boolean noLimit) {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                return countInternalDatasets(connection, query);
+                return countInternalDatasets(connection, query, noLimit);
             } catch (Exception e) {
                 throw new EdcPersistenceException(e);
             }
@@ -230,8 +231,13 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         return results;
     }
 
-    private String countInternalDatasets(MongoClient connection, QuerySpec querySpec) {
+    private String countInternalDatasets(MongoClient connection, QuerySpec querySpec, boolean noLimit) {
         List<Bson> aggregations = createDatasetAggregationPipeline(querySpec);
+        // remove limit stage
+        if (noLimit) {
+            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$limit")));
+        }
+        // add count
         aggregations.add(Aggregates.count());
 
         var document = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations).first();

@@ -59,16 +59,17 @@ public class HeleadeQueryServiceImpl extends QueryServiceImpl implements QuerySe
     }
 
     /**
-     * Counts the datasets based on the provided query specification.
+     * Counts the datasets matching the specified query.
      *
-     * @param query the query specification containing filtering and pagination details
-     * @return a String representing the number of datasets matching the query
-     * @throws IllegalStateException if the cache is not of type MongodbFederatedCatalogCache
+     * @param query the query specification used to filter datasets
+     * @param noLimit a flag indicating whether to bypass any limit on the dataset count
+     * @return a string representing the count of datasets matching the query
+     * @throws IllegalStateException if the cache is not an instance of MongodbFederatedCatalogCache
      */
-    public String countDatasets(QuerySpec query) {
+    public String countDatasets(QuerySpec query, boolean noLimit) {
         if (this.cache instanceof MongodbFederatedCatalogCache) {
             MongodbFederatedCatalogCache mongoCache = (MongodbFederatedCatalogCache) this.cache;
-            return mongoCache.countDatasets(query);
+            return mongoCache.countDatasets(query, noLimit);
         } else {
             throw new IllegalStateException("Dataset count unavailable: Cache is not of type MongodbFederatedCatalogCache");
         }

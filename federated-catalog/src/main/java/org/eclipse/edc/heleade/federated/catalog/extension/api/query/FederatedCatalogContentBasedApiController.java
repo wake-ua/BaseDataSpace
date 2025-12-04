@@ -37,6 +37,7 @@ import org.eclipse.edc.web.spi.exception.ServiceResultHandler;
 import javax.xml.catalog.Catalog;
 
 import static jakarta.json.stream.JsonCollectors.toJsonArray;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 /**
  * Handles API endpoints for querying cached federated catalog content.
@@ -136,7 +137,9 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
                     : transformerRegistry.transform(catalogQuery, QuerySpec.class)
                     .orElseThrow(InvalidRequestException::new);
 
-            return heleadeQueryService.countDatasets(querySpec);
+            //check if the original query did not have a limit
+            boolean noLimit = (catalogQuery != null && !catalogQuery.containsKey(EDC_NAMESPACE + "limit"));
+            return heleadeQueryService.countDatasets(querySpec, noLimit);
         } else {
             throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");
         }
