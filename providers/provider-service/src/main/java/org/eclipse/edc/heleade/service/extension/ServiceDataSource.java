@@ -51,13 +51,15 @@ public class ServiceDataSource implements DataSource {
     private final String processId;
 
     /**
-     * Constructs a new instance of ServiceDataSource.
+     * Constructs a ServiceDataSource instance for managing data flow requests with associated credentials and metadata.
      *
-     * @param httpClient the HTTP client used for communication
-     * @param request the data flow start message containing source data details
-     * @param credentialsServiceUrl the URL for the credentials service
-     * @param defaultCredentials the default credentials required for accessing the service
-     * @param originalRequest the original data flow start message used as a fallback for missing details
+     * @param httpClient the HTTP client used for service communication
+     * @param request the initial data flow start message containing the request details
+     * @param credentialsServiceUrl the URL of the credential service
+     * @param credentialServiceApiKeyHeader the API key header for authentication
+     * @param credentialServiceApiKeyValue the API key value for authentication
+     * @param defaultCredentials the default credentials used for the data source
+     * @param originalRequest the original data flow start message containing fallback metadata
      */
     public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request,
                              String credentialsServiceUrl, String credentialServiceApiKeyHeader, String credentialServiceApiKeyValue,

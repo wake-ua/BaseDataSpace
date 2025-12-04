@@ -42,12 +42,14 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
     private HashMap<String, DataFlowStartMessage> requestCache = new HashMap<>();
 
     /**
-     * Constructs a ServiceDataSourceFactory instance.
+     * Constructs a ServiceDataSourceFactory for creating instances of ServiceDataSource with specified configurations.
      *
-     * @param monitor the monitor used for logging and tracing
-     * @param httpClient the HTTP client used for communication with external services
+     * @param monitor the monitoring instance for logging and diagnostics
+     * @param httpClient the HTTP client for service communication
      * @param credentialServiceUrl the URL of the credential service
-     * @param defaultCredentials the default credentials required to access the service
+     * @param credentialServiceApiKeyHeader the header name for the API key used for authentication
+     * @param credentialServiceApiKeyValue the value of the API key used for authentication
+     * @param defaultCredentials the default credentials to be used if no service URL is provided
      */
     public ServiceDataSourceFactory(Monitor monitor, EdcHttpClient httpClient,
                                     String credentialServiceUrl, String credentialServiceApiKeyHeader, String credentialServiceApiKeyValue,
