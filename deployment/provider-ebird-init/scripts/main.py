@@ -18,6 +18,7 @@ load_dotenv()
 BASE_URL = os.getenv("BASE_URL")
 API_KEY = os.getenv("API_KEY")
 X_API_KEY = os.getenv("X_API_KEY")
+SAMPLES_SERVER_PROVIDER_API_KEY = os.getenv("SAMPLES_SERVER_PROVIDER_API_KEY")
 SAMPLE_BASE_URL = os.getenv("SAMPLE_BASE_URL")
 POLICY_DEFINITIONS_URL = f"{BASE_URL}/management/v3/policydefinitions"
 CONTRACT_DEFINITIONS_URL = f"{BASE_URL}/management/v3/contractdefinitions"
@@ -186,7 +187,7 @@ def create_asset_and_sample(metadata, url, name, desc, province=None, response_t
     sample = fetch_sample_data(url, API_KEY, response_type)
     if sample:
         save_parsed_data(f"sample-{asset_id}", response_type, sample)
-        sample_payload = build_sample_asset(metadata, name, desc, asset_id, SAMPLE_BASE_URL, response_type, province)
+        sample_payload = build_sample_asset(metadata, name, desc, asset_id, SAMPLE_BASE_URL, response_type, SAMPLES_SERVER_PROVIDER_API_KEY, province)
         send_request(SAMPLES_URL, sample_payload, X_API_KEY)
     return created
 
