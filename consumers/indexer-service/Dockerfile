@@ -14,12 +14,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 
 # Requisitos (aprovecha caché)
-COPY OpenDataIndexer/requirements.txt /app/requirements.txt
+COPY opendataindexer/requirements.txt /app/requirements.txt
 RUN python -m pip install --upgrade pip \
  && pip install -r /app/requirements.txt
 
 # Código del indexador
-COPY OpenDataIndexer/ /app/
+COPY opendataindexer/ /app/
 
 # Asegura la carpeta de salida de meta_*.json (y posible mapeo de volumen)
 RUN mkdir -p /app/datos

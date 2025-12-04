@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 from fastapi import status
+import math 
 # Importación de componentes del buscador
 from search import SearchEngine
 from logger import LoggerOpenSearch, LoggerBuscador
@@ -56,6 +57,8 @@ def search_api(
     geo: Optional[List[str]] = Query(None),
     temporal_start: Optional[str] = Query(None),
     temporal_end: Optional[str] = Query(None),
+    page: int = 1,          # <<< AÑADIDO
+    per_page: int = 10      # <<< AÑADIDO
 ):
     client_ip = request.client.host
     start = time.time()
@@ -103,6 +106,16 @@ def search_api(
             r = search.search(q, filters=filters)
         #redis_client.setex(cache_key, 3600, json.dumps(r))
         r['cache'] = False
+
+    # <<< AÑADIDO: PAGINACIÓN >>>
+    total_items = r["total"]["value"]
+    start_i = (page - 1) * per_page
+    end_i = start_i + per_page
+    r["hits"] = r["hits"][start_i:end_i]
+    r["page"] = page
+    r["per_page"] = per_page
+    r["total_pages"] = math.ceil(total_items / per_page)
+    # <<< FIN PAGINACIÓN >>>
 
     end = time.time()
     response_time = end - start

@@ -61,7 +61,9 @@ services:
     ports:
       - "9099:80"
     volumes:
-      - ./deployment/samples-server/samples:/usr/share/nginx/html
+      - ./deployment/samples-server/samples:/usr/share/nginx/html/providers
+      - ./deployment/samples-server/providers.map:/etc/nginx/providers.map
+      - ./deployment/samples-server/nginx.conf:/etc/nginx/nginx.conf
 
   provider-mastral:
     container_name: provider-mastral
@@ -143,7 +145,7 @@ services:
       OPENAI_API_KEY: ""
       API_KEY: "123"
     volumes:
-      - ./consumers/search-service/OpenDataSearch/datos:/app/datos
+      - ./consumers/search-service/opendatasearch/datos:/app/datos
     ports:
       - "8002:8002"
     restart: unless-stopped
@@ -157,9 +159,9 @@ services:
       - qdrant
       - federated-catalog
     volumes:
-      - ./consumers/indexer-service/OpenDataIndexer:/app
-      - ./consumers/indexer-service/OpenDataIndexer/datos:/app/datos
-      - ./consumers/indexer-service/OpenDataIndexer/samples:/app/samples
+      - ./consumers/indexer-service/opendataindexer:/app
+      - ./consumers/indexer-service/opendataindexer/datos:/app/datos
+      - ./consumers/indexer-service/opendataindexer/samples:/app/samples
     environment:
       QDRANT_URL: http://qdrant:6333
       QDRANT_API_KEY: ""

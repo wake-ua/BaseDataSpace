@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Copiamos solo requirements primero (aprovecha caché)
-COPY OpenDataSearch/requirements.txt /app/requirements.txt
+COPY opendatasearch/requirements.txt /app/requirements.txt
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential curl ca-certificates && \
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # Copiamos el código del buscador (sin datos gigantes)
-COPY OpenDataSearch/ /app/
+COPY opendatasearch/ /app/
 
 # Puerto interno
 EXPOSE 8080
