@@ -35,6 +35,8 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
     private final Monitor monitor;
     private final EdcHttpClient httpClient;
     private final String credentialServiceUrl;
+    private final String credentialServiceApiKeyHeader;
+    private final String credentialServiceApiKeyValue;
     private final String defaultCredentials;
 
     private HashMap<String, DataFlowStartMessage> requestCache = new HashMap<>();
@@ -47,9 +49,13 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
      * @param credentialServiceUrl the URL of the credential service
      * @param defaultCredentials the default credentials required to access the service
      */
-    public ServiceDataSourceFactory(Monitor monitor, EdcHttpClient httpClient, String credentialServiceUrl, String defaultCredentials) {
+    public ServiceDataSourceFactory(Monitor monitor, EdcHttpClient httpClient,
+                                    String credentialServiceUrl, String credentialServiceApiKeyHeader, String credentialServiceApiKeyValue,
+                                    String defaultCredentials) {
         this.monitor = monitor;
         this.credentialServiceUrl = credentialServiceUrl;
+        this.credentialServiceApiKeyHeader = credentialServiceApiKeyHeader;
+        this.credentialServiceApiKeyValue = credentialServiceApiKeyValue;
         this.defaultCredentials = defaultCredentials;
         this.httpClient = httpClient;
     }
@@ -65,7 +71,9 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
                 " for request processId: " + request.getProcessId() + ", " + defaultCredentials);
         DataFlowStartMessage originalRequest = requestCache.get(request.getProcessId());
         requestCache.remove(request.getProcessId());
-        return new ServiceDataSource(httpClient, request, credentialServiceUrl, defaultCredentials, originalRequest);
+        return new ServiceDataSource(httpClient, request,
+                credentialServiceUrl, credentialServiceApiKeyHeader, credentialServiceApiKeyValue,
+                defaultCredentials, originalRequest);
     }
 
     @Override

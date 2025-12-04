@@ -60,6 +60,7 @@ public class HttpRequestLoggerServer {
             // Printout request
             System.out.println("Incoming request (" + now.format(formatter) + "):");
             System.out.println("Method: " + exchange.getRequestMethod());
+            System.out.println("Headers: " + exchange.getRequestHeaders().entrySet().stream().map(e -> e.getKey() + ": " + e.getValue()).reduce((a, b) -> a + ", " + b));
             System.out.println("Path: " + exchange.getRequestURI());
             System.out.println("Body:");
             System.out.println(new String(exchange.getRequestBody().readAllBytes()));

@@ -45,12 +45,15 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         String credentialServiceUrl = context.getConfig().getString("edc.heleade.service.dataservice.credentials.url", "");
+        String credentialServiceApiKeyHeader = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.header", "");
+        String credentialServiceApiKeyValue = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.key", "");
         String defaultCredentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials.default", "");
-
         if (credentialServiceUrl.isEmpty() && defaultCredentials.isEmpty()) {
-            throw new IllegalStateException("One of edc.heleade.service.dataservice.credentials.url or edc.heleade.service.dataservice.credentials.default must be set");
+            context.getMonitor().warning("One of edc.heleade.service.dataservice.credentials.url or edc.heleade.service.dataservice.credentials.default must be set to allow ServiceData transfers");
+        } else {
+            pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient,
+                    credentialServiceUrl, credentialServiceApiKeyHeader, credentialServiceApiKeyValue,
+                    defaultCredentials));
         }
-
-        pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient, credentialServiceUrl, defaultCredentials));
     }
 }

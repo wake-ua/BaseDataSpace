@@ -41,6 +41,8 @@ public class ServiceDataSource implements DataSource {
 
     private final EdcHttpClient httpClient;
     private final String credentialsServiceUrl;
+    private final String credentialServiceApiKeyHeader;
+    private final String credentialServiceApiKeyValue;
     private final String defaultCredentials;
     private final String baseUrl;
     private final String participantId;
@@ -57,9 +59,13 @@ public class ServiceDataSource implements DataSource {
      * @param defaultCredentials the default credentials required for accessing the service
      * @param originalRequest the original data flow start message used as a fallback for missing details
      */
-    public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request, String credentialsServiceUrl, String defaultCredentials, DataFlowStartMessage originalRequest) {
+    public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request,
+                             String credentialsServiceUrl, String credentialServiceApiKeyHeader, String credentialServiceApiKeyValue,
+                             String defaultCredentials, DataFlowStartMessage originalRequest) {
         this.httpClient = httpClient;
         this.credentialsServiceUrl = credentialsServiceUrl;
+        this.credentialServiceApiKeyHeader = credentialServiceApiKeyHeader;
+        this.credentialServiceApiKeyValue = credentialServiceApiKeyValue;
         this.defaultCredentials = defaultCredentials;
         this.baseUrl = request.getSourceDataAddress().getStringProperty("baseUrl");
         this.processId = request.getProcessId();
@@ -71,27 +77,26 @@ public class ServiceDataSource implements DataSource {
     @Override
     public StreamResult<Stream<Part>> openPartStream() {
         String source = "{\"baseUrl\": \"" + baseUrl + "\", " +
-                "\"credentialsServiceUrl\": \"" + credentialsServiceUrl + "\", " +
                 "\"processId\": \"" + processId + "\", " +
                 "\"participantId\": \"" + participantId + "\", " +
                 "\"assetId\": \"" + assetId + "\", " +
-                "\"agreementId\": \"" + agreementId + "\", " +
-                "\"credentials\": " + defaultCredentials + "}";
-
+                "\"agreementId\": \"" + agreementId + "}";
         String credentialsString;
         // if no url, go for default credentials
         if (credentialsServiceUrl == null || credentialsServiceUrl.isEmpty()) {
             credentialsString = defaultCredentials;
         } else {
-            credentialsString = requestCredentials(credentialsServiceUrl, source);
+            credentialsString = requestCredentials(source);
         }
         InputStream stream = new ByteArrayInputStream(credentialsString.getBytes(StandardCharsets.UTF_8));
         InputStreamDataSource part = new InputStreamDataSource("ServiceDataSource", stream);
         return StreamResult.success(Stream.of(part));
     }
 
-    private String requestCredentials(String url, String requestBody) {
-        var request = new okhttp3.Request.Builder().url(url).post(RequestBody.create(requestBody.getBytes(), MediaType.get("application/json")));
+    private String requestCredentials(String requestBody) {
+        var request = new okhttp3.Request.Builder().url(credentialsServiceUrl)
+                .header(credentialServiceApiKeyHeader, credentialServiceApiKeyValue)
+                .post(RequestBody.create(requestBody.getBytes(), MediaType.get("application/json")));
         try (var response = httpClient.execute(request.build())) {
             if (response.isSuccessful()) {
                 var body = response.body();
