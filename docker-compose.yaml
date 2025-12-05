@@ -6,9 +6,9 @@ services:
     ports:
       - "5434:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: edc
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=edc
     volumes:
       - ./deployment/bds-postgresql/data:/var/lib/postgresql/data
       - ./deployment/bds-postgresql/initdb:/docker-entrypoint-initdb.d
@@ -87,12 +87,12 @@ services:
   request-logger:
     container_name: request-logger
     ports:
-      - "4001:4000"
+      - 4001:4000
     build: ./util/http-request-logger
 
   fc-mongodb:
     container_name: fc-mongodb
-    image: mongo:6-jammy
+    image: mongodb/mongodb-community-server:8.0-ubi8
     ports:
       - "27018:27017"
     volumes:
