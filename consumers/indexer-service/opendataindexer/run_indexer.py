@@ -32,17 +32,17 @@ def wait_for_http(url, retries=30, delay=3):
 
 # ----------------- etapa 1: fc_data_cleaning -----------------
 def run_fc_data_cleaning():
-    print("\n=== [1/2] Ejecutando fc_data_cleaning.main() ===", flush=True)
+    print("\n=== [1/2] Ejecutando FC_data_cleaning.main() ===", flush=True)
 
     try:
-        mod = importlib.import_module("fc_data_cleaning")
+        mod = importlib.import_module("FC_data_cleaning")
         if hasattr(mod, "main"):
             mod.main()
         else:
-            print("fc_data_cleaning no define main(); solo importando módulo.")
-        print("fc_data_cleaning completado", flush=True)
+            print("FC_data_cleaning no define main(); solo importando módulo.")
+        print("FC_data_cleaning completado", flush=True)
     except Exception:
-        print("Error en fc_data_cleaning", flush=True)
+        print("Error en FC_data_cleaning", flush=True)
         traceback.print_exc()
         sys.exit(1)
 
@@ -104,7 +104,7 @@ def run_index_limpio():
 
 # ----------------- main -----------------
 def main():
-    print("=== INICIANDO INDEXADOR (fc -> Index) ===", flush=True)
+    print("=== INICIANDO INDEXADOR (FC -> Index) ===", flush=True)
 
     data_dir = os.getenv("DATA_DIR", "/app/datos")
     os.makedirs(data_dir, exist_ok=True)
