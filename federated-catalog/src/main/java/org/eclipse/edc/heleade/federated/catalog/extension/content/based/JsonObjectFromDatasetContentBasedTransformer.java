@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDataset;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveDataDictionaryToDistributionForDataset;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveCbmFieldsToDistributionForDataset;
 
 /**
  * A transformer class that extends the {@code JsonObjectFromDatasetTransformer} to provide
@@ -60,6 +60,6 @@ public class JsonObjectFromDatasetContentBasedTransformer extends JsonObjectFrom
             return null;
         }
         JsonObject modifiedSampleObject = modifySampleDataset(object);
-        return moveDataDictionaryToDistributionForDataset(modifiedSampleObject);
+        return moveCbmFieldsToDistributionForDataset(modifiedSampleObject);
     }
 }

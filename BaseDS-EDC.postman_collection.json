@@ -506,6 +506,50 @@
 					"response": []
 				},
 				{
+					"name": "Create Dataset T2021 CBM Full",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n\t\"@id\": \"airQualityTorrent21\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dct:title\": \"Air quality in Torrent for 2021\",\n\t\"dct:description\": \"Tabular data containing a list of the daily measurements of the Torrent sensor in 2021\",\n    \"dcat:keyword\": [\"POLLUTION\", \"AIR\"],\n\t\"contenttype\": \"text/csv\",\n    \"dct:issued\": \"2022-01-22T13:04:33+00:00\",\n    \"dct:modified\": \"2022-01-25T23:14:55+00:00\",\n    \"dct:accrualPeriodicity\": \"annual\",\n    \"dcat:temporalResolution\": \"P1D\",\n    \"dct:temporal\": {\n        \"dcat:startDate\": \"2021-01-01T00:00:00+00:00\", \n        \"dcat:endDate\":   \"2021-12-01T00:00:00+00:00\"\n    },\n    \"dcat:spatialResolutionInMeters\": 69000.0,\n    \"dct:spatial\": \"POLYGON (( -0.4381504467680264 39.4105711824846 , -0.4568295983091736 39.44940414433466 , -0.6171900219935075 39.4442153805213 , -0.5905964013590401 39.39186506960127 , -0.5055720209872985 39.3881264008169 , -0.4381504467680264 39.41057118248469 ))\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"cbm:hasSample\": [\"airQualityTorrentSample\"],\n    \"dcat:inSeries\": \"torrentAirQualitySeries\",\n\t\"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"http://datosabiertos.torrent.es/dataset/b6623499-2adc-4760-8392-784413d8fb41/resource/0146797f-a81c-452e-9129-8f8a11683656/download/ODMECalidadDelAirePorDias2021.csv\",\n                \"proxyPath\": \"true\",\n                \"authKey\": \"x-api-key\",\n                \"authCode\": \"slq24sGHDw7c\",\n                \"dcat:byteSize\": 11005,\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                         {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"ANY\",\n                            \"dct:title\": \"Year\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Year of the data accrual\",\n                            \"cbm:sampleValue\": \"2021\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"FECHA\",\n                            \"dct:title\": \"Date\",\n                            \"cbm:datatype\": \"date\",\n                            \"dct:description\": \"Date of the data accrual\",\n                            \"cbm:sampleValue\": \"1/1/2021\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"O3\",\n                            \"dct:title\": \"Ozone\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Microgramms of ozone per cubic meter\",\n                            \"cbm:sampleValue\": \"58\"\n                        }\n                    ]\n                }\n            }\n        ],\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"schema\": \"https://schema.org/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Asset",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1399,6 +1443,38 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"@id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query-cbm/datasets",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+									"path": [
+										"api",
+										"catalog",
+										"v1alpha",
+										"catalog",
+										"query-cbm",
+										"datasets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Datasets provider Query CBM",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
 									"options": {
 										"raw": {
 											"language": "json"

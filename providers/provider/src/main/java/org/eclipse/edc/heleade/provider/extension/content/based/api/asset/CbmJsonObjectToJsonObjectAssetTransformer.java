@@ -111,9 +111,14 @@ public class CbmJsonObjectToJsonObjectAssetTransformer extends AbstractJsonLdTra
             JsonObject dcatDistribution = jsonObject.getJsonArray(DCAT_DISTRIBUTION_ATTRIBUTE).getJsonObject(0);
             assetBuilder.add(EDC_ASSET_DATA_ADDRESS, getDataAddress(dcatDistribution));
 
-            //Move data dictionary to object properties
+            // Move data dictionary to object properties
             if (dcatDistribution.containsKey(CBM_SCHEMA + "hasDataDictionary")) {
                 propertiesObjectBuilder.add(CBM_SCHEMA + "hasDataDictionary", dcatDistribution.get(CBM_SCHEMA + "hasDataDictionary"));
+            }
+
+            // Move dcat:byteSize to object properties
+            if (dcatDistribution.containsKey(DCAT_SCHEMA + "byteSize")) {
+                propertiesObjectBuilder.add(DCAT_SCHEMA + "byteSize", dcatDistribution.get(DCAT_SCHEMA + "byteSize"));
             }
         }
 

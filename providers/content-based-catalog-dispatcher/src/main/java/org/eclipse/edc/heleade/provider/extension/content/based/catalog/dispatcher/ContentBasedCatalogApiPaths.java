@@ -22,12 +22,12 @@ import org.eclipse.edc.protocol.dsp.catalog.http.dispatcher.CatalogApiPaths;
  */
 public interface ContentBasedCatalogApiPaths extends CatalogApiPaths {
     /**
-     * Base path for the content-based catalog API in the Dataspace Protocol framework.
+     * Base path for the content-based catalog API in the Dataspace Protocol framework (/catalog-cbm).
      * Extends the base catalog path with a specific suffix for content-based catalog functionality.
      */
     String CBM_BASE_PATH = CatalogApiPaths.BASE_PATH + "-cbm";
     /**
-     * Represents the API path for a content-based catalog request in the Dataspace Protocol framework.
+     * Represents the API path for a content-based catalog request in the Dataspace Protocol framework (/request-cbm).
      * Combines the base catalog request path with a specific suffix for content-based catalog functionality.
      */
     String CBM_CATALOG_REQUEST = CatalogApiPaths.CATALOG_REQUEST + "-cbm";

@@ -37,7 +37,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DATASETS_TAG;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.getAsJsonArray;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDatasetArray;
-import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveDataDictionaryToDistributionDatasetArray;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveCbmFieldsToDistributionDatasetArray;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_BASE_PATH;
 import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_CATALOG_REQUEST;
 import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
@@ -97,7 +97,7 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
         JsonObject object = ((JsonObject) response.getEntity());
         JsonArray datasets = getAsJsonArray(object, DATASETS_TAG);
         JsonArray modifiedSampleDatasets = modifySampleDatasetArray(datasets);
-        JsonArray modifiedDataDictionaryDatasets = moveDataDictionaryToDistributionDatasetArray(modifiedSampleDatasets);
+        JsonArray modifiedDataDictionaryDatasets = moveCbmFieldsToDistributionDatasetArray(modifiedSampleDatasets);
 
         var newObject = Json.createObjectBuilder(object).add(DATASETS_TAG, modifiedDataDictionaryDatasets).build();
         return Response.fromResponse(response)

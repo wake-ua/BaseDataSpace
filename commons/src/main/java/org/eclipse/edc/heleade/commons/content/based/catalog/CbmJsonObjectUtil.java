@@ -17,12 +17,14 @@ package org.eclipse.edc.heleade.commons.content.based.catalog;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_HAS_DATA_DICTIONARY;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_IS_SAMPLE_OF;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE_TYPE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DISTRIBUTION_TAG;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.TYPE_TAG;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 
 /**
  * Utility class for performing operations on JSON-LD structures related to Content Based Metadata (CBM),
@@ -60,49 +62,59 @@ public class CbmJsonObjectUtil {
     }
 
     /**
-     * Moves the data dictionary from the dataset level to the distribution level in a JSON array
-     * of datasets. If a dataset contains a data dictionary, it will be transferred to each of its
-     * distributions, and the data dictionary will be removed from the dataset level.
+     * Processes a JSON array of datasets and moves CBM (Content-Based Metadata) fields
+     * such as the data dictionary and byte size from the dataset level to the
+     * distribution level for each dataset within the array.
      *
      * @param datasets the JSON array of datasets to process
-     * @return a new JSON array with where the data dictionary is moved to the distribution level
+     * @return a new JSON array with modified datasets where CBM fields are moved
+     *         to the distribution level
      */
-    public static JsonArray moveDataDictionaryToDistributionDatasetArray(JsonArray datasets) {
+    public static JsonArray moveCbmFieldsToDistributionDatasetArray(JsonArray datasets) {
         var modifiedDatasetBuilder = Json.createArrayBuilder();
         for (JsonObject dataset : datasets.getValuesAs(JsonObject.class)) {
-            modifiedDatasetBuilder.add(moveDataDictionaryToDistributionForDataset(dataset));
+            modifiedDatasetBuilder.add(moveCbmFieldsToDistributionForDataset(dataset));
         }
         return modifiedDatasetBuilder.build();
     }
 
     /**
-     * Moves the data dictionary from the dataset level to the distribution level in a JSON object.
-     * If the dataset contains a data dictionary, it is added to each distribution within the dataset,
-     * and the data dictionary is removed from the dataset level.
+     * Moves Content-Based Metadata (CBM) fields, such as the data dictionary and
+     * byte size, from the dataset level to the distribution level for a given dataset.
      *
-     * @param dataset the JSON object representing a dataset to process
-     * @return a new JSON object with the data dictionary moved to the distribution level
+     * @param dataset the dataset to process and modify
+     * @return a new JsonObject with CBM fields moved to the distribution level
      */
-    public static JsonObject moveDataDictionaryToDistributionForDataset(JsonObject dataset) {
-        if (!dataset.containsKey(CBM_HAS_DATA_DICTIONARY)) {
+    public static JsonObject moveCbmFieldsToDistributionForDataset(JsonObject dataset) {
+        // if no CBM relaed fields, return dataset
+        if (!dataset.containsKey(CBM_HAS_DATA_DICTIONARY) && !dataset.containsKey(DCAT_SCHEMA + "byteSize")) {
             return dataset;
         }
 
-        JsonObject dataDictionary = dataset.getJsonObject(CBM_HAS_DATA_DICTIONARY);
+        // move CBM fields
+        JsonObjectBuilder datasetBuilder = Json.createObjectBuilder(dataset);
         JsonArray distributions = getAsJsonArray(dataset, DISTRIBUTION_TAG);
+        var modifiedDistributionArrayBuilder = Json.createArrayBuilder();
 
-        var modifiedDistributionBuilder = Json.createArrayBuilder();
         for (JsonObject distribution : distributions.getValuesAs(JsonObject.class)) {
-            JsonObject modifiedDistribution = Json.createObjectBuilder(distribution)
-                    .add(CBM_HAS_DATA_DICTIONARY, dataDictionary)
-                    .build();
-            modifiedDistributionBuilder.add(modifiedDistribution);
+            JsonObjectBuilder modifiedDistributionBuilder = Json.createObjectBuilder(distribution);
+            // move data dictionary
+            if (dataset.containsKey(CBM_HAS_DATA_DICTIONARY)) {
+                JsonObject dataDictionary = dataset.getJsonObject(CBM_HAS_DATA_DICTIONARY);
+                modifiedDistributionBuilder.add(CBM_HAS_DATA_DICTIONARY, dataDictionary);
+                datasetBuilder.remove(CBM_HAS_DATA_DICTIONARY);
+            }
+            // move dcat byteSize
+            if (dataset.containsKey(DCAT_SCHEMA + "byteSize")) {
+                modifiedDistributionBuilder.add(DCAT_SCHEMA + "byteSize", dataset.getInt(DCAT_SCHEMA + "byteSize"));
+                datasetBuilder.remove(DCAT_SCHEMA + "byteSize");
+            }
+            modifiedDistributionArrayBuilder.add(modifiedDistributionBuilder.build());
         }
+        datasetBuilder.add(DISTRIBUTION_TAG, modifiedDistributionArrayBuilder.build());
 
-        return Json.createObjectBuilder(dataset)
-                .remove(CBM_HAS_DATA_DICTIONARY)
-                .add(DISTRIBUTION_TAG, modifiedDistributionBuilder.build())
-                .build();
+        return datasetBuilder.build();
+
     }
 
     /**
