@@ -17,6 +17,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - base-ds-network
 
   provider-base:
     container_name: provider-base
@@ -28,6 +30,8 @@ services:
       - bds-postgresql
     build: ./providers/provider-base
     restart: on-failure:5
+    networks:
+      - base-ds-network
 
   provider-ebird:
     container_name: provider-ebird
@@ -39,6 +43,8 @@ services:
     depends_on:
       - bds-postgresql
     restart: on-failure:5
+    networks:
+      - base-ds-network
 
   provider-ebird-init:
     container_name: provider-ebird-init
@@ -52,6 +58,8 @@ services:
     restart: "no"
     volumes:
       - ./deployment/samples-server/samples/provider-ebird:/app/samples/data
+    networks:
+      - base-ds-network
 
   samples-server:
     container_name: samples-server
@@ -64,6 +72,8 @@ services:
       - ./deployment/samples-server/samples:/usr/share/nginx/html/providers
       - ./deployment/samples-server/providers.map:/etc/nginx/providers.map
       - ./deployment/samples-server/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - base-ds-network
 
   provider-mastral:
     container_name: provider-mastral
@@ -75,6 +85,8 @@ services:
     depends_on:
       - bds-postgresql
     restart: on-failure:5
+    networks:
+      - base-ds-network
 
   consumer-base:
     container_name: consumer-base
@@ -83,12 +95,16 @@ services:
       - "29193:29193"
       - "29194:29194"
     build: ./consumers/consumer-base
+    networks:
+      - base-ds-network
 
   request-logger:
     container_name: request-logger
     ports:
       - 4001:4000
     build: ./util/http-request-logger
+    networks:
+      - base-ds-network
 
   fc-mongodb:
     container_name: fc-mongodb
@@ -97,6 +113,8 @@ services:
       - "27018:27017"
     volumes:
       - ./deployment/fc-mongodb/data/db:/data/db
+    networks:
+      - base-ds-network
 
   federated-catalog:
     container_name: federated-catalog
@@ -106,6 +124,8 @@ services:
       - "39194:39194"
       - "39195:39195"
     build: ./federated-catalog
+    networks:
+      - base-ds-network
 
   search-service:
     container_name: search-service
@@ -114,6 +134,8 @@ services:
       - "27193:27193"
       - "27194:27194"
     build: ./consumers/search-service
+    networks:
+      - base-ds-network
 
   climate-service:
     container_name: climate-service
@@ -124,3 +146,10 @@ services:
     build: ./consumers/climate-service
     volumes:
       - ./deployment/assets/consumer:/app/consumer
+    networks:
+      - base-ds-network
+
+networks:
+  base-ds-network:
+    name: base-ds-network
+    driver: bridge
