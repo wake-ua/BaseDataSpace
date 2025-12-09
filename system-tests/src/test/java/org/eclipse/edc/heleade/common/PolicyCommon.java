@@ -45,6 +45,7 @@ public class PolicyCommon {
     private static final String CONTRACT_DEFINITION_ID_KEY = "{{contract-definition-id}}";
     private static final String RIGHT_OPERAND_KEY = "{{right-operand}}";
     private static final String LEFT_OPERAND_KEY = "{{left-operand}}";
+    private static final String OPERATOR_KEY = "{{operator}}";
     private static final String ID = "@id";
 
 
@@ -59,11 +60,12 @@ public class PolicyCommon {
         return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, content, ID);
     }
 
-    public static void createPolicyWithParams(String policyId, String leftOperand, String rightOperand) {
+    public static void createPolicyWithParams(String policyId, String leftOperand, String rightOperand, String operator) {
         String content = getFileContentFromRelativePath(CREATE_POLICY_FILE_PATH)
                 .replace(POLICY_ID_KEY, policyId)
                 .replace(LEFT_OPERAND_KEY, leftOperand)
-                .replace(RIGHT_OPERAND_KEY, rightOperand);
+                .replace(RIGHT_OPERAND_KEY, rightOperand)
+                .replace(OPERATOR_KEY, operator);
         post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, content);
     }
 
@@ -87,12 +89,14 @@ public class PolicyCommon {
         );
     }
 
-    public static String negotiateContractWithParams(String assetId, String contractOfferId, String leftOperand, String rightOperand) {
+    public static String negotiateContractWithParams(String assetId, String contractOfferId, String leftOperand, String rightOperand, String operator) {
         String content = getFileContentFromRelativePath(CONTRACT_OFFER_FILE_PATH)
                 .replace(CONTRACT_OFFER_ID_KEY, contractOfferId)
                 .replace(LEFT_OPERAND_KEY, leftOperand)
                 .replace(RIGHT_OPERAND_KEY, rightOperand)
-                .replace(ASSET_ID_KEY, assetId);
+                .replace(ASSET_ID_KEY, assetId)
+                .replace(OPERATOR_KEY, operator);
+
         var contractNegotiationId = post(
                 PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH,
                 content,

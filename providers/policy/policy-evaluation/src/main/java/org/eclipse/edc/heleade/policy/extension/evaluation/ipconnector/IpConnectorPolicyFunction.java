@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.evaluation.location;
+package org.eclipse.edc.heleade.policy.extension.evaluation.ipconnector;
 
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.heleade.policy.extension.evaluation.common.AbstractConstraintFunction;
@@ -21,44 +21,41 @@ import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.spi.monitor.Monitor;
 
-import static java.lang.String.format;
-
 /**
  *
- * Defines a policy function that evaluates the location policy.
+ * Defines a policy function that evaluates the referring connector policy.
  */
-public class LocationPolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext>  extends AbstractConstraintFunction<R, C> {
+public class IpConnectorPolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext>  extends AbstractConstraintFunction<R, C> {
 
-    private static final String PROBLEM_PREFIX = "Failing evaluation because of invalid entityType constraint. ";
+    private static final String PROBLEM_PREFIX = "Failing evaluation because of invalid IP connector constraint. ";
 
     /**
-     * This function is responsible for evaluating a participant’s location-related claim.
+     * This function is responsible for evaluating a participant’s referring connector-related claim.
      *
      * @param monitor The monitor used for logging
      * @param claimKey The claim key of the claim to check
      * @param participantClaimChecker The participant claim checker instance
      *
      */
-    public LocationPolicyFunction(Monitor monitor, String claimKey, FcParticipantClaimChecker participantClaimChecker) {
+    public IpConnectorPolicyFunction(Monitor monitor, String claimKey, FcParticipantClaimChecker participantClaimChecker) {
         super(monitor, claimKey, participantClaimChecker);
     }
-
 
     @Override
     protected boolean evaluateClaim(Operator operator, String claimValue, Object rightValue, R rule, C context) {
 
-        if (!(rightValue instanceof String locationString)) {
+        if (!(rightValue instanceof String referringConnectorString)) {
             monitor.severe(PROBLEM_PREFIX + "Right operand must be a String");
             return false;
         }
 
-        if (operator != Operator.EQ) {
-            monitor.severe("Unsupported operator for location constraint: " + operator);
-            return false;
-        }
-
-        boolean match = claimValue.equalsIgnoreCase(locationString);
-        monitor.info(format("Evaluating location constraint: %s %s %s -> %s", claimKey, operator, rightValue, match));
-        return match;
+        return switch (operator) {
+            case EQ -> referringConnectorString.equals(claimValue);
+            case IN -> referringConnectorString.contains(claimValue);
+            default -> {
+                monitor.severe((PROBLEM_PREFIX + "Unsupported operator: '%s'").formatted(operator.getOdrlRepresentation()));
+                yield false;
+            }
+        };
     }
 }

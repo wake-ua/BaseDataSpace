@@ -16,7 +16,7 @@
         "constraint": {
           "@type": "AtomicConstraint",
           "leftOperand": "{{left-operand}}",
-          "operator": "eq",
+          "operator": "{{operator}}",
           "rightOperand": "{{right-operand}}"
         }
       }

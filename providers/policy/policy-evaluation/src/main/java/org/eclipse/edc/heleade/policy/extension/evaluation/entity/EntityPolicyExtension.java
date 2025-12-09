@@ -35,12 +35,25 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  * Extension responsible for initializing and registering policy-related functionality.
  * Binds specific constraint keys to relevant policy scopes and registers implementations
  * of atomic constraint rule functions for policy enforcement
- * Key features:
- * - Binds the entityType constraint key to the contract negotiation scope and catalog scope.
+ * Binds the entityType constraint key to the contract negotiation scope and catalog scope.
  * in a policy enforcement context.
+ * The key for entity type.
+ * must be used as left operand when declaring constraints.
+ * rightOperand can be a string.
+ Example:
+ *
+ <pre>
+   {
+      "constraint": {
+      "leftOperand": "ENTITY_TYPE",
+      "operator": "EQ",
+      "rightOperand": "public"
+    }
+ }
+  </pre>
  */
 public class EntityPolicyExtension implements ServiceExtension {
-    private static final String ENTITY_KEY = "entityType";
+    private static final String ENTITY_KEY = "entity_type";
     private static final String ENTITY_CONSTRAINT_KEY = EDC_NAMESPACE + ENTITY_KEY;
 
 

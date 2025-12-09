@@ -28,6 +28,7 @@ import static java.lang.String.format;
  */
 public class EntityPolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext>  extends AbstractConstraintFunction<R, C> {
 
+    private static final String PROBLEM_PREFIX = "Failing evaluation because of invalid entityType constraint. ";
 
     /**
      * This function is responsible for evaluating a participant’s entity-related claim.
@@ -42,15 +43,23 @@ public class EntityPolicyFunction<R extends Rule, C extends ParticipantAgentPoli
     }
 
 
+
     @Override
     protected boolean evaluateClaim(Operator operator, String claimValue, Object rightValue, R rule, C context) {
-        if (operator == Operator.EQ) {
-            boolean match = claimValue.equalsIgnoreCase(rightValue.toString());
-            monitor.info(format("Entity type check: %s == %s -> %s", claimValue, rightValue, match));
-            return match;
+
+        if (!(rightValue instanceof String entityTypeString)) {
+            monitor.severe(PROBLEM_PREFIX + "Right operand must be a String");
+            return false;
         }
 
-        monitor.severe("Unsupported operator for entity constraint: " + operator);
-        return false;
+        if (operator != Operator.EQ) {
+            monitor.severe("Unsupported operator for entity constraint: " + operator);
+            return false;
+        }
+
+        boolean match = claimValue.equalsIgnoreCase(entityTypeString);
+        monitor.info(format("Evaluating entity constraint: %s %s %s -> %s", claimKey, operator, rightValue, match));
+        return match;
+
     }
 }

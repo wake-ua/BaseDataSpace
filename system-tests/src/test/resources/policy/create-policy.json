@@ -13,7 +13,7 @@
           "@type": "AtomicConstraint",
           "leftOperand": "{{left-operand}}",
           "operator": {
-            "@id": "odrl:eq"
+            "@id": "{{operator}}"
           },
           "rightOperand": "{{right-operand}}"
         }

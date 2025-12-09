@@ -1,6 +1,7 @@
 {
   "location": "eu",
-  "entityType": "public",
+  "entity_type": "public",
+  "ip_connector": "219.208.53.217",
   "membership": {
     "level": "SILVER",
     "branch": "operator"

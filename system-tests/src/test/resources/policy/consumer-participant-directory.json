@@ -3,7 +3,8 @@
     "id": "consumer",
      "claims": {
       "location": "eu",
-       "entityType": "public"
+       "entity_type": "public",
+       "ip_connector": "219.208.53.219"
     },
     "url": "http://localhost:39194/protocol",
     "supportedProtocols": ["dataspace-protocol-http"],

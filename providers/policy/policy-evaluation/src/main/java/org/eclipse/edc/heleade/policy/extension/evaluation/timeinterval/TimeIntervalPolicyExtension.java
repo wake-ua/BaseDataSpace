@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2024 Fraunhofer Institute for Software and Systems Engineering
+ *  Copyright (c) 2025 Universidad de Alicante
  *
  *  This program and the accompanying materials are made available under the
  *  terms of the Apache License, Version 2.0 which is available at
@@ -8,25 +8,24 @@
  *  SPDX-License-Identifier: Apache-2.0
  *
  *  Contributors:
- *       Fraunhofer Institute for Software and Systems Engineering - initial API and implementation
+ *       MO - Universidad de Alicante - initial implementation
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.evaluation.location;
+package org.eclipse.edc.heleade.policy.extension.evaluation.timeinterval;
 
 import org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext;
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
-import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.participant.spi.ParticipantAgentPolicyContext;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
-import org.eclipse.edc.policy.model.Duty;
 import org.eclipse.edc.policy.model.Permission;
-import org.eclipse.edc.policy.model.Prohibition;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+
+import java.time.OffsetDateTime;
 
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -36,55 +35,52 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  * Binds specific constraint keys to relevant policy scopes and registers implementations
  * of atomic constraint rule functions for policy enforcement
  * Key features:
- * Binds the location constraint key to the contract negotiation scope and catalog scope
+ * Binds the policy_evaluation_time constraint key to the contract negotiation scope,
+ * catalog scope, and transfer scope
  * in a policy enforcement context.
- * The key for location.
+ * The key for policy_evaluation_time.
  * must be used as left operand when declaring constraints.
- * rightOperand can be a string.
+ * rightOperand should be a ISO 8601 timestamp such as 2025-07-20T12:34:56Z
+ * Supported operators: LT, LEQ, GT, GEQ, EQ, NEQ
  * * Example:
  *  *
  *  <pre>
  *  *   {
  *  *     "constraint": {
- *  *         "leftOperand": "location",
+ *  *         "leftOperand": "policy_evaluation_time",
  *  *         "operator": "EQ",
- *  *         "rightOperand": "eu"
+ *  *         "rightOperand": "2025-07-20T12:34:56Z"
  *  *     }
  *  *  }
  *  * </pre>
  */
-public class LocationPolicyExtension implements ServiceExtension {
-    private static final String LOCATION_KEY = "location";
-    private static final String LOCATION_CONSTRAINT_KEY = EDC_NAMESPACE + LOCATION_KEY;
+public class TimeIntervalPolicyExtension implements ServiceExtension {
+
+    static final String NAME = "Time Interval Policy";
+    static final String POLICY_EVALUATION_TIME_CONSTRAINT_KEY = EDC_NAMESPACE + "policy_evaluation_time";
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
+
     @Inject
     private PolicyEngine policyEngine;
 
-    @Inject
-    FcParticipantClaimChecker fcParticipantClaimChecker;
-
     @Override
     public String name() {
-        return "Policy function location extension";
+        return NAME;
     }
-
 
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-        monitor.info("Policy function location extension initialized");
         registerFunctionAndBindTo(CatalogPolicyContext.class, CatalogPolicyContext.CATALOG_SCOPE, monitor);
         registerFunctionAndBindTo(ContractNegotiationPolicyContext.class, ContractNegotiationPolicyContext.NEGOTIATION_SCOPE, monitor);
     }
 
     private <C extends ParticipantAgentPolicyContext> void registerFunctionAndBindTo(Class<C> contextClass, String scope, Monitor monitor) {
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, scope);
-        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, scope);
-        policyEngine.registerFunction(contextClass, Duty.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Prohibition.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
+        ruleBindingRegistry.bind(POLICY_EVALUATION_TIME_CONSTRAINT_KEY, scope);
+        policyEngine.registerFunction(contextClass, Permission.class, POLICY_EVALUATION_TIME_CONSTRAINT_KEY, new TimeIntervalPolicyFunction<>(OffsetDateTime::now, monitor));
     }
 
 }

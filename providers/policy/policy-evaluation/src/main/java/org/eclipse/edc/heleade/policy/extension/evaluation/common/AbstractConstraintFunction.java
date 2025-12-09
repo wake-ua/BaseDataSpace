@@ -65,28 +65,38 @@ public abstract class AbstractConstraintFunction<R extends Rule, C extends  Part
         var participantId = participantClaims.get("client_id").toString();
 
         @SuppressWarnings("unchecked")
-        Map<String, Object> claimsMap = (Map<String, Object>) participantClaims.get("claims");
-        if (claimsMap == null) {
+        Map<String, Object> participantClaimsMap = (Map<String, Object>) participantClaims.get("claims");
+        if (participantClaimsMap == null) {
             monitor.severe("No 'claims' map found in participant claims");
             return false;
         }
 
-        Object claim = claimsMap.get(claimKey);
-        if (claim == null) {
-            monitor.severe("No claim found for key " + claimKey);
+        Object participantSelectedClaim = participantClaimsMap.get(claimKey);
+
+        if (participantSelectedClaim == null) {
+            monitor.severe("Claim for key: " + claimKey + " is null");
             return false;
         }
 
-        String claimValue = claim.toString();
 
-        boolean valid = participantClaimChecker.checkClaim(claimKey, claimValue, participantId);
+        if (!(participantSelectedClaim instanceof String participantClaimToVerify)) {
+            monitor.severe("Claim for key: " + claimKey + " is not a string");
+            return false;
+        }
+
+        if (participantClaimToVerify.isBlank()) {
+            monitor.severe("Claim for key: " + claimKey + " is an empty string");
+        }
+
+
+        boolean valid = participantClaimChecker.checkClaim(claimKey, participantClaimToVerify, participantId);
         if (!valid) {
-            monitor.severe("Claim verification failed for key " + claimKey);
+            monitor.severe("Claim is not valid " + claimKey);
             return false;
         }
 
         // Delegate to subclass for the specific evaluation logic
-        return evaluateClaim(operator, claimValue, rightValue, rule, context);
+        return evaluateClaim(operator, participantClaimToVerify, rightValue, rule, context);
     }
 
     /**
