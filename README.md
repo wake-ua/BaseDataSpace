@@ -157,6 +157,3 @@ For questions, collaborations, or further information:
 
 📧 [wake@dlsi.ua.es](mailto:wake@dlsi.ua.es)  
 🌐 [Wake Research group](https://wake.dlsi.ua.es/)
-
-```
-
