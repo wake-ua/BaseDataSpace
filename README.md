@@ -1,4 +1,4 @@
-# *[HELEADE/Base Data Space]*
+# *HELEADE/Base Data Space*
 
 > Base Data Space for the Heleade project
 
@@ -107,9 +107,9 @@ docker run -p 4000:4000 http-request-logger
 ## Authors / Contributors
 
 - **Collaborators:**
-- [Lucía De Espona Pernas] – [@espona](https://github.com/espona)
-- [María de los Ángeles Ortega Rivas] – [@ortegi](https://github.com/ortegi)
-- [David Bernabeu Ferrer] – [@ortegi](https://github.com/dvddepennde)
+- Lucía De Espona Pernas – [@espona](https://github.com/espona)
+- María de los Ángeles Ortega Rivas – [@ortegi](https://github.com/ortegi)
+- David Bernabeu Ferrer – [@ortegi](https://github.com/dvddepennde)
 
 ---
 
