@@ -2563,7 +2563,7 @@
 					"response": []
 				},
 				{
-					"name": "Start Transfer",
+					"name": "Start Transfer PUSH",
 					"event": [
 						{
 							"listen": "test",
@@ -2605,7 +2605,7 @@
 					"response": []
 				},
 				{
-					"name": "Start Transfer Docker",
+					"name": "Start Transfer PUSH Docker",
 					"event": [
 						{
 							"listen": "test",
@@ -2640,6 +2640,148 @@
 								"management",
 								"v3",
 								"transferprocesses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Transfer PULL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"TRANSFER_PROCESS_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PULL\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://localhost:4001/api/consumer/store\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"transferprocesses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Transfer PULL get data auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"HTTP_PULL_ENDPOINT_URL\", pm.response.json()[\"endpoint\"]);",
+									"    pm.environment.set(\"HTTP_PULL_AUTH_TYPE\", pm.response.json()[\"authType\"]);",
+									"    pm.environment.set(\"HTTP_PULL_AUTH_TOKEN\", pm.response.json()[\"authorization\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/edrs/{{TRANSFER_PROCESS_ID}}/dataaddress",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"edrs",
+								"{{TRANSFER_PROCESS_ID}}",
+								"dataaddress"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Transfer PULL get data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{HTTP_PULL_AUTH_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HTTP_PULL_ENDPOINT_URL}}",
+							"host": [
+								"{{HTTP_PULL_ENDPOINT_URL}}"
 							]
 						}
 					},
