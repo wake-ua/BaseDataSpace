@@ -40,10 +40,9 @@ This research project is supported by:
 ## Technology
 
 Provide a brief description of the main technologies used.
-
-*Example:*
 - Java
 - EDC Connector
+
 ---
 
 ## Installation and Usage
@@ -115,7 +114,7 @@ docker run -p 4000:4000 http-request-logger
 
 ## License
 
-This project is distributed under the [MIT License](LICENSE) (or any other applicable license).
+This project is distributed under the [MIT License](LICENSE).
 
 ---
 
