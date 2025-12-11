@@ -28,6 +28,7 @@ def build_asset(url, metadata, desc, name, api_key, province=None):
         "edc:contenttype": "application/json",
         "dct:modified": current_time,
         "dct:issued": current_time,
+        "dct:type": "Dataset",
         "dct:accessRights": "https://opendatacommons.org/licenses/odbl/1.0/",
         "@context": {
             "schema": "https://schema.org/",
@@ -67,6 +68,7 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, asset_ty
         "dct:modified": current_time,
         "edc:contenttype": "application/json",
         "schema:algorithm": "clustering",
+        "dct:type": "Dataset",
         "dct:accessRights": "https://opendatacommons.org/licenses/odbl/1.0/",
         "@context": {
             "schema": "https://schema.org/",
