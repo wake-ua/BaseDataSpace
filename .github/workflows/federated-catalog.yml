@@ -48,8 +48,11 @@ jobs:
 
       - name: Build federated catalog JAR
         run: |
-          cd federated-catalog
           ./gradlew clean build
+          
+      - name: Change directory to Federated Catalog directory
+        run: |
+          cd federated-catalog
       # ---------------------------------
 
       - name: Set dynamic tags for migrations and API
