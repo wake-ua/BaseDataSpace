@@ -8,7 +8,7 @@
     },
     "@type": {
       "type": "string",
-      "enum": ["dcat:Dataset", "http://www.w3.org/ns/dcat#Dataset"]
+      "enum": ["Dataset", "http://www.w3.org/ns/dcat#Dataset"]
     },
     "https://w3id.org/cbm/v0.0.1/ns/hasSample": {
       "type": ["string", "array"]
@@ -43,10 +43,10 @@
     "http://purl.org/dc/terms/accrualPeriodicity": {
       "type": "string"
     },
-    "http://www.w3.org/ns/dcat#dcat:temporalResolution": {
+    "http://www.w3.org/ns/dcat#temporalResolution": {
       "type": "string"
     },
-    "http://www.w3.org/ns/dcat#dcat:spatialResolutionInMeters": {
+    "http://www.w3.org/ns/dcat#spatialResolutionInMeters": {
       "type": "number"
     },
     "http://purl.org/dc/terms/temporal": {
@@ -117,6 +117,9 @@
         },
         "authCode": {
           "type": "string"
+        },
+        "http://www.w3.org/ns/dcat#byteSize": {
+          "type": "number"
         },
         "https://w3id.org/cbm/v0.0.1/ns/hasDataDictionary": {
           "type": "object",

@@ -29,10 +29,10 @@
         "http://purl.org/dc/terms/accrualPeriodicity": {
           "type": "string"
         },
-        "http://www.w3.org/ns/dcat#dcat:temporalResolution": {
+        "http://www.w3.org/ns/dcat#temporalResolution": {
           "type": "string"
         },
-        "http://www.w3.org/ns/dcat#dcat:spatialResolutionInMeters": {
+        "http://www.w3.org/ns/dcat#spatialResolutionInMeters": {
           "type": "number"
         },
         "http://purl.org/dc/terms/temporal": {
@@ -94,6 +94,9 @@
         },
         "https://schema.org/algorithm": {
           "type": "string"
+        },
+        "http://www.w3.org/ns/dcat#byteSize": {
+          "type": "number"
         },
         "https://w3id.org/cbm/v0.0.1/ns/hasDataDictionary": {
           "type": "object",

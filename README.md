@@ -1,12 +1,21 @@
-# Heleade Base Data Space 
+# *HELEADE/Base Data Space*
 
-Base Data Space for the Heleade project
+> Base Data Space for the Heleade project
+
+---
+
+## Objectives
+
+- Develop a base Data Space.  
+- Scalabe and secure.
+
+---
 
 ## Components
 
 * PROVIDERS:
   * **Base Provider**: Ports 1919x / 1929x
-  * **Service Provider **: Ports 1619x / 1629x
+  * **Service Provider**: Ports 1619x / 1629x
   * **eBird Provider**: Ports 1719x / 1729x
   * **Mastral Provider**: Ports 1819x / 1829x
 * CONSUMERS:
@@ -15,10 +24,33 @@ Base Data Space for the Heleade project
   * **Climate Service**: Ports 2819x / 2829x
 * **Federated Catalog**: Ports 3919x / 3929x
 
+---
+
+## Funding Information
+
+This research project is supported by:
+
+- **Funding organization/institution:** MINISTERIO PARA LA TRANSFORMACION DIGITAL Y DE LA FUNCION PUBLICA
+- **Program or grant:** CONVOCATORIA DE AYUDAS PROGRAMA DE ESPACIOS DE DATOS SECTORIALES PARA LA TRANSFORMACIÓN DIGITAL DE LOS SECTORES PRODUCTIVOS ESTRATÉGICOS MEDIANTE LA CREACIÓN DE DEMOSTRADORES Y CASOS DE USO DE ESPACIOS DE COMPARTICIÓN DE DATOS
+- **Project code/reference:** TSI-100121-2024-24
+- **Duration:** [01/11/2024 – 31/12/2025] 
+
+---
+
+## Technology
+
+Provide a brief description of the main technologies used.
+- Java
+- EDC Connector
+
+---
+
+## Installation and Usage
+
 ### Docker Setup
 Docker compose deployment instructions: [README](./deployment/README.md)
 
-## Local Setup 
+### Local Setup 
 
 The providers need a postgresql database.
 The federated catalog requires a MongoDB instance.
@@ -69,3 +101,58 @@ docker build -t http-request-logger util/http-request-logger
 docker run -p 4000:4000 http-request-logger
 ```
 
+---
+
+## Authors / Contributors
+
+- **Collaborators:**
+- Lucía De Espona Pernas – [@espona](https://github.com/espona)
+- María de los Ángeles Ortega Rivas – [@ortegi](https://github.com/ortegi)
+- David Bernabeu Ferrer – [@ortegi](https://github.com/dvddepennde)
+
+---
+
+## License
+
+This project is distributed under the [MIT License](LICENSE).
+
+---
+
+## References
+
+### Articles
+**Morejón, A., Berenguer, A., de Espona, L., Tomás, D., & Mazón, J.-N. (2025).**  
+*Exploring Content-Based Catalogs for Enhanced Discovery Services in Data Spaces.*  
+CEUR.
+
+---
+
+### Conferences
+
+**Morejón, A., Berenguer, A., de Espona, L., Tomás, D., & Mazón, J.-N. (2025).**  
+*Improving Data Discovery Effectiveness: Experimental Evaluation of Content-Based Catalogs in Data Spaces.*  
+In *European Conference on Advances in Databases and Information Systems* (pp. 280–295).  
+Springer Nature Switzerland Cham.
+
+---
+
+**Morejón, A., de Espona, L., & Berenguer, A. (2025).**  
+*Extension of Data Catalog Vocabulary for Federating Open Datasets in Data.*  
+In *New Trends in Database and Information Systems: ADBIS 2025 Short Papers, Workshops, Doctoral Consortium and Tutorials, Tampere, Finland, September 23–26, 2025, Proceedings* (p. 108).  
+Springer Nature.
+
+---
+
+**Morejón, A., de Espona, L., Berenguer, A., Tomás, D., & Mazón, J.-N. (2025).**  
+*Extension of Data Catalog Vocabulary for Federating Open Datasets in Data Spaces.*  
+In *European Conference on Advances in Databases and Information Systems* (pp. 108–117).  
+Springer Nature Switzerland Cham.
+
+---
+
+## 💬 Contact
+
+For questions, collaborations, or further information:
+
+📧 [wake@dlsi.ua.es](mailto:wake@dlsi.ua.es)  
+🌐 [Wake Research group](https://wake.dlsi.ua.es/)
