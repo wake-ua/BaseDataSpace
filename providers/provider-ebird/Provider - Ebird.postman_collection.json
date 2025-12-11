@@ -1,146 +1,15 @@
 {
 	"info": {
-		"_postman_id": "b29f94a2-58c6-476b-974d-f5d2c697e7d8",
-		"name": "Provider - Ebird",
+		"_postman_id": "75068ef6-c71a-4c24-9cf4-954b903a017b",
+		"name": "Provider - Ebird Copy 3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28863133",
-		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-b29f94a2-58c6-476b-974d-f5d2c697e7d8?action=share&source=collection_link&creator=28863133"
+		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-75068ef6-c71a-4c24-9cf4-954b903a017b?action=share&source=collection_link&creator=28863133"
 	},
 	"item": [
 		{
 			"name": "Create Asset",
 			"item": [
-				{
-					"name": "Create Asset",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){\r",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);\r",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"assetId2\",\r\n  \"properties\": {\r\n    \"name\": \"Example dataset 2\",\r\n    \"contenttype\": \"application/json\",\r\n    \"dcterms:name\": \"example example\",\r\n    \"special\": \"test\"\r\n    },\r\n  \"dataAddress\": [{\r\n    \"type\": \"HttpData\",\r\n    \"name\": \"Test asset distribution\",\r\n    \"baseUrl\": \"https://www.opendata.nhs.scot/dataset/0d57311a-db66-4eaa-bd6d-cc622b6cbdfa/resource/a5f7ca94-c810-41b5-a7c9-25c18d43e5a4/download/weekly_ae_activity_20250511.csv\",\r\n    \"proxyPath\": \"true\"\r\n  }]\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset Auth",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){\r",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);\r",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"assetId2\",\r\n  \"properties\": {\r\n    \"name\": \"Recent observations in Spain\",\r\n    \"contenttype\": \"application/json\",\r\n    \"dcterms:name\": \"test tile\",\r\n    \"special\": \"test\"\r\n    },\r\n  \"dataAddress\": [{\r\n    \"type\": \"HttpData\",\r\n    \"name\": \"Test asset distribution\",\r\n    \"baseUrl\": \"https://api.ebird.org/v2/data/obs/ES/recent\",\r\n    \"authKey\": \"x-ebirdapitoken\",\r\n    \"authCode\": \"{{AUTH-CODE}}\",\r\n    \"proxyPath\": \"true\"\r\n  }]\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset  CBM",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId3\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"test ebird name\",\n\t\"name\": \"test name\",\n\t\"dct:title\": \"test title\",\n\t\"cbm:hasSample\": \"assetId3Sample\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets-cbm"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Create Asset  CBM Auth",
 					"event": [
@@ -153,7 +22,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -162,7 +32,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"auth-asset-cbm-test\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://api.ebird.org/v2/product/spplist/ES-CL-LN\",\n\t\t\t\"proxyPath\": \"true\",\n            \"authKey\": \"x-ebirdapitoken\",\n            \"authCode\": \"{{AUTH-CODE}}\",\n\t\t\t\"cbm:hasDataDictionary\": {\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"schema:name\": \"species\",\n\t\t\t\t\t\t\"dct:title\": \"species\",\n\t\t\t\t\t\t\"http://www.w3.org/2000/01/rdf-schema#type\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"A list of species identifiers returned by the API\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"wooduc\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"schema:name\": \"Recent species observations leon\",\n\t\"name\": \"Recent species observations leon\",\n\t\"dct:title\": \"Recent species observations leon\",\n\t\"cbm:hasSample\": \"assetId3Sample\",\n\t\"contenttype\": \"application/json\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"raw": "{\n    \"@id\": \"asset-example\",\n    \"@type\": \"dcat:Dataset\",\n    \"dcat:distribution\": [\n        {\n            \"@type\": \"dcat:Distribution\",\n            \"dct:format\": {\"@id\": \"HttpData\"},\n            \"dcat:accessURL\": \"https://api.ebird.org/v2/ref/hotspot/ES-CM-AB\",\n            \"proxyPath\": \"true\",\n            \"authKey\": \"x-ebirdapitoken\",\n            \"authCode\": \"otpbcu933m6f\",\n            \"cbm:hasDataDictionary\": {\n                \"@type\": \"cbm:DataDictionary\",\n                \"cbm:hasField\": [\n                            {\n                                \"@type\": \"cbm:Field\",\n                                \"schema:name\": \"locationId\",\n                                \"dct:description\": \"Unique identifier for the location\",\n                                \"dct:title\": \"locationId\",\n                                \"cbm:sampleValue\": \"L2521366\",\n                                \"cbm:datatype\": \"string\"\n                            },\n                            {\n                                \"@type\": \"cbm:Field\",\n                                \"schema:name\": \"countryCode\",\n                                \"dct:description\": \"ISO country code\",\n                                \"dct:title\": \"countryCode\",\n                                \"cbm:sampleValue\": \"ES\",\n                                \"cbm:datatype\": \"string\"\n                            }]\n            }\n        }\n    ],\n    \"cbm:hasSample\": \"sample-asset-hotspots-in-albacete\",\n    \"dct:title\": \"hotspots-in-albacete\",\n    \"dct:description\": \"desc\",\n    \"edc:contenttype\": \"application/json\",\n    \"dct:modified\": \"2025-12-11T09:50:25Z\",\n    \"dct:issued\": \"2025-12-11T09:50:25Z\",\n    \"dct:type\": \"Dataset\",\n    \"dct:accrualPeriodicity\": \"never\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -196,7 +66,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -205,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\"\n  },\n  \"@id\": \"assetId3Sample\",\n  \"properties\": {\n    \"name\": \"product 3 name SAMPLE\",\n    \"contenttype\": \"application/json\",\n    \"schema:name\": \"test template 3 name\",\n    \"dcterms:title\": \"test template 3 name\",\n    \"cbm:isSampleOf\": \"assetId3\",\n    \"schema:algorithm\": \"clustering\",\n    \"cbm:hasDataDictionary\": {\n        \"cbm:hasField\": [\n            {\n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"rdfs:type\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"rdfs:type\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"name\": \"Test  3 sample asset distribution\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\",\n    \"extra\": \"extra\"\n  }]\n  \n}\n",
+							"raw": "{\n    \"@id\": \"sample-asset-hotspots-in-bizkaia-2\",\n    \"@type\": \"Asset\",\n    \"properties\": {\n        \"cbm:isSampleOf\": \"asset-hotspots-in-bizkaia\",\n        \"dct:issued\": \"2025-12-11T09:50:29+00:00\",\n        \"dct:type\": \"Dataset\",\n        \"dct:modified\": \"2025-12-11T09:50:29+00:00\",\n        \"cbm:hasDataDictionary\": {\n            \"@type\": \"cbm:DataDictionary\",\n            \"cbm:hasField\": [\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"locationId\",\n                    \"dct:description\": \"Unique identifier for the location\",\n                    \"dct:title\": \"locationId\",\n                    \"cbm:sampleValue\": \"L2521366\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"countryCode\",\n                    \"dct:description\": \"ISO country code\",\n                    \"dct:title\": \"countryCode\",\n                    \"cbm:sampleValue\": \"ES\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"subnational1Code\",\n                    \"dct:description\": \"First level subnational administrative division code\",\n                    \"dct:title\": \"subnational1Code\",\n                    \"cbm:sampleValue\": \"ES-PV\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"subnational2Code\",\n                    \"dct:description\": \"Second level subnational administrative division code\",\n                    \"dct:title\": \"subnational2Code\",\n                    \"cbm:sampleValue\": \"ES-PV-GP\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"latitude\",\n                    \"dct:description\": \"Geographical latitude of the location\",\n                    \"dct:title\": \"latitude\",\n                    \"cbm:sampleValue\": \"43.2809\",\n                    \"cbm:datatype\": \"number\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"longitude\",\n                    \"dct:description\": \"Geographical longitude of the location\",\n                    \"dct:title\": \"longitude\",\n                    \"cbm:sampleValue\": \"-1.78801\",\n                    \"cbm:datatype\": \"number\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"locationName\",\n                    \"dct:description\": \"Name of the location\",\n                    \"dct:title\": \"locationName\",\n                    \"cbm:sampleValue\": \"Aiako Harria PNat--Aiako Harriak\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"observationDateTime\",\n                    \"dct:description\": \"Date and time of the observation\",\n                    \"dct:title\": \"observationDateTime\",\n                    \"cbm:sampleValue\": \"2025-05-18 10:30\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"numSpeciesObserved\",\n                    \"dct:description\": \"Number of species observed at the location\",\n                    \"dct:title\": \"numSpeciesObserved\",\n                    \"cbm:sampleValue\": \"131\",\n                    \"cbm:datatype\": \"number\"\n                }\n            ]\n        },\n        \"dct:title\": \"hotspots-in-bizkaia\",\n        \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n        \"dct:description\": \"Get a list of hotspots in Bizkaia\",\n        \"contenttype\": \"application/json\",\n        \"schema:algorithm\": \"clustering\"\n    },\n    \"dataAddress\": {\n        \"@type\": \"DataAddress\",\n        \"proxyPath\": \"true\",\n        \"type\": \"HttpData\",\n        \"authCode\": \"APIKEY-PROVIDER-EBIRD\",\n        \"authKey\": \"x-api-key\",\n        \"baseUrl\": \"http://samples-server:80/samples/sample-asset-hotspots-in-bizkaia.csv\"\n    },\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
