@@ -70,7 +70,7 @@ jobs:
       # -------- DOCKER BUILD & PUSH --------
       - name: Build Docker image for Federated Catalog
         run: |
-          docker build -f Dockerfile \
+          docker build \
             -t ${{ steps.vars.outputs.FC_LATEST }} \
             -t ${{ steps.vars.outputs.FC_SHA }} \
             -t ${{ steps.vars.outputs.FC_DATE }} \
