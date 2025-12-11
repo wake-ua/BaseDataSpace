@@ -50,9 +50,6 @@ jobs:
         run: |
           ./gradlew clean build
           
-      - name: Change directory to Federated Catalog directory
-        run: |
-          cd federated-catalog
       # ---------------------------------
 
       - name: Set dynamic tags for Federated Catalog
@@ -74,7 +71,7 @@ jobs:
             -t ${{ steps.vars.outputs.FC_LATEST }} \
             -t ${{ steps.vars.outputs.FC_SHA }} \
             -t ${{ steps.vars.outputs.FC_DATE }} \
-            .
+            ./federated-catalog
 
       - name: Push Federated Catalog images
         run: |
