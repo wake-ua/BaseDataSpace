@@ -151,7 +151,8 @@
         "http://purl.org/dc/terms/title",
         "http://purl.org/dc/terms/description",
         "http://purl.org/dc/terms/issued",
-        "http://purl.org/dc/terms/modified"
+        "http://purl.org/dc/terms/modified",
+        "http://purl.org/dc/terms/type"
       ],
       "additionalProperties": false
     },

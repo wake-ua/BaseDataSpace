@@ -110,6 +110,151 @@
 			"name": "Create Asset Base Provider",
 			"item": [
 				{
+					"name": "Kit Espadio de Datos",
+					"item": [
+						{
+							"name": "Create Asset csv CBM Idearium",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@id\": \"csv_dataset_ES521006_2015\",\n  \"@type\": \"dcat:Dataset\",\n  \"dcat:inSeries\" : \"IDRM-SNTL-ES521006\",\n  \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural de las lagunas de La Mata y Torrevieja\",\n  \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural de las Lagunas de La Mata y Torrevieja. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"CEDEX\", \"NDWI\", \"MNDWI\"],\n  \"contenttype\": \"text/csv\",\n  \"dct:type\": \"Dataset\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:accrualPeriodicity\": \"annual\",\n  \"dcat:temporalResolution\": \"P1D\",\n  \"dct:temporal\": {\n    \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\",\n    \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\"\n  },\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.9172 38.0777, -0.9001 38.0777, -0.9001 38.0582, -0.9172 38.0582, -0.9172 38.0777))\",\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/analisis_indices_torrevieja_2025.csv\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": null,\n      \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",\n        \"cbm:hasField\": [\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aoi_id\",\n            \"dct:title\": \"Identificador del área de interés\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Identificador único del área de interés (laguna).\",\n            \"cbm:sampleValue\": \"ES521006\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cell_id\",\n            \"dct:title\": \"Identificador de celda\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Identificador único de la celda dentro de la cuadrícula.\",\n            \"cbm:sampleValue\": \"10\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"timestamp\",\n            \"dct:title\": \"Fecha y hora\",\n            \"cbm:datatype\": \"dateTime\",\n            \"dct:description\": \"Fecha y hora de la imagen o dato analizado.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndvi\",\n            \"dct:title\": \"Índice NDVI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación normalizada.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndwi\",\n            \"dct:title\": \"Índice NDWI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de agua normalizada.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"mndwi\",\n            \"dct:title\": \"Índice MNDWI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice modificado de agua.\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cedex\",\n            \"dct:title\": \"Índice CEDEX\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice específico CEDEX para análisis ambiental.\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndsi\",\n            \"dct:title\": \"Índice NDSI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de la nieve.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ratio_swir_nir\",\n            \"dct:title\": \"Ratio SWIR/NIR\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Relación entre bandas SWIR y NIR.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndmi\",\n            \"dct:title\": \"Índice NDMI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de humedad del dosel normalizado.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aweish\",\n            \"dct:title\": \"Índice AWEIsh\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice mejorado de agua para humedales (AWEIsh).\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cigreen\",\n            \"dct:title\": \"Índice CIGreen\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación con banda verde.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndre\",\n            \"dct:title\": \"Índice NDRE\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada en banda roja y NIR.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndti\",\n            \"dct:title\": \"Índice NDTI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de la textura.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"salinity_index\",\n            \"dct:title\": \"Índice de salinidad\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Indicador relacionado con la salinidad del agua o suelo.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndci\",\n            \"dct:title\": \"Índice NDCI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de clorofila.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ci_re\",\n            \"dct:title\": \"Índice CI_RE\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación basado en reflectancia roja.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"Latitude\",\n            \"dct:title\": \"Latitud\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Coordenada geográfica de latitud en grados decimales.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"Longitude\",\n            \"dct:title\": \"Longitud\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Coordenada geográfica de longitud en grados decimales.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"epsg\",\n            \"dct:title\": \"EPSG\",\n            \"cbm:datatype\": \"integer\",\n            \"dct:description\": \"Código EPSG del sistema de referencia espacial.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aoi_name\",\n            \"dct:title\": \"Nombre del área de interés\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Nombre común del área de interés (laguna).\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"folder\",\n            \"dct:title\": \"Carpeta de origen\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Nombre de la imagen de la que provienen los datos.\",\n            \"cbm:sampleValue\": \"\"\n          }\n        ]\n      }\n    }\n  ],\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"assets-cbm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Asset geojson CBM Idearium",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@id\": \"geojson_dataset_ES521006\",\n  \"@type\": \"dcat:Dataset\",\n  \"dct:title\": \"Cuadrícula base para el Parque Natural de las lagunas de La Mata y Torrevieja en formato GeoJSON\",\n  \"dct:description\": \"Es una cuadrícula regular de 500 m por 500 m que cubre el espacio de los dos humedales que se encuentran en Torrevieja. Esta se usa para el cálculo de los diferentes índices en cada celda.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"GEOJSON\"],\n  \"contenttype\": \"application/geo+json\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.9172 38.0777, -0.9001 38.0777, -0.9001 38.0582, -0.9172 38.0582, -0.9172 38.0777))\",\n  \"dct:type\": \"Dataset\",\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/cuadricula_base_torrevieja.geojson\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": null,\n      \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",\n        \"cbm:hasField\": [\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"FID\",\n                \"dct:title\": \"Feature ID\",\n                \"dct:description\": \"Identificador interno de la entidad.\",\n                \"cbm:datatype\": \"integer\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Id\",\n                \"dct:title\": \"Identificador único\",\n                \"dct:description\": \"Identificador único para cada celda de la cuadrícula.\",\n                \"cbm:datatype\": \"string\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Longitude\",\n                \"dct:title\": \"Longitud\",\n                \"dct:description\": \"Coordenada de longitud de la celda.\",\n                \"cbm:datatype\": \"decimal\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Latitude\",\n                \"dct:title\": \"Latitud\",\n                \"dct:description\": \"Coordenada de latitud de la celda.\",\n                \"cbm:datatype\": \"decimal\"\n            }\n        ]\n      }\n    }\n   ],\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"assets-cbm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Asset png CBM Idearium",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@id\": \"png_dataset_ES521006\",\n  \"@type\": \"dcat:Dataset\",\n  \"dct:title\": \"Imagen PNG con cuadrícula pintada para el Parque Natural de las lagunas de La Mata y Torrevieja\",\n  \"dct:description\": \"Imagen PNG que muestra las dos lagunas completas con la cuadrícula de 500 m pintada encima. Diseñada para facilitar la interpretación visual a personal sin formación técnica.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"IMAGE\", \"PNG\"],\n  \"contenttype\": \"image/png\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.9172 38.0777, -0.9001 38.0777, -0.9001 38.0582, -0.9172 38.0582, -0.9172 38.0777))\",\n  \"dct:type\": \"Dataset\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/imagen_laguna_cuadricula.png\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": null\n    }\n  ],\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"assets-cbm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Create Asset",
 					"event": [
 						{
@@ -131,7 +276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -175,7 +320,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T14:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T16:04:33+00:00\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T14:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T16:04:33+00:00\",\n    \"dct:type\": \"Dataset\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -219,7 +364,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetId4\",\n  \"properties\": {\n    \"dcterms:title\": \"product  4 description\",\n    \"dcterms:description\": \"test description\",\n    \"contenttype\": \"application/json\",\n    \"dcterms:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"cbm:hasSample\": [\"assetId4Sample\"],\n    \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",        \n        \"cbm:hasField\": [\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"cbm:datatype\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"cbm:datatype\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }    \n  },\n  \"dataAddress\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }\n  \n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetId4\",\n  \"properties\": {\n    \"dct:title\": \"product  4 description\",\n    \"dct:description\": \"test description\",\n    \"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n    \"cbm:hasSample\": [\"assetId4Sample\"],\n    \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",        \n        \"cbm:hasField\": [\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"username\",\n                \"dct:title\": \"User Name\",\n                \"cbm:datatype\": \"string\",\n                \"dct:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"id\",\n                \"dct:title\": \"User Identifier\",\n                \"cbm:datatype\": \"integer\",\n                \"dct:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }    \n  },\n  \"dataAddress\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }\n  \n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,7 +408,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetId4Sample\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dcterms:title\": \"test template 4 name\",\n    \"dcterms:description\": \"test description\",\n    \"dcterms:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"cbm:isSampleOf\": \"assetId4\",\n    \"schema:algorithm\": \"clustering\",\n    \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",        \n        \"cbm:hasField\": [\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"cbm:datatype\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"cbm:datatype\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"dcterms\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\"\n  },\n  \"@id\": \"assetId4Sample\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dcterms:title\": \"test template 4 name\",\n    \"dcterms:description\": \"test description\",\n    \"dcterms:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dcterms:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dcterms:type\": \"Dataset\",\n    \"cbm:isSampleOf\": \"assetId4\",\n    \"schema:algorithm\": \"clustering\",\n    \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",        \n        \"cbm:hasField\": [\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"username\",\n                \"dcterms:title\": \"User Name\",\n                \"cbm:datatype\": \"string\",\n                \"dcterms:description\": \"Name of the user\",\n                \"cbm:sampleValue\": \"bret\"\n            },\n            {\n                \"@type\": \"cbm:Field\",        \n                \"schema:name\": \"id\",\n                \"dcterms:title\": \"User Identifier\",\n                \"cbm:datatype\": \"integer\",\n                \"dcterms:description\": \"Id of the user\",\n                \"cbm:sampleValue\": \"1\"\n            }\n        ]\n    }\n  },\n  \"dataAddress\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -307,51 +452,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"dct:title\": \"second item\",\n\t\"dct:description\": \"this is a second item\",\n    \"dcat:keyword\": [\"TEST\", \"SECOND\"],\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets-cbm"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset CBM Bad",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "\n{\n\t\"@id\": \"assetIdBadcbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n    \"cbm:isSampleOf\": \"ert\",\n\t\"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"@context\": {\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"dct:title\": \"second item\",\n\t\"dct:description\": \"this is a second item\",\n    \"dcat:keyword\": [\"TEST\", \"SECOND\"],\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -395,7 +496,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId4Cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:datatype\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"id\",\n                            \"dct:title\": \"User Identifier\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Id of the user\",\n                            \"cbm:sampleValue\": \"1\"\n                        }\n                    ]\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"cbm:hasSample\": [\"assetId4SampleCbm\"],\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"raw": "{\n\t\"@id\": \"assetId4Cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:datatype\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"id\",\n                            \"dct:title\": \"User Identifier\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Id of the user\",\n                            \"cbm:sampleValue\": \"1\"\n                        }\n                    ]\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"cbm:hasSample\": [\"assetId4SampleCbm\"],\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -439,7 +540,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId4SampleCbm\",\n\t\"@type\": \"cbm:Sample\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n                \"@type\": \"cbm:DataDictionary\",\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n                        \"@type\": \"cbm:Field\",\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"cbm:datatype\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n                        \"@type\": \"cbm:Field\",\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"cbm:datatype\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"cbm:isSampleOf\": \"assetId4\",\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n\t\"schema:algorithm\": \"clustering\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"raw": "{\n\t\"@id\": \"assetId4SampleCbm\",\n\t\"@type\": \"cbm:Sample\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n                \"@type\": \"cbm:DataDictionary\",\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n                        \"@type\": \"cbm:Field\",\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"cbm:datatype\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n                        \"@type\": \"cbm:Field\",\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"cbm:datatype\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"cbm:isSampleOf\": \"assetId4\",\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n\t\"schema:algorithm\": \"clustering\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",   \n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -483,7 +584,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"@id\": \"assetId5\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"authKey\": \"x-ebirdapitoken\",\n                \"authCode\": \"authCode\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:datatype\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"id\",\n                            \"dct:title\": \"User Identifier\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Id of the user\",\n                            \"cbm:sampleValue\": \"1\"\n                        }\n                    ]\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"raw": "{\n\t\"@id\": \"assetId5\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"authKey\": \"x-ebirdapitoken\",\n                \"authCode\": \"authCode\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:datatype\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"id\",\n                            \"dct:title\": \"User Identifier\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Id of the user\",\n                            \"cbm:sampleValue\": \"1\"\n                        }\n                    ]\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -527,7 +628,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n\t\"@id\": \"airQualityTorrent21\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dct:title\": \"Air quality in Torrent for 2021\",\n\t\"dct:description\": \"Tabular data containing a list of the daily measurements of the Torrent sensor in 2021\",\n    \"dcat:keyword\": [\"POLLUTION\", \"AIR\"],\n\t\"contenttype\": \"text/csv\",\n    \"dct:issued\": \"2022-01-22T13:04:33+00:00\",\n    \"dct:modified\": \"2022-01-25T23:14:55+00:00\",\n    \"dct:accrualPeriodicity\": \"annual\",\n    \"dcat:temporalResolution\": \"P1D\",\n    \"dct:temporal\": {\n        \"dcat:startDate\": \"2021-01-01T00:00:00+00:00\", \n        \"dcat:endDate\":   \"2021-12-01T00:00:00+00:00\"\n    },\n    \"dcat:spatialResolutionInMeters\": 69000.0,\n    \"dct:spatial\": \"POLYGON (( -0.4381504467680264 39.4105711824846 , -0.4568295983091736 39.44940414433466 , -0.6171900219935075 39.4442153805213 , -0.5905964013590401 39.39186506960127 , -0.5055720209872985 39.3881264008169 , -0.4381504467680264 39.41057118248469 ))\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"cbm:hasSample\": [\"airQualityTorrentSample\"],\n    \"dcat:inSeries\": \"torrentAirQualitySeries\",\n\t\"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"http://datosabiertos.torrent.es/dataset/b6623499-2adc-4760-8392-784413d8fb41/resource/0146797f-a81c-452e-9129-8f8a11683656/download/ODMECalidadDelAirePorDias2021.csv\",\n                \"proxyPath\": \"true\",\n                \"authKey\": \"x-api-key\",\n                \"authCode\": \"slq24sGHDw7c\",\n                \"dcat:byteSize\": 11005,\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                         {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"ANY\",\n                            \"dct:title\": \"Year\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Year of the data accrual\",\n                            \"cbm:sampleValue\": \"2021\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"FECHA\",\n                            \"dct:title\": \"Date\",\n                            \"cbm:datatype\": \"date\",\n                            \"dct:description\": \"Date of the data accrual\",\n                            \"cbm:sampleValue\": \"1/1/2021\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"O3\",\n                            \"dct:title\": \"Ozone\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Microgramms of ozone per cubic meter\",\n                            \"cbm:sampleValue\": \"58\"\n                        }\n                    ]\n                }\n            }\n        ],\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"schema\": \"https://schema.org/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"raw": "\n{\n\t\"@id\": \"airQualityTorrent21\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dct:title\": \"Air quality in Torrent for 2021\",\n\t\"dct:description\": \"Tabular data containing a list of the daily measurements of the Torrent sensor in 2021\",\n    \"dcat:keyword\": [\"POLLUTION\", \"AIR\"],\n\t\"contenttype\": \"text/csv\",\n    \"dct:type\": \"Dataset\",\n    \"dct:issued\": \"2022-01-22T13:04:33+00:00\",\n    \"dct:modified\": \"2022-01-25T23:14:55+00:00\",\n    \"dct:accrualPeriodicity\": \"annual\",\n    \"dcat:temporalResolution\": \"P1D\",\n    \"dct:temporal\": {\n        \"dcat:startDate\": \"2021-01-01T00:00:00+00:00\", \n        \"dcat:endDate\":   \"2021-12-01T00:00:00+00:00\"\n    },\n    \"dcat:spatialResolutionInMeters\": 69000.0,\n    \"dct:spatial\": \"POLYGON (( -0.4381504467680264 39.4105711824846 , -0.4568295983091736 39.44940414433466 , -0.6171900219935075 39.4442153805213 , -0.5905964013590401 39.39186506960127 , -0.5055720209872985 39.3881264008169 , -0.4381504467680264 39.41057118248469 ))\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"cbm:hasSample\": [\"airQualityTorrentSample\"],\n    \"dcat:inSeries\": \"torrentAirQualitySeries\",\n\t\"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"http://datosabiertos.torrent.es/dataset/b6623499-2adc-4760-8392-784413d8fb41/resource/0146797f-a81c-452e-9129-8f8a11683656/download/ODMECalidadDelAirePorDias2021.csv\",\n                \"proxyPath\": \"true\",\n                \"authKey\": \"x-api-key\",\n                \"authCode\": \"slq24sGHDw7c\",\n                \"dcat:byteSize\": 11005,\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                         {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"ANY\",\n                            \"dct:title\": \"Year\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Year of the data accrual\",\n                            \"cbm:sampleValue\": \"2021\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"FECHA\",\n                            \"dct:title\": \"Date\",\n                            \"cbm:datatype\": \"date\",\n                            \"dct:description\": \"Date of the data accrual\",\n                            \"cbm:sampleValue\": \"1/1/2021\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"O3\",\n                            \"dct:title\": \"Ozone\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Microgramms of ozone per cubic meter\",\n                            \"cbm:sampleValue\": \"58\"\n                        }\n                    ]\n                }\n            }\n        ],\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"schema\": \"https://schema.org/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -544,6 +645,94 @@
 								"management",
 								"v3",
 								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Dataset CBM Mandatory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n\t\"@id\": \"datasetMandatory\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dct:title\": \"Minimal set of metadata\",\n\t\"dct:description\": \"Contains only the mandatory properties\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-12-10T13:04:33+00:00\",\n    \"dct:modified\": \"2025-12-10T23:14:55+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n\t\"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\"\n                \n            }\n        ],\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"schema\": \"https://schema.org/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset Service Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetIdService\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:type\": \"Service\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"ServiceData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets"
 							]
 						}
 					},
@@ -1233,6 +1422,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -1474,7 +1671,39 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        }\n    ]\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query-cbm/datasets",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+									"path": [
+										"api",
+										"catalog",
+										"v1alpha",
+										"catalog",
+										"query-cbm",
+										"datasets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Services provider Query CBM",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Service\"\n        }\n    ]\n  \n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1506,7 +1735,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-ebird\"\n        }\n    ]\n  \n}",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-ebird\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        }\n    ]\n  \n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1533,13 +1762,13 @@
 							"response": []
 						},
 						{
-							"name": "Datasets Recent Query CBM Copy",
+							"name": "Datasets Recent Query CBM",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:modified\",\n            \"operator\": \">=\",\n            \"operandRight\": \"2025-10-22T14:04:33+00:00\"\n        }\n    ]\n  \n}",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:modified\",\n            \"operator\": \">=\",\n            \"operandRight\": \"2025-10-22T14:04:33+00:00\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        }\n        \n    ]\n  \n}",
 									"options": {
 										"raw": {
 											"language": "json"

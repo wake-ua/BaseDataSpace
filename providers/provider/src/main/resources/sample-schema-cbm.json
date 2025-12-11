@@ -213,6 +213,7 @@
     "http://purl.org/dc/terms/description",
     "http://purl.org/dc/terms/modified",
     "http://purl.org/dc/terms/issued",
+    "http://purl.org/dc/terms/type",
     "http://www.w3.org/ns/dcat#distribution"
   ],
   "additionalProperties": false

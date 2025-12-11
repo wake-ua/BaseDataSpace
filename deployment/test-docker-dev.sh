@@ -16,14 +16,23 @@ curl --location 'http://localhost:19193/management/v3/assets' \
 --header 'Content-Type: application/json' \
 --header 'x-api-key: managementApiKeyProviderBase' \
 --data-raw '{
-  "@context": {
-    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
-  },
+    "@context": {
+        "dcat": "http://www.w3.org/ns/dcat#",
+        "dct": "http://purl.org/dc/terms/",
+        "cbm": "https://w3id.org/cbm/v0.0.1/ns/",
+		"schema": "https://schema.org/",
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
   "@id": "assetId",
   "properties": {
-    "name": "Test asset",
-    "contenttype": "application/json"
-    },
+    "contenttype": "application/json",
+    "dct:title": "test name",
+    "dct:description": "test description",
+    "dct:issued": "2025-10-22T12:04:33+00:00",
+    "dct:modified": "2025-10-22T13:04:33+00:00",
+    "dct:accessRights": "https://opendatacommons.org/licenses/odbl/1.0/",
+    "dct:type": "Dataset"
+  },
   "dataAddress": [{
     "type": "HttpData",
     "name": "Test asset distribution",
