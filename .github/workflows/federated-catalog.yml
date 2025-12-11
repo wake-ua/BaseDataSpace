@@ -55,7 +55,7 @@ jobs:
           cd federated-catalog
       # ---------------------------------
 
-      - name: Set dynamic tags for migrations and API
+      - name: Set dynamic tags for Federated Catalog
         id: vars
         run: |
           IMAGE_BASE_FC="ghcr.io/wake-ua/federated-catalog"
@@ -68,15 +68,15 @@ jobs:
           echo "FC_DATE=${IMAGE_BASE_FC}:${DATE}" >> $GITHUB_OUTPUT
 
       # -------- DOCKER BUILD & PUSH --------
-      - name: Build Docker image for migrations
+      - name: Build Docker image for Federated Catalog
         run: |
-          docker build -f migrations/Dockerfile \
+          docker build -f Dockerfile \
             -t ${{ steps.vars.outputs.FC_LATEST }} \
             -t ${{ steps.vars.outputs.FC_SHA }} \
             -t ${{ steps.vars.outputs.FC_DATE }} \
             .
 
-      - name: Push migrations images
+      - name: Push Federated Catalog images
         run: |
           docker push ${{ steps.vars.outputs.FC_LATEST }}
           docker push ${{ steps.vars.outputs.FC_SHA }}
