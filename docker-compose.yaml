@@ -33,20 +33,6 @@ services:
     networks:
       - base-ds-network
 
-
-  provider-mastral:
-    container_name: provider-mastral
-    ports:
-      - "18191:18191"
-      - "18193:18193"
-      - "18194:18194"
-    build: ./providers/provider-mastral
-    depends_on:
-      - bds-postgresql
-    restart: on-failure:5
-    networks:
-      - base-ds-network
-
   consumer-base:
     container_name: consumer-base
     ports:
@@ -83,28 +69,6 @@ services:
       - "39194:39194"
       - "39195:39195"
     build: ./federated-catalog
-    networks:
-      - base-ds-network
-
-  search-service:
-    container_name: search-service
-    ports:
-      - "27191:27191"
-      - "27193:27193"
-      - "27194:27194"
-    build: ./consumers/search-service
-    networks:
-      - base-ds-network
-
-  climate-service:
-    container_name: climate-service
-    ports:
-      - "28191:28191"
-      - "28193:28193"
-      - "28194:28194"
-    build: ./consumers/climate-service
-    volumes:
-      - ./deployment/assets/consumer:/app/consumer
     networks:
       - base-ds-network
 

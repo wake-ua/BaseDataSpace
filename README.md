@@ -15,13 +15,12 @@
 
 * PROVIDERS:
   * **Base Provider**: Ports 1919x / 1929x
-  * **Service Provider**: Ports 1619x / 1629x
+  * **Climate Service Provider**: Ports 1619x / 1629x
   * **eBird Provider**: Ports 1719x / 1729x
   * **Mastral Provider**: Ports 1819x / 1829x
 * CONSUMERS:
   * **Base Consumer**: Ports 2919x / 2929x
   * **Search Service**: Ports 2719x / 2729x
-  * **Climate Service**: Ports 2819x / 2829x
 * **Federated Catalog**: Ports 3919x / 3929x
 
 ---

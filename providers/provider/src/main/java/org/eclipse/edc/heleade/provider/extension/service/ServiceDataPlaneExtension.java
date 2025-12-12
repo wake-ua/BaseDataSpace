@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.service.extension;
+package org.eclipse.edc.heleade.provider.extension.service;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.http.spi.EdcHttpClient;
@@ -45,14 +45,14 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         String credentialServiceUrl = context.getConfig().getString("edc.heleade.service.dataservice.credentials.url", "");
-        String credentialServiceApiKeyHeader = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.header", "");
-        String credentialServiceApiKeyValue = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.key", "");
+        String credentialServiceApiKey = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.key", "");
+        String credentialServiceApiCode = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.code", "");
         String defaultCredentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials.default", "");
         if (credentialServiceUrl.isEmpty() && defaultCredentials.isEmpty()) {
             context.getMonitor().warning("One of edc.heleade.service.dataservice.credentials.url or edc.heleade.service.dataservice.credentials.default must be set to allow ServiceData transfers");
         } else {
             pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient,
-                    credentialServiceUrl, credentialServiceApiKeyHeader, credentialServiceApiKeyValue,
+                    credentialServiceUrl, credentialServiceApiKey, credentialServiceApiCode,
                     defaultCredentials));
         }
     }

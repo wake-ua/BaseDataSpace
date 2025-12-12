@@ -35,7 +35,6 @@ include(":consumers:climate-service")
 include(":providers:content-based-catalog-dispatcher")
 include(":providers:provider")
 include(":providers:provider-base")
-include(":providers:provider-service")
 include(":providers:provider-ebird")
 include(":providers:provider-mastral")
 

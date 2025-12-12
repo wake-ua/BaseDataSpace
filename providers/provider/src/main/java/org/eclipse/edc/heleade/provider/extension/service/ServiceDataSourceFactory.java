@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.service.extension;
+package org.eclipse.edc.heleade.provider.extension.service;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSourceFactory;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-import static org.eclipse.edc.heleade.service.extension.ServiceDataPlaneExtension.SERVICE_TYPE;
+import static org.eclipse.edc.heleade.provider.extension.service.ServiceDataPlaneExtension.SERVICE_TYPE;
 
 /**
  * Factory for creating instances of ServiceDataSource for use within a data flow pipeline.

@@ -3,3 +3,4 @@ org.eclipse.edc.heleade.provider.extension.health.HealthEndpointExtension
 org.eclipse.edc.heleade.provider.extension.validation.AssetValidationExtension
 org.eclipse.edc.heleade.provider.extension.content.based.api.catalog.ContentBasedCatalogExtension
 org.eclipse.edc.heleade.provider.extension.content.based.api.asset.AssetApiExtension
+org.eclipse.edc.heleade.provider.extension.service.ServiceDataPlaneExtension

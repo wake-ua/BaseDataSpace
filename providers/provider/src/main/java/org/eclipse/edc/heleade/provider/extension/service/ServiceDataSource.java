@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.service.extension;
+package org.eclipse.edc.heleade.provider.extension.service;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -41,10 +41,9 @@ public class ServiceDataSource implements DataSource {
 
     private final EdcHttpClient httpClient;
     private final String credentialsServiceUrl;
-    private final String credentialServiceApiKeyHeader;
-    private final String credentialServiceApiKeyValue;
+    private final String credentialServiceApiKey;
+    private final String credentialServiceApiCode;
     private final String defaultCredentials;
-    private final String baseUrl;
     private final String participantId;
     private final String assetId;
     private final String agreementId;
@@ -56,20 +55,19 @@ public class ServiceDataSource implements DataSource {
      * @param httpClient the HTTP client used for service communication
      * @param request the initial data flow start message containing the request details
      * @param credentialsServiceUrl the URL of the credential service
-     * @param credentialServiceApiKeyHeader the API key header for authentication
-     * @param credentialServiceApiKeyValue the API key value for authentication
+     * @param credentialServiceApiKey the API key header for authentication
+     * @param credentialServiceApiCode the API key value for authentication
      * @param defaultCredentials the default credentials used for the data source
      * @param originalRequest the original data flow start message containing fallback metadata
      */
     public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request,
-                             String credentialsServiceUrl, String credentialServiceApiKeyHeader, String credentialServiceApiKeyValue,
+                             String credentialsServiceUrl, String credentialServiceApiKey, String credentialServiceApiCode,
                              String defaultCredentials, DataFlowStartMessage originalRequest) {
         this.httpClient = httpClient;
         this.credentialsServiceUrl = credentialsServiceUrl;
-        this.credentialServiceApiKeyHeader = credentialServiceApiKeyHeader;
-        this.credentialServiceApiKeyValue = credentialServiceApiKeyValue;
+        this.credentialServiceApiKey = credentialServiceApiKey;
+        this.credentialServiceApiCode = credentialServiceApiCode;
         this.defaultCredentials = defaultCredentials;
-        this.baseUrl = request.getSourceDataAddress().getStringProperty("baseUrl");
         this.processId = request.getProcessId();
         this.agreementId = request.getAgreementId() == null ? originalRequest.getAgreementId() : request.getAgreementId();
         this.participantId = request.getParticipantId() == null ? originalRequest.getParticipantId() : request.getParticipantId();
@@ -78,11 +76,12 @@ public class ServiceDataSource implements DataSource {
 
     @Override
     public StreamResult<Stream<Part>> openPartStream() {
-        String source = "{\"baseUrl\": \"" + baseUrl + "\", " +
+        String source = "{" +
                 "\"processId\": \"" + processId + "\", " +
                 "\"participantId\": \"" + participantId + "\", " +
                 "\"assetId\": \"" + assetId + "\", " +
-                "\"agreementId\": \"" + agreementId + "}";
+                "\"agreementId\": \"" + agreementId +
+                "}";
         String credentialsString;
         // if no url, go for default credentials
         if (credentialsServiceUrl == null || credentialsServiceUrl.isEmpty()) {
@@ -97,7 +96,7 @@ public class ServiceDataSource implements DataSource {
 
     private String requestCredentials(String requestBody) {
         var request = new okhttp3.Request.Builder().url(credentialsServiceUrl)
-                .header(credentialServiceApiKeyHeader, credentialServiceApiKeyValue)
+                .header(credentialServiceApiKey, credentialServiceApiCode)
                 .post(RequestBody.create(requestBody.getBytes(), MediaType.get("application/json")));
         try (var response = httpClient.execute(request.build())) {
             if (response.isSuccessful()) {
