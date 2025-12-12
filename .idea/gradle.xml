@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/commons" />
             <option value="$PROJECT_DIR$/consumers" />
-            <option value="$PROJECT_DIR$/consumers/climate-service" />
             <option value="$PROJECT_DIR$/consumers/consumer" />
             <option value="$PROJECT_DIR$/consumers/consumer-base" />
             <option value="$PROJECT_DIR$/consumers/search-service" />
@@ -26,6 +25,7 @@
             <option value="$PROJECT_DIR$/providers/policy/policy-evaluation" />
             <option value="$PROJECT_DIR$/providers/provider" />
             <option value="$PROJECT_DIR$/providers/provider-base" />
+            <option value="$PROJECT_DIR$/providers/provider-climate" />
             <option value="$PROJECT_DIR$/providers/provider-ebird" />
             <option value="$PROJECT_DIR$/providers/provider-mastral" />
             <option value="$PROJECT_DIR$/system-tests" />

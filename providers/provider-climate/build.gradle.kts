@@ -23,8 +23,9 @@ dependencies {
     implementation(libs.edc.boot)
     implementation(libs.edc.http)
 
-    runtimeOnly(project(":consumers:consumer"))
+    runtimeOnly(project(":providers:provider"))
 }
+
 application {
     mainClass.set("$group.boot.system.runtime.BaseRuntime")
 }
@@ -34,6 +35,6 @@ var distZip = tasks.getByName("distZip")
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("climate-service.jar")
+    archiveFileName.set("provider-climate.jar")
     dependsOn(distTar, distZip)
 }
