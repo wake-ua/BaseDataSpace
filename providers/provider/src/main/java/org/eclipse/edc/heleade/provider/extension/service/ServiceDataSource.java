@@ -21,6 +21,8 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.InputStreamDataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
 import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.spi.EdcException;
+import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 
 import java.io.ByteArrayInputStream;
@@ -30,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
 /**
@@ -40,6 +43,7 @@ import static java.lang.String.format;
 public class ServiceDataSource implements DataSource {
 
     private final EdcHttpClient httpClient;
+    private final Monitor monitor;
     private final String credentialsServiceUrl;
     private final String credentialServiceApiKey;
     private final String credentialServiceApiCode;
@@ -50,28 +54,27 @@ public class ServiceDataSource implements DataSource {
     private final String processId;
 
     /**
-     * Constructs a ServiceDataSource instance for managing data flow requests with associated credentials and metadata.
+     * Constructs a ServiceDataSource for managing service-based data flow operations.
      *
-     * @param httpClient the HTTP client used for service communication
-     * @param request the initial data flow start message containing the request details
-     * @param credentialsServiceUrl the URL of the credential service
-     * @param credentialServiceApiKey the API key header for authentication
-     * @param credentialServiceApiCode the API key value for authentication
-     * @param defaultCredentials the default credentials used for the data source
-     * @param originalRequest the original data flow start message containing fallback metadata
+     * @param httpClient the HTTP client for sending service requests and handling responses
+     * @param request the data flow start message containing source data and metadata
+     * @param monitor the monitoring instance for logging and diagnostics
+     * @param defaultCredentials the fallback credentials to use if none are specified
+     * @param originalRequest the original data flow start message for retrieving fallback information
      */
-    public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request,
-                             String credentialsServiceUrl, String credentialServiceApiKey, String credentialServiceApiCode,
+    public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request, Monitor monitor,
                              String defaultCredentials, DataFlowStartMessage originalRequest) {
         this.httpClient = httpClient;
-        this.credentialsServiceUrl = credentialsServiceUrl;
-        this.credentialServiceApiKey = credentialServiceApiKey;
-        this.credentialServiceApiCode = credentialServiceApiCode;
+        DataAddress dataAddress = request.getSourceDataAddress();
+        this.credentialsServiceUrl = dataAddress.getStringProperty(EDC_NAMESPACE + "baseUrl", "");
+        this.credentialServiceApiKey =  dataAddress.getStringProperty(EDC_NAMESPACE + "authKey", "");
+        this.credentialServiceApiCode =  dataAddress.getStringProperty(EDC_NAMESPACE + "authCode", "");
         this.defaultCredentials = defaultCredentials;
         this.processId = request.getProcessId();
         this.agreementId = request.getAgreementId() == null ? originalRequest.getAgreementId() : request.getAgreementId();
         this.participantId = request.getParticipantId() == null ? originalRequest.getParticipantId() : request.getParticipantId();
         this.assetId = request.getAssetId() == null ? originalRequest.getAssetId() : request.getAssetId();
+        this.monitor = monitor;
     }
 
     @Override
@@ -88,6 +91,10 @@ public class ServiceDataSource implements DataSource {
             credentialsString = defaultCredentials;
         } else {
             credentialsString = requestCredentials(source);
+        }
+        if (credentialsString == null || credentialsString.isEmpty()) {
+            monitor.severe("Failed to build ServiceDataSource: No credentials received or no default credentials provided.");
+            return StreamResult.error("Failed to build ServiceDataSource: No credentials received or no default credentials provided.");
         }
         InputStream stream = new ByteArrayInputStream(credentialsString.getBytes(StandardCharsets.UTF_8));
         InputStreamDataSource part = new InputStreamDataSource("ServiceDataSource", stream);

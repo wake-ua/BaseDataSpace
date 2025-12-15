@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-import static org.eclipse.edc.heleade.provider.extension.service.ServiceDataPlaneExtension.SERVICE_TYPE;
+import static org.eclipse.edc.heleade.provider.extension.service.ServiceDataPlaneExtension.SERVICE_DATA_TYPE;
 
 /**
  * Factory for creating instances of ServiceDataSource for use within a data flow pipeline.
@@ -34,9 +34,6 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
 
     private final Monitor monitor;
     private final EdcHttpClient httpClient;
-    private final String credentialServiceUrl;
-    private final String credentialServiceApiKeyHeader;
-    private final String credentialServiceApiKeyValue;
     private final String defaultCredentials;
 
     private HashMap<String, DataFlowStartMessage> requestCache = new HashMap<>();
@@ -46,36 +43,26 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
      *
      * @param monitor the monitoring instance for logging and diagnostics
      * @param httpClient the HTTP client for service communication
-     * @param credentialServiceUrl the URL of the credential service
-     * @param credentialServiceApiKeyHeader the header name for the API key used for authentication
-     * @param credentialServiceApiKeyValue the value of the API key used for authentication
      * @param defaultCredentials the default credentials to be used if no service URL is provided
      */
     public ServiceDataSourceFactory(Monitor monitor, EdcHttpClient httpClient,
-                                    String credentialServiceUrl, String credentialServiceApiKeyHeader, String credentialServiceApiKeyValue,
                                     String defaultCredentials) {
         this.monitor = monitor;
-        this.credentialServiceUrl = credentialServiceUrl;
-        this.credentialServiceApiKeyHeader = credentialServiceApiKeyHeader;
-        this.credentialServiceApiKeyValue = credentialServiceApiKeyValue;
         this.defaultCredentials = defaultCredentials;
         this.httpClient = httpClient;
     }
 
     @Override
     public String supportedType() {
-        return SERVICE_TYPE;
+        return SERVICE_DATA_TYPE;
     }
 
     @Override
     public DataSource createSource(DataFlowStartMessage request) {
-        monitor.info("creating ServiceDataSource with url: " + credentialServiceUrl +
-                " for request processId: " + request.getProcessId() + ", " + defaultCredentials);
+        monitor.info("creating ServiceDataSource for request processId: " + request.getProcessId());
         DataFlowStartMessage originalRequest = requestCache.get(request.getProcessId());
         requestCache.remove(request.getProcessId());
-        return new ServiceDataSource(httpClient, request,
-                credentialServiceUrl, credentialServiceApiKeyHeader, credentialServiceApiKeyValue,
-                defaultCredentials, originalRequest);
+        return new ServiceDataSource(httpClient, request, monitor, defaultCredentials, originalRequest);
     }
 
     @Override

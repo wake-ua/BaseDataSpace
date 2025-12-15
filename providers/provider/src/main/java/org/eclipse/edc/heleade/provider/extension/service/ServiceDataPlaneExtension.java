@@ -19,6 +19,7 @@ import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
 
 
 /**
@@ -33,27 +34,24 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
      * This constant is utilized for registering and creating appropriate data source implementations
      * within the PipelineService, specifically ServiceDataSource.
      */
-    public static final String SERVICE_TYPE = "ServiceData";
+    public static final String SERVICE_DATA_TYPE = "ServiceData";
 
     @Inject
     PipelineService pipelineService;
 
-
     @Inject
     private EdcHttpClient httpClient;
 
+
+    @Inject
+    private DataAddressValidatorRegistry dataAddressValidatorRegistry;
+
     @Override
     public void initialize(ServiceExtensionContext context) {
-        String credentialServiceUrl = context.getConfig().getString("edc.heleade.service.dataservice.credentials.url", "");
-        String credentialServiceApiKey = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.key", "");
-        String credentialServiceApiCode = context.getConfig().getString("edc.heleade.service.dataservice.credentials.auth.code", "");
         String defaultCredentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials.default", "");
-        if (credentialServiceUrl.isEmpty() && defaultCredentials.isEmpty()) {
-            context.getMonitor().warning("One of edc.heleade.service.dataservice.credentials.url or edc.heleade.service.dataservice.credentials.default must be set to allow ServiceData transfers");
-        } else {
-            pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient,
-                    credentialServiceUrl, credentialServiceApiKey, credentialServiceApiCode,
-                    defaultCredentials));
-        }
+        pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient, defaultCredentials));
+
+        var validator = new ServiceDataDataAddressValidator();
+        dataAddressValidatorRegistry.registerSourceValidator(SERVICE_DATA_TYPE, validator);
     }
 }

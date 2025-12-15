@@ -76,6 +76,11 @@ public class NegotiationCommon {
                 getFileContentFromRelativePath(assetFilePath), ASSET_ID);
     }
 
+    public static String createCbmAssetFromString(String assetContent) {
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_CBM_ASSETS_PATH,
+                assetContent, ASSET_ID);
+    }
+
     public static Object createCbmAssetExpect(String assetFilePath, int expectedStatus) {
         return postExpect(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_CBM_ASSETS_PATH,
                 getFileContentFromRelativePath(assetFilePath), expectedStatus);

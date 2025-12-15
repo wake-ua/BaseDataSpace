@@ -7,8 +7,8 @@
   "contractPolicyId": "openPolicy",
   "assetsSelector": [{
     "@type": "CriterionDto",
-    "operandLeft": "https://w3id.org/edc/v0.0.1/ns/id",
+    "operandLeft": "http://purl.org/dc/terms/type",
     "operator": "=",
-    "operandRight": "assetIdCbmService"
+    "operandRight": "Service"
   }]
 }
