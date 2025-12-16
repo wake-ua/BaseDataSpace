@@ -110,7 +110,7 @@
 			"name": "Create Asset Base Provider",
 			"item": [
 				{
-					"name": "Kit Espadio de Datos",
+					"name": "Kit Espacio de Datos",
 					"item": [
 						{
 							"name": "Create Asset csv CBM Idearium",
@@ -134,7 +134,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@id\": \"csv_dataset_ES521006_2015\",\n  \"@type\": \"dcat:Dataset\",\n  \"dcat:inSeries\" : \"IDRM-SNTL-ES521006\",\n  \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural de las lagunas de La Mata y Torrevieja\",\n  \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural de las Lagunas de La Mata y Torrevieja. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"CEDEX\", \"NDWI\", \"MNDWI\"],\n  \"contenttype\": \"text/csv\",\n  \"dct:type\": \"Dataset\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:accrualPeriodicity\": \"annual\",\n  \"dcat:temporalResolution\": \"P1D\",\n  \"dct:temporal\": {\n    \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\",\n    \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\"\n  },\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.9172 38.0777, -0.9001 38.0777, -0.9001 38.0582, -0.9172 38.0582, -0.9172 38.0777))\",\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/analisis_indices_torrevieja_2025.csv\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": null,\n      \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",\n        \"cbm:hasField\": [\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aoi_id\",\n            \"dct:title\": \"Identificador del área de interés\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Identificador único del área de interés (laguna).\",\n            \"cbm:sampleValue\": \"ES521006\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cell_id\",\n            \"dct:title\": \"Identificador de celda\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Identificador único de la celda dentro de la cuadrícula.\",\n            \"cbm:sampleValue\": \"10\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"timestamp\",\n            \"dct:title\": \"Fecha y hora\",\n            \"cbm:datatype\": \"dateTime\",\n            \"dct:description\": \"Fecha y hora de la imagen o dato analizado.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndvi\",\n            \"dct:title\": \"Índice NDVI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación normalizada.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndwi\",\n            \"dct:title\": \"Índice NDWI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de agua normalizada.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"mndwi\",\n            \"dct:title\": \"Índice MNDWI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice modificado de agua.\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cedex\",\n            \"dct:title\": \"Índice CEDEX\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice específico CEDEX para análisis ambiental.\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndsi\",\n            \"dct:title\": \"Índice NDSI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de la nieve.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ratio_swir_nir\",\n            \"dct:title\": \"Ratio SWIR/NIR\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Relación entre bandas SWIR y NIR.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndmi\",\n            \"dct:title\": \"Índice NDMI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de humedad del dosel normalizado.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aweish\",\n            \"dct:title\": \"Índice AWEIsh\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice mejorado de agua para humedales (AWEIsh).\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cigreen\",\n            \"dct:title\": \"Índice CIGreen\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación con banda verde.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndre\",\n            \"dct:title\": \"Índice NDRE\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada en banda roja y NIR.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndti\",\n            \"dct:title\": \"Índice NDTI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de la textura.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"salinity_index\",\n            \"dct:title\": \"Índice de salinidad\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Indicador relacionado con la salinidad del agua o suelo.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndci\",\n            \"dct:title\": \"Índice NDCI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de clorofila.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ci_re\",\n            \"dct:title\": \"Índice CI_RE\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación basado en reflectancia roja.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"Latitude\",\n            \"dct:title\": \"Latitud\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Coordenada geográfica de latitud en grados decimales.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"Longitude\",\n            \"dct:title\": \"Longitud\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Coordenada geográfica de longitud en grados decimales.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"epsg\",\n            \"dct:title\": \"EPSG\",\n            \"cbm:datatype\": \"integer\",\n            \"dct:description\": \"Código EPSG del sistema de referencia espacial.\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aoi_name\",\n            \"dct:title\": \"Nombre del área de interés\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Nombre común del área de interés (laguna).\",\n            \"cbm:sampleValue\": \"\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"folder\",\n            \"dct:title\": \"Carpeta de origen\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Nombre de la imagen de la que provienen los datos.\",\n            \"cbm:sampleValue\": \"\"\n          }\n        ]\n      }\n    }\n  ],\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
+									"raw": "{\n  \"@id\": \"csv_dataset_ES521006_2015\",\n  \"@type\": \"dcat:Dataset\",\n  \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural de las lagunas de La Mata y Torrevieja (2015)\",\n  \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural de las Lagunas de La Mata y Torrevieja. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"CEDEX\", \"NDWI\", \"MNDWI\"],\n  \"contenttype\": \"text/csv\",\n  \"dct:type\": \"Dataset\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:accrualPeriodicity\": \"annual\",\n  \"dcat:temporalResolution\": \"P1D\",\n  \"dct:temporal\": {\n    \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\",\n    \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\"\n  },\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.769833 38.067287, -0.635423 38.067287, -0.635423 37.952159, -0.769833 37.952159, -0.769833 38.067287))\",\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/analisis_indices_torrevieja_2015.csv\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": 2761618,\n      \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",\n        \"cbm:hasField\": [\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aoi_id\",\n            \"dct:title\": \"Identificador del área de interés\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Identificador único del área de interés (laguna).\",\n            \"cbm:sampleValue\": \"ES521006\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cell_id\",\n            \"dct:title\": \"Identificador de celda\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Identificador único de la celda dentro de la cuadrícula.\",\n            \"cbm:sampleValue\": \"10\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"timestamp\",\n            \"dct:title\": \"Fecha y hora\",\n            \"cbm:datatype\": \"dateTime\",\n            \"dct:description\": \"Fecha y hora de la imagen o dato analizado.\",\n            \"cbm:sampleValue\": \"2015-07-06T10:50:16Z\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndvi\",\n            \"dct:title\": \"Índice NDVI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación normalizada.\",\n            \"cbm:sampleValue\": \"0,12305422\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndwi\",\n            \"dct:title\": \"Índice NDWI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de agua normalizada.\",\n            \"cbm:sampleValue\": \"-0,19679184\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"mndwi\",\n            \"dct:title\": \"Índice MNDWI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice modificado de agua.\",\n            \"cbm:sampleValue\": \"-0,19679184\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cedex\",\n            \"dct:title\": \"Índice CEDEX\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice específico CEDEX para análisis ambiental.\",\n            \"cbm:sampleValue\": \"-0,0859602\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndsi\",\n            \"dct:title\": \"Índice NDSI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de la nieve.\",\n            \"cbm:sampleValue\": \"-0,2685381\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ratio_swir_nir\",\n            \"dct:title\": \"Ratio SWIR/NIR\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Relación entre bandas SWIR y NIR.\",\n            \"cbm:sampleValue\": \"1,16801\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndmi\",\n            \"dct:title\": \"Índice NDMI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de humedad del dosel normalizado.\",\n            \"cbm:sampleValue\": \"-0,0759602\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aweish\",\n            \"dct:title\": \"Índice AWEIsh\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice mejorado de agua para humedales (AWEIsh).\",\n            \"cbm:sampleValue\": \"-0,26639273\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"cigreen\",\n            \"dct:title\": \"Índice CIGreen\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación con banda verde.\",\n            \"cbm:sampleValue\": \"0,49938032\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndre\",\n            \"dct:title\": \"Índice NDRE\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada en banda roja y NIR.\",\n            \"cbm:sampleValue\": \"0,0635949\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndti\",\n            \"dct:title\": \"Índice NDTI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de la textura.\",\n            \"cbm:sampleValue\": \"0,07565519\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"salinity_index\",\n            \"dct:title\": \"Índice de salinidad\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Indicador relacionado con la salinidad del agua o suelo.\",\n            \"cbm:sampleValue\": \"0,0759602\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ndci\",\n            \"dct:title\": \"Índice NDCI\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de diferencia normalizada de clorofila.\",\n            \"cbm:sampleValue\": \"0,06010487\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"ci_re\",\n            \"dct:title\": \"Índice CI_RE\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Índice de vegetación basado en reflectancia roja.\",\n            \"cbm:sampleValue\": \"0,13885115\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"Latitude\",\n            \"dct:title\": \"Latitud\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Coordenada geográfica de latitud en grados decimales.\",\n            \"cbm:sampleValue\": \"37,95690968\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"Longitude\",\n            \"dct:title\": \"Longitud\",\n            \"cbm:datatype\": \"float\",\n            \"dct:description\": \"Coordenada geográfica de longitud en grados decimales.\",\n            \"cbm:sampleValue\": \"-0,76692115\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"epsg\",\n            \"dct:title\": \"EPSG\",\n            \"cbm:datatype\": \"integer\",\n            \"dct:description\": \"Código EPSG del sistema de referencia espacial.\",\n            \"cbm:sampleValue\": \"4326\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"aoi_name\",\n            \"dct:title\": \"Nombre del área de interés\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Nombre común del área de interés (laguna).\",\n            \"cbm:sampleValue\": \"parque natural de las lagunas de la mata y torrevieja\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"schema:name\": \"folder\",\n            \"dct:title\": \"Carpeta de origen\",\n            \"cbm:datatype\": \"string\",\n            \"dct:description\": \"Nombre de la imagen de la que provienen los datos.\",\n            \"cbm:sampleValue\": \"S2A_MSIL2A_20150706T105016_N0500_R051_T30SXH_20231010T143709\"\n          }\n        ]\n      }\n    }\n  ],\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -178,7 +178,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@id\": \"geojson_dataset_ES521006\",\n  \"@type\": \"dcat:Dataset\",\n  \"dct:title\": \"Cuadrícula base para el Parque Natural de las lagunas de La Mata y Torrevieja en formato GeoJSON\",\n  \"dct:description\": \"Es una cuadrícula regular de 500 m por 500 m que cubre el espacio de los dos humedales que se encuentran en Torrevieja. Esta se usa para el cálculo de los diferentes índices en cada celda.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"GEOJSON\"],\n  \"contenttype\": \"application/geo+json\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.9172 38.0777, -0.9001 38.0777, -0.9001 38.0582, -0.9172 38.0582, -0.9172 38.0777))\",\n  \"dct:type\": \"Dataset\",\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/cuadricula_base_torrevieja.geojson\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": null,\n      \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",\n        \"cbm:hasField\": [\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"FID\",\n                \"dct:title\": \"Feature ID\",\n                \"dct:description\": \"Identificador interno de la entidad.\",\n                \"cbm:datatype\": \"integer\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Id\",\n                \"dct:title\": \"Identificador único\",\n                \"dct:description\": \"Identificador único para cada celda de la cuadrícula.\",\n                \"cbm:datatype\": \"string\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Longitude\",\n                \"dct:title\": \"Longitud\",\n                \"dct:description\": \"Coordenada de longitud de la celda.\",\n                \"cbm:datatype\": \"decimal\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Latitude\",\n                \"dct:title\": \"Latitud\",\n                \"dct:description\": \"Coordenada de latitud de la celda.\",\n                \"cbm:datatype\": \"decimal\"\n            }\n        ]\n      }\n    }\n   ],\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
+									"raw": "{\n  \"@id\": \"geojson_dataset_ES521006\",\n  \"@type\": \"dcat:Dataset\",\n  \"dct:title\": \"Cuadrícula base para el Parque Natural de las lagunas de La Mata y Torrevieja en formato GeoJSON\",\n  \"dct:description\": \"Es una cuadrícula regular de 500 m por 500 m que cubre el espacio de los dos humedales que se encuentran en Torrevieja. Esta se usa para el cálculo de los diferentes índices en cada celda.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"GEOJSON\"],\n  \"contenttype\": \"application/geo+json\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.769833 38.067287, -0.635423 38.067287, -0.635423 37.952159, -0.769833 37.952159, -0.769833 38.067287))\",\n  \"dct:type\": \"Dataset\",\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/cuadricula_base_torrevieja.geojson\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": 235562,\n      \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",\n        \"cbm:hasField\": [\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"FID\",\n                \"dct:title\": \"Feature ID\",\n                \"dct:description\": \"Identificador interno de la entidad.\",\n                \"cbm:datatype\": \"integer\",\n                \"cbm:sampleValue\": \"1\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Id\",\n                \"dct:title\": \"Identificador único\",\n                \"dct:description\": \"Identificador único para cada celda de la cuadrícula.\",\n                \"cbm:datatype\": \"string\",\n                \"cbm:sampleValue\": \"10\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Longitude\",\n                \"dct:title\": \"Longitud\",\n                \"dct:description\": \"Coordenada de longitud de la celda.\",\n                \"cbm:datatype\": \"decimal\",\n                \"cbm:sampleValue\": \"-0,76692115\"\n            },\n            {\n                \"@type\": \"cbm:Field\",\n                \"schema:name\": \"Latitude\",\n                \"dct:title\": \"Latitud\",\n                \"dct:description\": \"Coordenada de latitud de la celda.\",\n                \"cbm:datatype\": \"decimal\",\n                \"cbm:sampleValue\": \"37,95690968\"\n            }\n        ]\n      }\n    }\n   ],\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -222,7 +222,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@id\": \"png_dataset_ES521006\",\n  \"@type\": \"dcat:Dataset\",\n  \"dct:title\": \"Imagen PNG con cuadrícula pintada para el Parque Natural de las lagunas de La Mata y Torrevieja\",\n  \"dct:description\": \"Imagen PNG que muestra las dos lagunas completas con la cuadrícula de 500 m pintada encima. Diseñada para facilitar la interpretación visual a personal sin formación técnica.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"IMAGE\", \"PNG\"],\n  \"contenttype\": \"image/png\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.9172 38.0777, -0.9001 38.0777, -0.9001 38.0582, -0.9172 38.0582, -0.9172 38.0777))\",\n  \"dct:type\": \"Dataset\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/imagen_laguna_cuadricula.png\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": null\n    }\n  ],\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
+									"raw": "{\n  \"@id\": \"png_dataset_ES521006\",\n  \"@type\": \"dcat:Dataset\",\n  \"dct:title\": \"Imagen PNG con cuadrícula pintada para el Parque Natural de las lagunas de La Mata y Torrevieja\",\n  \"dct:description\": \"Imagen PNG que muestra las dos lagunas completas con la cuadrícula de 500 m pintada encima. Diseñada para facilitar la interpretación visual a personal sin formación técnica.\",\n  \"dcat:keyword\": [\"WETLANDS\", \"TORREVIEJA\", \"LA MATA\", \"GRID\", \"IMAGE\", \"PNG\"],\n  \"contenttype\": \"image/png\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dct:spatial\": \"POLYGON ((-0.769833 38.067287, -0.635423 38.067287, -0.635423 37.952159, -0.769833 37.952159, -0.769833 38.067287))\",\n  \"dct:type\": \"Dataset\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"dcat:accessURL\": \"https://example.org/data/imagen_laguna_cuadricula.png\",\n      \"proxyPath\": \"false\",\n      \"dcat:byteSize\": 180996\n    }\n  ],\n  \"dct:accessRights\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"@context\": {\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"schema\": \"https://schema.org/\",\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  }\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -251,6 +251,521 @@
 								"header": []
 							},
 							"response": []
+						}
+					]
+				},
+				{
+					"name": "Service Provider Extension",
+					"item": [
+						{
+							"name": "Create Asset Service",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetIdService\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:type\": \"Service\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"ServiceData\",\n    \"baseUrl\": \"http://localhost:4001/credentials\",\n    \"authKey\": \"x-credstoken\",\n    \"authCode\": \"authCodeCredentials\"\n  }]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"assets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Asset Service CBM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\n{\n\t\"@id\": \"assetIdServiceCbm\",\n\t\"@type\": \"dcat:Dataset\",\n    \"dct:type\": \"Service\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"ServiceData\"\n\t\t\t},\n            \"dcat:accessURL\": \"http://localhost:4001/credentials\",\n            \"authKey\": \"x-credstoken\",\n            \"authCode\": \"authCodeCredentials\"\n\t\t}],\n\t\"dct:title\": \"Service CBM\",\n\t\"dct:description\": \"this is a service created through the CBM endpoint\",\n    \"dcat:keyword\": [\"CBM\", \"SERVICE\"],\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"assets-cbm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Asset Service",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets/{{ASSET_ID}}",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"assets",
+										"{{ASSET_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Provider Catalog CBM",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+											"    if (Array.isArray(dcat_dataset)) {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+											"    } else {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog-cbm/request-cbm",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"catalog-cbm",
+										"request-cbm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Negotiate Contract",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Negotiate Contract Docker",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Contract Negotiation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations",
+										"{{CONTRACT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Start Transfer Service PUSH",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://localhost:4001/api/consumer/store\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"transferprocesses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Start Transfer Service PUSH Docker",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"transferprocesses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Credentials Util",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"participantId\": \"provider-base\"\n}\n"
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:4001/credentials",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "4001",
+									"path": [
+										"credentials"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -1420,14 +1935,6 @@
 								"request-cbm"
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": []
 					},
 					"response": []
 				}
@@ -3304,541 +3811,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Service Provider",
-			"item": [
-				{
-					"name": "Create Asset Service",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetIdService\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:type\": \"Service\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"ServiceData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{SERVICE_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{SERVICE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Asset Dataset",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetIdDataset\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:type\": \"Dataset\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{SERVICE_MANAGEMENT_PORT}}/management/v3/assets",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{SERVICE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Asset Service",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{SERVICE_MANAGEMENT_PORT}}/management/v3/assets/{{ASSET_ID}}",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{SERVICE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets",
-								"{{ASSET_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Policy",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"aPolicy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{SERVICE_MANAGEMENT_PORT}}/management/v3/policydefinitions",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{SERVICE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"policydefinitions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Contract Definition",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"aPolicy\",\n  \"contractPolicyId\": \"aPolicy\",\n  \"assetsSelector\": []\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{SERVICE_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{SERVICE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractdefinitions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Service Provider Catalog",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
-									"    if (Array.isArray(dcat_dataset)) {",
-									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
-									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
-									"    } else {",
-									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
-									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
-									"    }",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "managementApiKeyConsumerBase",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "x-api-key",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{SERVICE_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"catalog",
-								"request"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Negotiate Contract",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "managementApiKeyConsumerBase",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "x-api-key",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{SERVICE_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-service\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractnegotiations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Check Contract Negotiation",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "managementApiKeyConsumerBase",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "x-api-key",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractnegotiations",
-								"{{CONTRACT_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Start Transfer Service",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "managementApiKeyConsumerBase",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "x-api-key",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-service\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://localhost:4001/api/consumer/store\"\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"transferprocesses"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Asset Service",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{SERVICE_MANAGEMENT_PORT}}/management/v3/assets/{{ASSET_ID}}",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{SERVICE_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"assets",
-								"{{ASSET_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Credentials Util",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"participantId\": \"provider-base\"\n}\n"
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:4001/credentials",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "4001",
-							"path": [
-								"credentials"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "apikey",
-				"apikey": [
-					{
-						"key": "value",
-						"value": "managementApiKeyProviderService",
-						"type": "string"
-					},
-					{
-						"key": "key",
-						"value": "x-api-key",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"requests": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"requests": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
 		}
 	],
 	"event": [
@@ -3911,11 +3883,11 @@
 			"value": ""
 		},
 		{
-			"key": "SERVICE_MANAGEMENT_PORT",
+			"key": "CLIMATE_SERVICE_MANAGEMENT_PORT",
 			"value": ""
 		},
 		{
-			"key": "SERVICE_PROTOCOL_PORT",
+			"key": "CLIMATE_SERVICE_PROTOCOL_PORT",
 			"value": ""
 		}
 	]

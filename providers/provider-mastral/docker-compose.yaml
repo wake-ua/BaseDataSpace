@@ -1,0 +1,16 @@
+services:
+  provider-mastral:
+    container_name: provider-mastral
+    ports:
+      - "18191:18191"
+      - "18193:18193"
+      - "18194:18194"
+    build: .
+    restart: on-failure:5
+    networks:
+      - base-ds-network
+
+networks:
+  base-ds-network:
+    external: true
+

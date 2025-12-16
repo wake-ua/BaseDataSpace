@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.service.extension;
+package org.eclipse.edc.heleade.provider.extension.service;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -21,6 +21,8 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.InputStreamDataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
 import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.spi.EdcException;
+import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 
 import java.io.ByteArrayInputStream;
@@ -30,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
 /**
@@ -40,55 +43,58 @@ import static java.lang.String.format;
 public class ServiceDataSource implements DataSource {
 
     private final EdcHttpClient httpClient;
+    private final Monitor monitor;
     private final String credentialsServiceUrl;
-    private final String credentialServiceApiKeyHeader;
-    private final String credentialServiceApiKeyValue;
+    private final String credentialServiceApiKey;
+    private final String credentialServiceApiCode;
     private final String defaultCredentials;
-    private final String baseUrl;
     private final String participantId;
     private final String assetId;
     private final String agreementId;
     private final String processId;
 
     /**
-     * Constructs a ServiceDataSource instance for managing data flow requests with associated credentials and metadata.
+     * Constructs a ServiceDataSource for managing service-based data flow operations.
      *
-     * @param httpClient the HTTP client used for service communication
-     * @param request the initial data flow start message containing the request details
-     * @param credentialsServiceUrl the URL of the credential service
-     * @param credentialServiceApiKeyHeader the API key header for authentication
-     * @param credentialServiceApiKeyValue the API key value for authentication
-     * @param defaultCredentials the default credentials used for the data source
-     * @param originalRequest the original data flow start message containing fallback metadata
+     * @param httpClient the HTTP client for sending service requests and handling responses
+     * @param request the data flow start message containing source data and metadata
+     * @param monitor the monitoring instance for logging and diagnostics
+     * @param defaultCredentials the fallback credentials to use if none are specified
+     * @param originalRequest the original data flow start message for retrieving fallback information
      */
-    public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request,
-                             String credentialsServiceUrl, String credentialServiceApiKeyHeader, String credentialServiceApiKeyValue,
+    public ServiceDataSource(EdcHttpClient httpClient, DataFlowStartMessage request, Monitor monitor,
                              String defaultCredentials, DataFlowStartMessage originalRequest) {
         this.httpClient = httpClient;
-        this.credentialsServiceUrl = credentialsServiceUrl;
-        this.credentialServiceApiKeyHeader = credentialServiceApiKeyHeader;
-        this.credentialServiceApiKeyValue = credentialServiceApiKeyValue;
+        DataAddress dataAddress = request.getSourceDataAddress();
+        this.credentialsServiceUrl = dataAddress.getStringProperty(EDC_NAMESPACE + "baseUrl", "");
+        this.credentialServiceApiKey =  dataAddress.getStringProperty(EDC_NAMESPACE + "authKey", "");
+        this.credentialServiceApiCode =  dataAddress.getStringProperty(EDC_NAMESPACE + "authCode", "");
         this.defaultCredentials = defaultCredentials;
-        this.baseUrl = request.getSourceDataAddress().getStringProperty("baseUrl");
         this.processId = request.getProcessId();
         this.agreementId = request.getAgreementId() == null ? originalRequest.getAgreementId() : request.getAgreementId();
         this.participantId = request.getParticipantId() == null ? originalRequest.getParticipantId() : request.getParticipantId();
         this.assetId = request.getAssetId() == null ? originalRequest.getAssetId() : request.getAssetId();
+        this.monitor = monitor;
     }
 
     @Override
     public StreamResult<Stream<Part>> openPartStream() {
-        String source = "{\"baseUrl\": \"" + baseUrl + "\", " +
+        String source = "{" +
                 "\"processId\": \"" + processId + "\", " +
                 "\"participantId\": \"" + participantId + "\", " +
                 "\"assetId\": \"" + assetId + "\", " +
-                "\"agreementId\": \"" + agreementId + "}";
+                "\"agreementId\": \"" + agreementId +
+                "}";
         String credentialsString;
         // if no url, go for default credentials
         if (credentialsServiceUrl == null || credentialsServiceUrl.isEmpty()) {
             credentialsString = defaultCredentials;
         } else {
             credentialsString = requestCredentials(source);
+        }
+        if (credentialsString == null || credentialsString.isEmpty()) {
+            monitor.severe("Failed to build ServiceDataSource: No credentials received or no default credentials provided.");
+            return StreamResult.error("Failed to build ServiceDataSource: No credentials received or no default credentials provided.");
         }
         InputStream stream = new ByteArrayInputStream(credentialsString.getBytes(StandardCharsets.UTF_8));
         InputStreamDataSource part = new InputStreamDataSource("ServiceDataSource", stream);
@@ -97,7 +103,7 @@ public class ServiceDataSource implements DataSource {
 
     private String requestCredentials(String requestBody) {
         var request = new okhttp3.Request.Builder().url(credentialsServiceUrl)
-                .header(credentialServiceApiKeyHeader, credentialServiceApiKeyValue)
+                .header(credentialServiceApiKey, credentialServiceApiCode)
                 .post(RequestBody.create(requestBody.getBytes(), MediaType.get("application/json")));
         try (var response = httpClient.execute(request.build())) {
             if (response.isSuccessful()) {

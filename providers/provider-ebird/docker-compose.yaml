@@ -1,0 +1,44 @@
+services:
+  provider-ebird:
+    container_name: provider-ebird
+    ports:
+      - "17191:17191"
+      - "17193:17193"
+      - "17194:17194"
+    build: .
+    restart: on-failure:5
+    networks:
+      - base-ds-network
+
+  provider-ebird-init:
+    container_name: provider-ebird-init
+    build:
+      context: ${PROVIDER_EBIRD_INIT_ROOT}
+      dockerfile: Dockerfile
+    env_file:
+      - ${PROVIDER_EBIRD_INIT_ROOT}/.env
+    restart: "no"
+    volumes:
+      - ${SAMPLES_ROOT}/samples/provider-ebird:/app/samples/data
+    networks:
+      - base-ds-network
+
+  samples-server:
+    container_name: samples-server
+    build:
+      context: ${SAMPLES_ROOT}
+      dockerfile: Dockerfile
+    ports:
+      - "9099:80"
+    volumes:
+      - ${SAMPLES_ROOT}/samples:/usr/share/nginx/html/providers
+      - ${SAMPLES_ROOT}/providers.map:/etc/nginx/providers.map
+      - ${SAMPLES_ROOT}/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - base-ds-network
+
+
+networks:
+  base-ds-network:
+    external: true
+

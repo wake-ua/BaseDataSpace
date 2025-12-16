@@ -2,11 +2,11 @@
 -- PostgreSQL database
 --
 
-CREATE DATABASE edc_service WITH ENCODING = 'UTF8';
-\connect edc_service
+CREATE DATABASE edc_climate WITH ENCODING = 'UTF8';
+\connect edc_climate
 
 
-CREATE TABLE public.edc_asset (
+CREATE TABLE IF NOT EXISTS public.edc_asset (
     asset_id character varying NOT NULL,
     created_at bigint NOT NULL,
     properties json DEFAULT '{}'::json,
@@ -18,7 +18,7 @@ COMMENT ON COLUMN public.edc_asset.private_properties IS 'Asset private properti
 COMMENT ON COLUMN public.edc_asset.data_address IS 'Asset DataAddress serialized as JSON';
 
 
-CREATE TABLE public.edc_contract_agreement (
+CREATE TABLE IF NOT EXISTS public.edc_contract_agreement (
     agr_id character varying NOT NULL,
     provider_agent_id character varying,
     consumer_agent_id character varying,
@@ -30,7 +30,7 @@ CREATE TABLE public.edc_contract_agreement (
 );
 
 
-CREATE TABLE public.edc_contract_definitions (
+CREATE TABLE IF NOT EXISTS public.edc_contract_definitions (
     created_at bigint NOT NULL,
     contract_definition_id character varying NOT NULL,
     access_policy_id character varying NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE public.edc_contract_definitions (
 );
 
 
-CREATE TABLE public.edc_contract_negotiation (
+CREATE TABLE IF NOT EXISTS public.edc_contract_negotiation (
     id character varying NOT NULL,
     created_at bigint NOT NULL,
     updated_at bigint NOT NULL,
@@ -66,7 +66,7 @@ COMMENT ON COLUMN public.edc_contract_negotiation.contract_offers IS 'List<Contr
 COMMENT ON COLUMN public.edc_contract_negotiation.trace_context IS 'Map<String,String> serialized as JSON';
 
 
-CREATE TABLE public.edc_lease (
+CREATE TABLE IF NOT EXISTS public.edc_lease (
     leased_by character varying NOT NULL,
     leased_at bigint,
     lease_duration integer DEFAULT 60000 NOT NULL,
@@ -76,7 +76,7 @@ COMMENT ON COLUMN public.edc_lease.leased_at IS 'posix timestamp of lease';
 COMMENT ON COLUMN public.edc_lease.lease_duration IS 'duration of lease in milliseconds';
 
 
-CREATE TABLE public.edc_policydefinitions (
+CREATE TABLE IF NOT EXISTS public.edc_policydefinitions (
     policy_id character varying NOT NULL,
     created_at bigint NOT NULL,
     permissions json,
@@ -99,7 +99,7 @@ COMMENT ON COLUMN public.edc_policydefinitions.extensible_properties IS 'Java Ma
 COMMENT ON COLUMN public.edc_policydefinitions.policy_type IS 'Java PolicyType serialized as JSON';
 
 
-CREATE TABLE public.edc_transfer_process (
+CREATE TABLE IF NOT EXISTS public.edc_transfer_process (
     transferprocess_id character varying NOT NULL,
     type character varying NOT NULL,
     state integer NOT NULL,

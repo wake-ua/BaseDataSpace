@@ -23,9 +23,6 @@ dependencies {
     implementation(libs.edc.boot)
     implementation(libs.edc.http)
 
-    implementation(libs.edc.data.plane.spi)
-    implementation(libs.edc.data.plane.http)
-
     runtimeOnly(project(":providers:provider"))
 }
 
@@ -38,6 +35,6 @@ var distZip = tasks.getByName("distZip")
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("provider-service.jar")
+    archiveFileName.set("provider-climate.jar")
     dependsOn(distTar, distZip)
 }

@@ -1,0 +1,16 @@
+services:
+  provider-climate:
+    container_name: provider-climate
+    ports:
+      - "16191:16191"
+      - "16193:16193"
+      - "16194:16194"
+    build: .
+    restart: on-failure:5
+    networks:
+      - base-ds-network
+
+networks:
+  base-ds-network:
+    external: true
+

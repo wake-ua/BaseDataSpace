@@ -108,7 +108,7 @@
           "properties": {
             "@id": {
               "type": "string",
-              "enum": ["HttpData"]
+              "enum": ["HttpData", "ServiceData"]
             }
           }
         },
@@ -170,9 +170,15 @@
           "additionalProperties": false
         }
       },
+      "if": {
+        "properties": {
+          "http://purl.org/dc/terms/format": { "@id": {"const": "HttpData" }}
+        },
+        "required": []
+      },
+      "then": { "required": ["http://www.w3.org/ns/dcat#accessURL"] },
       "required": [
         "@type",
-        "http://www.w3.org/ns/dcat#accessURL",
         "http://purl.org/dc/terms/format"
       ],
       "additionalProperties": false

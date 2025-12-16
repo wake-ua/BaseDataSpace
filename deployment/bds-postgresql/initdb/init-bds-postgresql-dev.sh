@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-arr_variable=("ebird" "mastral" "provider-base")
+arr_variable=("climate" "ebird" "mastral" "provider-base")
 
 ## now loop through above array
 for i in "${arr_variable[@]}"

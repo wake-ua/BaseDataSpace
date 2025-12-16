@@ -162,7 +162,10 @@
         "@type": {
           "type": "string"
         },
-        "type": "string",
+        "type": {
+          "type": "string",
+          "enum": ["HttpData", "ServiceData"]
+        },
         "baseUrl": {
           "type": "string",
           "format": "uri"
@@ -181,9 +184,15 @@
           "type": "string"
         }
       },
+      "if": {
+        "properties": {
+          "type": { "const": "HttpData" }
+        },
+        "required": []
+      },
+      "then": { "required": ["baseUrl"] },
       "required": [
-        "type",
-        "baseUrl"
+        "type"
       ],
       "additionalProperties": false
     }
