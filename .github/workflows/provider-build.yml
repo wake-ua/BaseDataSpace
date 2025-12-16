@@ -1,0 +1,85 @@
+name: Build and Publish Provider Image (Main)
+
+on:
+  push:
+    branches:
+    - "main"
+    - "feature/deployment"
+    paths:
+      - 'providers/provider/src/**'
+      - 'providers/provider-base/Dockerfile'
+      - '.github/workflows/provider-build.yml'
+
+concurrency:
+  group: provider-main
+  cancel-in-progress: true
+
+jobs:
+  # ------------------------------
+  # 1. BUILD & PUSH PROVIDER DOCKER IMAGE
+  # ------------------------------
+  build-and-push-provider:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------- LOGIN GHCR --------
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # -------- GRADLE BUILD --------
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Build provider JAR
+        run: |
+          ./gradlew clean build
+          
+      # ---------------------------------
+
+      - name: Set dynamic tags for Provider
+        id: vars
+        run: |
+          IMAGE_BASE_PROVIDER="ghcr.io/wake-ua/provider-base"
+          DATE=$(date +%Y%m%d)
+          SHA_SHORT=$(echo "${GITHUB_SHA}" | cut -c1-7)
+
+          # Tags for provider image
+          echo "PROVIDER_LATEST=${IMAGE_BASE_PROVIDER}:latest" >> $GITHUB_OUTPUT
+          echo "PROVIDER_SHA=${IMAGE_BASE_PROVIDER}:${SHA_SHORT}" >> $GITHUB_OUTPUT
+          echo "PROVIDER_DATE=${IMAGE_BASE_PROVIDER}:${DATE}" >> $GITHUB_OUTPUT
+
+      # -------- DOCKER BUILD & PUSH --------
+      - name: Build Docker image for Provider
+        run: |
+          docker build \
+            -t ${{ steps.vars.outputs.PROVIDER_LATEST }} \
+            -t ${{ steps.vars.outputs.PROVIDER_SHA }} \
+            -t ${{ steps.vars.outputs.PROVIDER_DATE }} \
+            ./providers/provider-base
+
+      - name: Push Provider images
+        run: |
+          docker push ${{ steps.vars.outputs.PROVIDER_LATEST }}
+          docker push ${{ steps.vars.outputs.PROVIDER_SHA }}
+          docker push ${{ steps.vars.outputs.PROVIDER_DATE }}
+      # ---------------------------------
+
+      
