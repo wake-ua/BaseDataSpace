@@ -49,7 +49,7 @@ jobs:
 
       - name: Build provider JAR
         run: |
-          ./gradlew :providers:clean :providers:build
+          ./gradlew clean build
           
       # ---------------------------------
 
