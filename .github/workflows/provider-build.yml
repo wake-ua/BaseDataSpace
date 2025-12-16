@@ -53,7 +53,7 @@ jobs:
           
       # ---------------------------------
 
-      - name: Set dynamic tags for Federated Catalog
+      - name: Set dynamic tags for Provider
         id: vars
         run: |
           IMAGE_BASE_PROVIDER="ghcr.io/wake-ua/provider-base"
@@ -66,15 +66,15 @@ jobs:
           echo "PROVIDER_DATE=${IMAGE_BASE_PROVIDER}:${DATE}" >> $GITHUB_OUTPUT
 
       # -------- DOCKER BUILD & PUSH --------
-      - name: Build Docker image for Federated Catalog
+      - name: Build Docker image for Provider
         run: |
           docker build \
             -t ${{ steps.vars.outputs.PROVIDER_LATEST }} \
             -t ${{ steps.vars.outputs.PROVIDER_SHA }} \
             -t ${{ steps.vars.outputs.PROVIDER_DATE }} \
-            ./provider-base
+            ./providers/provider-base
 
-      - name: Push Federated Catalog images
+      - name: Push Provider images
         run: |
           docker push ${{ steps.vars.outputs.PROVIDER_LATEST }}
           docker push ${{ steps.vars.outputs.PROVIDER_SHA }}
