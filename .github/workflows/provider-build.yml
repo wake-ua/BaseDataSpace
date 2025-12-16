@@ -3,6 +3,7 @@ name: Build and Publish Provider Image (Main)
 on:
   push:
     branches:
+    - "main"
     - "feature/deployment"
     paths:
       - 'providers/provider/src/**'

@@ -3,6 +3,7 @@ name: Build and Publish Federated Catalog Image (Main)
 on:
   push:
     branches:
+    - "main"
     - "feature/deployment"
     paths:
       - 'federated-catalog/**'
