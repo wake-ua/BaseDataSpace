@@ -48,7 +48,7 @@ jobs:
 
       - name: Build federated catalog JAR
         run: |
-          ./gradlew clean build
+          ./gradlew :federated-catalog:clean :federated-catalog:build
           
       # ---------------------------------
 
@@ -79,5 +79,20 @@ jobs:
           docker push ${{ steps.vars.outputs.FC_SHA }}
           docker push ${{ steps.vars.outputs.FC_DATE }}
       # ---------------------------------
-
-      
+#  deploy-fc:
+#    runs-on: self-hosted   # Runner local
+#    needs: build-and-push-fc
+#
+#    steps:
+#      - name: Deploy backend FC
+#        run: |
+#          GITHUB_SHA=${GITHUB_SHA::7}
+#
+#          ssh -i ${{ secrets.DEPLOY_SSH_KEY }} gh_docker_deploy@${{ secrets.FC_WEB_HOST }} "
+#            export FC_IMAGE_TAG=${GITHUB_SHA} &&
+#
+#            docker pull ghcr.io/wake-ua/federated-catalog:${GITHUB_SHA} &&
+#            docker stack deploy -c /home/gh_docker_deploy/despliegue/docker-stack-catalog.yml federated-catalog
+#          "
+#
+#      
