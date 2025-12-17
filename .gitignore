@@ -49,6 +49,7 @@ tmp/
 
 # providers data
 providers/provider-idearium/datasets/*
+providers/provider-idearium/venv
 !providers/provider-idearium/datasets/.gitkeep
 
 # deployment
@@ -63,3 +64,4 @@ deployment/samples-server/samples/provider-ebird/*
 !deployment/samples-server/samples/provider-ebird/.gitkeep
 !deployment/provider-ebird-init/scripts/samples/data/.gitkeep
 
+providers/provider-idearium/scripts/__pycache__
