@@ -1,0 +1,1448 @@
+{
+	"info": {
+		"_postman_id": "75068ef6-c71a-4c24-9cf4-954b903a017b",
+		"name": "Provider - Ebird Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28863133",
+		"_collection_link": "https://warped-space-454507.postman.co/workspace/DATA-SPACES~c8539b4b-236f-4509-838f-e245a6de8f52/collection/28863133-75068ef6-c71a-4c24-9cf4-954b903a017b?action=share&source=collection_link&creator=28863133"
+	},
+	"item": [
+		{
+			"name": "Create Asset",
+			"item": [
+				{
+					"name": "Create Asset  CBM Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"@id\": \"asset-example\",\n    \"@type\": \"dcat:Dataset\",\n    \"dcat:distribution\": [\n        {\n            \"@type\": \"dcat:Distribution\",\n            \"dct:format\": {\"@id\": \"HttpData\"},\n            \"dcat:accessURL\": \"https://api.ebird.org/v2/ref/hotspot/ES-CM-AB\",\n            \"proxyPath\": \"true\",\n            \"authKey\": \"x-ebirdapitoken\",\n            \"authCode\": \"otpbcu933m6f\",\n            \"cbm:hasDataDictionary\": {\n                \"@type\": \"cbm:DataDictionary\",\n                \"cbm:hasField\": [\n                            {\n                                \"@type\": \"cbm:Field\",\n                                \"schema:name\": \"locationId\",\n                                \"dct:description\": \"Unique identifier for the location\",\n                                \"dct:title\": \"locationId\",\n                                \"cbm:sampleValue\": \"L2521366\",\n                                \"cbm:datatype\": \"string\"\n                            },\n                            {\n                                \"@type\": \"cbm:Field\",\n                                \"schema:name\": \"countryCode\",\n                                \"dct:description\": \"ISO country code\",\n                                \"dct:title\": \"countryCode\",\n                                \"cbm:sampleValue\": \"ES\",\n                                \"cbm:datatype\": \"string\"\n                            }]\n            }\n        }\n    ],\n    \"cbm:hasSample\": \"sample-asset-hotspots-in-albacete\",\n    \"dct:title\": \"hotspots-in-albacete\",\n    \"dct:description\": \"desc\",\n    \"edc:contenttype\": \"application/json\",\n    \"dct:modified\": \"2025-12-11T09:50:25Z\",\n    \"dct:issued\": \"2025-12-11T09:50:25Z\",\n    \"dct:type\": \"Dataset\",\n    \"dct:accrualPeriodicity\": \"never\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n        \"dspace\": \"https://w3id.org/dspace/v0.8/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset  Sample",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"@id\": \"sample-asset-hotspots-in-bizkaia-2\",\n    \"@type\": \"Asset\",\n    \"properties\": {\n        \"cbm:isSampleOf\": \"asset-hotspots-in-bizkaia\",\n        \"dct:issued\": \"2025-12-11T09:50:29+00:00\",\n        \"dct:type\": \"Dataset\",\n        \"dct:modified\": \"2025-12-11T09:50:29+00:00\",\n        \"cbm:hasDataDictionary\": {\n            \"@type\": \"cbm:DataDictionary\",\n            \"cbm:hasField\": [\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"locationId\",\n                    \"dct:description\": \"Unique identifier for the location\",\n                    \"dct:title\": \"locationId\",\n                    \"cbm:sampleValue\": \"L2521366\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"countryCode\",\n                    \"dct:description\": \"ISO country code\",\n                    \"dct:title\": \"countryCode\",\n                    \"cbm:sampleValue\": \"ES\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"subnational1Code\",\n                    \"dct:description\": \"First level subnational administrative division code\",\n                    \"dct:title\": \"subnational1Code\",\n                    \"cbm:sampleValue\": \"ES-PV\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"subnational2Code\",\n                    \"dct:description\": \"Second level subnational administrative division code\",\n                    \"dct:title\": \"subnational2Code\",\n                    \"cbm:sampleValue\": \"ES-PV-GP\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"latitude\",\n                    \"dct:description\": \"Geographical latitude of the location\",\n                    \"dct:title\": \"latitude\",\n                    \"cbm:sampleValue\": \"43.2809\",\n                    \"cbm:datatype\": \"number\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"longitude\",\n                    \"dct:description\": \"Geographical longitude of the location\",\n                    \"dct:title\": \"longitude\",\n                    \"cbm:sampleValue\": \"-1.78801\",\n                    \"cbm:datatype\": \"number\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"locationName\",\n                    \"dct:description\": \"Name of the location\",\n                    \"dct:title\": \"locationName\",\n                    \"cbm:sampleValue\": \"Aiako Harria PNat--Aiako Harriak\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"observationDateTime\",\n                    \"dct:description\": \"Date and time of the observation\",\n                    \"dct:title\": \"observationDateTime\",\n                    \"cbm:sampleValue\": \"2025-05-18 10:30\",\n                    \"cbm:datatype\": \"string\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"schema:name\": \"numSpeciesObserved\",\n                    \"dct:description\": \"Number of species observed at the location\",\n                    \"dct:title\": \"numSpeciesObserved\",\n                    \"cbm:sampleValue\": \"131\",\n                    \"cbm:datatype\": \"number\"\n                }\n            ]\n        },\n        \"dct:title\": \"hotspots-in-bizkaia\",\n        \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n        \"dct:description\": \"Get a list of hotspots in Bizkaia\",\n        \"contenttype\": \"application/json\",\n        \"schema:algorithm\": \"clustering\"\n    },\n    \"dataAddress\": {\n        \"@type\": \"DataAddress\",\n        \"proxyPath\": \"true\",\n        \"type\": \"HttpData\",\n        \"authCode\": \"APIKEY-PROVIDER-EBIRD\",\n        \"authKey\": \"x-api-key\",\n        \"baseUrl\": \"http://samples-server:80/samples/sample-asset-hotspots-in-bizkaia.csv\"\n    },\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Asset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets/{{ASSET_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets",
+								"{{ASSET_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Simple Contract Definition",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"simple-contract\",\n  \"accessPolicyId\": \"simple-policy\",\n  \"contractPolicyId\": \"simple-policy\",\n  \"assetsSelector\": []\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractdefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract Definition Policy Access",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"contract-3\",\r\n  \"accessPolicyId\": \"always-true\",\r\n  \"contractPolicyId\": \"policy_composed_0\",\r\n  \"assetsSelector\": [{\r\n    \"@type\": \"CriterionDto\",\r\n    \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\r\n    \"operator\": \"=\",\r\n    \"operandRight\": \"asset-example\"\r\n  }]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractdefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract Definition Location Policy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"contract-2\",\r\n  \"accessPolicyId\": \"location-policy\",\r\n  \"contractPolicyId\": \"location-policy\",\r\n  \"assetsSelector\": [{\r\n    \"@type\": \"CriterionDto\",\r\n    \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\r\n    \"operator\": \"=\",\r\n    \"operandRight\": \"assetId1\"\r\n  }]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractdefinitions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{API-KEY-PROVIDER}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Provider Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER-HTTP_PORT}}/api/health",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER-HTTP_PORT}}",
+							"path": [
+								"api",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transfer",
+			"item": [
+				{
+					"name": "Get Provider Catalog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+									"    if (Array.isArray(dcat_dataset)) {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+									"    } else {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"protocol\": \"dataspace-protocol-http\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider Catalog Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+									"    if (Array.isArray(dcat_dataset)) {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+									"    } else {",
+									"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+									"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"counterPartyAddress\": \"http://provider-ebird:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"protocol\": \"dataspace-protocol-http\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider CBM Catalog",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog-cbm/request-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog-cbm",
+								"request-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider CBM Catalog Docker",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-ebird:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog-cbm/request-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"catalog-cbm",
+								"request-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Contract",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations",
+								"{{CONTRACT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@type\": \"TransferRequestDto\",\r\n  \"connectorId\": \"provider-ebird\",\r\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\r\n  \"assetId\": \"{{ASSET_ID}}\",\r\n  \"protocol\": \"dataspace-protocol-http\",\r\n  \"transferType\": \"HttpData-PUSH\",\r\n  \"dataDestination\": {\r\n    \"type\": \"HttpData\",\r\n    \"baseUrl\": \"http://localhost:4000/api/consumer/store\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"transferprocesses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Transfer Docker",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@type\": \"TransferRequestDto\",\r\n  \"connectorId\": \"provider-ebird\",\r\n  \"counterPartyAddress\": \"http://provider-ebird:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\r\n  \"assetId\": \"{{ASSET_ID}}\",\r\n  \"protocol\": \"dataspace-protocol-http\",\r\n  \"transferType\": \"HttpData-PUSH\",\r\n  \"dataDestination\": {\r\n    \"type\": \"HttpData\",\r\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"transferprocesses"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{API-KEY-CONSUMER}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Policy",
+			"item": [
+				{
+					"name": "Permission - eq - entity_type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n   \"@type\": \"PolicyDefinition\",\r\n  \"@id\": \"policy-entity-type\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"leftOperand\": \"entity_type\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:eq\"\r\n          },\r\n          \"rightOperand\": \"public\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permission - eq - location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"policy-location\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"location\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:eq\"\r\n          },\r\n          \"rightOperand\": \"eu\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permission - eq - legal_name",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"legal-name-policy\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"legal_name\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:eq\"\r\n          },\r\n          \"rightOperand\": \"Universidad de Alicante\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permission - in - legal_name",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"legal-name-policy-in\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"legal_name\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:isPartOf\"\r\n          },\r\n          \"rightOperand\": \"Universidad de Alicante, Universidad Miguel Hernández, Universidad Politécnica de Valencia\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permission - in - ip_connector",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"ip-connector-policy-in\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"ip_connector\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:isPartOf\"\r\n          },\r\n          \"rightOperand\": \"219.208.53.217,219.208.53.219\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permission - eq - ip_connector",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"ip-connector-policy-eq\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"ip_connector\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:eq\"\r\n          },\r\n          \"rightOperand\": \"219.208.53.217\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permision - gt - evaluation_time",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"policy_evaluation_time_gt\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"policy_evaluation_time\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:gt\"\r\n          },\r\n          \"rightOperand\": \"2025-07-20T12:34:56Z\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permision - lt - evaluation_time",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"policy_evaluation_time_lt\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"policy_evaluation_time\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:lt\"\r\n          },\r\n          \"rightOperand\": \"2025-07-20T12:34:56Z\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "evaluation_time AND legal_name",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"policy_composed_and\",\r\n   \"@type\": \"PolicyDefinition\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n            \"and\": [\r\n                {\r\n                    \"leftOperand\": \"policy_evaluation_time\",\r\n                    \"operator\": {\r\n                        \"@id\": \"odrl:gt\"\r\n                    },\r\n                    \"rightOperand\": \"2025-09-20T12:34:56Z\"\r\n                },\r\n                {\r\n                    \"leftOperand\": \"lei_code\",\r\n                    \"operator\": {\r\n                        \"@id\": \"odrl:eq\"\r\n                    },\r\n                    \"rightOperand\": \"0202\"\r\n                },\r\n                {\r\n                    \"leftOperand\": \"num_employees\",\r\n                    \"operator\": {\r\n                        \"@id\": \"odrl:gt\"\r\n                    },\r\n                    \"rightOperand\": \"2000\"\r\n                }\r\n            ]\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "evaluation_time OR legal_name",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"policy_composed_or\",\r\n   \"@type\": \"PolicyDefinition\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n            \"or\": [\r\n                {\r\n                    \"leftOperand\": \"policy_evaluation_time\",\r\n                    \"operator\": {\r\n                        \"@id\": \"odrl:gt\"\r\n                    },\r\n                    \"rightOperand\": \"2025-09-20T12:34:56Z\"\r\n                },\r\n                {\r\n                    \"leftOperand\": \"lei_code\",\r\n                    \"operator\": {\r\n                        \"@id\": \"odrl:eq\"\r\n                    },\r\n                    \"rightOperand\": \"0202\"\r\n                },\r\n                {\r\n                    \"leftOperand\": \"num_employees\",\r\n                    \"operator\": {\r\n                        \"@id\": \"odrl:gt\"\r\n                    },\r\n                    \"rightOperand\": \"2000\"\r\n                }\r\n            ]\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Policy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"aPolicy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions/{{POLICY_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions",
+								"{{POLICY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Policy Evaluation Plan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"policyScope\": \"contract.negotiation\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3.1alpha/policydefinitions/policy_composed_0/evaluationplan",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3.1alpha",
+								"policydefinitions",
+								"policy_composed_0",
+								"evaluationplan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Policy Validation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@id\": \"policy-location\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@type\": \"Set\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"constraint\": {\r\n          \"leftOperand\": \"location\",\r\n          \"operator\": {\r\n            \"@id\": \"odrl:eq\"\r\n          },\r\n          \"rightOperand\": \"eu\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": []\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3.1alpha/policydefinitions/{{POLICY_ID}}/validate",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3.1alpha",
+								"policydefinitions",
+								"{{POLICY_ID}}",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Policy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"policy_composed_and\",\n   \"@type\": \"PolicyDefinition\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"constraint\": {\n            \"and\": [\n                {\n                    \"leftOperand\": \"policy_evaluation_time\",\n                    \"operator\": {\n                        \"@id\": \"odrl:gt\"\n                    },\n                    \"rightOperand\": \"2025-09-20T12:34:56Z\"\n                },\n                {\n                    \"leftOperand\": \"lei_code\",\n                    \"operator\": {\n                        \"@id\": \"odrl:eq\"\n                    },\n                    \"rightOperand\": \"0202\"\n                },\n                {\n                    \"leftOperand\": \"num_employees\",\n                    \"operator\": {\n                        \"@id\": \"odrl:gt\"\n                    },\n                    \"rightOperand\": \"2000\"\n                }\n            ]\n        }\n      }\n    ]\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions/{{POLICY_ID}}",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"policydefinitions",
+								"{{POLICY_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					},
+					{
+						"key": "value",
+						"value": "{{API-KEY-PROVIDER}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Negotiate Contract",
+			"item": [
+				{
+					"name": "Negociate Contract Advanced",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@type\": \"ContractRequest\",\r\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"protocol\": \"dataspace-protocol-http\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@id\":\"{{CONTRACT_OFFER_ID}}\",\r\n    \"@type\": \"Offer\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"target\": \"{{ASSET_ID}}\",\r\n        \"constraint\": {\r\n          \"leftOperand\": \"location\",\r\n          \"operator\": \"odrl:eq\",\r\n          \"rightOperand\": \"eu\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": [],\r\n    \"assigner\": \"provider-ebird\",\r\n    \"target\": \"{{ASSET_ID}}\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negociate Contract Advanced Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\": {\r\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n  },\r\n  \"@type\": \"ContractRequest\",\r\n  \"counterPartyAddress\": \"http://provider-ebird:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\r\n  \"protocol\": \"dataspace-protocol-http\",\r\n  \"policy\": {\r\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\r\n    \"@id\":\"{{CONTRACT_OFFER_ID}}\",\r\n    \"@type\": \"Offer\",\r\n    \"permission\": [\r\n      {\r\n        \"action\": \"use\",\r\n        \"target\": \"{{ASSET_ID}}\",\r\n        \"constraint\": {\r\n          \"@type\": \"AtomicConstraint\",\r\n          \"leftOperand\": \"location\",\r\n          \"operator\": \"eq\",\r\n          \"rightOperand\": \"eu\"\r\n        }\r\n      }\r\n    ],\r\n    \"prohibition\": [],\r\n    \"obligation\": [],\r\n    \"assigner\": \"provider-ebird\",\r\n    \"target\": \"{{ASSET_ID}}\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract Simple Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-ebird:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-ebird\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract Simple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-ebird\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract legal_name & time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\":\"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"target\": \"{{ASSET_ID}}\",\n        \"constraint\": {\n            \"and\": [\n                {\n                    \"leftOperand\": \"policy_evaluation_time\",\n                    \"operator\": {\n                        \"@id\": \"odrl:gt\"\n                    },\n                    \"rightOperand\": \"2025-09-20T12:34:56Z\"\n                },\n                {\n                    \"leftOperand\": \"lei_code\",\n                    \"operator\": {\n                        \"@id\": \"odrl:eq\"\n                    },\n                    \"rightOperand\": \"0202\"\n                },\n                {\n                    \"leftOperand\": \"num_employees\",\n                    \"operator\": {\n                        \"@id\": \"odrl:gt\"\n                    },\n                    \"rightOperand\": \"2000\"\n                }\n            ]\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": [],\n    \"assigner\": \"provider-ebird\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract legal_name or time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\":\"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"target\": \"{{ASSET_ID}}\",\n        \"constraint\": {\n            \"or\": [\n                {\n                    \"leftOperand\": \"policy_evaluation_time\",\n                    \"operator\": {\n                        \"@id\": \"odrl:gt\"\n                    },\n                    \"rightOperand\": \"2025-09-20T12:34:56Z\"\n                },\n                {\n                    \"leftOperand\": \"lei_code\",\n                    \"operator\": {\n                        \"@id\": \"odrl:eq\"\n                    },\n                    \"rightOperand\": \"0202\"\n                },\n                {\n                    \"leftOperand\": \"num_employees\",\n                    \"operator\": {\n                        \"@id\": \"odrl:gt\"\n                    },\n                    \"rightOperand\": \"2000\"\n                }\n            ]\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": [],\n    \"assigner\": \"provider-ebird\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					},
+					{
+						"key": "value",
+						"value": "{{API-KEY-CONSUMER}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "CONSUMER_HTTP_PORT",
+			"value": "29191"
+		},
+		{
+			"key": "FEDERATED_CATALOG_HTTP",
+			"value": "39191"
+		},
+		{
+			"key": "HOST_URL",
+			"value": "http://localhost"
+		},
+		{
+			"key": "PROVIDER_MANAGEMENT_PORT",
+			"value": "17193"
+		},
+		{
+			"key": "CONSUMER_MANAGEMENT_PORT",
+			"value": "29193"
+		},
+		{
+			"key": "PROVIDER_PROTOCOL_PORT",
+			"value": "17194"
+		},
+		{
+			"key": "FEDERATED_CATALOG_MANAGEMENT_PORT",
+			"value": "39193"
+		},
+		{
+			"key": "PROVIDER-HTTP_PORT",
+			"value": "17191"
+		},
+		{
+			"key": "AUTH-CODE",
+			"value": "otpbcu933m6f"
+		},
+		{
+			"key": "API-KEY-PROVIDER",
+			"value": "managementApiKeyProviderEbird"
+		},
+		{
+			"key": "API-KEY-CONSUMER",
+			"value": "managementApiKeyConsumerBase"
+		},
+		{
+			"key": "POLICY_ID",
+			"value": "location-policy"
+		},
+		{
+			"value": ""
+		}
+	]
+}
