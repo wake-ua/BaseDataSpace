@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.heleade.policy.extension.claims.checker;
 
+
 /**
  * Defines the contract for validating participant claims
  * within the policy evaluation process.
@@ -27,5 +28,6 @@ public interface ParticipantClaimChecker {
      * @param participantId the participant ID
      * @return true if the claim is valid
      */
-    boolean checkClaim(String claimKey, String claimValue, String participantId);
+    boolean checkClaim(String claimKey, Object claimValue, String participantId);
+
 }

@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.heleade.policy.extension.evaluation.entity;
 
-import org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext;
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.participant.spi.ParticipantAgentPolicyContext;
@@ -35,7 +34,7 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  * Extension responsible for initializing and registering policy-related functionality.
  * Binds specific constraint keys to relevant policy scopes and registers implementations
  * of atomic constraint rule functions for policy enforcement
- * Binds the entityType constraint key to the contract negotiation scope and catalog scope.
+ * Binds the entityType constraint key to the contract negotiation scope.
  * in a policy enforcement context.
  * The key for entity type.
  * must be used as left operand when declaring constraints.
@@ -45,11 +44,11 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  <pre>
    {
       "constraint": {
-      "leftOperand": "ENTITY_TYPE",
+      "leftOperand": "entity_type",
       "operator": "EQ",
       "rightOperand": "public"
     }
- }
+
   </pre>
  */
 public class EntityPolicyExtension implements ServiceExtension {
@@ -75,7 +74,7 @@ public class EntityPolicyExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
         monitor.info("Policy function entity type extension initialized");
-        registerFunctionAndBindTo(CatalogPolicyContext.class, CatalogPolicyContext.CATALOG_SCOPE, monitor);
+        //registerFunctionAndBindTo(CatalogPolicyContext.class, CatalogPolicyContext.CATALOG_SCOPE, monitor);
         registerFunctionAndBindTo(ContractNegotiationPolicyContext.class, ContractNegotiationPolicyContext.NEGOTIATION_SCOPE, monitor);
     }
 

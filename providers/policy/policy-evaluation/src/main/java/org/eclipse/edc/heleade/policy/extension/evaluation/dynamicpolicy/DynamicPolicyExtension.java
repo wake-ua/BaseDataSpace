@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.evaluation.location;
+package org.eclipse.edc.heleade.policy.extension.evaluation.dynamicpolicy;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
@@ -27,63 +27,43 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
-import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
-import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
+import java.util.Set;
 
-/**
- * Extension responsible for initializing and registering policy-related functionality.
- * Binds specific constraint keys to relevant policy scopes and registers implementations
- * of atomic constraint rule functions for policy enforcement
- * Key features:
- * Binds the location constraint key to the contract negotiation scope and catalog scope
- * in a policy enforcement context.
- * The key for location.
- * must be used as left operand when declaring constraints.
- * rightOperand can be a string.
- * * Example:
- *  *
- *  <pre>
- *  *   {
- *  *     "constraint": {
- *  *         "leftOperand": "location",
- *  *         "operator": "EQ",
- *  *         "rightOperand": "eu"
- *  *     }
- *  *  }
- *  * </pre>
- */
-public class LocationPolicyExtension implements ServiceExtension {
-    private static final String LOCATION_KEY = "location";
-    private static final String LOCATION_CONSTRAINT_KEY = EDC_NAMESPACE + LOCATION_KEY;
+import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
+
+public class DynamicPolicyExtension implements ServiceExtension {
+
+    static final String NAME = "Dynamic Policy Extension";
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
-    @Inject
-    private PolicyEngine policyEngine;
 
     @Inject
     FcParticipantClaimChecker fcParticipantClaimChecker;
 
+    @Inject
+    private PolicyEngine policyEngine;
+
     @Override
     public String name() {
-        return "Policy function location extension";
+        return NAME;
     }
-
 
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-        monitor.info("Policy function location extension initialized");
         registerFunctionAndBindTo(ContractNegotiationPolicyContext.class, ContractNegotiationPolicyContext.NEGOTIATION_SCOPE, monitor);
     }
 
     private <C extends ParticipantAgentPolicyContext> void registerFunctionAndBindTo(Class<C> contextClass, String scope, Monitor monitor) {
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, scope);
-        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, scope);
-        policyEngine.registerFunction(contextClass, Duty.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Prohibition.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
+        ruleBindingRegistry.dynamicBind((ruletype) -> Set.of(scope));
+        policyEngine.registerFunction(contextClass, Permission.class, new DynamicPolicyFunction<>(monitor, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Duty.class, new DynamicPolicyFunction<>(monitor, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Prohibition.class, new DynamicPolicyFunction<>(monitor, fcParticipantClaimChecker));
+
     }
 
-}
 
+
+}

@@ -22,6 +22,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  *  Implementation of {@link ParticipantClaimChecker} that validates participant claims
@@ -53,7 +54,7 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
      * @return {@code true} if the participant's claim matches the verified value, {@code false} otherwise or if an error occurs while retrieving the claims
      */
     @Override
-    public boolean checkClaim(String claimKey, String participantClaim, String participantId) {
+    public boolean checkClaim(String claimKey, Object participantClaim, String participantId) {
         try {
             String url = baseUrl + participantId;
             monitor.info("Checking participant node: " + participantId);
@@ -74,11 +75,12 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
 
             Map<String, Object> verifiedClaims = (Map<String, Object>) verifiedClaimsMap.get("claims");
             Object verifiedClaim = verifiedClaims.get(claimKey);
-            return verifiedClaim != null && participantClaim.equals(verifiedClaim.toString());
+            return Objects.equals(verifiedClaim, participantClaim);
         } catch (Exception e) {
             monitor.warning("Failed to fetch participant info: " + e.getMessage());
             return false;
         }
     }
+
 
 }

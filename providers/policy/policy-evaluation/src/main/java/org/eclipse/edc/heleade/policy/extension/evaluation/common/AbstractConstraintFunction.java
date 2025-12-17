@@ -21,7 +21,7 @@ import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.spi.monitor.Monitor;
 
-import java.util.Map;
+import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.getParticipantClaim;
 
 /**
  * Base class for implementing policy constraint functions that evaluate
@@ -64,34 +64,17 @@ public abstract class AbstractConstraintFunction<R extends Rule, C extends  Part
         var participantClaims = context.participantAgent().getClaims();
         var participantId = participantClaims.get("client_id").toString();
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> participantClaimsMap = (Map<String, Object>) participantClaims.get("claims");
-        if (participantClaimsMap == null) {
-            monitor.severe("No 'claims' map found in participant claims");
+        String participantClaimToVerify = getParticipantClaim(participantClaims, claimKey);
+
+        if (participantClaimToVerify == null) {
+            monitor.severe("Participant claim is null or is empty " + claimKey);
             return false;
         }
-
-        Object participantSelectedClaim = participantClaimsMap.get(claimKey);
-
-        if (participantSelectedClaim == null) {
-            monitor.severe("Claim for key: " + claimKey + " is null");
-            return false;
-        }
-
-
-        if (!(participantSelectedClaim instanceof String participantClaimToVerify)) {
-            monitor.severe("Claim for key: " + claimKey + " is not a string");
-            return false;
-        }
-
-        if (participantClaimToVerify.isBlank()) {
-            monitor.severe("Claim for key: " + claimKey + " is an empty string");
-        }
-
 
         boolean valid = participantClaimChecker.checkClaim(claimKey, participantClaimToVerify, participantId);
+
         if (!valid) {
-            monitor.severe("Claim is not valid " + claimKey);
+            monitor.severe("Claim does not match with participant registry participant " + claimKey);
             return false;
         }
 

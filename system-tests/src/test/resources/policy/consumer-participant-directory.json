@@ -3,8 +3,10 @@
     "id": "consumer",
      "claims": {
       "location": "eu",
-       "entity_type": "public",
-       "ip_connector": "219.208.53.219"
+      "entity_type": "public",
+      "ip_connector": "219.208.53.219",
+      "num_employees": "4000",
+      "lei_code": "340"
     },
     "url": "http://localhost:39194/protocol",
     "supportedProtocols": ["dataspace-protocol-http"],

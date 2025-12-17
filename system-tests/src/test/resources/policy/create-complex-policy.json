@@ -1,0 +1,41 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@id": "{{policy-id}}",
+  "@type": "PolicyDefinition",
+  "policy": {
+    "@context": "http://www.w3.org/ns/odrl.jsonld",
+    "@type": "Set",
+    "permission": [
+      {
+        "action": "use",
+        "constraint": {
+          "{{operand}}": [
+            {
+              "leftOperand": "policy_evaluation_time",
+              "operator": {
+                "@id": "odrl:gt"
+              },
+              "rightOperand": "{{right-operand-1}}"
+            },
+            {
+              "leftOperand": "lei_code",
+              "operator": {
+                "@id": "odrl:lt"
+              },
+              "rightOperand": "{{right-operand-2}}"
+            },
+            {
+              "leftOperand": "num_employees",
+              "operator": {
+                "@id": "odrl:gt"
+              },
+              "rightOperand": "{{right-operand-3}}"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

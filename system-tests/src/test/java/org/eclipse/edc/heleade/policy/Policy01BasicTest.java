@@ -23,22 +23,20 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.addNodeToDirectory;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.getEmbeddedFc;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.fetchCatalogDatasets;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.getContractNegotiationState;
-import static org.eclipse.edc.heleade.common.PolicyCommon.catalogContainsAssetId;
 import static org.eclipse.edc.heleade.common.PolicyCommon.checkPolicyById;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createAssetWithId;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createContractDefinitionWithParams;
+import static org.eclipse.edc.heleade.common.PolicyCommon.createPolicyComplex;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createPolicyWithParams;
 import static org.eclipse.edc.heleade.common.PolicyCommon.fetchDatasetFromCatalogWithId;
+import static org.eclipse.edc.heleade.common.PolicyCommon.negotiateContractComplex;
 import static org.eclipse.edc.heleade.common.PolicyCommon.negotiateContractWithParams;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getProvider;
@@ -57,10 +55,15 @@ public class Policy01BasicTest {
     private static final String ENTITY_TYPE_PRIVATE = "private";
     private static final String IPS_OK = "219.208.53.217,219.208.53.219";
     private static final String IPS_KO = "209.202.53.217,229.208.53.666";
+    private static final String N_EMPLOYEES_OK = "100";
+    private static final String N_EMPLOYEES_KO = "7000";
+    private static final String LEI_CODE_OK = "1000";
+    private static final String LEI_CODE_KO = "70";
+    private static final String INVALID_VALUE = "abc";
     private static final String LEFT_OPERAND_LOCATION = "location";
     private static final String LEFT_OPERAND_ENTITY_TYPE = "entity_type";
     private static final String LEFT_OPERAND_IP_CONNECTOR = "ip_connector";
-    private static final String LEFT_OPERAND_POLICY_EVALUATION_TIME  = "policy_evaluation_time";
+    private static final String LEFT_OPERAND_POLICY_EVALUATION_TIME = "policy_evaluation_time";
     private static final String POLICY_OPEN_ID = "always-true";
     private static final String POLICY_LOCATION_EU_ID = "policy-location-eu";
     private static final String POLICY_LOCATION_US_ID = "policy-location-us";
@@ -75,6 +78,11 @@ public class Policy01BasicTest {
     private static final String POLICY_TIME_CHECKER_LEQ_ID = "policy-time-checker-leq";
     private static final String POLICY_TIME_CHECKER_GEQ_ID = "policy-time-checker-geq";
     private static final String POLICY_TIME_CHECKER_INVALID_ID = "policy-time-checker-invalid";
+    private static final String POLICY_COMPLEX_AND_ID = "policy-complex-and";
+    private static final String POLICY_COMPLEX_OR_ID = "policy-complex-or";
+    private static final String POLICY_COMPLEX_AND_ID_TERMINATED = "policy-complex-and-ko";
+    private static final String POLICY_COMPLEX_OR_ID_TERMINATED = "policy-complex-or-ko";
+    private static final String POLICY_COMPLEX_ID_INVALID = "policy-complex-invalid";
     private static final String OPERATOR_IS_PART_OF = "odrl:isPartOf";
     private static final String OPERATOR_EQUAL = "odrl:eq";
     private static final String OPERATOR_NOT_EQUAL = "odrl:neq";
@@ -82,8 +90,11 @@ public class Policy01BasicTest {
     private static final String OPERATOR_GREATER_OR_EQUAL = "odrl:geq";
     private static final String OPERATOR_GREATER = "odrl:gt";
     private static final String OPERATOR_LT = "odrl:lt";
+    private static final String AND_OPERAND = "and";
+    private static final String OR_OPERAND = "or";
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/provider-test-configuration.properties";
     private static final String CONSUMER_MODULE_PATH = ":consumers:consumer-base";
+
 
     @RegisterExtension
     static final RuntimeExtension FC_RUNTIME = getEmbeddedFc(":federated-catalog");
@@ -107,7 +118,7 @@ public class Policy01BasicTest {
         assertThat(policyAlwaysTrueExist).isTrue();
     }
 
-    @Test
+    /*  @Test
     void testPolicyEntityTypePrivateAssetIsNotInCatalog() {
         String id = UUID.randomUUID().toString();
         createAssetWithId(id);
@@ -116,7 +127,7 @@ public class Policy01BasicTest {
         ArrayList<LinkedHashMap> catalogDatasets = fetchCatalogDatasets(CATALOG_REQUEST_FILE_PATH);
         boolean catalogContainsAsset = catalogContainsAssetId(id, catalogDatasets);
         assertThat(catalogContainsAsset).isFalse();
-    }
+    }*/
 
 
     @Test
@@ -228,4 +239,65 @@ public class Policy01BasicTest {
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
+
+
+    @Test
+    void testComplexPolicyAndShouldBeFinalized() {
+        String id = UUID.randomUUID().toString();
+        String rightOperand = OffsetDateTime.now().minusDays(1).toString();
+        createAssetWithId(id);
+        createPolicyComplex(POLICY_COMPLEX_AND_ID, AND_OPERAND, rightOperand, LEI_CODE_OK, N_EMPLOYEES_OK);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COMPLEX_AND_ID, id);
+        var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
+        var contractNegotiationId = negotiateContractComplex(id, catalogDatasetId, AND_OPERAND, rightOperand, LEI_CODE_OK, N_EMPLOYEES_OK);
+        await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
+
+
+    }
+
+    @Test
+    void testComplexPolicyInvalidShouldBeTerminated() {
+        String id = UUID.randomUUID().toString();
+        String rightOperand = OffsetDateTime.now().minusDays(1).toString();
+        createAssetWithId(id);
+        createPolicyComplex(POLICY_COMPLEX_ID_INVALID, AND_OPERAND, rightOperand, INVALID_VALUE, INVALID_VALUE);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COMPLEX_ID_INVALID, id);
+        var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
+        var contractNegotiationId = negotiateContractComplex(id, catalogDatasetId, AND_OPERAND, rightOperand, INVALID_VALUE, INVALID_VALUE);
+        await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("TERMINATED"));
+
+    }
+
+    @Test
+    void testComplexPolicyAndShouldBeTerminated() {
+        String id = UUID.randomUUID().toString();
+        String rightOperand = OffsetDateTime.now().minusDays(1).toString();
+        createAssetWithId(id);
+        createPolicyComplex(POLICY_COMPLEX_AND_ID_TERMINATED, AND_OPERAND, rightOperand, LEI_CODE_KO, N_EMPLOYEES_KO);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COMPLEX_AND_ID_TERMINATED, id);
+        var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
+        var contractNegotiationId = negotiateContractComplex(id, catalogDatasetId, AND_OPERAND, rightOperand, LEI_CODE_KO, N_EMPLOYEES_KO);
+        await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("TERMINATED"));
+
+
+    }
+
+
+    @Test
+    void testComplexPolicyOrShouldBeFinalized() {
+        String id = UUID.randomUUID().toString();
+        String rightOperand = OffsetDateTime.now().minusDays(1).toString();
+        createAssetWithId(id);
+        createPolicyComplex(POLICY_COMPLEX_OR_ID, OR_OPERAND, rightOperand, LEI_CODE_KO, N_EMPLOYEES_KO);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COMPLEX_OR_ID, id);
+        var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
+        var contractNegotiationId = negotiateContractComplex(id, catalogDatasetId, OR_OPERAND, rightOperand, LEI_CODE_KO, N_EMPLOYEES_KO);
+        await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
+
+    }
+
 }

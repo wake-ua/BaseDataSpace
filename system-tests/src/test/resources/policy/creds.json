@@ -1,5 +1,7 @@
 {
   "location": "eu",
   "entity_type": "public",
-  "ip_connector": "219.208.53.219"
+  "ip_connector": "219.208.53.219",
+  "num_employees": "4000",
+  "lei_code": "340"
 }

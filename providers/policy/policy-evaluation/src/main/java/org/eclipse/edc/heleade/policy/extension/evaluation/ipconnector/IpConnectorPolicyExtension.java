@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.heleade.policy.extension.evaluation.ipconnector;
 
-import org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext;
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.participant.spi.ParticipantAgentPolicyContext;
@@ -77,7 +76,6 @@ public class IpConnectorPolicyExtension  implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
         monitor.info("Policy function referring connector extension initialized");
-        registerFunctionAndBindTo(CatalogPolicyContext.class, CatalogPolicyContext.CATALOG_SCOPE, monitor);
         registerFunctionAndBindTo(ContractNegotiationPolicyContext.class, ContractNegotiationPolicyContext.NEGOTIATION_SCOPE, monitor);
     }
 

@@ -34,13 +34,21 @@ psql -f providers/provider-ebird/src/main/resources/META-INF.services/database.s
 **B.1. Build the project**
 ```./gradlew clean build ```
 
-**B.2. Build Docker images**
+
+**B.2. Build Docker images for main components**
 ```docker compose build --no cache ```
 
-**B.3. Start the environment**
+**B.3. Start the main components environment**
 ```docker compose up -d ```
 
-**B.4. [ ⚠️ Before continuing ensure: ]**
+**B.4. Build Docker images for ebird components** (from providers/provider-ebird/ directory )
+```docker compose build --no cache ```
+
+**B.4. Start the provider ebird environment** (from providers/provider-ebird/ directory )
+```docker compose up -d ```
+
+
+**B.5. [ ⚠️ Before continuing ensure: ]**
 - **B.4.1. The dataspace is running**:
 ```docker ps ```
 - **B.4.2. You imported the latest Postman collection.**

@@ -2,3 +2,5 @@ org.eclipse.edc.heleade.policy.extension.evaluation.location.LocationPolicyExten
 org.eclipse.edc.heleade.policy.extension.evaluation.entity.EntityPolicyExtension
 org.eclipse.edc.heleade.policy.extension.evaluation.ipconnector.IpConnectorPolicyExtension
 org.eclipse.edc.heleade.policy.extension.evaluation.timeinterval.TimeIntervalPolicyExtension
+org.eclipse.edc.heleade.policy.extension.evaluation.legalname.LegalNamePolicyExtension
+org.eclipse.edc.heleade.policy.extension.evaluation.dynamicpolicy.DynamicPolicyExtension

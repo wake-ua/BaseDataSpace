@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2024 Fraunhofer Institute for Software and Systems Engineering
+ *  Copyright (c) 2025 Universidad de Alicante
  *
  *  This program and the accompanying materials are made available under the
  *  terms of the Apache License, Version 2.0 which is available at
@@ -8,11 +8,11 @@
  *  SPDX-License-Identifier: Apache-2.0
  *
  *  Contributors:
- *       Fraunhofer Institute for Software and Systems Engineering - initial API and implementation
+ *       MO - Universidad de Alicante - initial implementation
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.evaluation.location;
+package org.eclipse.edc.heleade.policy.extension.evaluation.legalname;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
@@ -34,27 +34,33 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  * Extension responsible for initializing and registering policy-related functionality.
  * Binds specific constraint keys to relevant policy scopes and registers implementations
  * of atomic constraint rule functions for policy enforcement
- * Key features:
- * Binds the location constraint key to the contract negotiation scope and catalog scope
+ * Binds the legalName constraint key to the contract negotiation scope
  * in a policy enforcement context.
- * The key for location.
+ * The key for entity type.
  * must be used as left operand when declaring constraints.
  * rightOperand can be a string.
- * * Example:
- *  *
- *  <pre>
- *  *   {
- *  *     "constraint": {
- *  *         "leftOperand": "location",
- *  *         "operator": "EQ",
- *  *         "rightOperand": "eu"
- *  *     }
- *  *  }
- *  * </pre>
+ * Also supports the IN Operator with a list of string-IPS as right operand.
+ Example:
+
+ {
+     "constraint": {
+     "leftOperand": "legal_name",
+     "operator": "EQ",
+     "rightOperand": "Salinas de Torrevieja"
+ }
+ },
+OR
+ {
+     "constraint": {
+     "leftOperand": "legal_name",
+     "operator": "IN",
+     "rightOperand": "NexaTech S.A.,CloudFrame S.A."}
+ }
  */
-public class LocationPolicyExtension implements ServiceExtension {
-    private static final String LOCATION_KEY = "location";
-    private static final String LOCATION_CONSTRAINT_KEY = EDC_NAMESPACE + LOCATION_KEY;
+public class LegalNamePolicyExtension implements ServiceExtension {
+    static final String NAME = "Legal Name";
+    private static final String LEGAL_NAME_KEY = "legal_name";
+    static final String LEGAL_NAME_CONSTRAINT_KEY = EDC_NAMESPACE + LEGAL_NAME_KEY;
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
@@ -66,24 +72,21 @@ public class LocationPolicyExtension implements ServiceExtension {
 
     @Override
     public String name() {
-        return "Policy function location extension";
+        return NAME;
     }
-
 
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-        monitor.info("Policy function location extension initialized");
+        monitor.info("Policy function referring connector extension initialized");
         registerFunctionAndBindTo(ContractNegotiationPolicyContext.class, ContractNegotiationPolicyContext.NEGOTIATION_SCOPE, monitor);
     }
 
     private <C extends ParticipantAgentPolicyContext> void registerFunctionAndBindTo(Class<C> contextClass, String scope, Monitor monitor) {
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, scope);
-        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, scope);
-        policyEngine.registerFunction(contextClass, Duty.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Prohibition.class, LOCATION_CONSTRAINT_KEY, new LocationPolicyFunction<>(monitor, LOCATION_KEY, fcParticipantClaimChecker));
+        ruleBindingRegistry.bind(LEGAL_NAME_CONSTRAINT_KEY, scope);
+        policyEngine.registerFunction(contextClass, Duty.class, LEGAL_NAME_CONSTRAINT_KEY, new LegalNamePolicyFunction<>(monitor, LEGAL_NAME_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Permission.class, LEGAL_NAME_CONSTRAINT_KEY, new LegalNamePolicyFunction<>(monitor, LEGAL_NAME_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Prohibition.class, LEGAL_NAME_CONSTRAINT_KEY, new LegalNamePolicyFunction<>(monitor, LEGAL_NAME_KEY, fcParticipantClaimChecker));
     }
-
 }
-

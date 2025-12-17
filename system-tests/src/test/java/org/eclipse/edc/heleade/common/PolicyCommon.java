@@ -33,9 +33,11 @@ public class PolicyCommon {
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
     private static final String CREATE_ASSET_FILE_PATH = RESOURCES_FOLDER + "/create-asset.json";
     private static final String CREATE_POLICY_FILE_PATH = RESOURCES_FOLDER + "/create-policy.json";
+    private static final String CREATE_POLICY_COMPLEX_FILE_PATH = RESOURCES_FOLDER + "/create-complex-policy.json";
     private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = RESOURCES_FOLDER + "/create-contract-definition.json";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = RESOURCES_FOLDER + "/get-dataset.json";
     private static final String CONTRACT_OFFER_FILE_PATH = RESOURCES_FOLDER + "/create-contract-request.json";
+    private static final String CONTRACT_OFFER_COMPLEX_FILE_PATH = RESOURCES_FOLDER + "/create-complex-contract-request.json";
     private static final String CATALOG_DATASET_ID = "\"odrl:hasPolicy\".'@id'";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
     private static final String ASSET_ID_KEY = "{{asset-id}}";
@@ -44,13 +46,18 @@ public class PolicyCommon {
     private static final String CONTRACT_POLICY_ID_KEY = "{{contract-policy-id}}";
     private static final String CONTRACT_DEFINITION_ID_KEY = "{{contract-definition-id}}";
     private static final String RIGHT_OPERAND_KEY = "{{right-operand}}";
+    private static final String RIGHT_OPERAND_1_KEY = "{{right-operand-1}}";
+    private static final String RIGHT_OPERAND_2_KEY = "{{right-operand-2}}";
+    private static final String RIGHT_OPERAND_3_KEY = "{{right-operand-3}}";
     private static final String LEFT_OPERAND_KEY = "{{left-operand}}";
     private static final String OPERATOR_KEY = "{{operator}}";
+    private static final String OPERAND = "{{operand}}";
+
     private static final String ID = "@id";
 
 
     public static boolean checkPolicyById(String policyId) {
-        String response =  get(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH + "/" + policyId, ID);
+        String response = get(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH + "/" + policyId, ID);
         return response != null && response.equals(policyId);
     }
 
@@ -66,6 +73,18 @@ public class PolicyCommon {
                 .replace(LEFT_OPERAND_KEY, leftOperand)
                 .replace(RIGHT_OPERAND_KEY, rightOperand)
                 .replace(OPERATOR_KEY, operator);
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, content);
+    }
+
+
+    public static void createPolicyComplex(String policyId, String operand, String rightOperand1, String rightOperand2, String rightOperand3) {
+        String content = getFileContentFromRelativePath(CREATE_POLICY_COMPLEX_FILE_PATH)
+                .replace(POLICY_ID_KEY, policyId)
+                .replace(OPERAND, operand)
+                .replace(RIGHT_OPERAND_1_KEY, rightOperand1)
+                .replace(RIGHT_OPERAND_2_KEY, rightOperand2)
+                .replace(RIGHT_OPERAND_3_KEY, rightOperand3);
+
         post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, content);
     }
 
@@ -105,6 +124,26 @@ public class PolicyCommon {
         assertThat(contractNegotiationId).isNotEmpty();
         return contractNegotiationId;
     }
+
+    public static String negotiateContractComplex(String assetId, String contractOfferId, String operand, String rightOperand1, String rightOperand2, String rightOperand3) {
+        String content = getFileContentFromRelativePath(CONTRACT_OFFER_COMPLEX_FILE_PATH)
+                .replace(CONTRACT_OFFER_ID_KEY, contractOfferId)
+                .replace(OPERAND, operand)
+                .replace(ASSET_ID_KEY, assetId)
+                .replace(RIGHT_OPERAND_1_KEY, rightOperand1)
+                .replace(RIGHT_OPERAND_2_KEY, rightOperand2)
+                .replace(RIGHT_OPERAND_3_KEY, rightOperand3);
+
+
+        var contractNegotiationId = post(
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH,
+                content,
+                ID
+        );
+        assertThat(contractNegotiationId).isNotEmpty();
+        return contractNegotiationId;
+    }
+
 
     public static boolean catalogContainsAssetId(String assetId, ArrayList<LinkedHashMap> catalogDatasets) {
         if (catalogDatasets == null || catalogDatasets.isEmpty()) {
