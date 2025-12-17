@@ -1,0 +1,17 @@
+networks:
+  base-ds-network:
+    external: true
+
+services:
+  provider-idearium:
+    container_name: provider-idearium
+    image: ghcr.io/wake-ua/provider-base:latest
+    volumes:
+      - ./config/idearium.properties:/provider-ebird-docker-configuration.properties:ro
+    ports:
+      - "17191:17191"
+      - "17193:17193"
+      - "17194:17194"
+    restart: on-failure
+    networks:
+      - base-ds-network
