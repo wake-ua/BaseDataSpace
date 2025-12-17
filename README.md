@@ -18,6 +18,7 @@
   * **Climate Provider**: Ports 1619x / 1629x
   * **eBird Provider**: Ports 1719x / 1729x
   * **Mastral Provider**: Ports 1819x / 1829x
+  * **Idearium Provider**: Ports 1519x / 1529x
 * CONSUMERS:
   * **Base Consumer**: Ports 2919x / 2929x
   * **Search Service**: Ports 2719x / 2729x

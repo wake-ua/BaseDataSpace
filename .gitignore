@@ -47,6 +47,10 @@ bin/
 ### TMP ###
 tmp/
 
+# providers data
+providers/provider-idearium/datasets/*
+!providers/provider-idearium/datasets/.gitkeep
+
 # deployment
 deployment/fc-mongodb/data/db/*
 
