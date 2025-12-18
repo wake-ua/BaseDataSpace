@@ -28,11 +28,37 @@ import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.g
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.isNumericComparison;
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.parseNumericValues;
 
+/**
+ * The {@code DynamicPolicyFunction} class represents a dynamic policy evaluation mechanism used to validate
+ * the compliance of a participant's claims with specific rules and conditions. It implements the
+ * {@link DynamicAtomicConstraintRuleFunction} interface, providing the capability to evaluate rules
+ * in the context of participant agent policies dynamically.
+ *
+ * @param <R> the type of the rule being evaluated, extending the {@link Rule} class
+ * @param <C> the type of the context used during evaluation, extending the {@link ParticipantAgentPolicyContext} class
+ */
 public class DynamicPolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext> implements DynamicAtomicConstraintRuleFunction<R, C> {
 
+    /**
+     * Represents the monitoring system used to log and observe application behavior.
+     * The {@code monitor} instance is primarily utilized for monitoring, debugging,
+     * and tracking system operations in the {@code DynamicPolicyFunction}.
+     */
     protected final Monitor monitor;
+    /**
+     * A checker used to validate participant claims within the {@code DynamicPolicyFunction}.
+     * This field references an instance of {@link FcParticipantClaimChecker}, which interacts
+     * with the Participant List Registry to verify claims associated with a given participant.
+     */
     protected final FcParticipantClaimChecker participantClaimChecker;
 
+    /**
+     * Constructs a new instance of {@code DynamicPolicyFunction}.
+     *
+     * @param monitor the monitor used for logging or observing system behavior
+     * @param participantClaimChecker the instance of {@code FcParticipantClaimChecker} used
+     *        to verify participant claims against a participant registry
+     */
     public DynamicPolicyFunction(Monitor monitor, FcParticipantClaimChecker participantClaimChecker) {
         this.monitor = monitor;
         this.participantClaimChecker = participantClaimChecker;

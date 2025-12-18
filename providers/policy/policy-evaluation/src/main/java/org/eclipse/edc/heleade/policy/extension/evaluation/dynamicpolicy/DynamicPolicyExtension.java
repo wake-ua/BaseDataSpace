@@ -31,6 +31,30 @@ import java.util.Set;
 
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
 
+/**
+ * The {@code DynamicPolicyExtension} class implements the {@link ServiceExtension} interface
+ * and provides dynamic policy evaluation by registering specific policy functions with
+ * the {@link PolicyEngine}. These functions dynamically resolve policy constraints
+ * tied to participant claims and orchestrate their evaluation for use in contract negotiations.
+ *
+ * This extension registers policy evaluation functions for ODRL (Open Digital Rights
+ * Language) rules such as {@link Permission}, {@link Duty}, and {@link Prohibition}.
+ * It dynamically binds these functions to a specific scope within the
+ * {@link RuleBindingRegistry} to enforce policy constraints during contract negotiations.
+ *
+ * Features:
+ * - Registers evaluation functions with the {@link PolicyEngine} for managing
+ *   ODRL constraints using claim-driven verification.
+ * - Binds rules to specific negotiation scopes dynamically.
+ * - Utilizes {@link FcParticipantClaimChecker} for verifying participant claims
+ *   against the participant registry.
+ *
+ * Dependencies:
+ * - {@link RuleBindingRegistry}: Handles the registration and binding of rules.
+ * - {@link PolicyEngine}: Executes the policy functions for evaluating constraints.
+ * - {@link FcParticipantClaimChecker}: Verifies participant claim validity.
+ * - {@link Monitor}: Logs and monitors system behavior.
+ */
 public class DynamicPolicyExtension implements ServiceExtension {
 
     static final String NAME = "Dynamic Policy Extension";
