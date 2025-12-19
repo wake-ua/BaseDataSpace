@@ -53,10 +53,6 @@ providers/provider-idearium/venv
 !providers/provider-idearium/datasets/.gitkeep
 
 # deployment
-deployment/fc-mongodb/data/db/*
-
-deployment/*-postgresql/data
-
 deployment/provider-ebird-init/scripts/samples/data/*
 deployment/samples-server/samples/provider-base/*
 !deployment/samples-server/samples/provider-base/.gitkeep

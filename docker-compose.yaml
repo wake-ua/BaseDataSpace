@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=edc
     volumes:
-      - ./deployment/bds-postgresql/data:/var/lib/postgresql/data
+      - postgresql_data:/var/lib/postgresql/data
       - ./deployment/bds-postgresql/initdb:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d edc_provider-base"]
@@ -57,7 +57,7 @@ services:
     ports:
       - "27018:27017"
     volumes:
-      - ./deployment/fc-mongodb/data/db:/data/db
+      - mongodb_data:/data/db
     networks:
       - base-ds-network
 
@@ -76,3 +76,7 @@ networks:
   base-ds-network:
     name: base-ds-network
     driver: bridge
+
+volumes:
+  postgresql_data:
+  mongodb_data:
