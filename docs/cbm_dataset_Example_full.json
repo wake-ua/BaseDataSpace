@@ -1,0 +1,76 @@
+{
+  "@id": "airQualityTorrent21",
+  "@type": "dcat:Dataset",
+  "dct:title": "Air quality in Torrent for 2021",
+  "dct:description": "Tabular data containing a list of the daily measurements of the Torrent sensor in 2021",
+  "dcat:keyword": [
+    "POLLUTION",
+    "AIR"
+  ],
+  "contenttype": "text/csv",
+  "dct:type": "Dataset",
+  "dct:issued": "2022-01-22T13:04:33+00:00",
+  "dct:modified": "2022-01-25T23:14:55+00:00",
+  "dct:accrualPeriodicity": "annual",
+  "dcat:temporalResolution": "P1D",
+  "dct:temporal": {
+    "dcat:startDate": "2021-01-01T00:00:00+00:00",
+    "dcat:endDate": "2021-12-01T00:00:00+00:00"
+  },
+  "dcat:spatialResolutionInMeters": 69000.0,
+  "dct:spatial": "POLYGON (( -0.4381504467680264 39.4105711824846 , -0.4568295983091736 39.44940414433466 , -0.6171900219935075 39.4442153805213 , -0.5905964013590401 39.39186506960127 , -0.5055720209872985 39.3881264008169 , -0.4381504467680264 39.41057118248469 ))",
+  "dct:accessRights": "https://opendatacommons.org/licenses/odbl/1.0/",
+  "cbm:hasSample": [
+    "airQualityTorrentSample"
+  ],
+  "dcat:inSeries": "torrentAirQualitySeries",
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpData"
+      },
+      "dcat:accessURL": "http://datosabiertos.torrent.es/dataset/b6623499-2adc-4760-8392-784413d8fb41/resource/0146797f-a81c-452e-9129-8f8a11683656/download/ODMECalidadDelAirePorDias2021.csv",
+      "proxyPath": "true",
+      "authKey": "x-api-key",
+      "authCode": "slq24sGHDw7c",
+      "dcat:byteSize": 11005,
+      "cbm:hasDataDictionary": {
+        "@type": "cbm:DataDictionary",
+        "cbm:hasField": [
+          {
+            "@type": "cbm:Field",
+            "schema:name": "ANY",
+            "dct:title": "Year",
+            "cbm:datatype": "integer",
+            "dct:description": "Year of the data accrual",
+            "cbm:sampleValue": "2021"
+          },
+          {
+            "@type": "cbm:Field",
+            "schema:name": "FECHA",
+            "dct:title": "Date",
+            "cbm:datatype": "date",
+            "dct:description": "Date of the data accrual",
+            "cbm:sampleValue": "1/1/2021"
+          },
+          {
+            "@type": "cbm:Field",
+            "schema:name": "O3",
+            "dct:title": "Ozone",
+            "cbm:datatype": "integer",
+            "dct:description": "Microgramms of ozone per cubic meter",
+            "cbm:sampleValue": "58"
+          }
+        ]
+      }
+    }
+  ],
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "cbm": "https://w3id.org/cbm/v0.0.1/ns/",
+    "schema": "https://schema.org/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  }
+}
