@@ -69,9 +69,9 @@ public class Claims {
     /**
      * Verifies if the specified claim in the participant's claims matches the provided verified claim.
      *
-     * @param verifiedClaim      the value of the claim to verify against. This is gotten from FC
+     * @param verifiedClaim      the value of the claim to verify against. This is gotten from FC. Example "UE"
      * @param participantClaims  the map containing claims provided by the participant
-     * @param claimKey           the key of the claim to verify
+     * @param claimKey           the key of the claim to verify. Example "location"
      * @return true if the verified claim matches the participant's claim for the specified key, false otherwise
      */
     public static boolean verifyClaim(String verifiedClaim, Map<String, Object> participantClaims, String claimKey) {
