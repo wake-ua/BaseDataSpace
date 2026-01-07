@@ -53,7 +53,7 @@ services:
 
   fc-mongodb:
     container_name: fc-mongodb
-    image: mongodb/mongodb-community-server:8.0-ubi8
+    image: mongodb/mongodb-community-server:8.2-ubi8
     ports:
       - "27018:27017"
     volumes:
