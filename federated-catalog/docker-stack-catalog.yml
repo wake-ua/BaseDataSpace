@@ -1,0 +1,41 @@
+secrets:
+  catalog_config_secret:
+    external: true
+
+networks:
+  shared-net:
+    external: true
+
+services:
+  fc-mongodb:
+    image: mongodb/mongodb-community-server:8.2-ubi8
+    ports:
+      - "27018:27017"
+    volumes:
+      - /srv/data/mongodb:/data/db
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: "wake"
+      MONGODB_INITDB_ROOT_PASSWORD: "VERY_SECRET_PASSWORD"
+    networks:
+      - shared-net
+
+  federated-catalog:
+    image: ghcr.io/wake-ua/federated-catalog:${FC_IMAGE_TAG}
+    depends_on:
+      - fc-mongodb
+    ports:
+      - "39191:39191"
+      - "39193:39193"
+      - "39194:39194"
+      - "39195:39195"
+    secrets:
+      - catalog_config_secret
+    networks:
+      - shared-net
+
+    entrypoint: [
+      "java",
+      "-Dedc.fs.config=/run/secrets/catalog_config_secret",
+      "-jar", "/federated-catalog.jar",
+      "--log-level=DEBUG"
+    ]
