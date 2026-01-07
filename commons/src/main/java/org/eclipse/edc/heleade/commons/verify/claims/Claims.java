@@ -78,5 +78,16 @@ public class Claims {
         Object claimToVerify = participantClaims.get(claimKey);
         return Objects.equals(verifiedClaim, claimToVerify);
     }
+
+    /**
+     * Verifies if the participant's claims match the claims retrieved from FC (represented as `participantClaimsFromFc`).
+     *
+     * @param participantClaims        the map containing the claims provided by the participant
+     * @param participantClaimsFromFc  the map containing the claims retrieved from the trusted source (FC) for verification
+     * @return true if the participant's claims match the claims from the trusted source, false otherwise
+     */
+    public static boolean verifyClaims(Map<String, Object> participantClaims, Map<String, Object> participantClaimsFromFc) {
+        return Objects.equals(participantClaims, participantClaimsFromFc);
+    }
 }
 
