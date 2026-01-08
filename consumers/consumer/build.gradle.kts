@@ -56,4 +56,5 @@ dependencies {
 
     implementation(project(":providers:content-based-catalog-dispatcher"))
     implementation(project(":providers:iam-claims"));
+    implementation(project(":commons"))
 }
