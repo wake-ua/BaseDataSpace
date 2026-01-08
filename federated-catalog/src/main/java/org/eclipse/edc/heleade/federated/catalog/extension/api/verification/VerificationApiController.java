@@ -73,7 +73,7 @@ public class VerificationApiController {
     /**
      * Verifies the provided claims by checking the participant's signature and matching claims.
      *
-     * @param claimsText a {@link String} containing the participant ID, signed claims, and claims to verify.
+     * @param body a {@link String} containing the participant ID, signed claims, and claims to verify.
      *               Expected keys include "participantId", "participantSignedClaims", and "participantClaims".
      * @return a {@link JsonObject} containing the results of the verification process, including:
      *         - "verifySignatureSuccess": a boolean indicating if the signature verification was successful.
@@ -81,23 +81,37 @@ public class VerificationApiController {
      *         - "success": a boolean indicating the overall success of the verification process.
      */
     @POST
-    public JsonObject verify(String claimsText) {
-        JsonReader jsonReader = Json.createReader(new ByteArrayInputStream(claimsText.getBytes(StandardCharsets.UTF_8)));
-        JsonObject claims = jsonReader.readObject();
+    public JsonObject verify(String body) {
+
+        // get the json object from the string
+        JsonReader jsonReader = Json.createReader(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+        JsonObject jsonBody = jsonReader.readObject();
         jsonReader.close();
-        String id = claims.getString("participantId");
-        String participantSignedClaims = claims.getString("participantSignedClaims");
-        Map<String, Object> participantClaims = getMapFromJsonObject(claims.getJsonObject("participantClaims"));
+
+        // compact if not compacted to avoid namespace issues
+        JsonObject compactedBody = jsonLd.compact(jsonBody).getContent();
+        if (compactedBody == null || compactedBody.isEmpty()) {
+            compactedBody = jsonBody;
+        }
+
+        // get the inputs from the body
+        String id = compactedBody.getString("participantId");
+        String participantSignedClaims = compactedBody.getString("signedClaims");
+        Map<String, Object> participantClaims = getMapFromJsonObject(compactedBody.getJsonObject("claims"));
+
+        // check the signature
         ParticipantNode participantNode = targetNodeDirectory.getParticipantNode(id);
         String pem = participantNode.security().get("pem");
         boolean verifySignatureSuccess = verifySignature(typeManager.getMapper(), pem, participantSignedClaims, participantClaims);
         JsonObjectBuilder builder = Json.createObjectBuilder();
         builder.add("verifySignatureSuccess", verifySignatureSuccess);
 
-        Map<String, Object> participantClaimsFromFc = participantNode.claims();
+        // check the claims
+        Map<String, Object> participantClaimsFromFc = getMapFromJsonObject(jsonLd.compact(participantNode.asJsonObject()).getContent().getJsonObject("claims"));
         boolean verifyClaimsSuccess = verifyClaims(participantClaims, participantClaimsFromFc);
         builder.add("verifyClaimsSuccess", verifyClaimsSuccess);
 
+        // return overall result
         builder.add("success", verifySignatureSuccess && verifyClaimsSuccess);
         return builder.build();
     }
