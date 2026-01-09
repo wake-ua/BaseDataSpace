@@ -42,7 +42,7 @@ include("commons")
 
 
 include("identity-hub")
-include("providers:iam-claims")
+include("iam-identity")
 include("providers:policy")
 include("providers:policy:policy-always-true")
 include("providers:policy:claims-checker")

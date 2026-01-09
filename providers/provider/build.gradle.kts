@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.edc.auth.tokenbased)
     implementation(libs.edc.spi.auth)
     implementation(libs.edc.auth.configuration)
-    implementation(project(":providers:iam-claims"));
+    
 
     // sql storage
     implementation(libs.edc.spi.transaction.datasource)
@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.edc.sql.core)
     implementation(libs.postgres)
 
+    implementation(project(":iam-identity"));
     // test
     testImplementation(libs.restAssured)
     testImplementation(libs.awaitility)

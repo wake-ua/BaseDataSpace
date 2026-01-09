@@ -8,6 +8,9 @@
       "num_employees": "4000",
       "lei_code": "340"
     },
+      "security": {
+        "pem": ""
+      },
     "url": "http://localhost:39194/protocol",
     "supportedProtocols": ["dataspace-protocol-http"],
     "@context": {

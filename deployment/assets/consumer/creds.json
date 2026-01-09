@@ -1,12 +1,4 @@
 {
   "location": "eu",
-   "entity_type": "public",
-   "legal_name": "Official Consumer",
-   "ip_connector": "219.208.53.217",
-   "lei_code": "0202",
-  "num_employees": "4000",
-  "membership": {
-    "level": "SILVER",
-    "branch": "operator"
-  }
+   "entity_type": "public"
 }

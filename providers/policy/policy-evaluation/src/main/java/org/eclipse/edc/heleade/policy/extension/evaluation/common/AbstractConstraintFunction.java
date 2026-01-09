@@ -21,6 +21,8 @@ import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.spi.monitor.Monitor;
 
+import java.util.Map;
+
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.getParticipantClaim;
 
 /**
@@ -63,7 +65,8 @@ public abstract class AbstractConstraintFunction<R extends Rule, C extends  Part
     public  boolean evaluate(Operator operator, Object rightValue, R rule, C context) {
         var participantClaims = context.participantAgent().getClaims();
         var participantId = participantClaims.get("client_id").toString();
-
+        Map<String, Object> participantClaimsMap = (Map<String, Object>) participantClaims.get("claims");
+        var participantSignedClaims = participantClaims.get("signedClaims").toString();
         String participantClaimToVerify = getParticipantClaim(participantClaims, claimKey);
 
         if (participantClaimToVerify == null) {
@@ -71,10 +74,10 @@ public abstract class AbstractConstraintFunction<R extends Rule, C extends  Part
             return false;
         }
 
-        boolean valid = participantClaimChecker.checkClaim(claimKey, participantClaimToVerify, participantId);
+        boolean valid = participantClaimChecker.verifyClaims(participantId, participantSignedClaims, participantClaimsMap);
 
         if (!valid) {
-            monitor.severe("Claim does not match with participant registry participant " + claimKey);
+            monitor.severe("Verification with participant registry failed");
             return false;
         }
 

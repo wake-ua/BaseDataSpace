@@ -26,6 +26,12 @@ import java.util.Map;
 import java.util.Objects;
 
 
+/**
+ * The Claims class provides methods for verifying participant claims and signatures.
+ * These methods are intended for use cases where participants' submitted claims
+ * need validation against trusted claims (FC) or their authenticity needs to be proven
+ * via digital signatures.
+ */
 public class Claims {
 
     /**
@@ -37,24 +43,19 @@ public class Claims {
      * @param participantClaims       the map containing the claims provided by the participant
      * @return true if the signature is valid
      */
-    public static boolean verifySignature(ObjectMapper mapper,  String pem, String participantSignedClaims, Map<String, Object> participantClaims) {
+    public static boolean verifySignature(ObjectMapper mapper,  String pem, String participantSignedClaims, String participantClaims) {
         try {
-            pem = pem.replaceAll("-+[A-Z ]+-+", "")
-                    .replaceAll("\\s", "");
-
-            byte[] decoded = Base64.getDecoder().decode(pem);
-
-
+            byte[] decoded = Base64.getMimeDecoder().decode(pem);
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decoded);
             KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
 
             PublicKey publicKey = keyFactory.generatePublic(keySpec);
 
-            String claimsString = mapper.writeValueAsString(participantClaims);
+
 
             Signature signature = Signature.getInstance("Ed25519");
             signature.initVerify(publicKey);
-            signature.update(claimsString.getBytes(StandardCharsets.UTF_8));
+            signature.update(participantClaims.getBytes(StandardCharsets.UTF_8));
 
             byte[] signedBytes = Base64.getDecoder().decode(participantSignedClaims);
 

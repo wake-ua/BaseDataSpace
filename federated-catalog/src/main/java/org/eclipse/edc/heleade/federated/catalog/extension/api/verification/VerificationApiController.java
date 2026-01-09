@@ -98,11 +98,13 @@ public class VerificationApiController {
         String id = compactedBody.getString("participantId");
         String participantSignedClaims = compactedBody.getString("signedClaims");
         Map<String, Object> participantClaims = getMapFromJsonObject(compactedBody.getJsonObject("claims"));
+        JsonObject participantClaimsJson = compactedBody.getJsonObject("claims");
+        String claimsString = participantClaimsJson.toString();
 
         // check the signature
         ParticipantNode participantNode = targetNodeDirectory.getParticipantNode(id);
-        String pem = participantNode.security().get("pem");
-        boolean verifySignatureSuccess = verifySignature(typeManager.getMapper(), pem, participantSignedClaims, participantClaims);
+        String pem = participantNode.security().get("https://w3id.org/edc/v0.0.1/ns/pem");
+        boolean verifySignatureSuccess = verifySignature(typeManager.getMapper(), pem, participantSignedClaims, claimsString);
         JsonObjectBuilder builder = Json.createObjectBuilder();
         builder.add("verifySignatureSuccess", verifySignatureSuccess);
 

@@ -21,6 +21,7 @@ import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.spi.monitor.Monitor;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.getLeftOperand;
@@ -68,18 +69,21 @@ public class DynamicPolicyFunction<R extends Rule, C extends ParticipantAgentPol
     public boolean evaluate(Object leftValue, Operator operator, Object rightValue, R rule, C context) {
         var participantClaims = context.participantAgent().getClaims();
         var participantId = participantClaims.get("client_id").toString();
+
+        var participantSignedClaims = participantClaims.get("signedClaims").toString();
+        Map<String, Object> participantClaimsMap = (Map<String, Object>) participantClaims.get("claims");
         String leftOperatorValue = getLeftOperand(leftValue);
         String participantClaimToVerify = getParticipantClaim(participantClaims, leftOperatorValue);
 
         if (participantClaimToVerify == null) {
-            monitor.severe("Participant claim is null or is empty " + leftOperatorValue);
+            monitor.severe("Participant claim is null or is empty" + leftOperatorValue);
             return false;
         }
 
-        boolean valid = participantClaimChecker.checkClaim(leftOperatorValue, participantClaimToVerify, participantId);
+        boolean valid = participantClaimChecker.verifyClaims(participantId, participantSignedClaims, participantClaimsMap);
 
         if (!valid) {
-            monitor.severe("Claim is not valid. It does not match with the one in FC." + leftOperatorValue);
+            monitor.severe("Verification with participant registry failed");
             return false;
         }
 
