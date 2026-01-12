@@ -3,10 +3,7 @@
   "@type": "dcat:Dataset",
   "dct:title": "Air quality in Torrent for 2021",
   "dct:description": "Tabular data containing a list of the daily measurements of the Torrent sensor in 2021",
-  "dcat:keyword": [
-    "POLLUTION",
-    "AIR"
-  ],
+  "dcat:keyword": ["POLLUTION", "AIR"],
   "contenttype": "text/csv",
   "dct:type": "Dataset",
   "dct:issued": "2022-01-22T13:04:33+00:00",
@@ -15,14 +12,15 @@
   "dcat:temporalResolution": "P1D",
   "dct:temporal": {
     "dcat:startDate": "2021-01-01T00:00:00+00:00",
-    "dcat:endDate": "2021-12-01T00:00:00+00:00"
+    "dcat:endDate":   "2021-12-01T00:00:00+00:00"
   },
   "dcat:spatialResolutionInMeters": 69000.0,
   "dct:spatial": "POLYGON (( -0.4381504467680264 39.4105711824846 , -0.4568295983091736 39.44940414433466 , -0.6171900219935075 39.4442153805213 , -0.5905964013590401 39.39186506960127 , -0.5055720209872985 39.3881264008169 , -0.4381504467680264 39.41057118248469 ))",
-  "dct:accessRights": "https://opendatacommons.org/licenses/odbl/1.0/",
-  "cbm:hasSample": [
-    "airQualityTorrentSample"
-  ],
+  "dct:accessRights": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+  "dct:rights": "Data property of Ayto, Torrent.",
+  "dct:license": "https://opendatacommons.org/licenses/odbl/1.0/",
+  "schema:additionalProperty": {"domainSpecificField": 123},
+  "cbm:hasSample": ["airQualityTorrentSample"],
   "dcat:inSeries": "torrentAirQualitySeries",
   "dcat:distribution": [
     {
