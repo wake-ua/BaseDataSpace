@@ -134,13 +134,16 @@ public class IamIdentityService implements IdentityService {
     public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, VerificationContext context) {
         var token = typeManager.readValue(tokenRepresentation.getToken(), Token.class);
 
-        return Result.success(
-                ClaimToken.Builder.newInstance()
-                        .claim("client_id", token.clientId)
-                        .claim("claims", token.getClaims())
-                        .claim("signedClaims", token.getSignedClaims())
-                        .build()
-        );
+        var builder = ClaimToken.Builder.newInstance()
+                .claim("client_id", token.clientId)
+                .claim("claims", token.getClaims());
+
+        if (token.getSignedClaims() != null) {
+            builder.claim("signedClaims", token.getSignedClaims());
+        }
+
+        return Result.success(builder.build());
+
     }
 
     private static class Token {

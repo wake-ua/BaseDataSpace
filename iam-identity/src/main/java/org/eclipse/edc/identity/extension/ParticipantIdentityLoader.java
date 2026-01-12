@@ -47,7 +47,7 @@ public interface ParticipantIdentityLoader {
      * Signs the provided claims using the given private key and generates a signed representation.
      *
      * @param claims the claims to be signed, provided as a key-value map
-     * @param privateKey the private key used to sign the claims
+     * @param privateKey the private key used to sign the claims, can be null
      * @param monitor the monitor used for logging and diagnostics
      * @return a string representation of the signed claims
      */
