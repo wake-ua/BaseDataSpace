@@ -85,9 +85,17 @@
       "type": "string",
       "format": "uri"
     },
+    "http://purl.org/dc/terms/license": {
+      "type": "string",
+      "format": "uri"
+    },
+    "http://purl.org/dc/terms/rights": {
+      "type": "string"
+    },
     "contenttype": {
       "type": "string"
     },
+    "https://schema.org/additionalProperty": {},
     "http://www.w3.org/ns/dcat#distribution": {
       "type": "object",
       "properties": {
@@ -189,6 +197,8 @@
     "@type",
     "http://purl.org/dc/terms/title",
     "http://purl.org/dc/terms/description",
+    "http://purl.org/dc/terms/accessRights",
+    "http://purl.org/dc/terms/license",
     "http://purl.org/dc/terms/modified",
     "http://purl.org/dc/terms/issued",
     "http://purl.org/dc/terms/type",

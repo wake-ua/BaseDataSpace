@@ -15,10 +15,10 @@
             <option value="$PROJECT_DIR$/consumers/consumer-base" />
             <option value="$PROJECT_DIR$/consumers/search-service" />
             <option value="$PROJECT_DIR$/federated-catalog" />
+            <option value="$PROJECT_DIR$/iam-identity" />
             <option value="$PROJECT_DIR$/identity-hub" />
             <option value="$PROJECT_DIR$/providers" />
             <option value="$PROJECT_DIR$/providers/content-based-catalog-dispatcher" />
-            <option value="$PROJECT_DIR$/providers/iam-claims" />
             <option value="$PROJECT_DIR$/providers/policy" />
             <option value="$PROJECT_DIR$/providers/policy/claims-checker" />
             <option value="$PROJECT_DIR$/providers/policy/policy-always-true" />

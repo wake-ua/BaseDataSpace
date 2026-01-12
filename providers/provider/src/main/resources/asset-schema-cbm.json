@@ -23,6 +23,7 @@
         "contenttype": {
           "type": "string"
         },
+        "https://schema.org/additionalProperty": {},
         "http://www.w3.org/ns/dcat#inSeries": {
           "type": "string"
         },
@@ -70,6 +71,13 @@
         "http://purl.org/dc/terms/accessRights": {
           "type": "string",
           "format": "uri"
+        },
+        "http://purl.org/dc/terms/license": {
+          "type": "string",
+          "format": "uri"
+        },
+        "http://purl.org/dc/terms/rights": {
+          "type": "string"
         },
         "http://www.w3.org/ns/dcat#keyword": {
           "oneOf": [
@@ -150,6 +158,8 @@
       "required": [
         "http://purl.org/dc/terms/title",
         "http://purl.org/dc/terms/description",
+        "http://purl.org/dc/terms/accessRights",
+        "http://purl.org/dc/terms/license",
         "http://purl.org/dc/terms/issued",
         "http://purl.org/dc/terms/modified",
         "http://purl.org/dc/terms/type"
