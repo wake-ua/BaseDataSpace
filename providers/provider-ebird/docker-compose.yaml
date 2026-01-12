@@ -7,6 +7,8 @@ services:
       - "17194:17194"
     build: .
     restart: on-failure:5
+    volumes:
+      - ./resources/identity:/identity
     networks:
       - base-ds-network
 
