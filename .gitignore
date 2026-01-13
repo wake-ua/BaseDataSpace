@@ -61,3 +61,4 @@ deployment/samples-server/samples/provider-ebird/*
 !deployment/provider-ebird-init/scripts/samples/data/.gitkeep
 
 providers/provider-idearium/scripts/__pycache__
+providers/provider-idearium/.env
