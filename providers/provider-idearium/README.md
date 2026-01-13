@@ -10,6 +10,7 @@ First start the containers
 ```shell
 docker compose up
 ```
+You should edit the file dotenv to set the token and save it as .env.
 
 Then start the python virtual environment, install the dependencies and run the script to load the datasets:
 ```shell
