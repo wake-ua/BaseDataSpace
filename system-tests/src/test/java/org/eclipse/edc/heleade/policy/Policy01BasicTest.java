@@ -36,6 +36,7 @@ import static org.eclipse.edc.heleade.common.PolicyCommon.createContractDefiniti
 import static org.eclipse.edc.heleade.common.PolicyCommon.createPolicyComplex;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createPolicyWithParams;
 import static org.eclipse.edc.heleade.common.PolicyCommon.fetchDatasetFromCatalogWithId;
+import static org.eclipse.edc.heleade.common.PolicyCommon.generateKeys;
 import static org.eclipse.edc.heleade.common.PolicyCommon.negotiateContractComplex;
 import static org.eclipse.edc.heleade.common.PolicyCommon.negotiateContractWithParams;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getConsumer;
@@ -48,6 +49,10 @@ public class Policy01BasicTest {
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
     private static final String PROVIDER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/provider-participant-directory.json";
     private static final String CONSUMER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/consumer-participant-directory.json";
+    private static final String CONSUMER_KEY_PATH = "src/test/resources/keys/consumer";
+    private static final String PROVIDER_KEY_PATH = "src/test/resources/keys/provider";
+    private static final String CONSUMER_NODE_RELATIVE_PATH = "src/test/resources/policy/consumer-participant-directory.json";
+    private static final String PROVIDER_NODE_RELATIVE_PATH = "src/test/resources/policy/provider-participant-directory.json";
     private static final String CATALOG_REQUEST_FILE_PATH = RESOURCES_FOLDER + "/catalog-request.json";
     private static final String EU = "eu";
     private static final String US = "us";
@@ -68,20 +73,15 @@ public class Policy01BasicTest {
     private static final String POLICY_LOCATION_EU_ID = "policy-location-eu";
     private static final String POLICY_LOCATION_US_ID = "policy-location-us";
     private static final String POLICY_ENTITY_TYPE_PUBLIC_ID = "policy-entity-type-public";
-    private static final String POLICY_ENTITY_TYPE_PRIVATE_ID = "policy-entity-type-private";
     private static final String POLICY_IP_OK_CONNECTOR_ID = "policy-ip-connector-ok";
     private static final String POLICY_IP_KO_CONNECTOR_ID = "policy-ip-connector-ko";
     private static final String POLICY_TIME_CHECKER_LT_ID = "policy-time-checker-lt";
     private static final String POLICY_TIME_CHECKER_GT_ID = "policy-time-checker-gt";
-    private static final String POLICY_TIME_CHECKER_EQ_ID = "policy-time-checker-eq";
     private static final String POLICY_TIME_CHECKER_NEQ_ID = "policy-time-checker-neq";
-    private static final String POLICY_TIME_CHECKER_LEQ_ID = "policy-time-checker-leq";
-    private static final String POLICY_TIME_CHECKER_GEQ_ID = "policy-time-checker-geq";
     private static final String POLICY_TIME_CHECKER_INVALID_ID = "policy-time-checker-invalid";
     private static final String POLICY_COMPLEX_AND_ID = "policy-complex-and";
     private static final String POLICY_COMPLEX_OR_ID = "policy-complex-or";
     private static final String POLICY_COMPLEX_AND_ID_TERMINATED = "policy-complex-and-ko";
-    private static final String POLICY_COMPLEX_OR_ID_TERMINATED = "policy-complex-or-ko";
     private static final String POLICY_COMPLEX_ID_INVALID = "policy-complex-invalid";
     private static final String OPERATOR_IS_PART_OF = "odrl:isPartOf";
     private static final String OPERATOR_EQUAL = "odrl:eq";
@@ -94,6 +94,16 @@ public class Policy01BasicTest {
     private static final String OR_OPERAND = "or";
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/provider-test-configuration.properties";
     private static final String CONSUMER_MODULE_PATH = ":consumers:consumer-base";
+
+
+    static {
+        try {
+            generateKeys(CONSUMER_KEY_PATH, CONSUMER_NODE_RELATIVE_PATH);
+            generateKeys(PROVIDER_KEY_PATH, PROVIDER_NODE_RELATIVE_PATH);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     @RegisterExtension

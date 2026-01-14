@@ -91,6 +91,22 @@ java -Dedc.fs.config=federated-catalog/resources/configuration/fc-configuration.
 ### System Tests
 To execute the systems tests, just right-click on the tests folder and select the option 'Run "All Tests"'.
 
+To properly generate the key pair jq must be installed.
+
+``sudo apt install jq``
+
+``brew install jq``
+
+[generate-keys.sh](system-tests/src/test/resources/keys/generate-keys.sh) should have execution permissions.
+
+For that run:
+
+``chmod +x generate-keys.sh``
+
+
+
+
+
 ### Postman Collection
 The postman collection is under development.
 Import into Postman the file BaseDS-EDC.postman_collection.json

@@ -56,6 +56,23 @@ public class PolicyCommon {
     private static final String ID = "@id";
 
 
+    public static void generateKeys(String keyPath, String nodeDirectoryPath) throws Exception {
+        ProcessBuilder pb = new ProcessBuilder(
+                "bash",
+                "src/test/resources/keys/generate-keys.sh",
+                keyPath,
+                nodeDirectoryPath
+        );
+
+        pb.inheritIO();
+
+        int exit = pb.start().waitFor();
+        if (exit != 0) {
+            throw new IllegalStateException("Key generation failed");
+        }
+    }
+
+
     public static boolean checkPolicyById(String policyId) {
         String response = get(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH + "/" + policyId, ID);
         return response != null && response.equals(policyId);
