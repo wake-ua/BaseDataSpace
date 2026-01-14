@@ -1,6 +1,4 @@
 import requests
-import csv
-from io import StringIO
 import logging
 
 
@@ -22,7 +20,10 @@ def send_request(url, payload, apikey, id=None):
         if response.status_code != 200:
             logging.info("POST Response:" + response.text)
 
-        if response.status_code != 409:
+        if response.status_code == 400:
+            logging.error("Bad Request (400). Validation Failed")
+
+        if response.status_code == 200:
             return response.json()['@id']
 
         if response.status_code == 409:
@@ -36,8 +37,22 @@ def send_request(url, payload, apikey, id=None):
                 logging.info("PUT Response: " + response.text)
             if response.status_code == 204:
                 return payload["@id"]
+        return None
+        #response.raise_for_status()
+    except requests.RequestException as e:
+        logging.exception(e)
+        return None
 
+def get_request(url, token_key=None, token_value=None):
+
+    try:
+        headers = {}
+        if token_key and token_value:
+            headers[token_key] = token_value
+        response = requests.get(url, headers=headers)
+        logging.info(f"\033[34m GET {url} Status: {response.status_code}\033[0m")
         response.raise_for_status()
+        return response.content
     except requests.RequestException as e:
         logging.exception(e)
         return None

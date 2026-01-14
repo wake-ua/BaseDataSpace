@@ -1,0 +1,11 @@
+BASE_URL = "http://localhost:15193"
+X_API_KEY = "managementApiKeyProviderIdearium"
+
+POLICIES_PATH = "./policies/"
+CONTRACTS_PATH = "./contracts/"
+
+DATASET_LIST = "https://idearium.eu/heleade/lista_json.csv"
+
+JSON_URL = "https://idearium.eu/heleade/download.php?file="
+TOKEN_KEY = "x-auth-token"
+TOKEN_VALUE = "<TOKEN_VALUE>"
