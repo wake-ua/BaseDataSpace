@@ -19,8 +19,12 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.eclipse.edc.heleade.commons.verification.claims.checker.FcParticipantClaimChecker;
+import org.eclipse.edc.heleade.commons.verification.claims.checker.VerificationResult;
 import org.eclipse.edc.heleade.identity.IamIdentityService;
 import org.eclipse.edc.spi.monitor.Monitor;
+
+import java.net.http.HttpClient;
 
 /**
  * Endpoint to validate the participant identity
@@ -32,18 +36,23 @@ public class IamIdentityApiController {
 
     private final Monitor monitor;
     private final IamIdentityService iamIdentityService;
+    private final HttpClient httpClient;
+    private final String participantRegistryUrl;
 
     /**
      * Instantiates the controller for the verify identity endpoint
      *
      * @param iamIdentityService identity service
+     * @param participantRegistryUrl federated catalog url
      * @param monitor logger object
      */
-    public IamIdentityApiController(IamIdentityService iamIdentityService, Monitor monitor) {
+    public IamIdentityApiController(IamIdentityService iamIdentityService, String participantRegistryUrl, Monitor monitor) {
         this.iamIdentityService = iamIdentityService;
         this.monitor = monitor;
+        this.participantRegistryUrl = participantRegistryUrl;
+        this.httpClient = HttpClient.newHttpClient();
     }
-    
+
     /**
      * Defines the verify identity endpoint
      *
@@ -54,6 +63,24 @@ public class IamIdentityApiController {
     public String verify() {
         monitor.debug("Verify identity received a request");
 
-        return "{\"response\":\"IdentityProvider: I'm alive!\"}";
+        try {
+
+            monitor.info("Auto Verification participant node: " + iamIdentityService.getClientId());
+
+            VerificationResult result = FcParticipantClaimChecker.verifyClaims(
+                                                    this.participantRegistryUrl,
+                                                    iamIdentityService.getClientId(),
+                                                    iamIdentityService.getSignedClaims(),
+                                                    iamIdentityService.getClaims(),
+                                                    httpClient
+            );
+
+            return result.asJsonObject().toString();
+
+        } catch (Exception e) {
+            monitor.warning("Failed to verify claims" + e.getMessage());
+            return "{\"error\": \"Failed to verify claims:" + e.getMessage() + "\"}";
+        }
+
     }
 }

@@ -22,7 +22,7 @@ dependencies {
     api(libs.edc.json.ld.spi)
 
     implementation(libs.edc.control.plane.core)
-    implementation(project(":providers:policy:claims-checker"));
     implementation(project(":iam-identity"));
+    implementation(project(":commons"));
 
 }

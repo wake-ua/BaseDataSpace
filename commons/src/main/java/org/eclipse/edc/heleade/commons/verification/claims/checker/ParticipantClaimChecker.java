@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.claims.checker;
+package org.eclipse.edc.heleade.commons.verification.claims.checker;
 
 
 import java.util.Map;

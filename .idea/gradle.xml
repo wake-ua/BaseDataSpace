@@ -20,7 +20,6 @@
             <option value="$PROJECT_DIR$/providers" />
             <option value="$PROJECT_DIR$/providers/content-based-catalog-dispatcher" />
             <option value="$PROJECT_DIR$/providers/policy" />
-            <option value="$PROJECT_DIR$/providers/policy/claims-checker" />
             <option value="$PROJECT_DIR$/providers/policy/policy-always-true" />
             <option value="$PROJECT_DIR$/providers/policy/policy-evaluation" />
             <option value="$PROJECT_DIR$/providers/provider" />

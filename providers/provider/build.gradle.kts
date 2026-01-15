@@ -81,7 +81,6 @@ dependencies {
 
     // identification
     implementation(project(":iam-identity"));
-    implementation(project(":providers:policy:claims-checker"));
     implementation(project(":providers:policy:policy-evaluation"));
     implementation(project(":providers:policy:policy-always-true"));
 

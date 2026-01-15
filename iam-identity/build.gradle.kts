@@ -22,5 +22,5 @@ dependencies {
     implementation(libs.jakarta.rsApi)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.http)
-
+    implementation(project(":commons"))
 }

@@ -4,3 +4,4 @@ org.eclipse.edc.heleade.policy.extension.evaluation.country.CountryPolicyExtensi
 org.eclipse.edc.heleade.policy.extension.evaluation.timeinterval.TimeIntervalPolicyExtension
 org.eclipse.edc.heleade.policy.extension.evaluation.participantid.ParticipantIdPolicyExtension
 org.eclipse.edc.heleade.policy.extension.evaluation.dynamicpolicy.DynamicPolicyExtension
+org.eclipse.edc.heleade.policy.extension.checker.ClaimCheckerExtension

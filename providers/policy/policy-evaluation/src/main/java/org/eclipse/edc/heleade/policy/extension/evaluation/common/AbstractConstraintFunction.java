@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.heleade.policy.extension.evaluation.common;
 
-import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
+import org.eclipse.edc.heleade.commons.verification.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.participant.spi.ParticipantAgentPolicyContext;
 import org.eclipse.edc.policy.engine.spi.AtomicConstraintRuleFunction;
 import org.eclipse.edc.policy.model.Operator;

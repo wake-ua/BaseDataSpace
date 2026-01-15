@@ -12,8 +12,9 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.claims.checker;
+package org.eclipse.edc.heleade.policy.extension.checker;
 
+import org.eclipse.edc.heleade.commons.verification.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -33,8 +34,11 @@ public class ClaimCheckerExtension implements ServiceExtension {
      */
     @Provider
     public FcParticipantClaimChecker initializeService(ServiceExtensionContext context) {
-        var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url");
         var monitor = context.getMonitor();
+        var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url");
+        if (participantRegistryUrl == null) {
+            return null;
+        }
         return new FcParticipantClaimChecker(monitor, participantRegistryUrl);
     }
 

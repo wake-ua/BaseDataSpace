@@ -36,8 +36,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.eclipse.edc.heleade.commons.verify.claims.Claims.verifyClaims;
-import static org.eclipse.edc.heleade.commons.verify.claims.Claims.verifySignature;
+import static org.eclipse.edc.heleade.commons.verification.claims.Claims.verifyClaims;
+import static org.eclipse.edc.heleade.commons.verification.claims.Claims.verifySignature;
 
 
 /**

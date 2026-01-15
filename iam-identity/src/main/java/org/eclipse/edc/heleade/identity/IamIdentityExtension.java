@@ -112,7 +112,11 @@ public class IamIdentityExtension implements ServiceExtension {
         IamIdentityService iamIdentityService = new IamIdentityService(typeManager, claims, participantId, signedClaims);
         context.registerService(IdentityService.class, iamIdentityService);
 
-        webService.registerResource(new IamIdentityApiController(iamIdentityService, context.getMonitor()));
+        webService.registerResource(
+                new IamIdentityApiController(iamIdentityService,
+                participantRegistryUrl,
+                context.getMonitor())
+        );
 
     }
 

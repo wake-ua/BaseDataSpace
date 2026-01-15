@@ -12,12 +12,14 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.claims.checker;
+package org.eclipse.edc.heleade.commons.verification.claims.checker;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eclipse.edc.heleade.commons.verification.claims.Claims;
 import org.eclipse.edc.spi.monitor.Monitor;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -45,80 +47,34 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
         this.httpClient = HttpClient.newHttpClient();
     }
 
-
     /**
      * Verifies the claims of a participant against the provided signed claims and participant claims data.
      * This method sends an HTTP POST request to the verification endpoint and processes the response
      * to determine the validity of the participant's signature and claims.
      *
+     * @param baseUrl the ur of the FC catalog
      * @param participantId the unique identifier of the participant
      * @param signedClaims the signed claims associated with the participant
      * @param participantClaims a map containing the participant's specific claims as key-value pairs
-     * @return {@code true} if both the signature verification and claims verification are successful,
-     *         {@code false} otherwise
+     * @param httpClient an http client to perform the requests
+     * @return a {@link VerificationResult} object indicating the success or failure of
+     *         signature and claims verification
+     * @throws IOException failure during http request
+     * @throws InterruptedException failure during http request
      */
-    @Override
-    public boolean verifyClaims(String participantId, String signedClaims, Map<String, Object> participantClaims) {
+    public static VerificationResult verifyClaims(String baseUrl, String participantId, String signedClaims, Map<String, Object> participantClaims, HttpClient httpClient) throws IOException, InterruptedException {
+        String url = baseUrl + "verification";
 
-        try {
+        String json = Claims.getJsonBody(participantId, signedClaims, participantClaims);
+        var request = HttpRequest.newBuilder()
+                   .uri(URI.create(url))
+                   .header("Content-Type", "application/json")
+                   .POST(HttpRequest.BodyPublishers.ofString(json))
+                   .build();
 
-            String url = baseUrl + "verification";
-            monitor.info("Verifying participant node: " + participantId);
+        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            String json = getJsonBody(participantId, signedClaims, participantClaims);
-            var request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-
-            var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            VerificationResult result = parseVerificationResponse(response);
-
-            if (!result.signatureResult()) {
-                monitor.warning("Signature verification failed");
-            }
-
-            if (!result.claimsResult()) {
-                monitor.warning("Claims verification failed");
-            }
-
-            return result.signatureResult() && result.claimsResult();
-
-        } catch (Exception e) {
-            monitor.warning("Failed to verify claims" + e.getMessage());
-            return false;
-        }
-
-    }
-
-    /**
-     * Constructs a JSON string representation of the provided participant information and claims.
-     *
-     * @param participantId the unique identifier of the participant
-     * @param signedClaims the signed claims associated with the participant
-     * @param participantClaims a map containing participant-specific claims as key-value pairs
-     * @return a JSON string representation of the provided input data
-     * @throws RuntimeException if an error occurs while building the JSON string
-     */
-    public String getJsonBody(String participantId, String signedClaims, Map<String, Object> participantClaims) {
-        try {
-            Map<String, Object> body = Map.of(
-                    "participantId", participantId,
-                    "signedClaims", signedClaims,
-                    "claims", participantClaims,
-                    "@context", Map.of(
-                            "@vocab", "https://w3id.org/edc/v0.0.1/ns/"
-                    )
-            );
-
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(body);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to build JSON body", e);
-        }
+        return parseVerificationResponse(response);
     }
 
     /**
@@ -129,7 +85,7 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
      * @return a {@link VerificationResult} object indicating the success or failure of
      *         signature and claims verification
      */
-    private VerificationResult parseVerificationResponse(HttpResponse<String> response) {
+    public static VerificationResult parseVerificationResponse(HttpResponse<String> response) {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -155,9 +111,38 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
 
     }
 
+    /**
+     * Verifies the claims of a participant against the provided signed claims and participant claims data.
+     * This method sends an HTTP POST request to the verification endpoint and processes the response
+     * to determine the validity of the participant's signature and claims.
+     *
+     * @param participantId the unique identifier of the participant
+     * @param signedClaims the signed claims associated with the participant
+     * @param participantClaims a map containing the participant's specific claims as key-value pairs
+     * @return {@code true} if both the signature verification and claims verification are successful,
+     *         {@code false} otherwise
+     */
+    @Override
+    public boolean verifyClaims(String participantId, String signedClaims, Map<String, Object> participantClaims) {
+        try {
 
+            VerificationResult result = verifyClaims(this.baseUrl, participantId, signedClaims, participantClaims, this.httpClient);
 
+            if (!result.signatureResult()) {
+                monitor.warning("Signature verification failed");
+            }
 
+            if (!result.claimsResult()) {
+                monitor.warning("Claims verification failed");
+            }
 
+            return result.signatureResult() && result.claimsResult();
+
+        } catch (Exception e) {
+            monitor.warning("Failed to verify claims" + e.getMessage());
+            return false;
+        }
+
+    }
 
 }

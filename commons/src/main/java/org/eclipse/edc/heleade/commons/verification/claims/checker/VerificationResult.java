@@ -12,7 +12,13 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.claims.checker;
+package org.eclipse.edc.heleade.commons.verification.claims.checker;
+
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 /**
  *  * Represents the result of a verification process including signature and claim validation.
@@ -37,5 +43,27 @@ public record VerificationResult(boolean signatureResult, boolean claimsResult) 
      *                        a participant against a set of expected conditions or standards.
      */
     public VerificationResult {
+    }
+
+    /**
+     * Converts the current instance into a JsonObject representation containing its properties.
+     *
+     * @return a JsonObject containing the attributes of the instance
+     */
+    public JsonObject asJsonObject() {
+        try {
+            // Create a JSON object with the TargetNode properties
+            JsonObjectBuilder builder = Json.createObjectBuilder()
+                    .add(EDC_NAMESPACE + "signatureResult", this.signatureResult())
+                    .add(EDC_NAMESPACE + "claimsResult", this.claimsResult());
+
+            // Build and return the JSON object
+            JsonObject jsonObject = builder.build();
+
+            return jsonObject;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting VerificationResult to JsonObject", e);
+        }
     }
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.commons.verify.claims;
+package org.eclipse.edc.heleade.commons.verification.claims;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -89,6 +89,34 @@ public class Claims {
      */
     public static boolean verifyClaims(Map<String, Object> participantClaims, Map<String, Object> participantClaimsFromFc) {
         return Objects.equals(participantClaims, participantClaimsFromFc);
+    }
+
+    /**
+     * Constructs a JSON string representation of the provided participant information and claims.
+     *
+     * @param participantId the unique identifier of the participant
+     * @param signedClaims the signed claims associated with the participant
+     * @param participantClaims a map containing participant-specific claims as key-value pairs
+     * @return a JSON string representation of the provided input data
+     * @throws RuntimeException if an error occurs while building the JSON string
+     */
+    public static String getJsonBody(String participantId, String signedClaims, Map<String, Object> participantClaims) {
+        try {
+            Map<String, Object> body = Map.of(
+                    "participantId", participantId,
+                    "signedClaims", signedClaims,
+                    "claims", participantClaims,
+                    "@context", Map.of(
+                            "@vocab", "https://w3id.org/edc/v0.0.1/ns/"
+                    )
+            );
+
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(body);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to build JSON body", e);
+        }
     }
 }
 

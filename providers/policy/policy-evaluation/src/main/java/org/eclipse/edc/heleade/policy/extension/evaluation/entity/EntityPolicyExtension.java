@@ -15,7 +15,7 @@
 package org.eclipse.edc.heleade.policy.extension.evaluation.entity;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
-import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
+import org.eclipse.edc.heleade.commons.verification.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.participant.spi.ParticipantAgentPolicyContext;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
