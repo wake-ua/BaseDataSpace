@@ -7,8 +7,8 @@ services:
     container_name: provider-idearium
     image: ghcr.io/wake-ua/provider-base:latest
     volumes:
-      - ./config/idearium.properties:/provider-base-docker-configuration.properties:ro
-      - ./config/idearium_creds.json:/creds.json:ro
+      - ./resources/configuration/configuration.properties:/provider-base-docker-configuration.properties:ro
+      - ./resources/identity:/identity:ro
     ports:
       - "15191:15191"
       - "15193:15193"

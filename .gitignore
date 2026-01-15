@@ -62,3 +62,5 @@ deployment/samples-server/samples/provider-ebird/*
 
 providers/provider-idearium/scripts/__pycache__
 providers/provider-idearium/.env
+
+*.pem

@@ -79,7 +79,12 @@ dependencies {
     implementation(libs.edc.sql.core)
     implementation(libs.postgres)
 
+    // identification
     implementation(project(":iam-identity"));
+    implementation(project(":providers:policy:claims-checker"));
+    implementation(project(":providers:policy:policy-evaluation"));
+    implementation(project(":providers:policy:policy-always-true"));
+
     // test
     testImplementation(libs.restAssured)
     testImplementation(libs.awaitility)

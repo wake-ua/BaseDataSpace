@@ -6,6 +6,7 @@ import logging
 import glob
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+import time
 
 logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(levelname)s - %(message)s")
 load_dotenv()
@@ -101,7 +102,9 @@ def main():
     logging.info("**** " + DATASET_LIST + " ****")
     json_names = get_dataset_json_list(DATASET_LIST)
     for json_name in json_names:
-        json_url = JSON_URL + json_name.replace('png_', 'jpg_')
+        json_url = JSON_URL + json_name
+        # sleep
+        time.sleep(1)
         logging.info('\n\t\t --------- ' + json_name + ' --------- ')
         json_text = get_request(json_url, TOKEN_KEY, TOKEN_VALUE).decode("utf-8")
         data = json.loads(json_text)

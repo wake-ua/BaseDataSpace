@@ -27,7 +27,7 @@ def send_request(url, payload, apikey, id=None):
             return response.json()['@id']
 
         if response.status_code == 409:
-            logging.info("Conflict detected (409). Retrying with PUT... ({id})")
+            logging.info(f"Conflict detected (409). Retrying with PUT... ")
             if id:
                 response = requests.put(url + '/' + id, headers=headers, json=payload)
             else:
@@ -37,8 +37,8 @@ def send_request(url, payload, apikey, id=None):
                 logging.info("PUT Response: " + response.text)
             if response.status_code == 204:
                 return payload["@id"]
-        return None
-        #response.raise_for_status()
+        # return None
+        response.raise_for_status()
     except requests.RequestException as e:
         logging.exception(e)
         return None
