@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.identity.extension;
+package org.eclipse.edc.identity.load;
 
 import org.eclipse.edc.spi.monitor.Monitor;
 
@@ -73,6 +73,16 @@ public interface ParticipantIdentityLoader {
      */
     String signClaims(Map<String, Object> claims, PrivateKey privateKey, Monitor monitor);
 
-
+    /**
+     * Validates the configuration parameters required for participant identity loading and processing.
+     * This method checks whether the given paths and URLs are valid and correctly specified.
+     *
+     * @param claimsPath the file path to the claims file
+     * @param participantRegistryUrl the URL of the participant registry
+     * @param privateKeyPath the file path to the private key file
+     * @param publicKeyPath the file path to the public key file
+     * @return true if the provided configurations are valid, false otherwise
+     */
+    boolean checkConfigurations(String claimsPath, String participantRegistryUrl, String privateKeyPath, String publicKeyPath);
 
 }

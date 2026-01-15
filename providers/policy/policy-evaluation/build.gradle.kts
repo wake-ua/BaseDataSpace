@@ -23,6 +23,6 @@ dependencies {
 
     implementation(libs.edc.control.plane.core)
     implementation(project(":providers:policy:claims-checker"));
-
+    implementation(project(":iam-identity"));
 
 }

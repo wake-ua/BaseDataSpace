@@ -12,8 +12,11 @@
  *
  */
 
-package org.eclipse.edc.identity.extension;
+package org.eclipse.edc.identity;
 
+import org.eclipse.edc.identity.api.IamIdentityApiController;
+import org.eclipse.edc.identity.load.FileParticipantIdentityLoader;
+import org.eclipse.edc.identity.load.ParticipantIdentityLoader;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
@@ -24,10 +27,12 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
+import org.eclipse.edc.web.spi.WebService;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Base64;
+import java.util.Map;
 
 /**
  * The {@code IamIdentityExtension} class is a service extension that integrates an IAM-based
@@ -71,30 +76,38 @@ public class IamIdentityExtension implements ServiceExtension {
         var monitor = context.getMonitor();
         monitor.info("Initializing iam-identity extension");
 
-        var claimsPath = context.getConfig().getString("edc.participant.claims");
-        var participantPrivateKeyPath = context.getConfig().getString("edc.participant.private.key");
-        var participantPublicKeyPath = context.getConfig().getString("edc.participant.public.key");
-        var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url");
+
+        var claimsPath = context.getConfig().getString("edc.participant.claims", null);
+        var participantPrivateKeyPath = context.getConfig().getString("edc.participant.private.key", null);
+        var participantPublicKeyPath = context.getConfig().getString("edc.participant.public.key", null);
+        var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url", null);
         var participantId = context.getParticipantId();
 
+
         ParticipantIdentityLoader loader = new FileParticipantIdentityLoader(monitor, typeManager.getMapper());
-        var claims = loader.loadClaims(claimsPath);
+        boolean checkConfiguration = loader.checkConfigurations(claimsPath, participantRegistryUrl, participantPrivateKeyPath, participantPublicKeyPath);
 
+        Map<String, Object> claims = Map.of();
+        String signedClaims = null;
+        if (checkConfiguration) {
+            claims = loader.loadClaims(claimsPath);
+            PrivateKey participantPrivateKey = loader.loadPrivateKey(participantPrivateKeyPath);
+            PublicKey participantPublicKey = loader.loadPublicKey(participantPublicKeyPath);
+            String base64PublicKey = Base64.getEncoder().encodeToString(participantPublicKey.getEncoded());
+            signedClaims = loader.signClaims(claims, participantPrivateKey, monitor);
+            boolean publicKeyMatchesPrivateKey = loader.publicKeyMatchesPrivateKey(participantPublicKey, participantPrivateKey);
 
-        PrivateKey participantPrivateKey = loader.loadPrivateKey(participantPrivateKeyPath);
-        PublicKey participantPublicKey = loader.loadPublicKey(participantPublicKeyPath);
-        String base64PublicKey = Base64.getEncoder().encodeToString(participantPublicKey.getEncoded());
-        String signedClaims = loader.signClaims(claims, participantPrivateKey, monitor);
-        boolean publicKeyMatchesPrivateKey = loader.publicKeyMatchesPrivateKey(participantPublicKey, participantPrivateKey);
-
-        if (publicKeyMatchesPrivateKey) {
-            monitor.info("Private && Public keys has been successfully validated!");
-            monitor.info("Claims has been successfully signed:  " + signedClaims);
-            monitor.info("Claims: " + claims);
-            monitor.info("Public key: " + base64PublicKey);
-            monitor.info("Participant registry url: " + participantRegistryUrl);
+            if (publicKeyMatchesPrivateKey) {
+                monitor.info("Private && Public keys has been successfully validated!");
+                monitor.info("Claims has been successfully signed:  " + signedClaims);
+                monitor.info("Claims: " + claims);
+                monitor.info("Public key: " + base64PublicKey);
+                monitor.info("Participant registry url: " + participantRegistryUrl);
+            }
         }
 
+
+        webService.registerResource(new IamIdentityApiController(context.getMonitor()));
 
         context.registerService(
                 IdentityService.class,
@@ -110,4 +123,9 @@ public class IamIdentityExtension implements ServiceExtension {
     public AudienceResolver audienceResolver() {
         return (msg) -> Result.success(msg.getCounterPartyAddress());
     }
+
+    @Inject
+    WebService webService;
+
+
 }

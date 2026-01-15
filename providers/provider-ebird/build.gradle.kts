@@ -24,9 +24,6 @@ dependencies {
     implementation(libs.edc.http)
     api(libs.edc.data.plane.spi)
     api(libs.edc.json.ld.spi)
-    implementation(project(":providers:policy:claims-checker"));
-    implementation(project(":providers:policy:policy-evaluation"));
-    implementation(project(":providers:policy:policy-always-true"));
     runtimeOnly(project(":providers:provider"))
 
 }

@@ -57,22 +57,12 @@ public class PolicyCommon {
 
 
     public static void generateKeys(String keyPath, String nodeDirectoryPath) throws Exception {
-        ProcessBuilder pb;
-
-        if (nodeDirectoryPath == null || nodeDirectoryPath.isBlank()) {
-            pb = new ProcessBuilder(
-                    "bash",
-                    "src/test/resources/keys/generate-keys.sh",
-                    keyPath
-            );
-        } else {
-            pb = new ProcessBuilder(
-                    "bash",
-                    "src/test/resources/keys/generate-keys.sh",
-                    keyPath,
-                    nodeDirectoryPath
-            );
-        }
+        ProcessBuilder pb = new ProcessBuilder(
+                "bash",
+                "src/test/resources/keys/generate-keys.sh",
+                keyPath,
+                nodeDirectoryPath
+        );
 
         pb.inheritIO();
 

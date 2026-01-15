@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.identity.extension;
+package org.eclipse.edc.identity.load;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +39,7 @@ import java.util.Map;
  * This implementation primarily works with JSON-encoded claims files and PEM-encoded
  * private keys in PKCS #8 format. It also provides logging for diagnostics and error handling.
  */
-public class FileParticipantIdentityLoader implements  ParticipantIdentityLoader {
+public class FileParticipantIdentityLoader implements ParticipantIdentityLoader {
     /**
      * An instance of {@link ObjectMapper} used for serializing and deserializing JSON data.
      * It is a core dependency for converting objects to JSON and vice versa during
@@ -82,7 +82,8 @@ public class FileParticipantIdentityLoader implements  ParticipantIdentityLoader
         var file = new File(path);
         try {
             monitor.debug("Loading claims from: " + file.getAbsolutePath());
-            return mapper.readValue(file, new TypeReference<Map<String, Object>>() {});
+            return mapper.readValue(file, new TypeReference<Map<String, Object>>() {
+            });
         } catch (Exception e) {
             monitor.severe("Error reading claims from file: " + file.getAbsolutePath(), e);
             return Map.of();
@@ -192,8 +193,32 @@ public class FileParticipantIdentityLoader implements  ParticipantIdentityLoader
     }
 
 
+    public boolean checkConfigurations(String claimsPath, String participantRegistryUrl, String privateKeyPath, String publicKeyPath) {
 
+        boolean configurationOk = true;
 
+        if (claimsPath == null) {
+            monitor.warning("edc.participant.claims is null");
+            configurationOk = false;
+        }
+
+        if (privateKeyPath == null) {
+            monitor.warning("edc.participant.private.key is null");
+            configurationOk = false;
+        }
+
+        if (publicKeyPath == null) {
+            monitor.warning("edc.participant.public.key is null");
+            configurationOk = false;
+        }
+
+        if (participantRegistryUrl == null) {
+            monitor.warning("edc.participant.registry.url is null");
+            configurationOk = false;
+        }
+
+        return configurationOk;
+    }
 
 
 }

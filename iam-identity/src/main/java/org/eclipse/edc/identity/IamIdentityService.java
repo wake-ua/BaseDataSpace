@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.identity.extension;
+package org.eclipse.edc.identity;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.iam.TokenParameters;

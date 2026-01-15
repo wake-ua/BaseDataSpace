@@ -106,7 +106,6 @@ public class Policy01BasicTest {
         try {
             generateKeys(CONSUMER_KEY_PATH, CONSUMER_NODE_RELATIVE_PATH);
             generateKeys(PROVIDER_KEY_PATH, PROVIDER_NODE_RELATIVE_PATH);
-            generateKeys(FC_KEY_PATH, "");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
