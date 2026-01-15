@@ -31,7 +31,7 @@ services:
     build: ./providers/provider-base
     restart: on-failure:5
     volumes:
-      - ./resources/identity:/identity
+      - ./providers/provider-base/resources/identity:/identity
     networks:
       - base-ds-network
 
@@ -43,7 +43,7 @@ services:
       - "29194:29194"
     build: ./consumers/consumer-base
     volumes:
-      - ./resources/identity:/identity
+      - ./consumers/consumer-base/resources/identity:/identity
     networks:
       - base-ds-network
 

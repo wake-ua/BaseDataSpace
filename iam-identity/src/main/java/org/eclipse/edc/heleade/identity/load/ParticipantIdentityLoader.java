@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.identity.load;
+package org.eclipse.edc.heleade.identity.load;
 
 import org.eclipse.edc.spi.monitor.Monitor;
 

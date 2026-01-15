@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.identity.load;
+package org.eclipse.edc.heleade.identity.load;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

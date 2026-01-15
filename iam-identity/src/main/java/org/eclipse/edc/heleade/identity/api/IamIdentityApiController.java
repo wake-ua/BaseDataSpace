@@ -12,13 +12,14 @@
  *
  */
 
-package org.eclipse.edc.identity.api;
+package org.eclipse.edc.heleade.identity.api;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.eclipse.edc.heleade.identity.IamIdentityService;
 import org.eclipse.edc.spi.monitor.Monitor;
 
 /**
@@ -30,17 +31,19 @@ import org.eclipse.edc.spi.monitor.Monitor;
 public class IamIdentityApiController {
 
     private final Monitor monitor;
+    private final IamIdentityService iamIdentityService;
 
     /**
      * Instantiates the controller for the verify identity endpoint
      *
+     * @param iamIdentityService identity service
      * @param monitor logger object
      */
-    public IamIdentityApiController(Monitor monitor) {
+    public IamIdentityApiController(IamIdentityService iamIdentityService, Monitor monitor) {
+        this.iamIdentityService = iamIdentityService;
         this.monitor = monitor;
     }
-
-
+    
     /**
      * Defines the verify identity endpoint
      *
@@ -49,7 +52,8 @@ public class IamIdentityApiController {
     @GET
     @Path("/verify-identity")
     public String verify() {
-        monitor.info("Verify received a health request");
+        monitor.debug("Verify identity received a request");
+
         return "{\"response\":\"IdentityProvider: I'm alive!\"}";
     }
 }

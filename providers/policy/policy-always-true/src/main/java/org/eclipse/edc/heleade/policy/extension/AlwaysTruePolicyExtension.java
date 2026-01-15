@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.policy.extension;
+package org.eclipse.edc.heleade.policy.extension;
 
 import org.eclipse.edc.connector.controlplane.policy.spi.PolicyDefinition;
 import org.eclipse.edc.connector.controlplane.services.spi.policydefinition.PolicyDefinitionService;
@@ -24,7 +24,7 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.system.ServiceExtension;
 
-import static org.eclipse.edc.policy.extension.AlwaysTruePolicyExtension.NAME;
+import static org.eclipse.edc.heleade.policy.extension.AlwaysTruePolicyExtension.NAME;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
 
 

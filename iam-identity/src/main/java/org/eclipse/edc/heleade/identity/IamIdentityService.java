@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.identity;
+package org.eclipse.edc.heleade.identity;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.iam.TokenParameters;
@@ -98,6 +98,32 @@ public class IamIdentityService implements IdentityService {
         this.signedClaims = signedClaims;
     }
 
+    /**
+     * Returns the claims
+     *
+     * @return a {@link Map} representing the claims
+     */
+    public Map<String, Object> getClaims() {
+        return claims;
+    }
+
+    /**
+     * Returns the client id
+     *
+     * @return a {@link String} containing the participant id
+     */
+    public String getClientId() {
+        return clientId;
+    }
+
+    /**
+     * Returns the signed claims
+     *
+     * @return a {@link String} representing the signed claims
+     */
+    public String getSignedClaims() {
+        return signedClaims;
+    }
 
     /**
      * Generates and returns a client credentials token representation based on the provided token parameters.

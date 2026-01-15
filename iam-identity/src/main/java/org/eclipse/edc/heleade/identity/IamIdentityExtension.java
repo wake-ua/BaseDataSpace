@@ -12,11 +12,11 @@
  *
  */
 
-package org.eclipse.edc.identity;
+package org.eclipse.edc.heleade.identity;
 
-import org.eclipse.edc.identity.api.IamIdentityApiController;
-import org.eclipse.edc.identity.load.FileParticipantIdentityLoader;
-import org.eclipse.edc.identity.load.ParticipantIdentityLoader;
+import org.eclipse.edc.heleade.identity.api.IamIdentityApiController;
+import org.eclipse.edc.heleade.identity.load.FileParticipantIdentityLoader;
+import org.eclipse.edc.heleade.identity.load.ParticipantIdentityLoader;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
@@ -64,6 +64,9 @@ public class IamIdentityExtension implements ServiceExtension {
     @Inject
     private TypeManager typeManager;
 
+    @Inject
+    WebService webService;
+
 
     @Override
     public String name() {
@@ -106,12 +109,11 @@ public class IamIdentityExtension implements ServiceExtension {
             }
         }
 
+        IamIdentityService iamIdentityService = new IamIdentityService(typeManager, claims, participantId, signedClaims);
+        context.registerService(IdentityService.class, iamIdentityService);
 
-        webService.registerResource(new IamIdentityApiController(context.getMonitor()));
+        webService.registerResource(new IamIdentityApiController(iamIdentityService, context.getMonitor()));
 
-        context.registerService(
-                IdentityService.class,
-                new IamIdentityService(typeManager, claims, participantId, signedClaims));
     }
 
     /**
@@ -123,9 +125,5 @@ public class IamIdentityExtension implements ServiceExtension {
     public AudienceResolver audienceResolver() {
         return (msg) -> Result.success(msg.getCounterPartyAddress());
     }
-
-    @Inject
-    WebService webService;
-
 
 }
