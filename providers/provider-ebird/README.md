@@ -211,7 +211,7 @@ To verify the status of the ongoing negotiation, use the following Postman reque
 You must provide the negotiation ID (`NEGOTATION_ID`) returned in **step 3**. This value must be placed inside the request body, as shown below (replace `{{NEGOTATION_ID}}` with the actual value returned previously (e.g., `96ac9569-98ef-400d-8b68-03d1f64ac84d`)):
 ```json
 {
-    "@id": "{{NEGOTATION_ID}}",
+    "@id": "{{NEGOTATION_ID}}"
 }
 ```
 

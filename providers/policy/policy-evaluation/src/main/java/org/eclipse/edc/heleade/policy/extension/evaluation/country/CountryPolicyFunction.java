@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.evaluation.location;
+package org.eclipse.edc.heleade.policy.extension.evaluation.country;
 
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.heleade.policy.extension.evaluation.common.AbstractConstraintFunction;
@@ -23,24 +23,23 @@ import org.eclipse.edc.spi.monitor.Monitor;
 
 /**
  *
- * Defines a policy function that evaluates the location policy.
+ * Defines a policy function that evaluates the country's constraint.
  */
-public class LocationPolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext>  extends AbstractConstraintFunction<R, C> {
+public class CountryPolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext>  extends AbstractConstraintFunction<R, C> {
 
-    private static final String PROBLEM_PREFIX = "Failing evaluation because of invalid entityType constraint. ";
+    private static final String PROBLEM_PREFIX = "Failing evaluation because of invalid country constraint. ";
 
     /**
-     * This function is responsible for evaluating a participant’s location-related claim.
+     * This function is responsible for evaluating a participant’s referring connector-related claim.
      *
      * @param monitor The monitor used for logging
      * @param leftOperand The claim key of the claim to check
      * @param participantClaimChecker The participant claim checker instance
      *
      */
-    public LocationPolicyFunction(Monitor monitor, String leftOperand, FcParticipantClaimChecker participantClaimChecker) {
+    public CountryPolicyFunction(Monitor monitor, String leftOperand, FcParticipantClaimChecker participantClaimChecker) {
         super(monitor, leftOperand, participantClaimChecker);
     }
-
 
     @Override
     protected boolean evaluateClaim(Operator operator, String participantClaimValue, Object rightValue, R rule, C context) {
@@ -49,6 +48,9 @@ public class LocationPolicyFunction<R extends Rule, C extends ParticipantAgentPo
             monitor.severe(PROBLEM_PREFIX + "Right operand must be a String");
             return false;
         }
+
         return evaluateStringOperator(operator, participantClaimValue, rightValueString, PROBLEM_PREFIX);
+
+
     }
 }

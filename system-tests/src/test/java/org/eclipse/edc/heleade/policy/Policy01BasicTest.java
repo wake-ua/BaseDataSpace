@@ -58,27 +58,32 @@ public class Policy01BasicTest {
     private static final String US = "us";
     private static final String ENTITY_TYPE_PUBLIC = "public";
     private static final String ENTITY_TYPE_PRIVATE = "private";
-    private static final String IPS_OK = "219.208.53.217,219.208.53.219";
-    private static final String IPS_KO = "209.202.53.217,229.208.53.666";
     private static final String N_EMPLOYEES_OK = "100";
     private static final String N_EMPLOYEES_KO = "7000";
     private static final String LEI_CODE_OK = "1000";
     private static final String LEI_CODE_KO = "70";
     private static final String INVALID_VALUE = "abc";
+    private static final String ALLOWED_COUNTRIES = "esp,che,fra,prt";
+    private static final String ALLOWED_COUNTRY = "esp";
+    private static final String ALLOWED_PARTICIPANT = "consumer";
+    private static final String ALLOWED_PARTICIPANTS = "consumer,provider-ebird,consumer-base";
     private static final String LEFT_OPERAND_LOCATION = "location";
     private static final String LEFT_OPERAND_ENTITY_TYPE = "entity_type";
-    private static final String LEFT_OPERAND_IP_CONNECTOR = "ip_connector";
+    private static final String LEFT_OPERAND_PARTICIPANT_ID = "participant_id";
+    private static final String LEFT_OPERAND_COUNTRY = "country";
     private static final String LEFT_OPERAND_POLICY_EVALUATION_TIME = "policy_evaluation_time";
     private static final String POLICY_OPEN_ID = "always-true";
     private static final String POLICY_LOCATION_EU_ID = "policy-location-eu";
     private static final String POLICY_LOCATION_US_ID = "policy-location-us";
     private static final String POLICY_ENTITY_TYPE_PUBLIC_ID = "policy-entity-type-public";
-    private static final String POLICY_IP_OK_CONNECTOR_ID = "policy-ip-connector-ok";
-    private static final String POLICY_IP_KO_CONNECTOR_ID = "policy-ip-connector-ko";
+    private static final String POLICY_COUNTRY_EQ_ID = "policy-country-connector-eq";
+    private static final String POLICY_COUNTRY_IN_ID = "policy-country-connector-in";
     private static final String POLICY_TIME_CHECKER_LT_ID = "policy-time-checker-lt";
     private static final String POLICY_TIME_CHECKER_GT_ID = "policy-time-checker-gt";
     private static final String POLICY_TIME_CHECKER_NEQ_ID = "policy-time-checker-neq";
     private static final String POLICY_TIME_CHECKER_INVALID_ID = "policy-time-checker-invalid";
+    private static final String POLICY_PARTICIPANT_ID_EQ_ID = "policy-participant-id-eq";
+    private static final String POLICY_PARTICIPANT_ID_IN_ID = "policy-participant-id-in";
     private static final String POLICY_COMPLEX_AND_ID = "policy-complex-and";
     private static final String POLICY_COMPLEX_OR_ID = "policy-complex-or";
     private static final String POLICY_COMPLEX_AND_ID_TERMINATED = "policy-complex-and-ko";
@@ -175,28 +180,55 @@ public class Policy01BasicTest {
     }
 
     @Test
-    void testIpConnectorFinalized() {
+    void testCountryInFinalized() {
         String id = UUID.randomUUID().toString();
         createAssetWithId(id);
-        createPolicyWithParams(POLICY_IP_OK_CONNECTOR_ID, LEFT_OPERAND_IP_CONNECTOR, IPS_OK, OPERATOR_IS_PART_OF);
-        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_IP_OK_CONNECTOR_ID, id);
+        createPolicyWithParams(POLICY_COUNTRY_IN_ID, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRIES, OPERATOR_IS_PART_OF);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COUNTRY_IN_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_IP_CONNECTOR, IPS_OK, OPERATOR_IS_PART_OF);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRIES, OPERATOR_IS_PART_OF);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
 
     @Test
-    void testIpConnectorTerminated() {
+    void testCountryEqFinalized() {
         String id = UUID.randomUUID().toString();
         createAssetWithId(id);
-        createPolicyWithParams(POLICY_IP_KO_CONNECTOR_ID, LEFT_OPERAND_IP_CONNECTOR, IPS_KO, OPERATOR_IS_PART_OF);
-        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_IP_KO_CONNECTOR_ID, id);
+        createPolicyWithParams(POLICY_COUNTRY_EQ_ID, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRY, OPERATOR_EQUAL);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COUNTRY_EQ_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_IP_CONNECTOR, IPS_KO, OPERATOR_IS_PART_OF);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRY, OPERATOR_EQUAL);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
-                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("TERMINATED"));
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
+
+
+    @Test
+    void testParticipantIdEqFinalized() {
+        String id = UUID.randomUUID().toString();
+        createAssetWithId(id);
+        createPolicyWithParams(POLICY_PARTICIPANT_ID_EQ_ID, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANT, OPERATOR_EQUAL);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_PARTICIPANT_ID_EQ_ID, id);
+        var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANT, OPERATOR_EQUAL);
+        await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
+    }
+
+
+    @Test
+    void testParticipantIdInFinalized() {
+        String id = UUID.randomUUID().toString();
+        createAssetWithId(id);
+        createPolicyWithParams(POLICY_PARTICIPANT_ID_IN_ID, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANTS, OPERATOR_IS_PART_OF);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_PARTICIPANT_ID_IN_ID, id);
+        var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANTS, OPERATOR_IS_PART_OF);
+        await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
+    }
+
 
     @Test
     void testTimePolicyCheckLtShouldBeFinalized() {

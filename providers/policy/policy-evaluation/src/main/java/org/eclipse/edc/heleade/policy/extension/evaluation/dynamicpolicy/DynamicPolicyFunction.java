@@ -29,6 +29,9 @@ import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.g
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.isNumericComparison;
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.parseNumericValues;
 
+
+
+
 /**
  * The {@code DynamicPolicyFunction} class represents a dynamic policy evaluation mechanism used to validate
  * the compliance of a participant's claims with specific rules and conditions. It implements the
@@ -67,20 +70,29 @@ public class DynamicPolicyFunction<R extends Rule, C extends ParticipantAgentPol
 
     @Override
     public boolean evaluate(Object leftValue, Operator operator, Object rightValue, R rule, C context) {
-        var participantClaims = context.participantAgent().getClaims();
-        var participantId = participantClaims.get("client_id").toString();
+        var participantData = context.participantAgent().getClaims();
+        var participantId = participantData.get("client_id").toString();
 
-        var participantSignedClaims = participantClaims.get("signedClaims").toString();
-        Map<String, Object> participantClaimsMap = (Map<String, Object>) participantClaims.get("claims");
-        String leftOperatorValue = getLeftOperand(leftValue);
-        String participantClaimToVerify = getParticipantClaim(participantClaims, leftOperatorValue);
+        String participantSignedClaims = participantData.containsKey("signedClaims")
+                ? participantData.get("signedClaims").toString()
+                : null;
 
-        if (participantClaimToVerify == null) {
-            monitor.severe("Participant claim is null or is empty" + leftOperatorValue);
+        if (participantSignedClaims == null) {
+            monitor.severe("Participant signed claims are null");
             return false;
         }
 
-        boolean valid = participantClaimChecker.verifyClaims(participantId, participantSignedClaims, participantClaimsMap);
+        String leftValueString = getLeftOperand(leftValue);
+
+        Map<String, Object> participantClaims = (Map<String, Object>) participantData.get("claims");
+        String participantValueToVerify = getParticipantClaim(participantClaims, leftValueString);
+
+        if (participantValueToVerify == null) {
+            monitor.severe("Participant claim is null or is empty" + leftValue);
+            return false;
+        }
+
+        boolean valid = participantClaimChecker.verifyClaims(participantId, participantSignedClaims, participantClaims);
 
         if (!valid) {
             monitor.severe("Verification with participant registry failed");
@@ -88,7 +100,7 @@ public class DynamicPolicyFunction<R extends Rule, C extends ParticipantAgentPol
         }
 
         if (isNumericComparison(operator)) {
-            Double leftDouble = parseNumericValues(participantClaimToVerify);
+            Double leftDouble = parseNumericValues(participantValueToVerify);
             Double rightDouble = parseNumericValues(rightValue.toString());
 
             if (leftDouble == null || rightDouble == null) {
@@ -105,9 +117,9 @@ public class DynamicPolicyFunction<R extends Rule, C extends ParticipantAgentPol
         }
 
         return switch (operator) {
-            case EQ  -> Objects.equals(participantClaimToVerify, rightValue);
-            case NEQ -> !Objects.equals(participantClaimToVerify, rightValue);
-            case IN  -> participantClaimToVerify.contains(rightValue.toString());
+            case EQ  -> Objects.equals(participantValueToVerify, rightValue);
+            case NEQ -> !Objects.equals(participantValueToVerify, rightValue);
+            case IN  -> participantValueToVerify.contains(rightValue.toString());
             default -> false;
         };
 

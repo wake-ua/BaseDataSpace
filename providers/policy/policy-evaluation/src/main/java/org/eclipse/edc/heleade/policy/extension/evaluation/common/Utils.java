@@ -29,15 +29,14 @@ public class Utils {
      * The method checks if the claims map is valid and contains the specified claim key.
      * If the claim is not a non-blank string, the method returns {@code null}.
      *
-     * @param participantClaimsMap the map containing participant claims, where the claims are expected
+     * @param participantClaims the map containing participant claims, where the claims are expected
      *                             to be nested within a key named "claims"; must not be {@code null}.
      * @param claimKey             the key corresponding to the claim to retrieve; must not be {@code null}.
      * @return the claim value as a non-blank string if it exists and is valid;
      *         {@code null} otherwise.
      */
-    public static String getParticipantClaim(Map<String, Object> participantClaimsMap, String claimKey) {
+    public static String getParticipantClaim(Map<String, Object> participantClaims, String claimKey) {
 
-        Map<String, Object> participantClaims = (Map<String, Object>) participantClaimsMap.get("claims");
 
         if (participantClaims == null) {
             return null;

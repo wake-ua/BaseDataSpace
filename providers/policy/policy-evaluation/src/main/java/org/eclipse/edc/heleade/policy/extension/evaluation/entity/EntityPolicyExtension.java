@@ -66,7 +66,7 @@ public class EntityPolicyExtension implements ServiceExtension {
 
     @Override
     public String name() {
-        return "Policy function Entity-type extension";
+        return "Policy function entity_type constraint extension";
     }
 
 

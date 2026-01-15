@@ -21,8 +21,6 @@ import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.spi.monitor.Monitor;
 
-import static java.lang.String.format;
-
 /**
  * Defines a policy function that evaluates the entityType policy.
  */
@@ -34,32 +32,24 @@ public class EntityPolicyFunction<R extends Rule, C extends ParticipantAgentPoli
      * This function is responsible for evaluating a participant’s entity-related claim.
      *
      * @param monitor The monitor used for logging
-     * @param claimKey The claim key of the claim to check
+     * @param leftOperand The key of the claim to check
      * @param participantClaimChecker The participant claim checker instance
      *
      */
-    public EntityPolicyFunction(Monitor monitor, String claimKey, FcParticipantClaimChecker participantClaimChecker) {
-        super(monitor, claimKey, participantClaimChecker);
+    public EntityPolicyFunction(Monitor monitor, String leftOperand, FcParticipantClaimChecker participantClaimChecker) {
+        super(monitor, leftOperand, participantClaimChecker);
     }
 
 
 
     @Override
-    protected boolean evaluateClaim(Operator operator, String claimValue, Object rightValue, R rule, C context) {
+    protected boolean evaluateClaim(Operator operator, String participantClaimValue, Object rightValue, R rule, C context) {
 
-        if (!(rightValue instanceof String entityTypeString)) {
+        if (!(rightValue instanceof String rightValueString)) {
             monitor.severe(PROBLEM_PREFIX + "Right operand must be a String");
             return false;
         }
-
-        if (operator != Operator.EQ) {
-            monitor.severe("Unsupported operator for entity constraint: " + operator);
-            return false;
-        }
-
-        boolean match = claimValue.equalsIgnoreCase(entityTypeString);
-        monitor.info(format("Evaluating entity constraint: %s %s %s -> %s", claimKey, operator, rightValue, match));
-        return match;
+        return evaluateStringOperator(operator, participantClaimValue, rightValueString, PROBLEM_PREFIX);
 
     }
 }

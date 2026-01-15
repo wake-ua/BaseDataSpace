@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.evaluation.legalname;
+package org.eclipse.edc.heleade.policy.extension.evaluation.participantid;
 
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
 import org.eclipse.edc.heleade.policy.extension.evaluation.common.AbstractConstraintFunction;
@@ -23,38 +23,31 @@ import org.eclipse.edc.spi.monitor.Monitor;
 
 /**
  *
- * Defines a policy function that evaluates the participant legal name
+ * Defines a policy function that evaluates the participant id
  */
-public class LegalNamePolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext> extends AbstractConstraintFunction<R, C> {
+public class ParticipantIdPolicyFunction<R extends Rule, C extends ParticipantAgentPolicyContext> extends AbstractConstraintFunction<R, C> {
 
-    private static final String PROBLEM_PREFIX = "Failing evaluation because of invalid Legal name constraint. ";
+    private static final String PROBLEM_PREFIX = "Failing evaluation because of invalid participant id constraint. ";
     /**
      * This function is responsible for evaluating a participant’s legal-name-related claim.
      *
      * @param monitor The monitor used for logging
-     * @param claimKey The claim key of the claim to check
+     * @param leftOperand The claim key of the claim to check
      * @param participantClaimChecker The participant claim checker instance
      *
      */
 
-    public LegalNamePolicyFunction(Monitor monitor, String claimKey, FcParticipantClaimChecker participantClaimChecker) {
-        super(monitor, claimKey, participantClaimChecker);
+    public ParticipantIdPolicyFunction(Monitor monitor, String leftOperand, FcParticipantClaimChecker participantClaimChecker) {
+        super(monitor, leftOperand, participantClaimChecker);
     }
 
     @Override
-    protected boolean evaluateClaim(Operator operator, String claimValue, Object rightValue, R rule, C context) {
-        if (!(rightValue instanceof String legalNameString)) {
+    protected boolean evaluateClaim(Operator operator, String participantClaimValue, Object rightValue, R rule, C context) {
+        if (!(rightValue instanceof String rightValueString)) {
             monitor.severe(PROBLEM_PREFIX + "Right operand must be a String");
             return false;
         }
 
-        return switch (operator) {
-            case EQ -> legalNameString.equals(claimValue);
-            case IN -> legalNameString.contains(claimValue);
-            default -> {
-                monitor.severe((PROBLEM_PREFIX + "Unsupported operator: '%s'").formatted(operator.getOdrlRepresentation()));
-                yield false;
-            }
-        };
+        return evaluateStringOperator(operator, participantClaimValue, rightValueString, PROBLEM_PREFIX);
     }
 }

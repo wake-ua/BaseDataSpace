@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.heleade.policy.extension.evaluation.legalname;
+package org.eclipse.edc.heleade.policy.extension.evaluation.country;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
 import org.eclipse.edc.heleade.policy.extension.claims.checker.FcParticipantClaimChecker;
@@ -32,35 +32,32 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 /**
  * Extension responsible for initializing and registering policy-related functionality.
- * Binds specific constraint keys to relevant policy scopes and registers implementations
+ * - Binds specific constraint keys to relevant policy scopes and registers implementations
  * of atomic constraint rule functions for policy enforcement
- * Binds the legalName constraint key to the contract negotiation scope
+ * - Binds the referring connector constraint key to the contract negotiation scope and catalog scope
  * in a policy enforcement context.
- * The key for entity type.
- * must be used as left operand when declaring constraints.
- * rightOperand can be a string.
- * Also supports the IN Operator with a list of string-IPS as right operand.
- Example:
-
- {
-     "constraint": {
-     "leftOperand": "legal_name",
-     "operator": "EQ",
-     "rightOperand": "Salinas de Torrevieja"
- }
- },
-OR
- {
-     "constraint": {
-     "leftOperand": "legal_name",
-     "operator": "IN",
-     "rightOperand": "NexaTech S.A.,CloudFrame S.A."}
- }
+ ----------------------------------------------------------
+ * The key for referring connector country constrain.
+ * Must be used as left operand when declaring constraints country
+ * rightOperand can be a string-3-letter-code country
+ * Also supports the IN Operator with a list of string-3-letter-code country as right operand. Example: esp,prt
+ * Example:
+ *
+ <pre>
+ *   {
+ *     "constraint": {
+ *         "leftOperand": "country",
+ *         "operator": "EQ",
+ *         "rightOperand": "esp"
+ *     }
+ *  }
+ * </pre>
+ **
  */
-public class LegalNamePolicyExtension implements ServiceExtension {
-    static final String NAME = "Legal Name";
-    private static final String LEGAL_NAME_KEY = "legal_name";
-    static final String LEGAL_NAME_CONSTRAINT_KEY = EDC_NAMESPACE + LEGAL_NAME_KEY;
+public class CountryPolicyExtension  implements ServiceExtension {
+    static final String NAME = "Country constraint Policy Function";
+    private static final String COUNTRY_KEY = "country";
+    static final String COUNTRY_CONSTRAINT_KEY = EDC_NAMESPACE + COUNTRY_KEY;
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
@@ -78,15 +75,17 @@ public class LegalNamePolicyExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-        monitor.info("Policy function referring connector extension initialized");
+        monitor.info("Policy function country extension initialized");
         registerFunctionAndBindTo(ContractNegotiationPolicyContext.class, ContractNegotiationPolicyContext.NEGOTIATION_SCOPE, monitor);
     }
 
     private <C extends ParticipantAgentPolicyContext> void registerFunctionAndBindTo(Class<C> contextClass, String scope, Monitor monitor) {
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, scope);
-        ruleBindingRegistry.bind(LEGAL_NAME_CONSTRAINT_KEY, scope);
-        policyEngine.registerFunction(contextClass, Duty.class, LEGAL_NAME_CONSTRAINT_KEY, new LegalNamePolicyFunction<>(monitor, LEGAL_NAME_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Permission.class, LEGAL_NAME_CONSTRAINT_KEY, new LegalNamePolicyFunction<>(monitor, LEGAL_NAME_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Prohibition.class, LEGAL_NAME_CONSTRAINT_KEY, new LegalNamePolicyFunction<>(monitor, LEGAL_NAME_KEY, fcParticipantClaimChecker));
+        ruleBindingRegistry.bind(COUNTRY_CONSTRAINT_KEY, scope);
+        policyEngine.registerFunction(contextClass, Duty.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Permission.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Prohibition.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_KEY, fcParticipantClaimChecker));
     }
+
+
 }

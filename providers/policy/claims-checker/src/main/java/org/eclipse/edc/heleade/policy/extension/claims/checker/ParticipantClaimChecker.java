@@ -22,15 +22,7 @@ import java.util.Map;
  * within the policy evaluation process.
  */
 public interface ParticipantClaimChecker {
-    /**
-     * Checks if a participant's claim is true
-     *
-     * @param claimKey      the claim key
-     * @param claimValue    the claim value
-     * @param participantId the participant ID
-     * @return true if the claim is valid
-     */
-    boolean checkClaim(String claimKey, Object claimValue, String participantId);
+
 
     /**
      * Verifies the claims provided by a participant against a signed set of claims.

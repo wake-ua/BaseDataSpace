@@ -1,19 +1,21 @@
 {
-    "name": "https://w3id.org/edc/v0.0.1/ns/",
-    "id": "consumer",
-     "claims": {
-      "location": "eu",
-      "entity_type": "public",
-      "ip_connector": "219.208.53.219",
-      "num_employees": "4000",
-      "lei_code": "340"
-    },
-      "security": {
-        "pem": ""
-      },
-    "url": "http://localhost:39194/protocol",
-    "supportedProtocols": ["dataspace-protocol-http"],
-    "@context": {
-      "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
-    }
+  "name": "https://w3id.org/edc/v0.0.1/ns/",
+  "id": "consumer",
+  "claims": {
+    "location": "eu",
+    "entity_type": "public",
+    "num_employees": "4000",
+    "lei_code": "340",
+    "country": "esp"
+  },
+  "security": {
+    "pem": ""
+  },
+  "url": "http://localhost:39194/protocol",
+  "supportedProtocols": [
+    "dataspace-protocol-http"
+  ],
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  }
 }
