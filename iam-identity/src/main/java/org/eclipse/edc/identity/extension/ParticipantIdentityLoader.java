@@ -17,6 +17,7 @@ package org.eclipse.edc.identity.extension;
 import org.eclipse.edc.spi.monitor.Monitor;
 
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Map;
 
 /**
@@ -43,6 +44,25 @@ public interface ParticipantIdentityLoader {
      */
     PrivateKey loadPrivateKey(String path);
 
+
+    /**
+     * Loads a public key from the specified file path.
+     *
+     * @param path the file path to the public key file
+     * @return the loaded public key
+     */
+    PublicKey loadPublicKey(String path);
+
+    /**
+     * Verifies whether the provided public key corresponds to the provided private key.
+     * This method is used to ensure the keys form a cryptographic pair and belong together.
+     *
+     * @param publicKey the public key to be verified
+     * @param privateKey the private key to be matched with the public key
+     * @return true if the public key matches the private key, false otherwise
+     */
+    boolean publicKeyMatchesPrivateKey(PublicKey publicKey, PrivateKey privateKey);
+
     /**
      * Signs the provided claims using the given private key and generates a signed representation.
      *
@@ -52,5 +72,7 @@ public interface ParticipantIdentityLoader {
      * @return a string representation of the signed claims
      */
     String signClaims(Map<String, Object> claims, PrivateKey privateKey, Monitor monitor);
+
+
 
 }

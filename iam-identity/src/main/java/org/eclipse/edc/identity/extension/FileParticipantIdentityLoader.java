@@ -25,8 +25,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Map;
 
@@ -79,10 +81,10 @@ public class FileParticipantIdentityLoader implements  ParticipantIdentityLoader
     public Map<String, Object> loadClaims(String path) {
         var file = new File(path);
         try {
-            monitor.debug("Trying to load claims from: " + file.getAbsolutePath());
+            monitor.debug("Loading claims from: " + file.getAbsolutePath());
             return mapper.readValue(file, new TypeReference<Map<String, Object>>() {});
         } catch (Exception e) {
-            monitor.warning("Error reading claims file: " + file.getAbsolutePath(), e);
+            monitor.severe("Error reading claims from file: " + file.getAbsolutePath(), e);
             return Map.of();
         }
     }
@@ -113,7 +115,7 @@ public class FileParticipantIdentityLoader implements  ParticipantIdentityLoader
             return keyFactory.generatePrivate(spec);
         } catch (Exception e) {
             monitor.severe(String.format("Error loading private key from %s", filePath));
-            return null;
+            throw new RuntimeException(String.format("Error loading private key from %s", filePath));
         }
     }
 
@@ -137,9 +139,61 @@ public class FileParticipantIdentityLoader implements  ParticipantIdentityLoader
             byte[] signedBytes = signature.sign();
             return Base64.getEncoder().encodeToString(signedBytes);
         } catch (Exception e) {
-            monitor.warning("Claims could not be signed: " + e.getMessage(), e);
-            return null;
+            monitor.severe("Claims could not be signed: " + e.getMessage(), e);
+            throw new RuntimeException("Claims could not be signed: " + e.getMessage(), e);
         }
     }
+
+
+    @Override
+    public PublicKey loadPublicKey(String path) {
+        Path filePath = Paths.get(path);
+        try {
+            String content = new String(Files.readAllBytes(filePath));
+            String pem = content
+                    .replaceAll("-+[A-Z ]+-+", "")
+                    .replaceAll("\\s", "");
+
+            byte[] keyBytes = Base64.getDecoder().decode(pem);
+            X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+
+            KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
+            return keyFactory.generatePublic(spec);
+
+        } catch (Exception e) {
+            monitor.severe(String.format("Error loading public key from %s", filePath));
+            throw new RuntimeException(String.format("Error loading public key from %s", filePath), e);
+        }
+    }
+
+    public boolean publicKeyMatchesPrivateKey(PublicKey publicKey, PrivateKey privateKey) {
+        try {
+            byte[] message = "key-validation".getBytes(StandardCharsets.UTF_8);
+
+            Signature signer = Signature.getInstance("Ed25519");
+            signer.initSign(privateKey);
+            signer.update(message);
+            byte[] signature = signer.sign();
+
+            Signature verifier = Signature.getInstance("Ed25519");
+            verifier.initVerify(publicKey);
+            verifier.update(message);
+
+            if (!verifier.verify(signature)) {
+                throw new RuntimeException("Public key does not match the provided private key");
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            monitor.severe("Error validating public/private key pair");
+            throw new RuntimeException("Error validating public/private key pair", e);
+        }
+    }
+
+
+
+
+
 
 }

@@ -51,6 +51,7 @@ public class Policy01BasicTest {
     private static final String CONSUMER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/consumer-participant-directory.json";
     private static final String CONSUMER_KEY_PATH = "src/test/resources/keys/consumer";
     private static final String PROVIDER_KEY_PATH = "src/test/resources/keys/provider";
+    private static final String FC_KEY_PATH = "src/test/resources/keys/fc";
     private static final String CONSUMER_NODE_RELATIVE_PATH = "src/test/resources/policy/consumer-participant-directory.json";
     private static final String PROVIDER_NODE_RELATIVE_PATH = "src/test/resources/policy/provider-participant-directory.json";
     private static final String CATALOG_REQUEST_FILE_PATH = RESOURCES_FOLDER + "/catalog-request.json";
@@ -105,6 +106,7 @@ public class Policy01BasicTest {
         try {
             generateKeys(CONSUMER_KEY_PATH, CONSUMER_NODE_RELATIVE_PATH);
             generateKeys(PROVIDER_KEY_PATH, PROVIDER_NODE_RELATIVE_PATH);
+            generateKeys(FC_KEY_PATH, "");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

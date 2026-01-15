@@ -26,6 +26,8 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
 
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Base64;
 
 /**
  * The {@code IamIdentityExtension} class is a service extension that integrates an IAM-based
@@ -67,16 +69,32 @@ public class IamIdentityExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-        monitor.info("Initializing claims IAM Extension");
+        monitor.info("Initializing iam-identity extension");
 
-        var claimsPath = context.getConfig().getString("edc.participant.claims", "creds.json");
-        var participantPrivateKeyPath = context.getConfig().getString("edc.participant.private.key", "ed25519_private.pem");
+        var claimsPath = context.getConfig().getString("edc.participant.claims");
+        var participantPrivateKeyPath = context.getConfig().getString("edc.participant.private.key");
+        var participantPublicKeyPath = context.getConfig().getString("edc.participant.public.key");
+        var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url");
         var participantId = context.getParticipantId();
 
         ParticipantIdentityLoader loader = new FileParticipantIdentityLoader(monitor, typeManager.getMapper());
         var claims = loader.loadClaims(claimsPath);
+
+
         PrivateKey participantPrivateKey = loader.loadPrivateKey(participantPrivateKeyPath);
+        PublicKey participantPublicKey = loader.loadPublicKey(participantPublicKeyPath);
+        String base64PublicKey = Base64.getEncoder().encodeToString(participantPublicKey.getEncoded());
         String signedClaims = loader.signClaims(claims, participantPrivateKey, monitor);
+        boolean publicKeyMatchesPrivateKey = loader.publicKeyMatchesPrivateKey(participantPublicKey, participantPrivateKey);
+
+        if (publicKeyMatchesPrivateKey) {
+            monitor.info("Private && Public keys has been successfully validated!");
+            monitor.info("Claims has been successfully signed:  " + signedClaims);
+            monitor.info("Claims: " + claims);
+            monitor.info("Public key: " + base64PublicKey);
+            monitor.info("Participant registry url: " + participantRegistryUrl);
+        }
+
 
         context.registerService(
                 IdentityService.class,

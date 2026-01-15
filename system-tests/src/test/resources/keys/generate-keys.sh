@@ -7,7 +7,7 @@ echo "=== generate-keys.sh starting ==="
 echo "Initial working directory: $(pwd)"
 
 KEY_DIR="$1"
-JSON_FILE="$2"
+JSON_FILE="${2:-}"
 
 echo "Arguments:"
 echo "  KEY_DIR   = $KEY_DIR"
@@ -35,6 +35,9 @@ else
     openssl pkey -in ed25519_private.pem -pubout -out ed25519_public.pem
     echo "Key pair generated successfully."
 fi
+
+
+[[ -z "$JSON_FILE" ]] && echo "No JSON file provided, stopping script." && exit 0
 
 # Extract PEM (base64 only)
 echo "Extracting PEM from public key..."

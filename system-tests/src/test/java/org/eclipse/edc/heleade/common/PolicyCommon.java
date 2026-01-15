@@ -57,12 +57,22 @@ public class PolicyCommon {
 
 
     public static void generateKeys(String keyPath, String nodeDirectoryPath) throws Exception {
-        ProcessBuilder pb = new ProcessBuilder(
-                "bash",
-                "src/test/resources/keys/generate-keys.sh",
-                keyPath,
-                nodeDirectoryPath
-        );
+        ProcessBuilder pb;
+
+        if (nodeDirectoryPath == null || nodeDirectoryPath.isBlank()) {
+            pb = new ProcessBuilder(
+                    "bash",
+                    "src/test/resources/keys/generate-keys.sh",
+                    keyPath
+            );
+        } else {
+            pb = new ProcessBuilder(
+                    "bash",
+                    "src/test/resources/keys/generate-keys.sh",
+                    keyPath,
+                    nodeDirectoryPath
+            );
+        }
 
         pb.inheritIO();
 
@@ -71,6 +81,7 @@ public class PolicyCommon {
             throw new IllegalStateException("Key generation failed");
         }
     }
+
 
 
     public static boolean checkPolicyById(String policyId) {
