@@ -88,17 +88,11 @@ public class VerificationApiController {
         JsonObject jsonBody = jsonReader.readObject();
         jsonReader.close();
 
-        // compact if not compacted to avoid namespace issues
-        JsonObject compactedBody = jsonLd.compact(jsonBody).getContent();
-        if (compactedBody == null || compactedBody.isEmpty()) {
-            compactedBody = jsonBody;
-        }
-
         // get the inputs from the body
-        String id = compactedBody.getString("participantId");
-        String participantSignedClaims = compactedBody.getString("signedClaims");
-        Map<String, Object> participantClaims = getMapFromJsonObject(compactedBody.getJsonObject("claims"));
-        JsonObject participantClaimsJson = compactedBody.getJsonObject("claims");
+        String id = jsonBody.getString("participantId");
+        String participantSignedClaims = jsonBody.getString("signedClaims");
+        Map<String, Object> participantClaims = getMapFromJsonObject(jsonBody.getJsonObject("claims"));
+        JsonObject participantClaimsJson = jsonBody.getJsonObject("claims");
         String claimsString = participantClaimsJson.toString();
 
         // check the signature
@@ -109,7 +103,7 @@ public class VerificationApiController {
         builder.add("verifySignatureSuccess", verifySignatureSuccess);
 
         // check the claims
-        Map<String, Object> participantClaimsFromFc = getMapFromJsonObject(jsonLd.compact(participantNode.asJsonObject()).getContent().getJsonObject("claims"));
+        Map<String, Object> participantClaimsFromFc = participantNode.claims();
         boolean verifyClaimsSuccess = verifyClaims(participantClaims, participantClaimsFromFc);
         builder.add("verifyClaimsSuccess", verifyClaimsSuccess);
 

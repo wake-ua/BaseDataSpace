@@ -48,6 +48,25 @@
 					"response": []
 				},
 				{
+					"name": "Consumer Verify",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_HTTP_PORT}}/api/verify-identity",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_HTTP_PORT}}",
+							"path": [
+								"api",
+								"verify-identity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Federated Catalog Health",
 					"request": {
 						"method": "GET",
@@ -732,7 +751,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Asset 2",
+					"name": "Create Asset Copy",
 					"event": [
 						{
 							"listen": "test",
@@ -753,7 +772,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@id\": \"assetId2\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"second item\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T14:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T16:04:33+00:00\",\n    \"dct:type\": \"Dataset\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\"\n    },\n  \"dataAddress\": [{\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -885,7 +904,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"dct:title\": \"second item\",\n\t\"dct:description\": \"this is a second item\",\n    \"dcat:keyword\": [\"TEST\", \"SECOND\"],\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+							"raw": "\n{\n\t\"@id\": \"assetId2cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\"\n\t\t}],\n\t\"dct:title\": \"second item\",\n\t\"dct:description\": \"this is a second item\",\n    \"dcat:keyword\": [\"TEST\", \"SECOND\"],\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -930,6 +949,50 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"@id\": \"assetId4Cbm\",\n\t\"@type\": \"dcat:Dataset\",\n\t    \"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": [\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:datatype\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        },\n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"id\",\n                            \"dct:title\": \"User Identifier\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Id of the user\",\n                            \"cbm:sampleValue\": \"1\"\n                        }\n                    ]\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"cbm:hasSample\": [\"assetId4SampleCbm\"],\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"assets-cbm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Asset CBM Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\",\n    \"schema\": \"https://schema.org/\"\n  },\n  \"@id\": \"csv_dataset_ES521005_2015\",\n  \"@type\": \"dcat:Dataset\",\n  \"contenttype\": \"text/csv\",\n  \"dcat:distribution\": [\n    {\n      \"@type\": \"dcat:Distribution\",\n      \"authCode\": \"a8f3c1e9b2d4475fa9120cbe7e65ad90\",\n      \"authKey\": \"x-auth-token\",\n      \"cbm:hasDataDictionary\": {\n        \"@type\": \"cbm:DataDictionary\",\n        \"cbm:hasField\": [\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"string\",\n            \"cbm:sampleValue\": \"ES521006\",\n            \"dct:description\": \"Identificador único del área de interés (laguna).\",\n            \"dct:title\": \"Identificador del área de interés\",\n            \"schema:name\": \"aoi_id\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"string\",\n            \"cbm:sampleValue\": \"10\",\n            \"dct:description\": \"Identificador único de la celda dentro de la cuadrícula.\",\n            \"dct:title\": \"Identificador de celda\",\n            \"schema:name\": \"cell_id\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"dateTime\",\n            \"cbm:sampleValue\": \"2015-07-06T10:50:16Z\",\n            \"dct:description\": \"Fecha y hora de la imagen o dato analizado.\",\n            \"dct:title\": \"Fecha y hora\",\n            \"schema:name\": \"timestamp\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"0.12305422\",\n            \"dct:description\": \"Índice de vegetación normalizada.\",\n            \"dct:title\": \"Índice NDVI\",\n            \"schema:name\": \"ndvi\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"-0.19679184\",\n            \"dct:description\": \"Índice modificado de agua.\",\n            \"dct:title\": \"Índice MNDWI\",\n            \"schema:name\": \"mndwi\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"-0.0859602\",\n            \"dct:description\": \"Índice específico CEDEX para análisis ambiental.\",\n            \"dct:title\": \"Índice CEDEX\",\n            \"schema:name\": \"cedex\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"1.16801\",\n            \"dct:description\": \"Relación entre bandas SWIR y NIR.\",\n            \"dct:title\": \"Ratio SWIR/NIR\",\n            \"schema:name\": \"ratio_swir_nir\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"-0.26639273\",\n            \"dct:description\": \"Índice mejorado de agua para humedales (AWEIsh).\",\n            \"dct:title\": \"Índice AWEIsh\",\n            \"schema:name\": \"aweish\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"0.49938032\",\n            \"dct:description\": \"Índice de vegetación con banda verde.\",\n            \"dct:title\": \"Índice CIGreen\",\n            \"schema:name\": \"cigreen\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"0.0635949\",\n            \"dct:description\": \"Índice de diferencia normalizada en banda roja y NIR.\",\n            \"dct:title\": \"Índice NDRE\",\n            \"schema:name\": \"ndre\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"0.07565519\",\n            \"dct:description\": \"Índice de diferencia normalizada de la textura.\",\n            \"dct:title\": \"Índice NDTI\",\n            \"schema:name\": \"ndti\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"0.0759602\",\n            \"dct:description\": \"Indicador relacionado con la salinidad del agua o suelo.\",\n            \"dct:title\": \"Índice de salinidad\",\n            \"schema:name\": \"salinity_index\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"0.06010487\",\n            \"dct:description\": \"Índice de diferencia normalizada de clorofila.\",\n            \"dct:title\": \"Índice NDCI\",\n            \"schema:name\": \"ndci\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"0.13885115\",\n            \"dct:description\": \"Índice de vegetación basado en reflectancia roja.\",\n            \"dct:title\": \"Índice CI_RE\",\n            \"schema:name\": \"ci_re\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"37.95690968\",\n            \"dct:description\": \"Coordenada geográfica de latitud en grados decimales.\",\n            \"dct:title\": \"Latitud\",\n            \"schema:name\": \"latitude\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"float\",\n            \"cbm:sampleValue\": \"-0.76692115\",\n            \"dct:description\": \"Coordenada geográfica de longitud en grados decimales.\",\n            \"dct:title\": \"Longitud\",\n            \"schema:name\": \"longitude\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"integer\",\n            \"cbm:sampleValue\": \"4326\",\n            \"dct:description\": \"Código EPSG del sistema de referencia espacial.\",\n            \"dct:title\": \"EPSG\",\n            \"schema:name\": \"epsg\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"string\",\n            \"cbm:sampleValue\": \"Parque Natural del Hondo\",\n            \"dct:description\": \"Nombre común del área de interés (laguna).\",\n            \"dct:title\": \"Nombre del área de interés\",\n            \"schema:name\": \"aoi_name\"\n          },\n          {\n            \"@type\": \"cbm:Field\",\n            \"cbm:datatype\": \"string\",\n            \"cbm:sampleValue\": \"S2A_MSIL2A_20150706T105016_N0500_R051_T30SXH_20231010T143709\",\n            \"dct:description\": \"Nombre de la imagen de la que provienen los datos.\",\n            \"dct:title\": \"Carpeta de origen\",\n            \"schema:name\": \"folder\"\n          }\n        ]\n      },\n      \"dcat:accessURL\": \"https://idearium.eu/heleade/download.php?file=es521005_aoi_2015.csv\",\n      \"dcat:byteSize\": 2761618,\n      \"dct:format\": {\n        \"@id\": \"HttpData\"\n      },\n      \"proxyPath\": \"true\"\n    }\n  ],\n  \"dcat:keyword\": [\n    \"WETLANDS\",\n    \"HONDO\",\n    \"GRID\",\n    \"CEDEX\",\n    \"NDWI\",\n    \"MNDWI\"\n  ],\n  \"dcat:spatialResolutionInMeters\": 500.0,\n  \"dcat:temporalResolution\": \"P1D\",\n  \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/RESTRICTED\",\n  \"dct:accrualPeriodicity\": \"annual\",\n  \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural del Hondo. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n  \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:license\": \"https://creativecommons.org/licenses/by/4.0/\",\n  \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n  \"dct:rights\": \"Datos derivados de imágenes Sentinel-2 del programa Copernicus.\",\n  \"dct:spatial\": \"POLYGON ((-0.808594 38.215505, -0.686988 38.215505, -0.686988 38.154669, -0.808594 38.154669, -0.808594 38.215505))\",\n  \"dct:temporal\": {\n    \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\",\n    \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\"\n  },\n  \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural del Hondo (2015)\",\n  \"dct:type\": \"Dataset\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1438,7 +1501,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"eu-policy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"constraint\": {\n          \"@type\": \"AtomicConstraint\",\n          \"leftOperand\": \"location\",\n          \"operator\": {\n            \"@id\": \"odrl:eq\"\n          },\n          \"rightOperand\": \"eu\"\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"eu-policy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"constraint\": {\n          \"@type\": \"AtomicConstraint\",\n          \"leftOperand\": \"location\",\n          \"operator\": {\n            \"@id\": \"odrl:eq\"\n          },\n          \"rightOperand\": \"eu\"\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1467,7 +1530,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"aPolicy\",\n  \"contractPolicyId\": \"aPolicy\",\n  \"assetsSelector\": []\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"always-true\",\n  \"assetsSelector\": []\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1523,13 +1586,13 @@
 					"response": []
 				},
 				{
-					"name": "Modify Contract Definition Advanced",
+					"name": "Create Contract Definition Advanced",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"2\",\n  \"accessPolicyId\": \"es-policy\",\n  \"contractPolicyId\": \"es-policy\",\n  \"assetsSelector\": [\n    {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"assetId2\"\n    }\n  ]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"2\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"eu-policy\",\n  \"assetsSelector\": [\n    {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"assetId2cbm\"\n    }\n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1552,13 +1615,13 @@
 					"response": []
 				},
 				{
-					"name": "Create Contract Definition Advanced Copy",
+					"name": "Modify Contract Definition Advanced",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"2\",\n  \"accessPolicyId\": \"eu-policy\",\n  \"contractPolicyId\": \"eu-policy\",\n  \"assetsSelector\": [\n    {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"assetId2\"\n    }\n  ]\n}\n",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"2\",\n  \"accessPolicyId\": \"es-policy\",\n  \"contractPolicyId\": \"es-policy\",\n  \"assetsSelector\": [\n    {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"assetId2\"\n    }\n  ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2657,7 +2720,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n    \"security\": {\n        \"pem\": \"thiisatestPEM\"\n    },\n    \"claims\": {\n        \"location\": \"eu\"\n    },\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+									"raw": "  {\n    \"name\": \"Default Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://localhost:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n    \"security\": {\n        \"pem\": \"MCowBQYDK2VwAyEA+qsBGE3NQiAWC5J0cfLrrSr9i4hhgef+KczJ4ldIQJo=\"\n    },\n    \"claims\": {\n        \"country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\"\n    },\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2686,7 +2749,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"name\": \"Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://provider-base:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"raw": "{\n    \"name\": \"Base Provider\",\n    \"id\": \"provider-base\",\n    \"url\": \"http://provider-base:19194/protocol\",\n    \"supportedProtocols\": [\"dataspace-protocol-http\"],\n    \"security\": {\n        \"pem\": \"MCowBQYDK2VwAyEA+qsBGE3NQiAWC5J0cfLrrSr9i4hhgef+KczJ4ldIQJo=\"\n    },\n    \"claims\": {\n        \"country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\"\n    },\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2715,7 +2778,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"claims\": {\n        \"location\": \"eu\",\n        \"membership\": {\n            \"level\": \"GOLD\",\n            \"branch\": \"operator\" \n            }\n        },\n    \"attributes\": {\"description\": \"consumer node\",\n                    \"role\": \"consumer with claims\"},\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+									"raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"claims\": {\n        \"country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\"\n    },\n    \"security\": {\n        \"pem\": \"MCowBQYDK2VwAyEAF4SHqq/RAYBAWslvWdHXVFeCBzJInXQA4f+uQt/v1c4=\"\n    },\n    \"attributes\": {},\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2744,7 +2807,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "    {\n        \"name\": \"Template eBIRD\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://localhost:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"raw": "    {\n        \"name\": \"eBIRD Provider\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://localhost:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"claims\": {\n            \"location\": \"eu\",\n            \"entity_type\": \"public\"\n        },\n        \"attributes\": {},\n        \"security\": {\n            \"pem\": \"MCowBQYDK2VwAyEAqolRW66gV9Q/NxeUsnmHaJ0Pu4xlzkomoC9wqhw9Y7w=\"\n        },\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2773,7 +2836,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "    {\n        \"name\": \"Template eBIRD\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://provider-ebird:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"raw": "    {\n        \"name\": \"eBIRD Provider\",\n        \"id\": \"provider-ebird\",\n        \"url\": \"http://provider-ebird:17194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"claims\": {\n            \"location\": \"eu\",\n            \"entity_type\": \"public\"\n        },\n        \"attributes\": {},\n        \"security\": {\n            \"pem\": \"MCowBQYDK2VwAyEAqolRW66gV9Q/NxeUsnmHaJ0Pu4xlzkomoC9wqhw9Y7w=\"\n        },\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2802,7 +2865,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "    {\n        \"name\": \"Idearium Provider\",\n        \"id\": \"provider-idearium\",\n        \"url\": \"http://provider-idearium:15194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"raw": "    {\n        \"name\": \"Idearium Provider\",\n        \"id\": \"provider-idearium\",\n        \"url\": \"http://provider-idearium:15194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"claims\": {\n            \"location\": \"eu\",\n            \"entity_type\": \"private\",\n            \"country\": \"esp\"\n        },\n        \"attributes\": {},\n        \"security\": {\n            \"pem\": \"MCowBQYDK2VwAyEAS7i1BxdkCHQuXTeUkMDZ411D+gEIRaYDZHV9lt2PuFY=\"\n        },\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2936,7 +2999,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -2956,7 +3020,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -2965,7 +3030,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3063,6 +3128,96 @@
 									"}"
 								],
 								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract with Policy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": {\n        \"@vocab\": \"http://www.w3.org/ns/odrl.jsonld\",\n        \"odrl\": \"http://www.w3.org/ns/odrl.jsonld\"\n        },\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"odrl:permission\": {\n        \"odrl:action\": {\n            \"@id\": \"odrl:use\"\n        },\n        \"odrl:constraint\": {\n            \"odrl:leftOperand\": {\n                \"@id\": \"edc:location\"\n            },\n            \"odrl:operator\": {\n                \"@id\": \"odrl:eq\"\n            },\n            \"odrl:rightOperand\": \"eu\"\n        }\n    },\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negotiate Contract Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
 								"packages": {}
 							}
 						}
@@ -3072,7 +3227,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3180,50 +3335,6 @@
 								"v3",
 								"contractnegotiations",
 								"{{CONTRACT_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Negotiate Contract Docker",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// get the id of one asset and save it as an environment variable",
-									"if(pm.response.code == 200){",
-									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
-							"path": [
-								"management",
-								"v3",
-								"contractnegotiations"
 							]
 						}
 					},
@@ -3740,6 +3851,419 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Kit Espacio de Datos",
+			"item": [
+				{
+					"name": "Idearium",
+					"item": [
+						{
+							"name": "Query All Assets",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"ASSET_ID\", jsonData[0][\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ]\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{IDEARIUM_MANAGEMENT_PORT}}/management/v3/assets/request",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{IDEARIUM_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"assets",
+										"request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Provider Catalog Docker",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+											"    if (Array.isArray(dcat_dataset)) {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+											"    } else {",
+											"        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+											"        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-idearium:{{IDEARIUM_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"catalog",
+										"request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Negotiate Contract Docker Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-idearium:{{IDEARIUM_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-idearium\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Contract Negotiations Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/request",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations",
+										"request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Contract Negotiation Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// get the id of one asset and save it as an environment variable",
+											"if(pm.response.code == 200){",
+											"    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"contractnegotiations",
+										"{{CONTRACT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Start Transfer PUSH Docker Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyConsumerBase",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-idearium\",\n  \"counterPartyAddress\": \"http://provider-idearium:{{IDEARIUM_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v3",
+										"transferprocesses"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "managementApiKeyProviderIdearium",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-api-key",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}

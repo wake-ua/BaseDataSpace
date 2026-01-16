@@ -25,6 +25,8 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
+
 
 /**
  * The Claims class provides methods for verifying participant claims and signatures.
@@ -103,12 +105,9 @@ public class Claims {
     public static String getJsonBody(String participantId, String signedClaims, Map<String, Object> participantClaims) {
         try {
             Map<String, Object> body = Map.of(
-                    "participantId", participantId,
-                    "signedClaims", signedClaims,
-                    "claims", participantClaims,
-                    "@context", Map.of(
-                            "@vocab", "https://w3id.org/edc/v0.0.1/ns/"
-                    )
+                    EDC_NAMESPACE + "participantId", participantId,
+                    EDC_NAMESPACE + "signedClaims", signedClaims,
+                    EDC_NAMESPACE + "claims", participantClaims
             );
 
             ObjectMapper mapper = new ObjectMapper();
