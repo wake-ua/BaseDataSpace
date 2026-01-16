@@ -82,9 +82,9 @@ public class CountryPolicyExtension  implements ServiceExtension {
     private <C extends ParticipantAgentPolicyContext> void registerFunctionAndBindTo(Class<C> contextClass, String scope, Monitor monitor) {
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, scope);
         ruleBindingRegistry.bind(COUNTRY_CONSTRAINT_KEY, scope);
-        policyEngine.registerFunction(contextClass, Duty.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Permission.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Prohibition.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Duty.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_CONSTRAINT_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Permission.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_CONSTRAINT_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Prohibition.class, COUNTRY_CONSTRAINT_KEY, new CountryPolicyFunction<>(monitor, COUNTRY_CONSTRAINT_KEY, fcParticipantClaimChecker));
     }
 
 

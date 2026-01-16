@@ -81,9 +81,9 @@ public class EntityPolicyExtension implements ServiceExtension {
     private <C extends ParticipantAgentPolicyContext> void registerFunctionAndBindTo(Class<C> contextClass, String scope, Monitor monitor) {
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, scope);
         ruleBindingRegistry.bind(ENTITY_CONSTRAINT_KEY, scope);
-        policyEngine.registerFunction(contextClass, Duty.class, ENTITY_CONSTRAINT_KEY, new EntityPolicyFunction<>(monitor, ENTITY_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Permission.class, ENTITY_CONSTRAINT_KEY, new EntityPolicyFunction<>(monitor, ENTITY_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Prohibition.class, ENTITY_CONSTRAINT_KEY, new EntityPolicyFunction<>(monitor, ENTITY_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Duty.class, ENTITY_CONSTRAINT_KEY, new EntityPolicyFunction<>(monitor, ENTITY_CONSTRAINT_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Permission.class, ENTITY_CONSTRAINT_KEY, new EntityPolicyFunction<>(monitor, ENTITY_CONSTRAINT_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Prohibition.class, ENTITY_CONSTRAINT_KEY, new EntityPolicyFunction<>(monitor, ENTITY_CONSTRAINT_KEY, fcParticipantClaimChecker));
     }
 
 }

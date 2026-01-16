@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.getParticipantClaim;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 /**
  * Base class for implementing policy constraint functions that evaluate
@@ -79,7 +80,7 @@ public abstract class AbstractConstraintFunction<R extends Rule, C extends  Part
 
         String participantValueToVerify;
 
-        if (!Objects.equals(leftOperand, "participant_id")) {
+        if (!Objects.equals(leftOperand, EDC_NAMESPACE + "participant_id")) {
             participantValueToVerify = getParticipantClaim(participantClaims, leftOperand);
         } else {
             participantValueToVerify = participantId;

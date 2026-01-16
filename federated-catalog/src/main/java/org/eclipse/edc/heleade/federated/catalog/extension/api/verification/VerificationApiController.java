@@ -38,6 +38,7 @@ import java.util.Map;
 
 import static org.eclipse.edc.heleade.commons.verification.claims.Claims.verifyClaims;
 import static org.eclipse.edc.heleade.commons.verification.claims.Claims.verifySignature;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
 /**
@@ -89,15 +90,15 @@ public class VerificationApiController {
         jsonReader.close();
 
         // get the inputs from the body
-        String id = jsonBody.getString("participantId");
-        String participantSignedClaims = jsonBody.getString("signedClaims");
-        Map<String, Object> participantClaims = getMapFromJsonObject(jsonBody.getJsonObject("claims"));
-        JsonObject participantClaimsJson = jsonBody.getJsonObject("claims");
+        String id = jsonBody.getString(EDC_NAMESPACE + "participantId");
+        String participantSignedClaims = jsonBody.getString(EDC_NAMESPACE + "signedClaims");
+        Map<String, Object> participantClaims = getMapFromJsonObject(jsonBody.getJsonObject(EDC_NAMESPACE + "claims"));
+        JsonObject participantClaimsJson = jsonBody.getJsonObject(EDC_NAMESPACE + "claims");
         String claimsString = participantClaimsJson.toString();
 
         // check the signature
         ParticipantNode participantNode = targetNodeDirectory.getParticipantNode(id);
-        String pem = participantNode.security().get("https://w3id.org/edc/v0.0.1/ns/pem");
+        String pem = participantNode.security().get(EDC_NAMESPACE + "pem");
         boolean verifySignatureSuccess = verifySignature(typeManager.getMapper(), pem, participantSignedClaims, claimsString);
         JsonObjectBuilder builder = Json.createObjectBuilder();
         builder.add("verifySignatureSuccess", verifySignatureSuccess);

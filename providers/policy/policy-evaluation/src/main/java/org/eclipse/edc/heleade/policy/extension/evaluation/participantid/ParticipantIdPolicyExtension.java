@@ -83,8 +83,8 @@ public class ParticipantIdPolicyExtension implements ServiceExtension {
     private <C extends ParticipantAgentPolicyContext> void registerFunctionAndBindTo(Class<C> contextClass, String scope, Monitor monitor) {
         ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, scope);
         ruleBindingRegistry.bind(PARTICIPANT_ID_CONSTRAINT_KEY, scope);
-        policyEngine.registerFunction(contextClass, Duty.class, PARTICIPANT_ID_CONSTRAINT_KEY, new ParticipantIdPolicyFunction<>(monitor, PARTICIPANT_ID_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Permission.class, PARTICIPANT_ID_CONSTRAINT_KEY, new ParticipantIdPolicyFunction<>(monitor, PARTICIPANT_ID_KEY, fcParticipantClaimChecker));
-        policyEngine.registerFunction(contextClass, Prohibition.class, PARTICIPANT_ID_CONSTRAINT_KEY, new ParticipantIdPolicyFunction<>(monitor, PARTICIPANT_ID_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Duty.class, PARTICIPANT_ID_CONSTRAINT_KEY, new ParticipantIdPolicyFunction<>(monitor, PARTICIPANT_ID_CONSTRAINT_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Permission.class, PARTICIPANT_ID_CONSTRAINT_KEY, new ParticipantIdPolicyFunction<>(monitor, PARTICIPANT_ID_CONSTRAINT_KEY, fcParticipantClaimChecker));
+        policyEngine.registerFunction(contextClass, Prohibition.class, PARTICIPANT_ID_CONSTRAINT_KEY, new ParticipantIdPolicyFunction<>(monitor, PARTICIPANT_ID_CONSTRAINT_KEY, fcParticipantClaimChecker));
     }
 }

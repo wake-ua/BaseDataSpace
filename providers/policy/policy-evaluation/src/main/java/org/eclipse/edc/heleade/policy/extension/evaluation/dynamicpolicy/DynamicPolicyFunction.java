@@ -24,7 +24,6 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.getLeftOperand;
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.getParticipantClaim;
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.isNumericComparison;
 import static org.eclipse.edc.heleade.policy.extension.evaluation.common.Utils.parseNumericValues;
@@ -82,10 +81,9 @@ public class DynamicPolicyFunction<R extends Rule, C extends ParticipantAgentPol
             return false;
         }
 
-        String leftValueString = getLeftOperand(leftValue);
 
         Map<String, Object> participantClaims = (Map<String, Object>) participantData.get("claims");
-        String participantValueToVerify = getParticipantClaim(participantClaims, leftValueString);
+        String participantValueToVerify = getParticipantClaim(participantClaims, leftValue.toString());
 
         if (participantValueToVerify == null) {
             monitor.severe("Participant claim is null or is empty" + leftValue);

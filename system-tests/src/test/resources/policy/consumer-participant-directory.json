@@ -2,11 +2,12 @@
   "name": "https://w3id.org/edc/v0.0.1/ns/",
   "id": "consumer",
   "claims": {
-    "location": "eu",
-    "entity_type": "public",
-    "num_employees": "4000",
-    "lei_code": "340",
-    "country": "esp"
+    "https://w3id.org/edc/v0.0.1/ns/location": "eu",
+    "https://w3id.org/edc/v0.0.1/ns/entity_type": "public",
+    "https://schema.org/award": "Red Dot Design Award",
+    "https://w3id.org/edc/v0.0.1/ns/lei_code": "340",
+    "https://w3id.org/edc/v0.0.1/ns/num_employees": "4000",
+    "https://w3id.org/edc/v0.0.1/ns/country": "esp"
   },
   "security": {
     "pem": ""

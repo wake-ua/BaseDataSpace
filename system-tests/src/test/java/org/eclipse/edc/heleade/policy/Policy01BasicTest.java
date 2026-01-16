@@ -35,6 +35,7 @@ import static org.eclipse.edc.heleade.common.PolicyCommon.createAssetWithId;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createContractDefinitionWithParams;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createPolicyComplex;
 import static org.eclipse.edc.heleade.common.PolicyCommon.createPolicyWithParams;
+import static org.eclipse.edc.heleade.common.PolicyCommon.createSimpleDynamicPolicy;
 import static org.eclipse.edc.heleade.common.PolicyCommon.fetchDatasetFromCatalogWithId;
 import static org.eclipse.edc.heleade.common.PolicyCommon.generateKeys;
 import static org.eclipse.edc.heleade.common.PolicyCommon.negotiateContractComplex;
@@ -87,6 +88,7 @@ public class Policy01BasicTest {
     private static final String POLICY_PARTICIPANT_ID_IN_ID = "policy-participant-id-in";
     private static final String POLICY_COMPLEX_AND_ID = "policy-complex-and";
     private static final String POLICY_COMPLEX_OR_ID = "policy-complex-or";
+    private static final String POLICY_SIMPLE_DYNAMIC = "policy-simple-dynamic";
     private static final String POLICY_COMPLEX_AND_ID_TERMINATED = "policy-complex-and-ko";
     private static final String POLICY_COMPLEX_ID_INVALID = "policy-complex-invalid";
     private static final String OPERATOR_IS_PART_OF = "odrl:isPartOf";
@@ -163,7 +165,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_LOCATION_EU_ID, LEFT_OPERAND_LOCATION, EU, OPERATOR_EQUAL);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_LOCATION_EU_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_LOCATION, EU, OPERATOR_EQUAL);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_LOCATION, EU, OPERATOR_EQUAL, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -175,7 +177,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_LOCATION_US_ID, LEFT_OPERAND_LOCATION, US, OPERATOR_EQUAL);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_LOCATION_US_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_LOCATION, US, OPERATOR_EQUAL);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_LOCATION, US, OPERATOR_EQUAL, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("TERMINATED"));
     }
@@ -187,7 +189,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_COUNTRY_IN_ID, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRIES, OPERATOR_IS_PART_OF);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COUNTRY_IN_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRIES, OPERATOR_IS_PART_OF);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRIES, OPERATOR_IS_PART_OF, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -199,7 +201,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_COUNTRY_EQ_ID, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRY, OPERATOR_EQUAL);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COUNTRY_EQ_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRY, OPERATOR_EQUAL);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_COUNTRY, ALLOWED_COUNTRY, OPERATOR_EQUAL, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -212,7 +214,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_PARTICIPANT_ID_EQ_ID, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANT, OPERATOR_EQUAL);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_PARTICIPANT_ID_EQ_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANT, OPERATOR_EQUAL);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANT, OPERATOR_EQUAL, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -225,7 +227,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_PARTICIPANT_ID_IN_ID, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANTS, OPERATOR_IS_PART_OF);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_PARTICIPANT_ID_IN_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANTS, OPERATOR_IS_PART_OF);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_PARTICIPANT_ID, ALLOWED_PARTICIPANTS, OPERATOR_IS_PART_OF, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -239,7 +241,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_TIME_CHECKER_LT_ID, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_LT);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_TIME_CHECKER_LT_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_LT);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_LT, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -252,7 +254,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_TIME_CHECKER_GT_ID, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_GREATER);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_TIME_CHECKER_GT_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_GREATER);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_GREATER, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -265,7 +267,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_TIME_CHECKER_INVALID_ID, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_GREATER);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_TIME_CHECKER_INVALID_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_GREATER);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_GREATER, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("TERMINATED"));
     }
@@ -278,7 +280,7 @@ public class Policy01BasicTest {
         createPolicyWithParams(POLICY_TIME_CHECKER_NEQ_ID, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_NOT_EQUAL);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_TIME_CHECKER_NEQ_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_NOT_EQUAL);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_POLICY_EVALUATION_TIME, rightOperand, OPERATOR_NOT_EQUAL, true);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
     }
@@ -338,6 +340,19 @@ public class Policy01BasicTest {
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_COMPLEX_OR_ID, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
         var contractNegotiationId = negotiateContractComplex(id, catalogDatasetId, OR_OPERAND, rightOperand, LEI_CODE_KO, N_EMPLOYEES_KO);
+        await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
+                .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
+
+    }
+
+    @Test
+    void testSimpleDynamicPolicyAnotherNamespace() {
+        String id = UUID.randomUUID().toString();
+        createAssetWithId(id);
+        createSimpleDynamicPolicy(POLICY_SIMPLE_DYNAMIC);
+        createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_SIMPLE_DYNAMIC, id);
+        var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, "award", "Red Dot Design Award", OPERATOR_EQUAL, false);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
 
