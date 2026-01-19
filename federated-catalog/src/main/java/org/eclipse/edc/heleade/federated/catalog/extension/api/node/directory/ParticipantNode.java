@@ -27,6 +27,7 @@ import org.eclipse.edc.crawler.spi.TargetNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -348,7 +349,7 @@ public record ParticipantNode(@JsonProperty("name") String name,
      *         simple strings or nested structures processed recursively
      */
     public static  Map<String, Object> getMapFromArrayJsonObject(JsonObject jsonObject) {
-        Map<String, Object> results = new HashMap<>();
+        Map<String, Object> results = new LinkedHashMap<>();
         for (String key : jsonObject.keySet()) {
             JsonValue value = jsonObject.get(key);
             String valueType = value.getValueType().toString();

@@ -14,12 +14,13 @@
 
 package org.eclipse.edc.heleade.commons.verification.claims.checker;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import org.eclipse.edc.heleade.commons.verification.claims.Claims;
 import org.eclipse.edc.spi.monitor.Monitor;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -88,25 +89,10 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
     public static VerificationResult parseVerificationResponse(HttpResponse<String> response) {
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> jsonMap =
-                    mapper.readValue(response.body(), new TypeReference<>() {});
-
-            Map<String, Object> verifySignature =
-                    (Map<String, Object>) jsonMap.get("verifySignatureSuccess");
-
-            Map<String, Object> verifyClaims =
-                    (Map<String, Object>) jsonMap.get("verifyClaimsSuccess");
-
-            boolean signatureOk =
-                    Boolean.parseBoolean((String) verifySignature.get("valueType"));
-
-            boolean claimsOk =
-                    Boolean.parseBoolean((String) verifyClaims.get("valueType"));
-
-            return new VerificationResult(signatureOk, claimsOk);
+            JsonObject jsonBody = Json.createReader(new StringReader(response.body())).readObject();
+            return VerificationResult.fromJsonObject(jsonBody);
         } catch (Exception e) {
-            return new VerificationResult(false, false);
+            return new VerificationResult(false, false, false, "Error parsing verification: " + e.getMessage());
         }
 
     }

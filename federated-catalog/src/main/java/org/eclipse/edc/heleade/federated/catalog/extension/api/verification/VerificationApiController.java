@@ -25,6 +25,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import org.eclipse.edc.heleade.commons.verification.claims.checker.VerificationResult;
 import org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory.ParticipantNode;
 import org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.node.directory.MongodbFederatedCatalogNodeDirectory;
 import org.eclipse.edc.jsonld.spi.JsonLd;
@@ -84,7 +85,7 @@ public class VerificationApiController {
      *         - "success": a boolean indicating the overall success of the verification process.
      */
     @POST
-    public JsonObject verify(String body) {
+    public String verify(String body) {
 
         // get the json object from the string
         JsonReader jsonReader = Json.createReader(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
@@ -103,26 +104,20 @@ public class VerificationApiController {
         // check participant is registered
         ParticipantNode participantNode = targetNodeDirectory.getParticipantNode(id);
         if (participantNode == null) {
-            return Json.createObjectBuilder()
-                    .add("error", "Participant not registered in federated catalog")
-                    .add("verifySignatureSuccess", false)
-                    .add("verifyClaimsSuccess", false).build();
+            VerificationResult failedVerificationResult = new VerificationResult(false, false, false, "Participant not registered in federated catalog with id: " + id);
+            return failedVerificationResult.asJsonObject().toString();
         }
 
         // check the signature
         String pem = participantNode.security().get(EDC_NAMESPACE + "pem");
         boolean verifySignatureSuccess = verifySignature(typeManager.getMapper(), pem, participantSignedClaims, claimsString);
-        JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("verifySignatureSuccess", verifySignatureSuccess);
 
         // check the claims
         Map<String, Object> participantClaimsFromFc = participantNode.claims();
         boolean verifyClaimsSuccess = verifyClaims(participantClaims, participantClaimsFromFc);
-        builder.add("verifyClaimsSuccess", verifyClaimsSuccess);
 
-        // return overall result
-        builder.add("success", verifySignatureSuccess && verifyClaimsSuccess);
-        return builder.build();
+        VerificationResult verificationResult = new VerificationResult(verifySignatureSuccess, verifyClaimsSuccess, verifySignatureSuccess && verifyClaimsSuccess, "");
+        return verificationResult.asJsonObject().toString();
     }
 
     private JsonObject getJsonObjectFromStringMap(Map<String, Object> map) {

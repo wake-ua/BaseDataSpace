@@ -30,7 +30,13 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  *                        This result reflects the evaluation of the claims provided by
  *                        a participant against a set of expected conditions or standards.
  */
-public record VerificationResult(boolean signatureResult, boolean claimsResult) {
+public record VerificationResult(boolean signatureResult, boolean claimsResult, boolean success, String message) {
+
+    private static final String SIGNATURE_RESULT = EDC_NAMESPACE + "signatureResult";
+    private static final String CLAIMS_RESULT = EDC_NAMESPACE + "claimsResult";
+    private static final String SUCCESS = EDC_NAMESPACE + "success";
+    private static final String MESSAGE = EDC_NAMESPACE + "message";
+
     /**
      * Represents the result of a verification process, including the validation
      * of both signature and claims.
@@ -41,6 +47,10 @@ public record VerificationResult(boolean signatureResult, boolean claimsResult) 
      * @param claimsResult    Indicates whether the claim validation process was successful.
      *                        This result reflects the evaluation of the claims provided by
      *                        a participant against a set of expected conditions or standards.
+     *
+     * @param success         Combination of signature and claims result
+     *
+     * @param message         Text explaining validation failure reasons
      */
     public VerificationResult {
     }
@@ -54,8 +64,10 @@ public record VerificationResult(boolean signatureResult, boolean claimsResult) 
         try {
             // Create a JSON object with the TargetNode properties
             JsonObjectBuilder builder = Json.createObjectBuilder()
-                    .add(EDC_NAMESPACE + "signatureResult", this.signatureResult())
-                    .add(EDC_NAMESPACE + "claimsResult", this.claimsResult());
+                    .add(SIGNATURE_RESULT, this.signatureResult())
+                    .add(CLAIMS_RESULT, this.claimsResult())
+                    .add(SUCCESS, this.claimsResult() && this.signatureResult())
+                    .add(MESSAGE, this.message());
 
             // Build and return the JSON object
             JsonObject jsonObject = builder.build();
@@ -64,6 +76,25 @@ public record VerificationResult(boolean signatureResult, boolean claimsResult) 
 
         } catch (Exception e) {
             throw new RuntimeException("Error converting VerificationResult to JsonObject", e);
+        }
+    }
+
+    /**
+     * Creates an instance from a JsonObject representation containing its properties.
+     *
+     * @param jsonObject a JsonObject containing the attributes of the instance
+     * @return a VerificationResult containing the attributes of the instance
+     */
+    public static VerificationResult fromJsonObject(JsonObject jsonObject) {
+        try {
+            boolean signatureResult = jsonObject.getBoolean(EDC_NAMESPACE + "signatureResult");
+            boolean claimsResult = jsonObject.getBoolean(CLAIMS_RESULT);
+            boolean success = jsonObject.getBoolean(SUCCESS);
+            String message = jsonObject.getString(MESSAGE);
+            return new VerificationResult(signatureResult, claimsResult, success, message);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting JsonObject to VerificationResult", e);
         }
     }
 }
