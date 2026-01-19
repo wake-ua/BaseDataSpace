@@ -15,20 +15,25 @@
 
 package org.eclipse.edc.heleade.common;
 
+import jakarta.json.JsonStructure;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.heleade.util.TransferUtil.get;
+import static org.eclipse.edc.heleade.util.TransferUtil.getResponseBody;
 import static org.eclipse.edc.heleade.util.TransferUtil.post;
 
 
 public class PolicyCommon {
+    private static final String AUTO_VERIFY = "/verify-identity";
     private static final String V3_ASSETS_PATH = "/v3/assets";
     private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
     private static final String V2_CATALOG_DATASET_REQUEST_PATH = "/v3/catalog/dataset/request";
     private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
+
     private static final String V2_CONTRACT_NEGOTIATIONS_PATH = "/v3/contractnegotiations/";
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
     private static final String CREATE_ASSET_FILE_PATH = RESOURCES_FOLDER + "/create-asset.json";
@@ -171,6 +176,10 @@ public class PolicyCommon {
         return contractNegotiationId;
     }
 
+
+    public static JsonStructure verifyIdentity(String participantUrl) {
+        return getResponseBody(participantUrl + AUTO_VERIFY);
+    }
 
     public static boolean catalogContainsAssetId(String assetId, ArrayList<LinkedHashMap> catalogDatasets) {
         if (catalogDatasets == null || catalogDatasets.isEmpty()) {

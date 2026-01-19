@@ -2,15 +2,19 @@
   "name": "https://w3id.org/edc/v0.0.1/ns/",
   "id": "consumer",
   "claims": {
-    "https://w3id.org/edc/v0.0.1/ns/location": "eu",
-    "https://w3id.org/edc/v0.0.1/ns/entity_type": "public",
-    "https://schema.org/award": "Red Dot Design Award",
-    "https://w3id.org/edc/v0.0.1/ns/lei_code": "340",
-    "https://w3id.org/edc/v0.0.1/ns/num_employees": "4000",
-    "https://w3id.org/edc/v0.0.1/ns/country": "esp"
+    "location": "eu",
+    "entity_type": "public",
+    "schema:award": "Red Dot Design Award",
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "schema": "https://schema.org/"
+    },
+    "lei_code": "340",
+    "num_employees": "4000",
+    "country": "esp"
   },
   "security": {
-    "pem": ""
+    "pem": "MCowBQYDK2VwAyEA/OVPkwRd5A1Vyb97FL1DnedxuS69GBOnszFh/o1M55E="
   },
   "url": "http://localhost:39194/protocol",
   "supportedProtocols": [

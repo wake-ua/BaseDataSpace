@@ -15,6 +15,8 @@
 package org.eclipse.edc.heleade.policy;
 
 
+import jakarta.json.JsonObject;
+import jakarta.json.JsonStructure;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,26 +42,27 @@ import static org.eclipse.edc.heleade.common.PolicyCommon.fetchDatasetFromCatalo
 import static org.eclipse.edc.heleade.common.PolicyCommon.generateKeys;
 import static org.eclipse.edc.heleade.common.PolicyCommon.negotiateContractComplex;
 import static org.eclipse.edc.heleade.common.PolicyCommon.negotiateContractWithParams;
+import static org.eclipse.edc.heleade.common.PolicyCommon.verifyIdentity;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.heleade.util.TransferUtil.POLL_INTERVAL;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 @EndToEndTest
 public class Policy01BasicTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(190);
+    private static final String CONSUMER_URL_API = "http://localhost:39191/api";
+    private static final String PROVIDER_URL_API = "http://localhost:49191/api";
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
     private static final String PROVIDER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/provider-participant-directory.json";
     private static final String CONSUMER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/consumer-participant-directory.json";
     private static final String CONSUMER_KEY_PATH = "src/test/resources/keys/consumer";
     private static final String PROVIDER_KEY_PATH = "src/test/resources/keys/provider";
-    private static final String FC_KEY_PATH = "src/test/resources/keys/fc";
     private static final String CONSUMER_NODE_RELATIVE_PATH = "src/test/resources/policy/consumer-participant-directory.json";
     private static final String PROVIDER_NODE_RELATIVE_PATH = "src/test/resources/policy/provider-participant-directory.json";
-    private static final String CATALOG_REQUEST_FILE_PATH = RESOURCES_FOLDER + "/catalog-request.json";
     private static final String EU = "eu";
     private static final String US = "us";
     private static final String ENTITY_TYPE_PUBLIC = "public";
-    private static final String ENTITY_TYPE_PRIVATE = "private";
     private static final String N_EMPLOYEES_OK = "100";
     private static final String N_EMPLOYEES_KO = "7000";
     private static final String LEI_CODE_OK = "1000";
@@ -67,12 +70,14 @@ public class Policy01BasicTest {
     private static final String INVALID_VALUE = "abc";
     private static final String ALLOWED_COUNTRIES = "esp,che,fra,prt";
     private static final String ALLOWED_COUNTRY = "esp";
+    private static final String ALLOWED_AWARD = "Red Dot Design Award";
     private static final String ALLOWED_PARTICIPANT = "consumer";
     private static final String ALLOWED_PARTICIPANTS = "consumer,provider-ebird,consumer-base";
     private static final String LEFT_OPERAND_LOCATION = "location";
     private static final String LEFT_OPERAND_ENTITY_TYPE = "entity_type";
     private static final String LEFT_OPERAND_PARTICIPANT_ID = "participant_id";
     private static final String LEFT_OPERAND_COUNTRY = "country";
+    private static final String LEFT_OPERAND_AWARD = "https://schema.org/award";
     private static final String LEFT_OPERAND_POLICY_EVALUATION_TIME = "policy_evaluation_time";
     private static final String POLICY_OPEN_ID = "always-true";
     private static final String POLICY_LOCATION_EU_ID = "policy-location-eu";
@@ -126,7 +131,6 @@ public class Policy01BasicTest {
 
     @BeforeAll
     static void beforeAll() {
-        addNodeToDirectory(PROVIDER_NODE_DIRECTORY_PATH);
         addNodeToDirectory(CONSUMER_NODE_DIRECTORY_PATH);
     }
 
@@ -352,10 +356,29 @@ public class Policy01BasicTest {
         createSimpleDynamicPolicy(POLICY_SIMPLE_DYNAMIC);
         createContractDefinitionWithParams(id, POLICY_OPEN_ID, POLICY_SIMPLE_DYNAMIC, id);
         var catalogDatasetId = fetchDatasetFromCatalogWithId(id);
-        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, "award", "Red Dot Design Award", OPERATOR_EQUAL, false);
+        var contractNegotiationId = negotiateContractWithParams(id, catalogDatasetId, LEFT_OPERAND_AWARD, ALLOWED_AWARD, OPERATOR_EQUAL, false);
         await().atMost(TIMEOUT).pollInterval(POLL_INTERVAL)
                 .until(() -> getContractNegotiationState(contractNegotiationId), s -> s.equals("FINALIZED"));
 
     }
+
+    @Test
+    void autoVerifySuccess() {
+        JsonStructure response =  verifyIdentity(CONSUMER_URL_API);
+        JsonObject json = response.asJsonObject();
+        Boolean signatureResult = json.getBoolean(EDC_NAMESPACE + "success");
+        assertThat(signatureResult).isEqualTo(true);
+
+    }
+
+
+    @Test
+    void autoVerifyFail() {
+        JsonStructure response =  verifyIdentity(PROVIDER_URL_API);
+        JsonObject json = response.asJsonObject();
+        Boolean signatureResult = json.getBoolean(EDC_NAMESPACE + "success");
+        assertThat(signatureResult).isEqualTo(false);
+    }
+
 
 }

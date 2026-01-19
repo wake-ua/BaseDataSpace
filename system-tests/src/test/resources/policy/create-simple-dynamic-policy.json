@@ -1,7 +1,6 @@
 {
   "@context": {
-    "@vocab":  "https://w3id.org/edc/v0.0.1/ns/",
-    "award": "https://schema.org/award"
+    "@vocab":  "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@type": "PolicyDefinition",
   "@id": "{{policy-id}}",
@@ -14,7 +13,7 @@
         "constraint": {
           "or": [
             {
-              "leftOperand": "award",
+              "leftOperand": "https://schema.org/award",
               "operator": "eq",
               "rightOperand": "Red Dot Design Award"
             }
