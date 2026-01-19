@@ -386,7 +386,7 @@ public record ParticipantNode(@JsonProperty("name") String name,
      * @param key the key in the JSON object whose value is an array of JSON objects
      * @return a map where keys are the "@id" values and values are the "@value" values from the array's JSON objects
      */
-    public static  Map<String, String> getStringMapFromJsonObject(JsonObject jsonObject, String key) {
+    public static Map<String, String> getStringMapFromJsonObject(JsonObject jsonObject, String key) {
         Map<String, String> results = new HashMap<>();
         if (jsonObject.containsKey(key)) {
             JsonObject object = jsonObject.getJsonObject(key);
@@ -428,8 +428,12 @@ public record ParticipantNode(@JsonProperty("name") String name,
 
     /**
      * Helper method to extract a string value from a JSON object.
+     *
+     * @param jsonObject the JSON object containing the target array
+     * @param key the key in the JSON object whose value is an array of JSON objects
+     * @return the extracted string values
      */
-    private static String getStringValue(JsonObject jsonObject, String key) {
+    public static String getStringValue(JsonObject jsonObject, String key) {
         if (jsonObject.containsKey(key)) {
             var valueArray = jsonObject.getJsonArray(key);
             if (valueArray != null && !valueArray.isEmpty()) {

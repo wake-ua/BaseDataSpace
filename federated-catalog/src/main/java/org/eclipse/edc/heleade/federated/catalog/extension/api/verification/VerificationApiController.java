@@ -38,6 +38,8 @@ import java.util.Map;
 
 import static org.eclipse.edc.heleade.commons.verification.claims.Claims.verifyClaims;
 import static org.eclipse.edc.heleade.commons.verification.claims.Claims.verifySignature;
+import static org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory.ParticipantNode.getMapFromArrayJsonObject;
+import static org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory.ParticipantNode.getStringValue;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
@@ -89,15 +91,25 @@ public class VerificationApiController {
         JsonObject jsonBody = jsonReader.readObject();
         jsonReader.close();
 
+        JsonObject jsonLdBody = jsonLd.expand(jsonBody).getContent();
+
         // get the inputs from the body
-        String id = jsonBody.getString(EDC_NAMESPACE + "participantId");
-        String participantSignedClaims = jsonBody.getString(EDC_NAMESPACE + "signedClaims");
-        Map<String, Object> participantClaims = getMapFromJsonObject(jsonBody.getJsonObject(EDC_NAMESPACE + "claims"));
-        JsonObject participantClaimsJson = jsonBody.getJsonObject(EDC_NAMESPACE + "claims");
+        String id = getStringValue(jsonLdBody, EDC_NAMESPACE + "participantId");
+        String participantSignedClaims = getStringValue(jsonLdBody, EDC_NAMESPACE + "signedClaims");
+        Map<String, Object> participantClaims = getMapFromArrayJsonObject(jsonLdBody, EDC_NAMESPACE + "claims");
+        JsonObject participantClaimsJson = getJsonObjectFromStringMap(participantClaims);
         String claimsString = participantClaimsJson.toString();
 
-        // check the signature
+        // check participant is registered
         ParticipantNode participantNode = targetNodeDirectory.getParticipantNode(id);
+        if (participantNode == null) {
+            return Json.createObjectBuilder()
+                    .add("error", "Participant not registered in federated catalog")
+                    .add("verifySignatureSuccess", false)
+                    .add("verifyClaimsSuccess", false).build();
+        }
+
+        // check the signature
         String pem = participantNode.security().get(EDC_NAMESPACE + "pem");
         boolean verifySignatureSuccess = verifySignature(typeManager.getMapper(), pem, participantSignedClaims, claimsString);
         JsonObjectBuilder builder = Json.createObjectBuilder();
@@ -110,6 +122,19 @@ public class VerificationApiController {
 
         // return overall result
         builder.add("success", verifySignatureSuccess && verifyClaimsSuccess);
+        return builder.build();
+    }
+
+    private JsonObject getJsonObjectFromStringMap(Map<String, Object> map) {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        for (String key : map.keySet()) {
+            Object value = map.get(key);
+            if (value instanceof String) {
+                builder.add(key, (String) value);
+            } else {
+                throw new IllegalArgumentException("Invalid type for key: " + key);
+            }
+        }
         return builder.build();
     }
 
