@@ -1501,7 +1501,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"eu-policy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"constraint\": {\n          \"@type\": \"AtomicConstraint\",\n          \"leftOperand\": \"location\",\n          \"operator\": {\n            \"@id\": \"odrl:eq\"\n          },\n          \"rightOperand\": \"eu\"\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"eu-policy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"constraint\": {\n          \"@type\": \"AtomicConstraint\",\n          \"leftOperand\": \"https://w3id.org/edc/v0.0.1/ns/location\",\n          \"operator\": {\n            \"@id\": \"odrl:eq\"\n          },\n          \"rightOperand\": \"eu\"\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2778,7 +2778,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"claims\": {\n        \"country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\"\n    },\n    \"security\": {\n        \"pem\": \"MCowBQYDK2VwAyEAF4SHqq/RAYBAWslvWdHXVFeCBzJInXQA4f+uQt/v1c4=\"\n    },\n    \"attributes\": {},\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+									"raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"claims\": {\n        \"https://w3id.org/edc/v0.0.1/ns/country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\",\n        \"schema:award\": \"Red Dot Design Award\"\n    },\n    \"security\": {\n        \"pem\": \"MCowBQYDK2VwAyEAF4SHqq/RAYBAWslvWdHXVFeCBzJInXQA4f+uQt/v1c4=\"\n    },\n    \"attributes\": {},\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2918,13 +2918,41 @@
 							"response": []
 						},
 						{
-							"name": "Verify Claims",
+							"name": "Verify Claims Consumer",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\n    \"participantId\": \"provider-base\", \n    \"signedClaims\": \"adfasdfasdf\",\n    \"claims\": {\n        \"location\": \"eu\"\n    },\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n  }",
+									"raw": "  {\n    \"https://w3id.org/edc/v0.0.1/ns/participantId\": \"consumer-base\", \n    \"https://w3id.org/edc/v0.0.1/ns/signedClaims\": \"adfasdfasdf\",\n    \"https://w3id.org/edc/v0.0.1/ns/claims\": {\n        \"https://w3id.org/edc/v0.0.1/ns/location\": \"eu\",\n        \"https://w3id.org/edc/v0.0.1/ns/entity_type\": \"public\",\n        \"https://schema.org/award\": \"Red Dot Design Award\",\n        \"https://w3id.org/edc/v0.0.1/ns/country\": \"esp\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_HTTP}}/api/verification",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_HTTP}}",
+									"path": [
+										"api",
+										"verification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Claims Provider",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\n    \"participantId\": \"provider-base\", \n    \"signedClaims\": \"adfasdfasdf\",\n    \"claims\":{\n        \"country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\"\n    },\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n  }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3183,7 +3211,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": {\n        \"@vocab\": \"http://www.w3.org/ns/odrl.jsonld\",\n        \"odrl\": \"http://www.w3.org/ns/odrl.jsonld\"\n        },\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"odrl:permission\": {\n        \"odrl:action\": {\n            \"@id\": \"odrl:use\"\n        },\n        \"odrl:constraint\": {\n            \"odrl:leftOperand\": {\n                \"@id\": \"edc:location\"\n            },\n            \"odrl:operator\": {\n                \"@id\": \"odrl:eq\"\n            },\n            \"odrl:rightOperand\": \"eu\"\n        }\n    },\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  }\n}",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\",\n    \"permission\": \n        {\n            \"action\": \"use\",\n            \"constraint\": {\n                \"leftOperand\": {\n                    \"@id\": \"edc:location\"\n                },\n                \"operator\": {\n                    \"@id\": \"odrl:eq\"\n                },\n                \"rightOperand\": \"eu\"\n            }\n        }\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
