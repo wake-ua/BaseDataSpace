@@ -87,7 +87,6 @@ def create_assets_for_region_code(file, metadata, url_template, name, desc, resp
             province_name = item["name"]
             print(f"\033[32m{province_name}\033[0m")
             asset_name = name.format(region=province_name)
-            asset_name = re.sub(r'\s+', '-', asset_name.lower())
             asset_desc = desc.format(region=province_name)
             print(f"\033[32m{asset_desc}\033[0m")
             url = url_template.format(code=code)

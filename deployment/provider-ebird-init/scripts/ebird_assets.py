@@ -1,10 +1,11 @@
 from datetime import datetime, timezone
-
+import  re
 
 
 def build_asset(url, metadata, desc, name, api_key, province=None):
     """Create asset definition dict (NOT serialized)."""
-    asset_id = f"asset-{name}"
+    asset_id = re.sub(r'\s+', '-', name.lower())
+    asset_id = f"asset-{asset_id}"
     display_name = name.format(region=province) if province else name
     current_time = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -29,7 +30,8 @@ def build_asset(url, metadata, desc, name, api_key, province=None):
         "dct:modified": current_time,
         "dct:issued": current_time,
         "dct:type": "Dataset",
-        "dct:accessRights": "https://opendatacommons.org/licenses/odbl/1.0/",
+        "dct:license": "https://opendatacommons.org/licenses/odbl/1.0/",
+        "dct:accessRights": "https://publications.europa.eu/resource/authority/access-right/RESTRICTED",
         "@context": {
             "schema": "https://schema.org/",
             "cbm": "https://w3id.org/cbm/v0.0.1/ns/",
@@ -69,7 +71,8 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, asset_ty
         "edc:contenttype": "application/json",
         "schema:algorithm": "clustering",
         "dct:type": "Dataset",
-        "dct:accessRights": "https://opendatacommons.org/licenses/odbl/1.0/",
+        "dct:license": "https://opendatacommons.org/licenses/odbl/1.0/",
+        "dct:accessRights": "https://publications.europa.eu/resource/authority/access-right/PUBLIC",
         "@context": {
             "schema": "https://schema.org/",
             "cbm": "https://w3id.org/cbm/v0.0.1/ns/",

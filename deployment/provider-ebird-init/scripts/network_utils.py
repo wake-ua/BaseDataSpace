@@ -37,8 +37,8 @@ def send_request(url, payload, apikey):
 
     try:
         headers = {
-        'Content-Type': 'application/json',
-        'x-api-key': apikey
+            'Content-Type': 'application/json',
+            'x-api-key': apikey
         }
         response = requests.post(url, headers=headers, json=payload)
         print(f"\033[34m POST Status: {response.status_code}\033[0m")
@@ -65,8 +65,8 @@ def send_request(url, payload, apikey):
 def post_json(url, payload, apikey):
     try:
         headers = {
-        'Content-Type': 'application/json',
-        'x-api-key': apikey
+            'Content-Type': 'application/json',
+            'x-api-key': apikey
         }
         response = requests.post(url, headers=headers, json=payload)
         print("Status:", response.status_code)
@@ -74,8 +74,16 @@ def post_json(url, payload, apikey):
         print(f"\033[34m{response.status_code}\033[0m")
         if response.status_code != 409:
             return response.json()
+
         if response.status_code == 409:
-            return payload['@id']
+            print("Conflict detected (409). Retrying with PUT...")
+            url = url + f"/{payload['@id']}"
+            response = requests.put(url, headers=headers, json=payload)
+            print(f"\033[34m PUT Status: {response.status_code}\033[0m")
+            print("PUT Response:", response.text)
+            if response.status_code == 204:
+                return payload["@id"]
+
 
 
     except requests.RequestException as e:
