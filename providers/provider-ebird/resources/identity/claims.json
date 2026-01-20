@@ -1,4 +1,5 @@
 {
-  "https://w3id.org/edc/v0.0.1/ns/entity_type": "public",
-  "https://w3id.org/edc/v0.0.1/ns/location": "eu"
+  "https://w3id.org/edc/v0.0.1/ns/country": "usa",
+  "https://w3id.org/edc/v0.0.1/ns/location": "eu",
+  "https://w3id.org/edc/v0.0.1/ns/entity_type": "public"
 }
