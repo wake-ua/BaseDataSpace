@@ -6,6 +6,9 @@ on:
     - "main"
     - "feature/deployment"
     paths:
+      - 'commons/src/**'
+      - 'iam-identity/src/**'
+      - 'consumers/consumer/src/**'
       - 'federated-catalog/**'
       - '.github/workflows/federated-catalog.yml'
 

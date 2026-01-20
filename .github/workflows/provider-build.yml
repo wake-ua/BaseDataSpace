@@ -6,6 +6,8 @@ on:
     - "main"
     - "feature/deployment"
     paths:
+      - 'commons/src/**'
+      - 'iam-identity/src/**'
       - 'providers/provider/src/**'
       - 'providers/provider-base/Dockerfile'
       - '.github/workflows/provider-build.yml'

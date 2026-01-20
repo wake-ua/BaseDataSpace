@@ -6,6 +6,8 @@ on:
     - "main"
     - "feature/deployment"
     paths:
+      - 'commons/src/**'
+      - 'iam-identity/src/**'
       - 'consumers/consumer/src/**'
       - 'consumers/consumer-base/Dockerfile'
       - '.github/workflows/consumer-build.yml'
