@@ -92,7 +92,7 @@ public class FcParticipantClaimChecker implements ParticipantClaimChecker {
             JsonObject jsonBody = Json.createReader(new StringReader(response.body())).readObject();
             return VerificationResult.fromJsonObject(jsonBody);
         } catch (Exception e) {
-            return new VerificationResult(false, false, false, "Error parsing verification: " + e.getMessage());
+            return new VerificationResult(false, false, false, "Error parsing verification: " + e.getMessage() + " body :" + response.body());
         }
 
     }
