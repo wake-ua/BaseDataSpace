@@ -13,6 +13,6 @@ services:
       - "15191:15191"
       - "15193:15193"
       - "15194:15194"
-    restart: on-failure
+    restart: on-failure:5
     networks:
       - base-ds-network
