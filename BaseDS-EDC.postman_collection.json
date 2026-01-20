@@ -29,6 +29,25 @@
 					"response": []
 				},
 				{
+					"name": "Provider Verify",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_URL}}:{{PROVIDER_HTTP_PORT}}/api/verify-identity",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{PROVIDER_HTTP_PORT}}",
+							"path": [
+								"api",
+								"verify-identity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Consumer Health",
 					"request": {
 						"method": "GET",
@@ -77,25 +96,6 @@
 								"{{HOST_URL}}"
 							],
 							"port": "{{FEDERATED_CATALOG_HTTP}}",
-							"path": [
-								"api",
-								"health"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Idearium Provider Health",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{HOST_URL}}:{{IDEARIUM_HTTP_PORT}}/api/health",
-							"host": [
-								"{{HOST_URL}}"
-							],
-							"port": "{{IDEARIUM_HTTP_PORT}}",
 							"path": [
 								"api",
 								"health"
@@ -2859,35 +2859,6 @@
 							"response": []
 						},
 						{
-							"name": "Add Node Directory Idearium Docker",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "    {\n        \"name\": \"Idearium Provider\",\n        \"id\": \"provider-idearium\",\n        \"url\": \"http://provider-idearium:15194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"claims\": {\n            \"location\": \"eu\",\n            \"entity_type\": \"private\",\n            \"country\": \"esp\"\n        },\n        \"attributes\": {},\n        \"security\": {\n            \"pem\": \"MCowBQYDK2VwAyEAS7i1BxdkCHQuXTeUkMDZ411D+gEIRaYDZHV9lt2PuFY=\"\n        },\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
-									"host": [
-										"{{HOST_URL}}"
-									],
-									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
-									"path": [
-										"management",
-										"v1alpha",
-										"directory"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Delete Node Directory",
 							"request": {
 								"method": "DELETE",
@@ -3189,6 +3160,50 @@
 					"response": []
 				},
 				{
+					"name": "Negotiate Contract Docker",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// get the id of one asset and save it as an environment variable",
+									"if(pm.response.code == 200){",
+									"    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+							"host": [
+								"{{HOST_URL}}"
+							],
+							"port": "{{CONSUMER_MANAGEMENT_PORT}}",
+							"path": [
+								"management",
+								"v3",
+								"contractnegotiations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Negotiate Contract with Policy",
 					"event": [
 						{
@@ -3234,7 +3249,7 @@
 					"response": []
 				},
 				{
-					"name": "Negotiate Contract Docker",
+					"name": "Negotiate Contract with Policy Docker",
 					"event": [
 						{
 							"listen": "test",
@@ -3246,7 +3261,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -3255,7 +3271,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
+							"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\",\n    \"permission\": \n        {\n            \"action\": \"use\",\n            \"constraint\": {\n                \"leftOperand\": {\n                    \"@id\": \"edc:location\"\n                },\n                \"operator\": {\n                    \"@id\": \"odrl:eq\"\n                },\n                \"rightOperand\": \"eu\"\n            }\n        }\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3889,6 +3905,134 @@
 					"name": "Idearium",
 					"item": [
 						{
+							"name": "Idearium Provider Health",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST_URL}}:{{IDEARIUM_HTTP_PORT}}/api/health",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{IDEARIUM_HTTP_PORT}}",
+									"path": [
+										"api",
+										"health"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Node Directory Idearium Docker",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyFederatedCatalog",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"name\": \"Idearium Provider\",\n        \"id\": \"provider-idearium\",\n        \"url\": \"http://localhost:15194/protocol\",\n        \"supportedProtocols\": [\"dataspace-protocol-http\"],\n        \"claims\": {\n            \"location\": \"eu\",\n            \"entity_type\": \"private\",\n            \"country\": \"esp\"\n        },\n        \"attributes\": {},\n        \"security\": {\n            \"pem\": \"MCowBQYDK2VwAyEAS7i1BxdkCHQuXTeUkMDZ411D+gEIRaYDZHV9lt2PuFY=\"\n        },\n        \"@context\": {\n            \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n        }\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_MANAGEMENT_PORT}}/management/v1alpha/directory",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_MANAGEMENT_PORT}}",
+									"path": [
+										"management",
+										"v1alpha",
+										"directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Idearium Provider Verify",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST_URL}}:{{IDEARIUM_HTTP_PORT}}/api/verify-identity",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{IDEARIUM_HTTP_PORT}}",
+									"path": [
+										"api",
+										"verify-identity"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Claims Provider Idearium",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "managementApiKeyFederatedCatalog",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "x-api-key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\n    \"participantId\": \"provider-idearium\", \n    \"signedClaims\": \"adfasdfasdf\",\n    \"claims\":{\n        \"country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"private\"\n    },\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_HTTP}}/api/verification",
+									"host": [
+										"{{HOST_URL}}"
+									],
+									"port": "{{FEDERATED_CATALOG_HTTP}}",
+									"path": [
+										"api",
+										"verification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Query All Assets",
 							"event": [
 								{
@@ -4051,7 +4195,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-idearium:{{IDEARIUM_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-idearium\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
+									"raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-idearium:{{IDEARIUM_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-idearium\",\n    \"target\": \"{{ASSET_ID}}\",\n    \"permission\": \n        {\n            \"action\": \"use\",\n            \"constraint\": {\n                \"leftOperand\": {\n                    \"@id\": \"edc:location\"\n                },\n                \"operator\": {\n                    \"@id\": \"odrl:eq\"\n                },\n                \"rightOperand\": \"eu\"\n            }\n        }\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4252,23 +4396,50 @@
 							},
 							"response": []
 						}
+					],
+					"auth": {
+						"type": "apikey",
+						"apikey": [
+							{
+								"key": "key",
+								"value": "x-api-key",
+								"type": "string"
+							},
+							{
+								"key": "value",
+								"value": "managementApiKeyProviderIdearium",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				}
 			],
 			"auth": {
-				"type": "apikey",
-				"apikey": [
-					{
-						"key": "value",
-						"value": "managementApiKeyProviderIdearium",
-						"type": "string"
-					},
-					{
-						"key": "key",
-						"value": "x-api-key",
-						"type": "string"
-					}
-				]
+				"type": "noauth"
 			},
 			"event": [
 				{
