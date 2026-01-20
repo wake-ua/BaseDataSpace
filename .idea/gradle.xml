@@ -26,7 +26,6 @@
             <option value="$PROJECT_DIR$/providers/provider-base" />
             <option value="$PROJECT_DIR$/providers/provider-climate" />
             <option value="$PROJECT_DIR$/providers/provider-ebird" />
-            <option value="$PROJECT_DIR$/providers/provider-mastral" />
             <option value="$PROJECT_DIR$/system-tests" />
             <option value="$PROJECT_DIR$/util" />
             <option value="$PROJECT_DIR$/util/http-request-logger" />
