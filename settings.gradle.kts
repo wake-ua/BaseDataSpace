@@ -29,7 +29,6 @@ include(":federated-catalog")
 
 include(":consumers:consumer")
 include(":consumers:consumer-base")
-include(":consumers:search-service")
 
 include(":providers:content-based-catalog-dispatcher")
 include(":providers:provider")
