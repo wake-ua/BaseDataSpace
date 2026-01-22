@@ -25,6 +25,7 @@ import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.UnwindOptions;
 import com.mongodb.client.model.UpdateOptions;
 import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import org.bson.BsonDocument;
@@ -240,8 +241,14 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         // add count
         aggregations.add(Aggregates.count());
 
-        var document = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations).first();
+        var documents = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations);
 
+        // check result is not empty
+        if (!documents.iterator().hasNext()) {
+            return "{\"count\": 0}";
+        }
+
+        var document = documents.first();
         String result = document == null ? "{}" : document.toJson();
         return result;
     }
@@ -251,7 +258,8 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         UpdateOptions options = new UpdateOptions().upsert(true);
         JsonObject catalogJson = this.transformerRegistry.transform(catalog, JsonObject.class).getContent();
         JsonObject catalogJsonCompacted = jsonLd.compact(catalogJson).getContent();
-        Document catalogDoc = Document.parse(catalogJsonCompacted.toString()).append(getIdField(), id);
+        JsonObject catalogJsonCompactedDatasetArray = ensureDatasetAsArray(catalogJsonCompacted);
+        Document catalogDoc = Document.parse(catalogJsonCompactedDatasetArray.toString()).append(getIdField(), id);
         // Create a new document with just the fields we want to set
         Document setDoc = new Document();
 
@@ -277,6 +285,20 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         Document doc = Document.parse("{ $set: { " + getMarkedField() + ": true } }");
         MongoCollection<Document> collection = getCollection(connection, getFederatedCatalogCollectionName());
         collection.updateMany(Filters.empty(), doc, options);
+    }
+
+    private JsonObject ensureDatasetAsArray(JsonObject catalogJson) {
+        var dataset = catalogJson.get("dcat:dataset");
+        if (dataset != null) {
+            if (dataset instanceof JsonObject) {
+                var catalogWithArrayBuilder = Json.createObjectBuilder(catalogJson);
+                JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+                arrayBuilder.add(dataset);
+                catalogWithArrayBuilder.add("dcat:dataset", arrayBuilder.build());
+                return catalogWithArrayBuilder.build();
+            }
+        }
+        return catalogJson;
     }
 
     /**
@@ -513,6 +535,10 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
                 case "<=":
                     filters.add(new Document("$lte", Arrays.asList(fieldPath, rightOperand)));
                     break;
+                case "in":
+                    //TODO
+                    filters.add(new Document("$lte", Arrays.asList(fieldPath, rightOperand)));
+                    break;
                 default:
                     // ignore unsupported operators
             }
@@ -589,7 +615,6 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
                 .map(doc -> doc.toJson(settings))
                 .collect(Collectors.joining(",\n", "[\n", "\n]"));
     }
-
 
 }
 
