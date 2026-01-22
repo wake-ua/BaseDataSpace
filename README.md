@@ -21,7 +21,6 @@
   * **Idearium Provider**: Ports 1519x / 1529x
 * CONSUMERS:
   * **Base Consumer**: Ports 2919x / 2929x
-  * **Search Service**: Ports 2719x / 2729x
 * **Federated Catalog**: Ports 3919x / 3929x
 
 ---

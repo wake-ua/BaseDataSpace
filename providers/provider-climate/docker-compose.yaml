@@ -1,11 +1,14 @@
 services:
   provider-climate:
     container_name: provider-climate
+    image: ghcr.io/wake-ua/provider-base:latest
+    volumes:
+      - ./resources/configuration/configuration.properties:/provider-base-docker-configuration.properties:ro
+      - ./resources/identity:/identity:ro
     ports:
       - "16191:16191"
       - "16193:16193"
       - "16194:16194"
-    build: .
     restart: on-failure:5
     networks:
       - base-ds-network
@@ -13,4 +16,3 @@ services:
 networks:
   base-ds-network:
     external: true
-
