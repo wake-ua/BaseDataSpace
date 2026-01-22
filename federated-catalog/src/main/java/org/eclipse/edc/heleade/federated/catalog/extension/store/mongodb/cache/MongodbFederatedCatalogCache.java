@@ -536,8 +536,7 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
                     filters.add(new Document("$lte", Arrays.asList(fieldPath, rightOperand)));
                     break;
                 case "in":
-                    //TODO
-                    filters.add(new Document("$lte", Arrays.asList(fieldPath, rightOperand)));
+                    filters.add(new Document("$in", Arrays.asList(fieldPath, rightOperand)));
                     break;
                 default:
                     // ignore unsupported operators
