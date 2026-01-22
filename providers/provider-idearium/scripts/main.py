@@ -9,8 +9,10 @@ from urllib.parse import urljoin
 import time
 
 logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(levelname)s - %(message)s")
-load_dotenv()
 
+# BASE_DIR = os.path.join(os.path.dirname(__file__))
+# load_dotenv(BASE_DIR + '/../.env.pro')
+load_dotenv()
 
 BASE_URL = os.getenv("BASE_URL")
 API_KEY = os.getenv("API_KEY")
