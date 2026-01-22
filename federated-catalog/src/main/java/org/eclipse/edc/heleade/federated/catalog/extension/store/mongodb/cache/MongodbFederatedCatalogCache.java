@@ -249,7 +249,8 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         }
 
         var document = documents.first();
-        String result = document == null ? "{}" : document.toJson();
+        String result = document == null ? "{\"count\": 0}" : document.toJson();
+
         return result;
     }
 
