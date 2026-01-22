@@ -241,17 +241,18 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         // add count
         aggregations.add(Aggregates.count());
 
+        // run the aggregation
         var documents = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations);
 
         // check result is not empty
-        if (!documents.iterator().hasNext()) {
-            return "{\"count\": 0}";
+        if (documents.iterator().hasNext()) {
+            var document = documents.first();
+            if (document != null && !document.isEmpty()) {
+                return document.toJson();
+            }
         }
 
-        var document = documents.first();
-        String result = document == null ? "{\"count\": 0}" : document.toJson();
-
-        return result;
+        return "{\"count\": 0}";
     }
 
     private void upsertInternal(MongoClient connection, String id, Catalog catalog) {
