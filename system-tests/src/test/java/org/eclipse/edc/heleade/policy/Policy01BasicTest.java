@@ -54,12 +54,12 @@ public class Policy01BasicTest {
     private static final String CONSUMER_URL_API = "http://localhost:39191/api";
     private static final String PROVIDER_URL_API = "http://localhost:49191/api";
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
-    private static final String PROVIDER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/provider-participant-directory.json";
-    private static final String CONSUMER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/consumer-participant-directory.json";
+    private static final String PROVIDER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/provider-directory-local.json";
+    private static final String CONSUMER_NODE_DIRECTORY_PATH = RESOURCES_FOLDER + "/consumer-directory-local.json";
     private static final String CONSUMER_KEY_PATH = "src/test/resources/keys/consumer";
     private static final String PROVIDER_KEY_PATH = "src/test/resources/keys/provider";
-    private static final String CONSUMER_NODE_RELATIVE_PATH = "src/test/resources/policy/consumer-participant-directory.json";
-    private static final String PROVIDER_NODE_RELATIVE_PATH = "src/test/resources/policy/provider-participant-directory.json";
+    private static final String CONSUMER_NODE_RELATIVE_PATH = "src/test/resources/policy/consumer-directory.json";
+    private static final String PROVIDER_NODE_RELATIVE_PATH = "src/test/resources/policy/provider-directory.json";
     private static final String EU = "eu";
     private static final String US = "us";
     private static final String ENTITY_TYPE_PUBLIC = "public";

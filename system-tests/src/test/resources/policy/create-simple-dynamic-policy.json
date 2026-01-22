@@ -10,16 +10,13 @@
     "permission": [
       {
         "action": "use",
-        "constraint": {
-          "or": [
+        "constraint":
             {
               "leftOperand": "https://schema.org/award",
               "operator": "eq",
               "rightOperand": "Red Dot Design Award"
             }
-          ]
         }
-      }
     ]
   }
 }

@@ -57,6 +57,21 @@ if [[ ! -f "$JSON_FILE_ABS" ]]; then
     exit 1
 fi
 
+
+
+DIR="$(dirname "$JSON_FILE_ABS")"
+BASE="$(basename "$JSON_FILE_ABS")"
+NAME="${BASE%.json}"
+
+COPY_FILE="$DIR/${NAME}-local.json"
+
+if [ ! -f "$COPY_FILE" ]; then
+  cp "$JSON_FILE_ABS" "$COPY_FILE"
+  echo "Original json file copied correctly."
+fi
+
+
+
 # Ensure jq exists
 if ! command -v jq >/dev/null 2>&1; then
     echo "ERROR: jq is required but not installed"
@@ -64,7 +79,7 @@ if ! command -v jq >/dev/null 2>&1; then
 fi
 
 # Log previous value
-OLD_PEM=$(jq -r '.security.pem // empty' "$JSON_FILE_ABS")
+OLD_PEM=$(jq -r '.security.pem // empty' "$COPY_FILE")
 
 echo "Previous security.pem:"
 if [[ -z "$OLD_PEM" ]]; then
@@ -77,15 +92,15 @@ fi
 echo "Updating security.pem in JSON..."
 jq --arg pem "$PEM" '
   .security.pem = $pem
-' "$JSON_FILE_ABS" > "$JSON_FILE_ABS.tmp"
+' "$COPY_FILE" > "$COPY_FILE.tmp"
 
-mv "$JSON_FILE_ABS.tmp" "$JSON_FILE_ABS"
+mv "$COPY_FILE.tmp" "$COPY_FILE"
 
 
-NEW_PEM=$(jq -r '.security.pem' "$JSON_FILE_ABS")
+NEW_PEM=$(jq -r '.security.pem' "$COPY_FILE")
 
 echo "Updated security.pem:"
 echo "  $NEW_PEM"
 
 echo "=== generate-keys.sh completed successfully ==="
-rm -f "$JSON_FILE_ABS.bak"
+rm -f "$COPY_FILE.bak"

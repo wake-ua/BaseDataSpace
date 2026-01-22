@@ -13,15 +13,12 @@
       {
         "action": "use",
         "target": "{{asset-id}}",
-        "constraint": {
-          "or": [
+        "constraint":
             {
               "leftOperand": "{{left-operand}}",
               "operator": "{{operator}}",
               "rightOperand": "{{right-operand}}"
             }
-          ]
-        }
       }
     ],
     "prohibition": [],

@@ -43,7 +43,7 @@ public class PolicyCommon {
     private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = RESOURCES_FOLDER + "/create-contract-definition.json";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = RESOURCES_FOLDER + "/get-dataset.json";
     private static final String CONTRACT_OFFER_FILE_PATH = RESOURCES_FOLDER + "/create-contract-request.json";
-    private static final String CONTRACT_OFFER_FILE_PATH_DIFF_NAMESPACE = RESOURCES_FOLDER + "/create-contract-request-diff-namespace.json";
+    private static final String CONTRACT_OFFER_FILE_PATH_DIFF_NAMESPACE = RESOURCES_FOLDER + "/create-contract-request-namespace.json";
     private static final String CONTRACT_OFFER_COMPLEX_FILE_PATH = RESOURCES_FOLDER + "/create-complex-contract-request.json";
     private static final String CATALOG_DATASET_ID = "\"odrl:hasPolicy\".'@id'";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";

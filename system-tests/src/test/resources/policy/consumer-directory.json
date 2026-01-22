@@ -14,7 +14,7 @@
     "country": "esp"
   },
   "security": {
-    "pem": "MCowBQYDK2VwAyEAGJFzlRhNGIRLb/aVyjdoLSBCAOzHPGuXBXr0gmEPCYQ="
+    "pem": ""
   },
   "url": "http://localhost:39194/protocol",
   "supportedProtocols": [

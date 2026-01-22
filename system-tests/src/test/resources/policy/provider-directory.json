@@ -5,7 +5,9 @@
   "security": {
     "pem": ""
   },
-  "supportedProtocols": ["dataspace-protocol-http"],
+  "supportedProtocols": [
+    "dataspace-protocol-http"
+  ],
   "@context": {
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   }
