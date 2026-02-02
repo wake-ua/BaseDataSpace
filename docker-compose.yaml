@@ -26,6 +26,7 @@ services:
       - "19191:19191"
       - "19193:19193"
       - "19194:19194"
+      - "19291:19291"
     depends_on:
       - bds-postgresql
     build: ./providers/provider-base

@@ -9,6 +9,7 @@ services:
       - "16191:16191"
       - "16193:16193"
       - "16194:16194"
+      - "16291:16291"
     restart: on-failure:5
     networks:
       - base-ds-network

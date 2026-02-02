@@ -5,6 +5,7 @@ services:
       - "17191:17191"
       - "17193:17193"
       - "17194:17194"
+      - "17291:17291"
     build: .
     restart: on-failure:5
     volumes:
