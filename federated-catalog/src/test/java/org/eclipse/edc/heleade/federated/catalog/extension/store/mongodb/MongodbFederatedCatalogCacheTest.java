@@ -66,6 +66,33 @@ public class MongodbFederatedCatalogCacheTest {
     }
 
     @Test
+    void catalogShouldProvidePipelineWhenQuerySpecProvidedWithLike() {
+        QuerySpec querySpec = QuerySpec.Builder.newInstance().filter(Criterion.criterion("id", "like", "assetId")).build();
+
+        List<Bson> aggregation = MongodbFederatedCatalogCache.createCatalogAggregationPipeline(querySpec);
+
+        // Just for dev purposes
+        String aggregationsJsonString = MongodbFederatedCatalogCache.getAggregationPipelineAsJson(aggregation);
+
+        assert aggregation.size() > 3;
+
+        Bson addCatalogFieldsStage = aggregation.get(0);
+        assert addCatalogFieldsStage.toBsonDocument().containsKey("$addFields");
+
+        Bson matchStage = aggregation.get(1);
+        assert matchStage.toBsonDocument().containsKey("$match");
+
+        Bson addFieldsStage = aggregation.get(2);
+        assert addFieldsStage.toBsonDocument().containsKey("$addFields");
+
+        Bson addFieldsSizeStage = aggregation.get(3);
+        assert addFieldsSizeStage.toBsonDocument().containsKey("$addFields");
+
+        Bson matchStageSize = aggregation.get(4);
+        assert matchStageSize.toBsonDocument().containsKey("$match");
+    }
+
+    @Test
     void datasetShouldProvideEmptyPipelineWhenEmptyQuerySpecProvided() {
         QuerySpec querySpecEmpty = QuerySpec.Builder.newInstance().build();
         List<Bson> aggregation = MongodbFederatedCatalogCache.createDatasetAggregationPipeline(querySpecEmpty);

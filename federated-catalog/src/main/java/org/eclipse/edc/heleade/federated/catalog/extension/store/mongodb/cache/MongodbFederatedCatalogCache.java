@@ -383,6 +383,11 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
             UnwindOptions unwindOptions = new UnwindOptions().preserveNullAndEmptyArrays(false);
             aggregations.add(Aggregates.unwind("$dcat:dataset", unwindOptions));
 
+            // Repeat filter for the operators not included in expression to filter array
+            if (!(Objects.equals(filter, Filters.empty()))) {
+                aggregations.add(Aggregates.match(filter));
+            }
+
             // Keep context from Catalog object
             aggregations.add(Aggregates.addFields(new Field<>("dcat:dataset.@context", "$@context")));
 
@@ -522,23 +527,9 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
                         filters.add(Filters.in(fieldPath, Collections.singletonList(rightOperand)));
                     }
                     break;
-                case "like":
-                case "contains":
+                case "like", "contains":
                     // For 'like' and 'contains' queries, convert SQL-like patterns to regex
-                    String pattern = rightOperand.toString();
-                    if (!pattern.startsWith("%")) {
-                        pattern = "^" + pattern; // Anchor to start if no leading wildcard
-                    } else {
-                        pattern = pattern.substring(1); // Remove leading %
-                    }
-                    if (!pattern.endsWith("%")) {
-                        pattern = pattern + "$"; // Anchor to end if no trailing wildcard
-                    } else {
-                        pattern = pattern.substring(0, pattern.length() - 1); // Remove trailing %
-                    }
-                    // Replace SQL wildcards with regex patterns
-                    pattern = pattern.replace("%", ".*").replace("_", ".");
-                    filters.add(Filters.regex(fieldPath, pattern, "i")); // "i" for case-insensitive
+                    filters.add(Filters.regex(fieldPath, getRegExp(rightOperand.toString()), "i"));
                     break;
                 case "exists":
                     boolean exists = Boolean.parseBoolean(rightOperand.toString());
@@ -615,6 +606,12 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
                     break;
                 case "in":
                     filters.add(new Document("$in", Arrays.asList(fieldPath, rightOperand)));
+                    break;
+                case "like", "contains":
+                    // it breaks with arrays, removed temporarily
+                    // String pattern = getRegExp(rightOperand.toString());
+                    // For 'like' and 'contains' queries, convert SQL-like patterns to regex
+                    // filters.add(new Document("$regexMatch", Document.parse("{ input: \"" + fieldPath + "\", regex: /" + pattern + "/, options: 'i' }")));
                     break;
                 default:
                     // ignore unsupported operators
@@ -693,6 +690,23 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
                 .collect(Collectors.joining(",\n", "[\n", "\n]"));
     }
 
+    private static String getRegExp(String pattern) {
+        // For 'like' and 'contains' queries, convert SQL-like patterns to regex
+        if (!pattern.startsWith("%")) {
+            pattern = "^" + pattern; // Anchor to start if no leading wildcard
+        } else {
+            pattern = pattern.substring(1); // Remove leading %
+        }
+        if (!pattern.endsWith("%")) {
+            pattern = pattern + "$"; // Anchor to end if no trailing wildcard
+        } else {
+            pattern = pattern.substring(0, pattern.length() - 1); // Remove trailing %
+        }
+        // Replace SQL wildcards with regex patterns
+        pattern = pattern.replace("%", ".*").replace("_", ".");
+        return pattern; // "i" for case-insensitive
+
+    }
 }
 
 
