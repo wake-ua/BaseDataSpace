@@ -106,4 +106,31 @@ public class MongodbFederatedCatalogCacheTest {
         Bson matchStageSize = aggregation.get(4);
         assert matchStageSize.toBsonDocument().containsKey("$match");
     }
+
+    @Test
+    void keywordCountShouldProvidePipelineWhenEmptyQuerySpecProvided() {
+        QuerySpec querySpecEmpty = QuerySpec.Builder.newInstance().build();
+
+        List<Bson> aggregation = MongodbFederatedCatalogCache.createKeywordCountAggregationPipeline(querySpecEmpty, true);
+
+        // Just for dev purposes
+        String aggregationsJsonString = MongodbFederatedCatalogCache.getAggregationPipelineAsJson(aggregation);
+
+        assert aggregation.size() >= 10;
+
+        Bson addCatalogFieldsStage = aggregation.get(5);
+        assert addCatalogFieldsStage.toBsonDocument().containsKey("$project");
+
+        Bson matchStage = aggregation.get(6);
+        assert matchStage.toBsonDocument().containsKey("$unwind");
+
+        Bson addFieldsStage = aggregation.get(7);
+        assert addFieldsStage.toBsonDocument().containsKey("$group");
+
+        Bson addFieldsSizeStage = aggregation.get(8);
+        assert addFieldsSizeStage.toBsonDocument().containsKey("$project");
+
+        Bson matchStageSize = aggregation.get(9);
+        assert matchStageSize.toBsonDocument().containsKey("$sort");
+    }
 }

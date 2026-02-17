@@ -19,6 +19,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.BsonField;
 import com.mongodb.client.model.Field;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
@@ -161,6 +162,23 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     }
 
     /**
+     * Counts the datasets per keyword in the federated catalog cache based on the provided query specification.
+     *
+     * @param query   the query specification containing filtering, sorting, and pagination criteria
+     * @param noLimit a flag indicating whether the limit stage should be omitted from the query
+     * @return a JSON string representing the count of datasets per keyword that match the query criteria
+     */
+    public String countKeywords(QuerySpec query, boolean noLimit) {
+        return transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                return countInternalKeywords(connection, query, noLimit);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    /**
      * Deletes all entries from the cache that are marked as "expired"
      */
     @Override
@@ -237,6 +255,7 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         // remove limit stage
         if (noLimit) {
             aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$limit")));
+            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$skip")));
         }
         // add count
         aggregations.add(Aggregates.count());
@@ -253,6 +272,25 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         }
 
         return "{\"count\": 0}";
+    }
+
+    private String countInternalKeywords(MongoClient connection, QuerySpec querySpec, boolean noLimit) {
+
+        List<Bson> aggregations = createKeywordCountAggregationPipeline(querySpec, noLimit);
+        // run the aggregation
+        var documents = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations);
+
+        String result = "[";
+        var resultsStr = new java.util.ArrayList<String>();
+
+        // check result is not empty
+        if (documents.iterator().hasNext()) {
+            documents.forEach(doc -> resultsStr.add(doc.toJson()));
+            result += String.join(", ", resultsStr);
+        }
+
+        result += "]";
+        return result;
     }
 
     private void upsertInternal(MongoClient connection, String id, Catalog catalog) {
@@ -390,6 +428,44 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         return createAggregationPipeline(querySpec, true);
     }
 
+    /**
+     * Creates a MongoDB aggregation pipeline based on the provided query specification for keyword totals.
+     *
+     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
+     * @param noLimit a flag indicating whether to limit dataset entries in the pipeline
+     * @return a list of BSON objects representing the aggregation pipeline
+     */
+    public static List<Bson> createKeywordCountAggregationPipeline(QuerySpec querySpec, boolean noLimit) {
+
+        List<Bson> aggregations = createDatasetAggregationPipeline(querySpec);
+
+        // remove limit stage
+        if (noLimit) {
+            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$limit")));
+            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$skip")));
+        }
+
+        // remove sort
+        aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$sort")));
+
+        // project to leave only the keyword field
+        aggregations.add(Aggregates.project(Document.parse("{_id: 0, \"dcat:keyword\": 1}")));
+
+        // unwind the keywords
+        UnwindOptions unwindOptions = new UnwindOptions().preserveNullAndEmptyArrays(false);
+        aggregations.add(Aggregates.unwind("$dcat:keyword", unwindOptions));
+
+        // group the keywords
+        aggregations.add(Aggregates.group("$dcat:keyword", List.of(new BsonField("count", Document.parse("{ $sum: 1}")))));
+
+        // project to replace _id with keyword
+        aggregations.add(Aggregates.project(Document.parse("{_id: 0, \"dcat:keyword\": \"$_id\", count: 1}")));
+
+        // sort decreasingly by count
+        aggregations.add(Aggregates.sort(Document.parse("{\"count\": -1, \"dcat:keyword\": 1}")));
+
+        return aggregations;
+    }
 
     /**
      * Creates a MongoDB BSON filter from the given QuerySpec

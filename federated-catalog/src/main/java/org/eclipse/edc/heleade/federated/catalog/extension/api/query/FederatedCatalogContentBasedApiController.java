@@ -144,4 +144,30 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
             throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");
         }
     }
+
+    /**
+     * Counts the number of cached datasets per keyword based on the provided query parameters.
+     *
+     * @param catalogQuery the query parameters as a JsonObject; if null, a default query specification is used
+     * @return a String representing the number of datasets per keyword matching the query
+     * @throws InvalidRequestException if the catalogQuery transformation to QuerySpec fails
+     * @throws IllegalStateException if the QueryService is not of type HeleadeQueryServiceImpl
+     */
+    @Path("/keywords/count")
+    @POST
+    public String getCachedKeywordsCount(JsonObject catalogQuery) {
+        if (queryService instanceof HeleadeQueryServiceImpl) {
+            HeleadeQueryServiceImpl heleadeQueryService = (HeleadeQueryServiceImpl) queryService;
+            var querySpec = catalogQuery == null
+                    ? QuerySpec.Builder.newInstance().build()
+                    : transformerRegistry.transform(catalogQuery, QuerySpec.class)
+                    .orElseThrow(InvalidRequestException::new);
+
+            //check if the original query did not have a limit
+            boolean noLimit = (catalogQuery != null && !catalogQuery.containsKey(EDC_NAMESPACE + "limit"));
+            return heleadeQueryService.countKeywords(querySpec, noLimit);
+        } else {
+            throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");
+        }
+    }
 }
