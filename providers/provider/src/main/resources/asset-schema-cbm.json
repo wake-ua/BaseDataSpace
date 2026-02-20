@@ -20,6 +20,9 @@
         "http://purl.org/dc/terms/description": {
           "type": "string"
         },
+        "id": {
+          "type": "string"
+        },
         "contenttype": {
           "type": "string"
         },

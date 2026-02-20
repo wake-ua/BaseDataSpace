@@ -43,19 +43,22 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 /**
  * Converts from an {@link Dataset} as a {@link JsonObject} in JSON-LD expanded form of an {@link Asset}.
  */
-public class CbmJsonObjectToJsonObjectAssetTransformer extends AbstractJsonLdTransformer<JsonObject, JsonObject> {
+public class CbmJsonObjectToAssetJsonObjectTransformer extends AbstractJsonLdTransformer<CbmJsonObject, JsonObject> {
     /**
-     * Constructor for CbmJsonObjectToJsonObjectAssetTransformer.
+     * Constructor for CbmJsonObjectToAssetJsonObjectTransformer.
      * Configures the transformer to handle transformations from a JsonObject
      * to another JsonObject, leveraging the base functionality provided
      * by the AbstractJsonLdTransformer.
      */
-    public CbmJsonObjectToJsonObjectAssetTransformer() {
-        super(JsonObject.class, JsonObject.class);
+    public CbmJsonObjectToAssetJsonObjectTransformer() {
+        super(CbmJsonObject.class, JsonObject.class);
     }
 
     @Override
-    public @Nullable JsonObject transform(@NotNull JsonObject jsonObject, @NotNull TransformerContext context) {
+    public @Nullable JsonObject transform(@NotNull CbmJsonObject cbmJsonObject, @NotNull TransformerContext context) {
+
+        JsonObject jsonObject = cbmJsonObject.getJsonObject();
+
         // Check if we have a valid Dataset
         if (!DCAT_DATASET_TYPE.equals(nodeType(jsonObject)) && !CBM_SAMPLE_TYPE.equals(nodeType(jsonObject))) {
             context.problem()

@@ -16,9 +16,12 @@ package org.eclipse.edc.heleade.provider.extension.content.based.api.asset;
 
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import org.eclipse.edc.connector.controlplane.api.management.asset.v3.AssetApi;
 import org.eclipse.edc.connector.controlplane.api.management.asset.v3.AssetApiController;
@@ -69,7 +72,7 @@ public class ContentBasedAssetApiController extends AssetApiController implement
     @Override
     public JsonObject createAssetV3(JsonObject assetJson) {
         monitor.info("Received CBM asset creation request");
-        JsonObject edcAssetJson = transform(assetJson);
+        JsonObject edcAssetJson = transformCbmToAsset(assetJson);
         return super.createAssetV3(edcAssetJson);
     }
 
@@ -77,18 +80,40 @@ public class ContentBasedAssetApiController extends AssetApiController implement
     @Override
     public void updateAssetV3(JsonObject assetJson) {
         monitor.info("Received CBM asset modification request");
-        JsonObject edcAssetJson = transform(assetJson);
+        JsonObject edcAssetJson = transformCbmToAsset(assetJson);
         super.updateAssetV3(edcAssetJson);
     }
 
-    private JsonObject transform(JsonObject assetJson) {
-        if (assetJson.containsKey("@type") && CBM_SAMPLE_TYPE.equals(assetJson.getJsonArray("@type").getString(0))) {
-            validator.validate(CBM_SAMPLE_TYPE, assetJson).orElseThrow(ValidationFailureException::new);
+    @GET
+    @Path("{id}")
+    @Override
+    public JsonObject getAssetV3(@PathParam("id") String id) {
+        return transformAssetToCbm(super.getAssetV3(id));
+
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Override
+    public void removeAssetV3(@PathParam("id") String id) {
+        super.removeAssetV3(id);
+    }
+
+    private JsonObject transformCbmToAsset(JsonObject cbmJson) {
+        if (cbmJson.containsKey("@type") && CBM_SAMPLE_TYPE.equals(cbmJson.getJsonArray("@type").getString(0))) {
+            validator.validate(CBM_SAMPLE_TYPE, cbmJson).orElseThrow(ValidationFailureException::new);
         } else {
-            validator.validate(DCAT_DATASET_TYPE, assetJson).orElseThrow(ValidationFailureException::new);
+            validator.validate(DCAT_DATASET_TYPE, cbmJson).orElseThrow(ValidationFailureException::new);
         }
-        JsonObject edcAssetJson = transformerRegistry.transform(assetJson, JsonObject.class)
+        JsonObject edcAssetJson = transformerRegistry.transform(new CbmJsonObject(cbmJson), JsonObject.class)
                 .orElseThrow(f -> new EdcException(f.getFailureDetail()));
         return edcAssetJson;
     }
+
+    private JsonObject transformAssetToCbm(JsonObject edcAssetJson) {
+        JsonObject cbmAssetJson = transformerRegistry.transform(new AssetJsonObject(edcAssetJson), JsonObject.class)
+                .orElseThrow(f -> new EdcException(f.getFailureDetail()));
+        return cbmAssetJson;
+    }
+
 }

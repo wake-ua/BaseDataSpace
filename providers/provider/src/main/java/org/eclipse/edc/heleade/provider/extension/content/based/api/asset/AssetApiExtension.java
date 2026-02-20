@@ -71,7 +71,8 @@ public class AssetApiExtension implements ServiceExtension {
 
         var managementTypeTransformerRegistry = transformerRegistry.forContext("management-api");
 
-        managementTypeTransformerRegistry.register(new CbmJsonObjectToJsonObjectAssetTransformer());
+        managementTypeTransformerRegistry.register(new CbmJsonObjectToAssetJsonObjectTransformer());
+        managementTypeTransformerRegistry.register(new JsonObjectAssetToCbmJsonObjectTransformer());
 
         webService.registerResource(ApiContext.MANAGEMENT, new ContentBasedAssetApiController(assetService,
                 managementTypeTransformerRegistry, monitor, validator));
