@@ -45,7 +45,7 @@ def build_asset(url, metadata, desc, name, api_key, province=None):
     }
 
 
-def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, asset_type, sample_api_key, province=None):
+def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, provider_id, provider_share_token, province=None):
     """Create sample asset definition dict."""
     display_name = name.format(region=province) if province else name
     current_time = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
@@ -56,10 +56,10 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, asset_ty
             {
                 "@type": "dcat:Distribution",
                 "dct:format": {"@id": "HttpData"},
-                "dcat:accessURL": f"{sample_base_url}/samples/sample-{asset_id}.{asset_type}",
+                "dcat:accessURL": f"{sample_base_url}/samples/{provider_id}/{asset_id}",
                 "edc:proxyPath": "true",
                 "authKey": "x-api-key",
-                "authCode": sample_api_key,
+                "authCode": provider_share_token,
                 "cbm:hasDataDictionary": {"@type": "cbm:DataDictionary","cbm:hasField": metadata["columns"]}
             }
         ],
@@ -85,3 +85,5 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, asset_ty
         },
 
     }
+
+

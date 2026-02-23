@@ -53,12 +53,9 @@ providers/provider-idearium/venv
 !providers/provider-idearium/datasets/.gitkeep
 
 # deployment
-deployment/provider-ebird-init/scripts/samples/data/*
-deployment/samples-server/samples/provider-base/*
-!deployment/samples-server/samples/provider-base/.gitkeep
-deployment/samples-server/samples/provider-ebird/*
-!deployment/samples-server/samples/provider-ebird/.gitkeep
-!deployment/provider-ebird-init/scripts/samples/data/.gitkeep
+deployment/samples-server/samples/*
+deployment/provider-ebird-init/scripts/__pycache__
+deployment/provider-ebird-init/scripts/venv
 
 providers/provider-idearium/scripts/__pycache__
 providers/provider-idearium/.env

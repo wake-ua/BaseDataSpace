@@ -1,9 +1,11 @@
+import requests
+
 from dotenv import load_dotenv
 import os
 import json
 from ebird_assets import build_asset, build_sample_asset
-from network_utils import fetch_sample_data, send_request, post_json
-from create_files import save_parsed_data
+from network_utils import fetch_sample_data, send_request, post_json, create_provider, provider_login
+from create_files import  ConflictError, create_sample_in_server
 import logging
 import re
 from pathlib import Path
@@ -15,10 +17,13 @@ load_dotenv()
 
 
 
+
 BASE_URL = os.getenv("BASE_URL")
 API_KEY = os.getenv("API_KEY")
 X_API_KEY = os.getenv("X_API_KEY")
-SAMPLES_SERVER_PROVIDER_API_KEY = os.getenv("SAMPLES_SERVER_PROVIDER_API_KEY")
+PROVIDER_ID = os.getenv("PROVIDER_ID")
+SAMPLES_SERVER_ADMIN_TOKEN = os.getenv("SAMPLES_SERVER_ADMIN_TOKEN")
+
 SAMPLE_BASE_URL = os.getenv("SAMPLE_BASE_URL")
 POLICY_DEFINITIONS_URL = f"{BASE_URL}/management/v3/policydefinitions"
 CONTRACT_DEFINITIONS_URL = f"{BASE_URL}/management/v3/contractdefinitions"
@@ -39,6 +44,9 @@ POLICIES = [
     {"id": "basic-policy", "policy_file": "basic_policy.json", "contract_file": "basic_contract.json", "assets_id_key": "ASSETS_IDS"},
 ]
 
+PROVIDER_PASS = ""
+PROVIDER_SHARE_TOKEN = ""
+PROVIDER_TOKEN = ""
 
 endpoints = {
     "notable_obs_in_region": {
@@ -179,19 +187,54 @@ def create_contract_definition(filename, access_policy_id, contract_policy_id, a
 def create_asset_and_sample(metadata, url, name, desc, province=None, response_type="json"):
     asset_id, asset_payload = build_asset(url, metadata, desc, name, API_KEY, province)
     created = send_request(ASSETS_URL, asset_payload, X_API_KEY)
-    print(created)
+    
     if not created:
         return None
 
     sample = fetch_sample_data(url, API_KEY, response_type)
     if sample:
-        save_parsed_data(f"sample-{asset_id}", response_type, sample)
-        sample_payload = build_sample_asset(metadata, name, desc, asset_id, SAMPLE_BASE_URL, response_type, SAMPLES_SERVER_PROVIDER_API_KEY, province)
+        try:
+            create_sample_in_server(
+                method="POST", provider_token=PROVIDER_TOKEN, 
+                content=sample, mime_type=response_type, asset_id=asset_id
+            )
+        except ConflictError:
+             create_sample_in_server(
+                "PUT", PROVIDER_TOKEN, sample, response_type, asset_id
+            )
+        sample_payload = build_sample_asset(metadata=metadata, name=name, desc=desc, 
+                                            asset_id=asset_id, sample_base_url=SAMPLE_BASE_URL, 
+                                            provider_id=PROVIDER_ID,
+                                            provider_share_token=PROVIDER_SHARE_TOKEN,
+                                            province=province)
         send_request(SAMPLES_URL, sample_payload, X_API_KEY)
     return created
 
 
 def main():
+    global PROVIDER_SHARE_TOKEN 
+    global PROVIDER_TOKEN
+  
+
+    try:
+        provider_result = create_provider(
+        method="POST",
+        base_url=SAMPLE_BASE_URL,
+        provider_id=PROVIDER_ID,
+        admin_token=SAMPLES_SERVER_ADMIN_TOKEN
+         )
+    except ConflictError:
+           provider_result = create_provider(
+            method="PUT",
+            base_url=SAMPLE_BASE_URL,
+            provider_id=PROVIDER_ID,
+            admin_token=SAMPLES_SERVER_ADMIN_TOKEN
+        )
+
+    PROVIDER_PASS, PROVIDER_SHARE_TOKEN = provider_result
+    PROVIDER_TOKEN = provider_login(base_url=SAMPLE_BASE_URL, provider_id=PROVIDER_ID, password=PROVIDER_PASS)
+    
+
     for config in ASSET_CONFIGS:
         metadata = get_metadata(config["metadata_file"])
         endpoint = endpoints[config["endpoint_key"]]
@@ -202,7 +245,6 @@ def main():
 
 
 
-    #Contract for samples
     contract_sample_id = create_contract_definition("open_contract.json", OPEN_POLICY_ID, OPEN_POLICY_ID, SAMPLES_IDS)
     logging.info(f"\033[1;34mCREATED CONTRACT FOR SAMPLES {contract_sample_id}\033[0m")
 
@@ -213,10 +255,8 @@ def main():
         if policy_id:
             contract_id = create_contract_definition(policy["contract_file"], OPEN_POLICY_ID, policy_id, ASSET_ID_MAP[policy["assets_id_key"]])
             logging.info(f"\033[1;34mCREATED CONTRACT {contract_id}\033[0m")
-
-
+    
 
 
 if __name__ == "__main__":
     main()
-

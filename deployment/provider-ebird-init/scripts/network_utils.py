@@ -1,8 +1,10 @@
+import json
+
 import requests
 import csv
 from io import StringIO
 import logging
-
+from  create_files import ConflictError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -89,4 +91,58 @@ def post_json(url, payload, apikey):
     except requests.RequestException as e:
         logging.exception(e)
         return None
+
+
+
+
+def create_provider(base_url, provider_id, admin_token, method):
+   
+    url = f"{base_url}/providers/"
+    payload = json.dumps({
+    "provider_id": provider_id
+    })
+
+    headers = {
+        'Authorization': admin_token,
+    }
+
+    response = requests.request(method, url, headers=headers, data=payload)
+   
+    if response.status_code == 409:
+        raise ConflictError()
+    
+    data = response.json()
+
+    provider_pass = data["password"]
+    provider_share_token = data["share_token"]
+    
+    
+    return provider_pass, provider_share_token
+
+
+
+
+def provider_login(base_url, provider_id, password):
+
+    url = f"{base_url}/auth/login"
+
+    print(url)
+
+    payload = json.dumps({
+        "password": password,
+        "provider_id": provider_id
+    })
+
+    headers = {
+        'Content-Type': 'application/json',
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    json_response = response.json()
+    
+    
+    return json_response["access_token"]
+    
+  
 
