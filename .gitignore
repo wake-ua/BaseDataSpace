@@ -65,3 +65,4 @@ system-tests/src/test/resources/policy/provider-directory-local.json
 system-tests/src/test/resources/policy/consumer-directory-local.json
 
 *.pem
+deployment/provider-ebird-init/scripts/samples

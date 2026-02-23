@@ -22,10 +22,12 @@ import jakarta.json.JsonObject;
  */
 public class CbmJsonObject {
 
-    private JsonObject jsonObject;
+    private final JsonObject jsonObject;
 
     /**
      *  Constructor for wrapper class
+     *
+     * @param jsonObject object to wrap
      */
     public CbmJsonObject(JsonObject jsonObject) {
         this.jsonObject = jsonObject;
@@ -33,9 +35,5 @@ public class CbmJsonObject {
 
     public JsonObject getJsonObject() {
         return jsonObject;
-    }
-
-    public void setJsonObject(JsonObject jsonObject) {
-        this.jsonObject = jsonObject;
     }
 }

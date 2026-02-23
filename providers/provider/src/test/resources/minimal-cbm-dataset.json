@@ -1,0 +1,27 @@
+
+{
+  "@id": "datasetMandatory",
+  "@type": "dcat:Dataset",
+  "dct:title": "Minimal set of metadata",
+  "dct:description": "Contains only the mandatory properties",
+  "contenttype": "application/json",
+  "dct:issued": "2025-12-10T13:04:33+00:00",
+  "dct:modified": "2025-12-10T23:14:55+00:00",
+  "dct:accessRights": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+  "dct:license": "https://opendatacommons.org/licenses/odbl/1.0/",
+  "dct:type": "Dataset",
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpData"
+      },
+      "dcat:accessURL": "https://jsonplaceholder.typicode.com/users"
+    }
+  ],
+  "@context": {
+    "dct": "http://purl.org/dc/terms/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  }
+}
