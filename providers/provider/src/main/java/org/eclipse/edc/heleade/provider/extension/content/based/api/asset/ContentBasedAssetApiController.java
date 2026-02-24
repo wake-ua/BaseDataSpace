@@ -14,7 +14,11 @@
 
 package org.eclipse.edc.heleade.provider.extension.content.based.api.asset;
 
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -92,6 +96,15 @@ public class ContentBasedAssetApiController extends AssetApiController implement
 
     }
 
+    @POST
+    @Path("/request")
+    @Override
+    public JsonArray requestAssetsV3(JsonObject querySpecJson) {
+        var result = super.requestAssetsV3(querySpecJson);
+        return transformAssetListToCbm(result);
+
+    }
+
     @DELETE
     @Path("{id}")
     @Override
@@ -108,6 +121,17 @@ public class ContentBasedAssetApiController extends AssetApiController implement
         JsonObject edcAssetJson = transformerRegistry.transform(new CbmJsonObject(cbmJson), JsonObject.class)
                 .orElseThrow(f -> new EdcException(f.getFailureDetail()));
         return edcAssetJson;
+    }
+
+    private JsonArray transformAssetListToCbm(JsonArray jsonArray) {
+        JsonArrayBuilder cbmArrayBuilder = Json.createArrayBuilder();
+        for (JsonValue jsonValue : jsonArray) {
+            JsonObject edcAssetJson = jsonValue.asJsonObject();
+            JsonObject cbmAssetJson = transformerRegistry.transform(new AssetJsonObject(edcAssetJson), JsonObject.class)
+                    .orElseThrow(f -> new EdcException(f.getFailureDetail()));
+            cbmArrayBuilder.add(cbmAssetJson);
+        }
+        return cbmArrayBuilder.build();
     }
 
     private JsonObject transformAssetToCbm(JsonObject edcAssetJson) {

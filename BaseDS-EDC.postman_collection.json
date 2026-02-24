@@ -751,6 +751,50 @@
           "response": []
         },
         {
+          "name": "Create Asset Test",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if(pm.response.code == 200){",
+                  "    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"@id\": \"csv_dataset_ES521005_2015_from_asset\",\n    \"@type\": \"Asset\",\n    \"properties\": {\n        \"dcat:temporalResolution\": \"P1D\",\n        \"dct:license\": \"https://creativecommons.org/licenses/by/4.0/\",\n        \"dcat:keyword\": [\n            \"WETLANDS\",\n            \"HONDO\",\n            \"GRID\",\n            \"CEDEX\",\n            \"NDWI\",\n            \"MNDWI\"\n        ],\n        \"dct:accrualPeriodicity\": \"annual\",\n        \"dcat:byteSize\": 2761618.0,\n        \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/RESTRICTED\",\n        \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural del Hondo. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n        \"dct:spatial\": \"POLYGON ((-0.808594 38.215505, -0.686988 38.215505, -0.686988 38.154669, -0.808594 38.154669, -0.808594 38.215505))\",\n        \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n        \"dct:type\": \"Dataset\",\n        \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n        \"cbm:hasDataDictionary\": {\n            \"@type\": \"cbm:DataDictionary\",\n            \"cbm:hasField\": [\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"ES521006\",\n                    \"dct:description\": \"Identificador único del área de interés (laguna).\",\n                    \"dct:title\": \"Identificador del área de interés\",\n                    \"schema:name\": \"aoi_id\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"10\",\n                    \"dct:description\": \"Identificador único de la celda dentro de la cuadrícula.\",\n                    \"dct:title\": \"Identificador de celda\",\n                    \"schema:name\": \"cell_id\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"dateTime\",\n                    \"cbm:sampleValue\": \"2015-07-06T10:50:16Z\",\n                    \"dct:description\": \"Fecha y hora de la imagen o dato analizado.\",\n                    \"dct:title\": \"Fecha y hora\",\n                    \"schema:name\": \"timestamp\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.12305422\",\n                    \"dct:description\": \"Índice de vegetación normalizada.\",\n                    \"dct:title\": \"Índice NDVI\",\n                    \"schema:name\": \"ndvi\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.19679184\",\n                    \"dct:description\": \"Índice modificado de agua.\",\n                    \"dct:title\": \"Índice MNDWI\",\n                    \"schema:name\": \"mndwi\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.0859602\",\n                    \"dct:description\": \"Índice específico CEDEX para análisis ambiental.\",\n                    \"dct:title\": \"Índice CEDEX\",\n                    \"schema:name\": \"cedex\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"1.16801\",\n                    \"dct:description\": \"Relación entre bandas SWIR y NIR.\",\n                    \"dct:title\": \"Ratio SWIR/NIR\",\n                    \"schema:name\": \"ratio_swir_nir\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.26639273\",\n                    \"dct:description\": \"Índice mejorado de agua para humedales (AWEIsh).\",\n                    \"dct:title\": \"Índice AWEIsh\",\n                    \"schema:name\": \"aweish\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.49938032\",\n                    \"dct:description\": \"Índice de vegetación con banda verde.\",\n                    \"dct:title\": \"Índice CIGreen\",\n                    \"schema:name\": \"cigreen\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.0635949\",\n                    \"dct:description\": \"Índice de diferencia normalizada en banda roja y NIR.\",\n                    \"dct:title\": \"Índice NDRE\",\n                    \"schema:name\": \"ndre\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.07565519\",\n                    \"dct:description\": \"Índice de diferencia normalizada de la textura.\",\n                    \"dct:title\": \"Índice NDTI\",\n                    \"schema:name\": \"ndti\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.0759602\",\n                    \"dct:description\": \"Indicador relacionado con la salinidad del agua o suelo.\",\n                    \"dct:title\": \"Índice de salinidad\",\n                    \"schema:name\": \"salinity_index\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.06010487\",\n                    \"dct:description\": \"Índice de diferencia normalizada de clorofila.\",\n                    \"dct:title\": \"Índice NDCI\",\n                    \"schema:name\": \"ndci\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.13885115\",\n                    \"dct:description\": \"Índice de vegetación basado en reflectancia roja.\",\n                    \"dct:title\": \"Índice CI_RE\",\n                    \"schema:name\": \"ci_re\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"37.95690968\",\n                    \"dct:description\": \"Coordenada geográfica de latitud en grados decimales.\",\n                    \"dct:title\": \"Latitud\",\n                    \"schema:name\": \"latitude\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.76692115\",\n                    \"dct:description\": \"Coordenada geográfica de longitud en grados decimales.\",\n                    \"dct:title\": \"Longitud\",\n                    \"schema:name\": \"longitude\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"integer\",\n                    \"cbm:sampleValue\": \"4326\",\n                    \"dct:description\": \"Código EPSG del sistema de referencia espacial.\",\n                    \"dct:title\": \"EPSG\",\n                    \"schema:name\": \"epsg\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"Parque Natural del Hondo\",\n                    \"dct:description\": \"Nombre común del área de interés (laguna).\",\n                    \"dct:title\": \"Nombre del área de interés\",\n                    \"schema:name\": \"aoi_name\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"S2A_MSIL2A_20150706T105016_N0500_R051_T30SXH_20231010T143709\",\n                    \"dct:description\": \"Nombre de la imagen de la que provienen los datos.\",\n                    \"dct:title\": \"Carpeta de origen\",\n                    \"schema:name\": \"folder\"\n                }\n            ]\n        },\n        \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural del Hondo (2015)\",\n        \"id\": \"csv_dataset_ES521005_2015\",\n        \"contenttype\": \"text/csv\",\n        \"dcat:spatialResolutionInMeters\": 500.0,\n        \"dct:rights\": \"Datos derivados de imágenes Sentinel-2 del programa Copernicus.\",\n        \"dct:temporal\": {\n            \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\",\n            \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\"\n        }\n    },\n    \"dataAddress\": {\n        \"@type\": \"DataAddress\",\n        \"proxyPath\": \"true\",\n        \"type\": \"HttpData\",\n        \"authCode\": \"a8f3c1e9b2d4475fa9120cbe7e65ad90\",\n        \"authKey\": \"x-auth-token\",\n        \"baseUrl\": \"https://idearium.eu/heleade/download.php?file=es521005_aoi_2015.csv\"\n    },\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "assets"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Create Asset Single Keyword",
           "event": [
             {
@@ -1168,7 +1212,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "\n{\n\t\"@id\": \"datasetMandatory\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dct:title\": \"Minimal set of metadata\",\n\t\"dct:description\": \"Contains only the mandatory properties\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-12-10T13:04:33+00:00\",\n    \"dct:modified\": \"2025-12-10T23:14:55+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n\t\"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\"                \n            }\n        ],\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+              "raw": "\n{\n\t\"@id\": \"datasetMandatory\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dct:title\": \"Minimal set of metadata\",\n\t\"dct:description\": \"Contains only the mandatory properties\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-12-10T13:04:33+00:00\",\n    \"dct:modified\": \"2025-12-10T23:14:55+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n\t\"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\"                \n            }\n        ],\n    \"@context\": {\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1224,6 +1268,39 @@
           "response": []
         },
         {
+          "name": "Get Asset CBM",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm/{{ASSET_ID}}",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "assets-cbm",
+                "{{ASSET_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Query All Assets",
           "event": [
             {
@@ -1263,6 +1340,52 @@
                 "management",
                 "v3",
                 "assets",
+                "request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Query All Assets CBM",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if(pm.response.code == 200){",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"ASSET_ID\", jsonData[0][\"@id\"]);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ]\n  \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets-cbm/request",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "assets-cbm",
                 "request"
               ]
             }
@@ -2401,7 +2524,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%quality%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%torrent%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"air\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"pollution\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%quality%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%data%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"air\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"pollution\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
