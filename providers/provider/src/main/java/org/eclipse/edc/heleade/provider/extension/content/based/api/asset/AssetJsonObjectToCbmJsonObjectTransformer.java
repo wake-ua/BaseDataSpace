@@ -18,8 +18,6 @@ import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
-import jakarta.json.JsonString;
-import jakarta.json.JsonValue;
 import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants;
@@ -30,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.PROPERTY_ID;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCAT_DATASET_TYPE;
@@ -93,45 +92,48 @@ public class AssetJsonObjectToCbmJsonObjectTransformer extends AbstractJsonLdTra
                 .add("@id", id)
                 .add("@type", DCAT_DATASET_TYPE);
 
+        // Create already the distribution builder
+        JsonArrayBuilder distributionArrayBuilder = Json.createArrayBuilder();
+        JsonObjectBuilder distributionBuilder = Json.createObjectBuilder();
+
         // Add context from original object
         if (jsonObject.containsKey("@context")) {
             datasetBuilder.add("@context", jsonObject.get("@context"));
         }
 
-        var propertiesValue = jsonObject.get(EDC_NAMESPACE + "properties");
-        JsonObject properties = getObjectOrFirstInArray(jsonObject.get(EDC_NAMESPACE + "properties"));
+        JsonObject properties = jsonObject.getJsonObject(EDC_NAMESPACE + "properties");
 
         properties.forEach((key, value) -> {
             if (!isForbiddenProperty(key)) {
                 datasetBuilder.add(key, value);
+            } else if ((DCAT_SCHEMA + "byteSize").equals(key) || (CBM_SCHEMA + "hasDataDictionary").equals(key)) {
+                distributionBuilder.add(key, value);
             }
         });
 
         // build the data distribution
-        JsonArrayBuilder distributionArrayBuilder = Json.createArrayBuilder();
-        JsonObject dataAddress = getObjectOrFirstInArray(jsonObject.get(EDC_NAMESPACE + "dataAddress"));
-
-        JsonObjectBuilder distributionBuilder = Json.createObjectBuilder();
+        JsonObject dataAddress = jsonObject.getJsonObject(EDC_NAMESPACE + "dataAddress");
         JsonObjectBuilder format = Json.createObjectBuilder();
-
         distributionBuilder.add("@type", DCAT_SCHEMA + "Distribution");
 
         // get format and type
-        String dataAddressType = getStringOrFirstInArray(dataAddress.get(EDC_NAMESPACE + "type"));
+        String dataAddressType = dataAddress.getString(EDC_NAMESPACE + "type");
         format.add("@id", dataAddressType);
-        format.add(DCT_SCHEMA + "type", format.build());
         distributionBuilder.add(DCT_SCHEMA + "format", format.build());
 
         // get url
-        var baseUrlValue = dataAddress.get(EDC_NAMESPACE + "baseUrl");
-        if (baseUrlValue != null) {
-            String baseUrl = getStringOrFirstInArray(baseUrlValue);
+        var baseUrl = dataAddress.getString(EDC_NAMESPACE + "baseUrl");
+        if (baseUrl != null && !baseUrl.isEmpty()) {
             distributionBuilder.add(DCAT_SCHEMA + "accessURL", baseUrl);
         }
 
+        dataAddress.forEach((key, value) -> {
+            if (!isForbiddenDistributionProperty(key)) {
+                distributionBuilder.add(key, value);
+            }
+        });
+
         distributionArrayBuilder.add(distributionBuilder.build());
-
-
         datasetBuilder.add(CbmConstants.DISTRIBUTION_TAG, distributionArrayBuilder.build());
 
         return datasetBuilder.build();
@@ -139,27 +141,11 @@ public class AssetJsonObjectToCbmJsonObjectTransformer extends AbstractJsonLdTra
 
     private static boolean isForbiddenProperty(String key) {
         // Properties that are forbidden
-        return "id".equals(key) || PROPERTY_ID.equals(key) || key.startsWith("@");
+        return "id".equals(key) || PROPERTY_ID.equals(key) || key.startsWith("@") || (DCAT_SCHEMA + "byteSize").equals(key) || (CBM_SCHEMA + "hasDataDictionary").equals(key);
     }
 
-    private static JsonObject getObjectOrFirstInArray(JsonValue value) {
-        if (value.getValueType() == JsonValue.ValueType.ARRAY) {
-            return value.asJsonArray().getJsonObject(0);
-        } else {
-            return value.asJsonObject();
-        }
+    private static boolean isForbiddenDistributionProperty(String key) {
+        // Properties that are forbidden
+        return (EDC_NAMESPACE + "type").equals(key) || (EDC_NAMESPACE + "baseUrl").equals(key) || key.startsWith("@");
     }
-
-    private static String getStringOrFirstInArray(JsonValue value) {
-        if (value.getValueType() == JsonValue.ValueType.ARRAY) {
-            JsonObject jsonObject = value.asJsonArray().getJsonObject(0);
-            return jsonObject.getString("@value");
-        } else if (value.getValueType() == JsonValue.ValueType.OBJECT) {
-            return value.asJsonObject().getString("@value");
-        } else if (value.getValueType() == JsonValue.ValueType.STRING) {
-            return ((JsonString) value).getString();
-        }
-        return null;
-    }
-
 }
