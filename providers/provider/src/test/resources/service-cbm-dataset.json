@@ -1,0 +1,24 @@
+{
+  "@id": "assetIdService",
+  "@type": "dcat:Dataset",
+  "dct:type": "Service",
+  "dcat:distribution": [{
+    "@type": "dcat:Distribution",
+    "dct:format": {
+      "@id": "ServiceData"
+    }
+  }],
+  "dct:title": "Service CBM",
+  "dct:description": "this is a service created through the CBM endpoint",
+  "dcat:keyword": ["CBM", "SERVICE"],
+  "contenttype": "application/json",
+  "dct:issued": "2025-10-22T13:04:33+00:00",
+  "dct:modified": "2025-10-22T13:04:33+00:00",
+  "dct:accessRights": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+  "dct:license": "https://opendatacommons.org/licenses/odbl/1.0/",
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  }
+}

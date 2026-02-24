@@ -1,0 +1,53 @@
+{
+  "@id": "assetIdSample",
+  "@type": "Asset",
+  "properties": {
+    "dct:license": "https://opendatacommons.org/licenses/odbl/1.0/",
+    "cbm:isSampleOf": "assetId",
+    "dct:issued": "2025-10-22T13:04:33+00:00",
+    "dct:type": "Dataset",
+    "dct:modified": "2025-10-22T13:04:33+00:00",
+    "cbm:hasDataDictionary": {
+      "@type": "cbm:DataDictionary",
+      "cbm:hasField": [
+        {
+          "@type": "cbm:Field",
+          "schema:name": "username",
+          "dct:title": "User Name",
+          "cbm:datatype": "string",
+          "dct:description": "Name of the user",
+          "cbm:sampleValue": "bret"
+        },
+        {
+          "@type": "cbm:Field",
+          "schema:name": "id",
+          "dct:title": "User Identifier",
+          "cbm:datatype": "integer",
+          "dct:description": "Id of the user",
+          "cbm:sampleValue": "1"
+        }
+      ]
+    },
+    "dct:title": "test sample asset",
+    "dct:accessRights": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+    "dct:description": "test description",
+    "id": "assetIdSample",
+    "contenttype": "application/json",
+    "schema:algorithm": "clustering"
+  },
+  "dataAddress": {
+    "@type": "DataAddress",
+    "proxyPath": "true",
+    "type": "HttpData",
+    "baseUrl": "https://jsonplaceholder.typicode.com/users"
+  },
+  "@context": {
+    "schema": "https://schema.org/",
+    "cbm": "https://w3id.org/cbm/v0.0.1/ns/",
+    "dct": "http://purl.org/dc/terms/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  }
+}

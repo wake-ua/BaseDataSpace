@@ -28,6 +28,8 @@ import org.jetbrains.annotations.Nullable;
 
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.EDC_ASSET_TYPE;
 import static org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset.PROPERTY_ID;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_IS_SAMPLE_OF;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE_TYPE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
@@ -89,8 +91,7 @@ public class AssetJsonObjectToCbmJsonObjectTransformer extends AbstractJsonLdTra
 
         // Start building the Asset object
         var datasetBuilder = Json.createObjectBuilder()
-                .add("@id", id)
-                .add("@type", DCAT_DATASET_TYPE);
+                .add("@id", id);
 
         // Create already the distribution builder
         JsonArrayBuilder distributionArrayBuilder = Json.createArrayBuilder();
@@ -102,7 +103,14 @@ public class AssetJsonObjectToCbmJsonObjectTransformer extends AbstractJsonLdTra
         }
 
         JsonObject properties = jsonObject.getJsonObject(EDC_NAMESPACE + "properties");
+        // check if it is a sample
+        if (properties != null && properties.containsKey(CBM_IS_SAMPLE_OF)) {
+            datasetBuilder.add("@type", CBM_SAMPLE_TYPE);
+        } else {
+            datasetBuilder.add("@type", DCAT_DATASET_TYPE);
+        }
 
+        // add the properties
         properties.forEach((key, value) -> {
             if (!isForbiddenProperty(key)) {
                 datasetBuilder.add(key, value);
@@ -122,9 +130,11 @@ public class AssetJsonObjectToCbmJsonObjectTransformer extends AbstractJsonLdTra
         distributionBuilder.add(DCT_SCHEMA + "format", format.build());
 
         // get url
-        var baseUrl = dataAddress.getString(EDC_NAMESPACE + "baseUrl");
-        if (baseUrl != null && !baseUrl.isEmpty()) {
-            distributionBuilder.add(DCAT_SCHEMA + "accessURL", baseUrl);
+        if (dataAddress.containsKey(EDC_NAMESPACE + "baseUrl")) {
+            var baseUrl = dataAddress.getString(EDC_NAMESPACE + "baseUrl");
+            if (baseUrl != null && !baseUrl.isEmpty()) {
+                distributionBuilder.add(DCAT_SCHEMA + "accessURL", baseUrl);
+            }
         }
 
         dataAddress.forEach((key, value) -> {
