@@ -20,17 +20,13 @@ import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SchemaValidatorsConfig;
 import com.networknt.schema.SpecVersion;
 import com.networknt.schema.serialization.JsonNodeReader;
-import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
 import org.eclipse.edc.jsonld.JsonLdExtension;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.junit.extensions.TestServiceExtensionContext;
 import org.eclipse.edc.validator.spi.Validator;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -118,9 +114,6 @@ public class AssetJsonSchemaValidatorTest {
     }
 
     private JsonSchema getTestJsonSchema() {
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012,
-                builder -> builder.jsonNodeReader(JsonNodeReader.builder().locationAware().build()));
-        SchemaValidatorsConfig config = SchemaValidatorsConfig.builder().build();
         String jsonSchemaStr = "{\n" +
                 "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +
                 "  \"type\": \"object\",\n" +
@@ -142,27 +135,18 @@ public class AssetJsonSchemaValidatorTest {
                 "  ]\n" +
                 "}";
 
-        JsonSchema schema = factory.getSchema(jsonSchemaStr, InputFormat.JSON, config);
+        return getJsonSchema(jsonSchemaStr);
+    }
+
+    public static JsonSchema getJsonSchema(String text) {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012,
+                builder -> builder.jsonNodeReader(JsonNodeReader.builder().locationAware().build()));
+        SchemaValidatorsConfig config = SchemaValidatorsConfig.builder().build();
+        JsonSchema schema = factory.getSchema(text, InputFormat.JSON, config);
         return schema;
     }
 
-    private JsonObject injectVocab(JsonObject json) {
-        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder(json);
-        if (json.get("@context") instanceof JsonObject) {
-            JsonObject contextObject = (JsonObject) Optional.ofNullable(json.getJsonObject("@context")).orElseGet(() -> {
-                return Json.createObjectBuilder().build();
-            });
-            JsonObjectBuilder contextBuilder = Json.createObjectBuilder(contextObject);
-            if (!contextObject.containsKey("@vocab")) {
-                JsonObject newContextObject = contextBuilder.add("@vocab", EDC_NAMESPACE).build();
-                jsonObjectBuilder.add("@context", newContextObject);
-            }
-        }
-
-        return jsonObjectBuilder.build();
-    }
-
-    public JsonLd initializeJsonLd() {
+    public static JsonLd initializeJsonLd() {
         JsonLd jsonLd = new JsonLdExtension().createJsonLdService(TestServiceExtensionContext.testServiceExtensionContext());
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
         return jsonLd;

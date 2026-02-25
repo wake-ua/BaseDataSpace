@@ -23,7 +23,7 @@ import jakarta.json.JsonObject;
 
 public class AssetJsonObject {
 
-    private JsonObject jsonObject;
+    private final JsonObject jsonObject;
 
     /**
      *  Constructor for wrapper class
@@ -34,9 +34,5 @@ public class AssetJsonObject {
 
     public JsonObject getJsonObject() {
         return jsonObject;
-    }
-
-    public void setJsonObject(JsonObject jsonObject) {
-        this.jsonObject = jsonObject;
     }
 }

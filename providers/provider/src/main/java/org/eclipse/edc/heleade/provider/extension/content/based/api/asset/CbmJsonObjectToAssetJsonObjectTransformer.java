@@ -79,6 +79,33 @@ public class CbmJsonObjectToAssetJsonObjectTransformer extends AbstractJsonLdTra
             return null;
         }
 
+        AtomicBoolean propertiesValid = new AtomicBoolean(true);
+        jsonObject.forEach((key, value) -> {
+            if (!isIgnoredProperty(key)) {
+                if (isForbiddenProperty(key)) {
+                    context.problem()
+                            .invalidProperty()
+                            .property(key)
+                            .report();
+                }
+            }
+        });
+
+        return transformCbmToAssetJsonObject(id, jsonObject);
+    }
+
+    public static JsonObject transformCbmToAssetJsonObject(String id, JsonObject jsonObject) {
+
+        // Check if we have a valid Dataset
+        if (!DCAT_DATASET_TYPE.equals(nodeType(jsonObject)) && !CBM_SAMPLE_TYPE.equals(nodeType(jsonObject))) {
+            return null;
+        }
+
+        // Extract the ID
+        if (id == null) {
+            return null;
+        }
+
         // Start building the Asset object
         var assetBuilder = Json.createObjectBuilder()
                 .add("@id", id)
@@ -94,10 +121,6 @@ public class CbmJsonObjectToAssetJsonObjectTransformer extends AbstractJsonLdTra
         jsonObject.forEach((key, value) -> {
             if (!isIgnoredProperty(key)) {
                 if (isForbiddenProperty(key)) {
-                    context.problem()
-                            .invalidProperty()
-                            .property(key)
-                            .report();
                     propertiesValid.set(false);
                 }
                 // Add property object to array
@@ -142,7 +165,7 @@ public class CbmJsonObjectToAssetJsonObjectTransformer extends AbstractJsonLdTra
     /**
      * Determines if a property should be ignored when building the properties object.
      */
-    private boolean isIgnoredProperty(String key) {
+    private static boolean isIgnoredProperty(String key) {
         // Properties that should not go into the properties object
         return "@id".equals(key) || "@type".equals(key) || "@context".equals(key) || DCAT_DISTRIBUTION_ATTRIBUTE.equals(key) || ODRL_POLICY_ATTRIBUTE.equals(key);
     }
@@ -150,12 +173,12 @@ public class CbmJsonObjectToAssetJsonObjectTransformer extends AbstractJsonLdTra
     /**
      * Determines if a property is forbidden and method should fail.
      */
-    private boolean isForbiddenProperty(String key) {
+    private static boolean isForbiddenProperty(String key) {
         // Properties that are forbidden
         return "id".equals(key) || PROPERTY_ID.equals(key);
     }
 
-    private JsonArrayBuilder getDataAddress(JsonObject dataDistribution) {
+    private static JsonArrayBuilder getDataAddress(JsonObject dataDistribution) {
         var dataAddressArrayBuilder = Json.createArrayBuilder();
         var dataAddressBuilder = Json.createObjectBuilder();
         dataAddressBuilder.add("@type", EDC_ASSET_DATA_ADDRESS);
@@ -179,7 +202,7 @@ public class CbmJsonObjectToAssetJsonObjectTransformer extends AbstractJsonLdTra
         return dataAddressArrayBuilder;
     }
 
-    private JsonArray getStringPropertyAsArray(String value) {
+    private static JsonArray getStringPropertyAsArray(String value) {
         var propertyArray = Json.createArrayBuilder()
                         .add(Json.createObjectBuilder()
                                 .add("@value", value)
@@ -187,7 +210,7 @@ public class CbmJsonObjectToAssetJsonObjectTransformer extends AbstractJsonLdTra
         return propertyArray.build();
     }
 
-    private String getDataAddressType(JsonObject dataDistribution) {
+    private static String getDataAddressType(JsonObject dataDistribution) {
         if (dataDistribution.containsKey(DCT_SCHEMA + "format")) {
             String distributionType = dataDistribution.getJsonArray(DCT_SCHEMA + "format").getJsonObject(0).getString("@id");
             if (distributionType.equals("HttpData-PULL") || distributionType.equals("HttpData-PUSH")) {

@@ -1,0 +1,23 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/"
+
+  },
+  "@id": "assetIdService",
+  "@type": "Asset",
+  "properties": {
+    "contenttype": "application/json",
+    "dct:type": "Service",
+    "dct:title": "test name",
+    "dct:description": "test description",
+    "dct:issued": "2025-10-22T12:04:33+00:00",
+    "dct:modified": "2025-10-22T13:04:33+00:00",
+    "dct:accessRights": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+    "dct:license": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "dataAddress":[ {
+    "type": "ServiceData"
+  }]
+}
