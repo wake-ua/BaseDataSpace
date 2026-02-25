@@ -52,7 +52,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: samples
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
       - ${SAMPLES_ROOT}/postgres_data:/var/lib/postgresql/data
       - ${SAMPLES_ROOT}/postgres:/docker-entrypoint-initdb.d
