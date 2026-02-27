@@ -17,10 +17,8 @@ plugins {
 }
 
 dependencies {
-    api(libs.edc.data.plane.spi)
-    api(libs.edc.json.ld.spi)
-    implementation(libs.jakarta.rsApi)
-    implementation(libs.edc.control.plane.core)
     implementation(libs.edc.http)
+    implementation(libs.edc.spi.core)
+    implementation(libs.edc.spi.protocol)
     implementation(project(":commons"))
 }

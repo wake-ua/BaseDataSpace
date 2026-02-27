@@ -16,6 +16,7 @@ package org.eclipse.edc.heleade.provider.extension.service;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.http.spi.EdcHttpClient;
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -27,7 +28,10 @@ import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
  * responsible for initializing and registering a custom DataSourceFactory with the PipelineService.
  * This class enables the handling of "Service"-type data sources in the data flow pipeline.
  */
+@Extension(value = ServiceDataPlaneExtension.NAME)
 public class ServiceDataPlaneExtension  implements ServiceExtension {
+
+    public static final String NAME = "Provider ServiceDataPlane Extension";
 
     /**
      * Represents the type identifier for "Service"-type data sources used in the data flow pipeline.

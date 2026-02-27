@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.heleade.consumer.sample.runtime;
 
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -22,7 +23,10 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 /**
  * Seed vault class for the service extension
  */
+@Extension(value = SeedVaultExtension.NAME)
 public class SeedVaultExtension implements ServiceExtension {
+
+    public static final String NAME = "Consumer SeedVault Extension";
 
     @Inject
     private Vault vault;

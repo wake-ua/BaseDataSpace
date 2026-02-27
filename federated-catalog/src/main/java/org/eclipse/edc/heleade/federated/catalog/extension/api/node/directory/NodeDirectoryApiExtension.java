@@ -20,6 +20,7 @@ import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 import org.eclipse.edc.heleade.federated.catalog.extension.api.query.HeleadeQueryServiceImpl;
 import org.eclipse.edc.jsonld.JsonLdExtension;
 import org.eclipse.edc.jsonld.spi.JsonLd;
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.monitor.Monitor;
@@ -48,8 +49,10 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  * 3. Leveraging the service context to retrieve and manage dependencies such as {@link TargetNodeDirectory},
  *    {@link TypeManager}, {@link WebService}, and {@link Monitor}.
  */
+@Extension(value = NodeDirectoryApiExtension.NAME)
 public class NodeDirectoryApiExtension implements ServiceExtension {
 
+    public static final String NAME = "Federated Catalog Node Directory API Extension";
     @Inject
     private TargetNodeDirectory targetNodeDirectory;
 

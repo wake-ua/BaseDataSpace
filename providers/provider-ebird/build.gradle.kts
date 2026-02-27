@@ -22,8 +22,6 @@ dependencies {
     implementation(libs.jakarta.rsApi)
     implementation(libs.edc.boot)
     implementation(libs.edc.http)
-    api(libs.edc.data.plane.spi)
-    api(libs.edc.json.ld.spi)
     runtimeOnly(project(":providers:provider"))
 
 }
@@ -39,4 +37,5 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("provider-ebird.jar")
     dependsOn(distTar, distZip)
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

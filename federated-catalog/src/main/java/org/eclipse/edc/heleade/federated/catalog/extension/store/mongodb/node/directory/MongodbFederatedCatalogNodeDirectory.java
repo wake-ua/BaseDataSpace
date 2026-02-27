@@ -57,6 +57,15 @@ public class MongodbFederatedCatalogNodeDirectory extends MongodbFederatedCatalo
         save(targetNode);
     }
 
+    @Override
+    public TargetNode remove(String id) {
+        var existing = delete(id);
+        if (existing != null) {
+            return null;
+        }
+        return existing;
+    }
+
     /**
      * Retrieves a list of all {@code ParticipantNode} objects from the federated catalog node directory.
      *

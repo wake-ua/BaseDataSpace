@@ -178,6 +178,18 @@ public class TransferUtil {
                 });
     }
 
+
+    public static void printTransferStatus(String transferProcessId) {
+        await()
+                .atMost(TIMEOUT)
+                .pollDelay(POLL_DELAY)
+                .pollInterval(POLL_INTERVAL)
+                .untilAsserted(() -> {
+                    var state = get(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
+                    System.out.println(state);
+                });
+    }
+
     /**
      * Gets the ID field from the first element of a JsonArray.
      *

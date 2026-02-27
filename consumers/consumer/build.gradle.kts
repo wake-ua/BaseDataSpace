@@ -18,13 +18,14 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.edc.runtime.core)
     implementation(libs.edc.boot)
     implementation(libs.edc.connector.core)
-    implementation(libs.jakarta.rsApi)
 
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
+    implementation(libs.edc.control.plane.spi)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.token.core)
     implementation(libs.edc.dsp)
@@ -56,4 +57,5 @@ dependencies {
     implementation(project(":providers:content-based-catalog-dispatcher"))
     implementation(project(":iam-identity"));
     implementation(project(":commons"))
+
 }

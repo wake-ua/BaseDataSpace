@@ -20,16 +20,19 @@ plugins {
 
 dependencies {
     // base fc
-    runtimeOnly(libs.edc.fc.ext.api)
+    implementation(libs.edc.fc.api)
     implementation(libs.edc.fc.core)
     implementation(project(":commons"))
 
     // catalog node directory
     implementation(libs.edc.fc.spi.crawler)
     implementation(libs.edc.catalog.util.lib)
-    implementation(libs.edc.fc.ext.api)
+    implementation(libs.edc.lib.util)
+    implementation(libs.edc.spi.transaction.datasource)
+
 
     // consumer fc
+    implementation(libs.edc.runtime.core)
     runtimeOnly(libs.edc.boot)
     implementation(libs.edc.http)
     implementation(libs.edc.dsp)
@@ -38,7 +41,6 @@ dependencies {
     implementation(libs.edc.connector.core)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.configuration.filesystem)
-    //implementation(libs.edc.iam.mock)
 
     // mongodb cache storage
     implementation(libs.edc.fc.spi.core)
@@ -51,6 +53,16 @@ dependencies {
     // consumer
     runtimeOnly(project(":consumers:consumer"))
 
+    // upgrade 14.1
+    implementation(libs.edc.dsp.catalog.transform.lib)
+//    implementation(libs.edc.spi.transaction)
+    implementation(libs.edc.spi.transform)
+    implementation(libs.edc.spi.catalog)
+//    implementation(libs.edc.spi.core)
+    implementation(libs.edc.dsp.catalog.lib)
+    implementation(libs.edc.dsp.catalog.http.api.lib)
+    implementation(libs.edc.lib.transform)
+    implementation(libs.edc.management.api)
 }
 
 application {
@@ -64,6 +76,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("federated-catalog.jar")
     dependsOn(distTar, distZip)
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 

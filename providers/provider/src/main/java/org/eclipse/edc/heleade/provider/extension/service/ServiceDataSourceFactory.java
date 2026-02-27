@@ -67,7 +67,7 @@ public class ServiceDataSourceFactory implements DataSourceFactory {
 
     @Override
     public @NotNull Result<Void> validateRequest(DataFlowStartMessage request) {
-        if (request.getParticipantId() == null) {
+        if (request.getParticipantId() == null && request.getProperties().get("participantId") == null) {
             return Result.failure("Failed to build ServiceDataSource: Missing participantId");
         }
         requestCache.put(request.getProcessId(), request);

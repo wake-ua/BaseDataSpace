@@ -69,7 +69,6 @@ public class HttpRequestLoggerServer {
                         "\"url\": \"https://customservice.com/dashboard/realtime\", " +
                         "\"apikey\": {\"x-api-key\": \"apikeytokenvalue\"}, " +
                         "\"user\": \"provider_user\", " +
-                        "\"user\": \"provider_user\", " +
                         "\"password\": \"1234567890\"}";
                 exchange.sendResponseHeaders(200, responseString.length());
                 exchange.getResponseBody().write(responseString.getBytes());

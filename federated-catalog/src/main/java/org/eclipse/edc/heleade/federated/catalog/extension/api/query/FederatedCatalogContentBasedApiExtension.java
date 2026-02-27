@@ -19,6 +19,7 @@ import org.eclipse.edc.catalog.spi.QueryService;
 import org.eclipse.edc.connector.core.agent.NoOpParticipantIdMapper;
 import org.eclipse.edc.heleade.federated.catalog.extension.content.based.JsonObjectFromDatasetContentBasedTransformer;
 import org.eclipse.edc.jsonld.spi.JsonLd;
+import org.eclipse.edc.jsonld.spi.JsonLdNamespace;
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromCatalogTransformer;
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDataServiceTransformer;
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDistributionTransformer;
@@ -30,6 +31,8 @@ import org.eclipse.edc.spi.system.apiversion.ApiVersionService;
 import org.eclipse.edc.spi.system.health.HealthCheckService;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
+import org.eclipse.edc.transform.transformer.edc.to.JsonObjectToCriterionTransformer;
+import org.eclipse.edc.transform.transformer.edc.to.JsonObjectToQuerySpecTransformer;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.PortMappingRegistry;
 
@@ -121,9 +124,13 @@ public class FederatedCatalogContentBasedApiExtension implements ServiceExtensio
 
         var jsonFactory = Json.createBuilderFactory(Map.of());
         var participantIdMapper = new NoOpParticipantIdMapper();
-        transformerRegistry.register(new JsonObjectFromCatalogTransformer(jsonFactory, typeManager, JSON_LD, participantIdMapper));
+        JsonLdNamespace namespace = new JsonLdNamespace(DSPACE_SCHEMA);
+        transformerRegistry.register(new JsonObjectFromCatalogTransformer(jsonFactory, typeManager, JSON_LD, participantIdMapper, namespace));
         transformerRegistry.register(new JsonObjectFromDatasetContentBasedTransformer(jsonFactory, typeManager, JSON_LD));
         transformerRegistry.register(new JsonObjectFromDistributionTransformer(jsonFactory));
         transformerRegistry.register(new JsonObjectFromDataServiceTransformer(jsonFactory));
+        transformerRegistry.register(new JsonObjectToQuerySpecTransformer());
+        transformerRegistry.register(new JsonObjectToCriterionTransformer());
+
     }
 }
