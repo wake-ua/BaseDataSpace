@@ -54,7 +54,7 @@ dependencies {
     runtimeOnly(project(":consumers:consumer"))
 
     // upgrade 14.1
-    implementation(libs.edc.fc.core.impl)
+    implementation(libs.edc.fc.core.v2025)
 }
 
 application {

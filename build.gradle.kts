@@ -41,6 +41,12 @@ allprojects {
         configDirectory.set(rootProject.file("resources"))
     }
 
+//    tasks {
+//        withType<JavaCompile> {
+//            options.compilerArgs.add("-Xlint:deprecation")
+//        }
+//    }
+
     tasks.test {
         testLogging {
             showStandardStreams = true
