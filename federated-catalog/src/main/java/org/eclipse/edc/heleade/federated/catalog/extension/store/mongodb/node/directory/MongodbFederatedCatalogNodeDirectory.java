@@ -60,7 +60,7 @@ public class MongodbFederatedCatalogNodeDirectory extends MongodbFederatedCatalo
     @Override
     public TargetNode remove(String id) {
         var existing = delete(id);
-        if (existing != null) {
+        if (existing == null) {
             return null;
         }
         return existing;

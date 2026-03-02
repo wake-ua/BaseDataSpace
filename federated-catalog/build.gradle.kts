@@ -54,15 +54,7 @@ dependencies {
     runtimeOnly(project(":consumers:consumer"))
 
     // upgrade 14.1
-    implementation(libs.edc.dsp.catalog.transform.lib)
-//    implementation(libs.edc.spi.transaction)
-    implementation(libs.edc.spi.transform)
-    implementation(libs.edc.spi.catalog)
-//    implementation(libs.edc.spi.core)
-    implementation(libs.edc.dsp.catalog.lib)
-    implementation(libs.edc.dsp.catalog.http.api.lib)
-    implementation(libs.edc.lib.transform)
-    implementation(libs.edc.management.api)
+    implementation(libs.edc.fc.core.impl)
 }
 
 application {

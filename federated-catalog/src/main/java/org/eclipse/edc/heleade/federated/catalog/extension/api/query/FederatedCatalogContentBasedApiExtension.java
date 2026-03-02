@@ -16,6 +16,7 @@ package org.eclipse.edc.heleade.federated.catalog.extension.api.query;
 
 import jakarta.json.Json;
 import org.eclipse.edc.catalog.spi.QueryService;
+import org.eclipse.edc.catalog.transform.JsonObjectToCatalogTransformer;
 import org.eclipse.edc.connector.core.agent.NoOpParticipantIdMapper;
 import org.eclipse.edc.heleade.federated.catalog.extension.content.based.JsonObjectFromDatasetContentBasedTransformer;
 import org.eclipse.edc.jsonld.spi.JsonLd;
@@ -129,6 +130,7 @@ public class FederatedCatalogContentBasedApiExtension implements ServiceExtensio
         transformerRegistry.register(new JsonObjectFromDatasetContentBasedTransformer(jsonFactory, typeManager, JSON_LD));
         transformerRegistry.register(new JsonObjectFromDistributionTransformer(jsonFactory));
         transformerRegistry.register(new JsonObjectFromDataServiceTransformer(jsonFactory));
+        transformerRegistry.register(new JsonObjectToCatalogTransformer());
         transformerRegistry.register(new JsonObjectToQuerySpecTransformer());
         transformerRegistry.register(new JsonObjectToCriterionTransformer());
 
