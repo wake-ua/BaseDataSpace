@@ -105,6 +105,13 @@ public class ContentBasedAssetApiController extends AssetApiController implement
 
     }
 
+    @POST
+    @Path("/count")
+    public String countAssetsV3(JsonObject querySpecJson) {
+        var result = super.requestAssetsV3(querySpecJson).size();
+        return "{\"count\": " + result + "}";
+    }
+
     @DELETE
     @Path("{id}")
     @Override
