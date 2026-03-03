@@ -17,10 +17,12 @@ package org.eclipse.edc.heleade.identity;
 import org.eclipse.edc.heleade.identity.api.IamIdentityApiController;
 import org.eclipse.edc.heleade.identity.load.FileParticipantIdentityLoader;
 import org.eclipse.edc.heleade.identity.load.ParticipantIdentityLoader;
+import org.eclipse.edc.protocol.spi.DefaultParticipantIdExtractionFunction;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
+import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.iam.AudienceResolver;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.result.Result;
@@ -61,18 +63,27 @@ public class IamIdentityExtension implements ServiceExtension {
      */
     public static final String NAME = "Iam Identity";
 
+    public static final String DEFAULT_IDENTITY_CLAIM_KEY = "client_id";
+
     @Inject
     private TypeManager typeManager;
 
     @Inject
     WebService webService;
 
+    // TODO: Review this upgrade
+    @Provider(isDefault = true)
+    public DefaultParticipantIdExtractionFunction defaultParticipantIdExtractionFunction() {
+        return new MockParticipantIdExtractionFunction(agentIdentityKey);
+    }
 
     @Override
     public String name() {
         return NAME;
     }
 
+    @Setting(key = "edc.agent.identity.key", description = "The name of the claim key used to determine the participant identity", defaultValue = DEFAULT_IDENTITY_CLAIM_KEY)
+    private String agentIdentityKey;
 
     @Override
     public void initialize(ServiceExtensionContext context) {

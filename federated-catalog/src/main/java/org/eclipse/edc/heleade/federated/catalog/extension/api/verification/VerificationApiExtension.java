@@ -18,6 +18,7 @@ import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 import org.eclipse.edc.jsonld.JsonLdExtension;
 import org.eclipse.edc.jsonld.spi.JsonLd;
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -39,7 +40,10 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  *
  * Implements the ServiceExtension interface to participate in the service lifecycle.
  */
+@Extension(VerificationApiExtension.NAME)
 public class VerificationApiExtension implements ServiceExtension {
+
+    public static final String NAME = "Federated Catalog Verification API Extension";
 
     @Inject
     private TargetNodeDirectory targetNodeDirectory;

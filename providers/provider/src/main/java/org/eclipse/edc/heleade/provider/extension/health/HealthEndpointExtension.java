@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.heleade.provider.extension.health;
 
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -22,7 +23,10 @@ import org.eclipse.edc.web.spi.WebService;
 /**
  * Initializes the health extension for the provider obtaining the participant name and registering the controller
  */
+@Extension(value = HealthEndpointExtension.NAME)
 public class HealthEndpointExtension implements ServiceExtension {
+
+    public static final String NAME = "Provider Health Endpoint Extension";
 
     @Inject
     WebService webService;

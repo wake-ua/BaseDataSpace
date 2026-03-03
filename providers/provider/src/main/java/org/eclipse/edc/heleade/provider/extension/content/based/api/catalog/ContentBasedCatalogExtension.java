@@ -24,11 +24,11 @@ import org.eclipse.edc.protocol.dsp.catalog.http.api.decorator.ContinuationToken
 import org.eclipse.edc.protocol.dsp.http.spi.message.ContinuationTokenManager;
 import org.eclipse.edc.protocol.dsp.http.spi.message.DspRequestHandler;
 import org.eclipse.edc.runtime.metamodel.annotation.Configuration;
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.runtime.metamodel.annotation.Settings;
 import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.edc.spi.protocol.ProtocolWebhookRegistry;
 import org.eclipse.edc.spi.system.Hostname;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -40,9 +40,9 @@ import org.eclipse.edc.web.spi.configuration.ApiContext;
 
 import static java.lang.String.format;
 import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
-import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_NAMESPACE_V_08;
-import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_SCOPE_V_08;
-import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_TRANSFORMER_CONTEXT_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_NAMESPACE_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_SCOPE_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_TRANSFORMER_CONTEXT_V_08;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 
 /**
@@ -56,6 +56,7 @@ import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
  * This class implements the ServiceExtension interface and uses a dependency injection framework
  * for its components.
  */
+@Extension(value = ContentBasedCatalogExtension.NAME)
 public class ContentBasedCatalogExtension implements ServiceExtension {
 
     /**
@@ -64,12 +65,10 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
     public static final String NAME = "Dataspace Protocol Content Based Catalog Extension";
 
     static final String DEFAULT_PROTOCOL_PATH = "/api/protocol";
-    static final int DEFAULT_PROTOCOL_PORT = 8282;
+    static final int DEFAULT_PROTOCOL_PORT = 19194;
 
     @Inject
     private WebService webService;
-    @Inject
-    private ProtocolWebhookRegistry protocolWebhookRegistry;
     @Inject
     private CatalogProtocolService service;
     @Inject

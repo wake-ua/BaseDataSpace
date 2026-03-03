@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.heleade.provider.sample.runtime;
 
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -22,7 +23,10 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 /**
  * Extension to store public and private keys
  */
+@Extension(value = SeedVaultExtension.NAME)
 public class SeedVaultExtension implements ServiceExtension {
+
+    public static final String NAME = "Provider SeedVault Extension";
 
     @Inject
     private Vault vault;

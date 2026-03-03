@@ -26,7 +26,7 @@ import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
  * Connector. Registers and initializes transformers to process datasets for the federated catalog
  * using a content-driven approach.
  */
-@Extension(value = org.eclipse.edc.catalog.cache.FederatedCatalogCacheExtension.NAME)
+@Extension(value = FederatedCatalogContentBasedExtension.NAME)
 public class FederatedCatalogContentBasedExtension implements ServiceExtension {
 
     /**

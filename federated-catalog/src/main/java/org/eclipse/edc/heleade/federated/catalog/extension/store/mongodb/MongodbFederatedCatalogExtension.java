@@ -62,8 +62,11 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  * federated catalog stored in a MongoDB database.
  */
 @Provides({FederatedCatalogCache.class, TargetNodeDirectory.class})
-@Extension(value = "MongoDB federated catalog extension")
+@Extension(value = MongodbFederatedCatalogExtension.NAME)
 public class MongodbFederatedCatalogExtension implements ServiceExtension {
+
+    public static final String NAME = "Federated Catalog MongoDB Extension";
+
     private static final String FEDERATED_CATALOG_URI_PROPERTY = "org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.uri";
     private static final String FEDERATED_CATALOG_URI_DEFAULT = "mongodb://localhost:27017/";
     private static final String FEDERATED_CATALOG_DB_PROPERTY = "org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.db";

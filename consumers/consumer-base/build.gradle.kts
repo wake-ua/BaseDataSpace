@@ -36,4 +36,5 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("consumer-base.jar")
     dependsOn(distTar, distZip)
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

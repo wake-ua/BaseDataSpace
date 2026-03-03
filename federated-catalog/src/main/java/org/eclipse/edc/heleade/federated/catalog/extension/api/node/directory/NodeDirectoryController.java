@@ -151,15 +151,13 @@ public class NodeDirectoryController {
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") String id) {
-        if (targetNodeDirectory instanceof MongodbFederatedCatalogNodeDirectory) {
-            try {
-                MongodbFederatedCatalogNodeDirectory mongodbDirectory = (MongodbFederatedCatalogNodeDirectory) targetNodeDirectory;
-                mongodbDirectory.delete(id);
-            } catch (EdcPersistenceException e) {
+        try {
+            var targetNode = targetNodeDirectory.remove(id);
+            if (targetNode == null) {
                 throw new WebApplicationException("Node not found", Response.Status.NOT_FOUND);
             }
-        } else {
-            throw new UnsupportedOperationException("The target node directory does not support deletion");
+        } catch (EdcPersistenceException e) {
+            throw new WebApplicationException("Error deleting node: " + e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 

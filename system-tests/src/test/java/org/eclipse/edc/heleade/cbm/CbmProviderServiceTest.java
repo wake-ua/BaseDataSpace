@@ -37,6 +37,7 @@ import static org.eclipse.edc.heleade.common.NegotiationCommon.negotiateContract
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.heleade.util.TransferUtil.checkTransferStatus;
+import static org.eclipse.edc.heleade.util.TransferUtil.printTransferStatus;
 import static org.eclipse.edc.heleade.util.TransferUtil.startTransfer;
 
 @EndToEndTest
@@ -86,6 +87,7 @@ public class CbmProviderServiceTest {
         var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH)
                 .replace("4000", String.valueOf(port));
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
+        printTransferStatus(transferProcessId);
         checkTransferStatus(transferProcessId, TransferProcessStates.COMPLETED);
         String[] log = httpRequestLoggerContainer.getLog().split("POST");
         String latestLog = log[log.length - 1];
@@ -121,7 +123,6 @@ public class CbmProviderServiceTest {
         String expectedResponseString = "{\"description\": \"Please check the API instructions in the homepage\", " +
                 "\"url\": \"https://customservice.com/dashboard/realtime\", " +
                 "\"apikey\": {\"x-api-key\": \"apikeytokenvalue\"}, " +
-                "\"user\": \"provider_user\", " +
                 "\"user\": \"provider_user\", " +
                 "\"password\": \"1234567890\"}";
         assertThat(latestLog).contains(expectedResponseString);

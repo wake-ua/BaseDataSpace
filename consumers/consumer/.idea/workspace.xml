@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2ab0c9ec-1f5d-4c1d-9b87-aeb58bda4064" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../consumer-base/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../consumer-base/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/extension/health/HealthEndpointExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/extension/health/HealthEndpointExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/sample/runtime/SeedVaultExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/sample/runtime/SeedVaultExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryApiExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryApiExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/query/FederatedCatalogContentBasedApiExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/query/FederatedCatalogContentBasedApiExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/verification/VerificationApiExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/verification/VerificationApiExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/content/based/FederatedCatalogContentBasedExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/content/based/FederatedCatalogContentBasedExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/health/HealthEndpointExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/health/HealthEndpointExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/MongodbFederatedCatalogExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/MongodbFederatedCatalogExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectoryStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectoryStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/../../gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../iam-identity/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../iam-identity/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../iam-identity/src/main/java/org/eclipse/edc/heleade/identity/IamIdentityExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../iam-identity/src/main/java/org/eclipse/edc/heleade/identity/IamIdentityExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/content-based-catalog-dispatcher/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/content-based-catalog-dispatcher/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider-base/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider-base/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider-ebird/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider-ebird/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/health/HealthEndpointExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/health/HealthEndpointExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/service/ServiceDataPlaneExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/service/ServiceDataPlaneExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/validation/AssetValidationExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/validation/AssetValidationExtension.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/sample/runtime/SeedVaultExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/sample/runtime/SeedVaultExtension.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="3ACwd1uHCwiCbFuVjJl3DoKcdTh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.29188.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.29188.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2ab0c9ec-1f5d-4c1d-9b87-aeb58bda4064" name="Changes" comment="" />
+      <created>1772109943561</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772109943561</updated>
+      <workItem from="1772109944685" duration="3000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

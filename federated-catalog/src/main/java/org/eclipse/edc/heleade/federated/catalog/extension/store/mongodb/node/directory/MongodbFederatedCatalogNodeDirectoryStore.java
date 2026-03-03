@@ -92,13 +92,7 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
     public ParticipantNode queryParticipantNodeById(String participantId) {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                var collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
-                var findClause = Filters.eq("id", participantId);
-                var nodes = collection.find(findClause).into(new ArrayList<>());
-                if (nodes.size() == 0) {
-                    return null;
-                }
-                return fromJson(nodes.get(0).toJson(), ParticipantNode.class);
+                return findByIdInternal(connection, participantId);
             }
         });
     }
@@ -156,14 +150,45 @@ public class MongodbFederatedCatalogNodeDirectoryStore extends MongodbStore {
      *
      * @param id the unique identifier of the entry to be deleted; must not be null
      */
-    public void delete(String id) {
-        transactionContext.execute(() -> {
+    public TargetNode delete(String id) {
+        return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
+                var existing = findByIdInternalAsTargetNode(connection, id);
+                if (existing == null) {
+                    return null;
+                }
                 deleteInternal(connection, id);
+                return existing;
             } catch (Exception e) {
                 throw new EdcPersistenceException(e);
             }
         });
+    }
+
+    private String findByIdInternalAsJsonString(MongoClient connection, String id) {
+        var collection = getCollection(connection, getFederatedCatalogNodeDirectoryCollectionName());
+        var findClause = Filters.eq("id", id);
+        var nodes = collection.find(findClause).into(new ArrayList<>());
+        if (nodes.isEmpty()) {
+            return null;
+        }
+        return nodes.get(0).toJson();
+    }
+
+    private ParticipantNode findByIdInternal(MongoClient connection, String id) {
+        var node = findByIdInternalAsJsonString(connection, id);
+        if (node == null) {
+            return null;
+        }
+        return fromJson(node, ParticipantNode.class);
+    }
+
+    private TargetNode findByIdInternalAsTargetNode(MongoClient connection, String id) {
+        var node = findByIdInternalAsJsonString(connection, id);
+        if (node == null) {
+            return null;
+        }
+        return fromJson(node, TargetNode.class);
     }
 
     private void deleteInternal(MongoClient connection, String id) {

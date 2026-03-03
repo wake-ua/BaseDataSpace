@@ -71,9 +71,9 @@ public class ServiceDataSource implements DataSource {
         this.credentialServiceApiCode =  dataAddress.getStringProperty(EDC_NAMESPACE + "authCode", "");
         this.defaultCredentials = defaultCredentials;
         this.processId = request.getProcessId();
-        this.agreementId = request.getAgreementId() == null ? originalRequest.getAgreementId() : request.getAgreementId();
-        this.participantId = request.getParticipantId() == null ? originalRequest.getParticipantId() : request.getParticipantId();
-        this.assetId = request.getAssetId() == null ? originalRequest.getAssetId() : request.getAssetId();
+        this.agreementId = request.getAgreementId() == null ? (originalRequest.getAgreementId() == null ? request.getProperties().get("agreementId") : originalRequest.getAgreementId()) : request.getAgreementId();
+        this.participantId = request.getParticipantId() == null ? (originalRequest.getParticipantId() == null ? request.getProperties().get("participantId") : originalRequest.getParticipantId()) : request.getParticipantId();
+        this.assetId = request.getAssetId() == null ?  (originalRequest.getAssetId() == null ? request.getProperties().get("assetId") : originalRequest.getAssetId()) : request.getAssetId();
         this.monitor = monitor;
     }
 

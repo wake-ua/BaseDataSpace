@@ -18,12 +18,10 @@ plugins {
 }
 
 dependencies {
-    api(libs.edc.dsp.catalog)
     api(libs.edc.dsp)
     api(libs.edc.jsonld)
     api(libs.edc.catalog.spi)
     api(libs.edc.catalog.api)
-    api(libs.edc.dsp.catalog.http.api)
 
     implementation(libs.edc.api.core)
     implementation(libs.edc.api.lib)
