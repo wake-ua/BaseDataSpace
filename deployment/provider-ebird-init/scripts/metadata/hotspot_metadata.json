@@ -1,6 +1,7 @@
 {
   "title": "Species Observation Data",
   "description": "Data on species observed in various locations",
+  "keywords": ["ECOLOGY", "BIRD", "BIODIVERSITY"],
   "theme": "Biodiversity",
   "columns": [
     {

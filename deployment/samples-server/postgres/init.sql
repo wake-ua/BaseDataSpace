@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS samples (
     id VARCHAR(36) PRIMARY KEY,
     asset_id VARCHAR(255),
     path VARCHAR(255),
-
+    has_header BOOLEAN NOT NULL DEFAULT FALSE,
+    
     provider_id VARCHAR(36) NOT NULL,
 
     CONSTRAINT fk_provider

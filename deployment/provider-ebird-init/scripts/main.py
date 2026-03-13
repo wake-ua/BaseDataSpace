@@ -25,6 +25,7 @@ PROVIDER_ID = os.getenv("PROVIDER_ID")
 SAMPLES_SERVER_ADMIN_TOKEN = os.getenv("SAMPLES_SERVER_ADMIN_TOKEN")
 
 SAMPLE_BASE_URL = os.getenv("SAMPLE_BASE_URL")
+SAMPLE_CONTENT_URL = os.getenv("SAMPLE_CONTENT_URL")
 POLICY_DEFINITIONS_URL = f"{BASE_URL}/management/v3/policydefinitions"
 CONTRACT_DEFINITIONS_URL = f"{BASE_URL}/management/v3/contractdefinitions"
 ASSETS_URL = f"{BASE_URL}/management/v3/assets-cbm"
@@ -203,7 +204,7 @@ def create_asset_and_sample(metadata, url, name, desc, province=None, response_t
                 "PUT", PROVIDER_TOKEN, sample, response_type, asset_id
             )
         sample_payload = build_sample_asset(metadata=metadata, name=name, desc=desc, 
-                                            asset_id=asset_id, sample_base_url=SAMPLE_BASE_URL, 
+                                            asset_id=asset_id, sample_base_url=SAMPLE_CONTENT_URL, 
                                             provider_id=PROVIDER_ID,
                                             provider_share_token=PROVIDER_SHARE_TOKEN,
                                             province=province)
@@ -232,8 +233,12 @@ def main():
         )
 
     PROVIDER_PASS, PROVIDER_SHARE_TOKEN = provider_result
+
+    logging.info(f"\033[1;34mCREATED PROVIDER\033[0m")
     PROVIDER_TOKEN = provider_login(base_url=SAMPLE_BASE_URL, provider_id=PROVIDER_ID, password=PROVIDER_PASS)
-    
+
+    logging.info(f"\033[1;34mPROVIDER LOGIN\033[0m")
+
 
     for config in ASSET_CONFIGS:
         metadata = get_metadata(config["metadata_file"])

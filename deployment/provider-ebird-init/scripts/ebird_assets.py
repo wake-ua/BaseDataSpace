@@ -9,6 +9,13 @@ def build_asset(url, metadata, desc, name, api_key, province=None):
     display_name = name.format(region=province) if province else name
     current_time = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
+    keywords = metadata["keywords"][:]
+
+    if province is not None:
+        keywords.append(province.upper())
+
+
+
     return asset_id, {
         "@id": asset_id,
         "@type": "dcat:Dataset",
@@ -26,6 +33,7 @@ def build_asset(url, metadata, desc, name, api_key, province=None):
         "cbm:hasSample": f"sample-{asset_id}",
         "dct:title": display_name,
         "dct:description": desc,
+        "dcat:keyword": keywords,
         "edc:contenttype": "application/json",
         "dct:modified": current_time,
         "dct:issued": current_time,
@@ -49,6 +57,12 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, provider
     """Create sample asset definition dict."""
     display_name = name.format(region=province) if province else name
     current_time = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+    keywords = metadata["keywords"][:]
+
+    if province is not None:
+        keywords.append(province.upper())
+
     return {
         "@id": f"sample-{asset_id}",
         "@type": "cbm:Sample",
@@ -56,7 +70,7 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, provider
             {
                 "@type": "dcat:Distribution",
                 "dct:format": {"@id": "HttpData"},
-                "dcat:accessURL": f"{sample_base_url}/samples/{provider_id}/{asset_id}",
+                "dcat:accessURL": f"{sample_base_url}/{provider_id}/{asset_id}",
                 "edc:proxyPath": "true",
                 "authKey": "x-api-key",
                 "authCode": provider_share_token,
@@ -66,6 +80,7 @@ def build_sample_asset(metadata, name, desc, asset_id, sample_base_url, provider
         "cbm:isSampleOf": asset_id,
         "dct:title": display_name,
         "dct:description": desc,
+        "dcat:keyword": keywords,
         "dct:issued": current_time,
         "dct:modified": current_time,
         "edc:contenttype": "application/json",

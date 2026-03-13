@@ -31,7 +31,7 @@ services:
 
   api:
     container_name: api
-    image: ghcr.io/wake-ua/ds-api-samples:ee17751
+    image: ghcr.io/wake-ua/ds-api-samples:20260312
     volumes:
       - ${SAMPLES_ROOT}/samples:/samples/
     restart: always
