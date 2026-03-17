@@ -1208,7 +1208,7 @@
             }
           ],
           "request": {
-            "method": "POST",
+            "method": "PUT",
             "header": [],
             "body": {
               "mode": "raw",
@@ -1323,7 +1323,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ]\n  \n}",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ],\n    \"sortField\": \"http://purl.org/dc/terms/title\",\n    \"sortOrder\": \"ASC\"\n  \n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1369,7 +1369,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ]\n  \n}",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 10,\n    \"sortField\": \"http://purl.org/dc/terms/title\",\n    \"sortOrder\": \"ASC\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1412,7 +1412,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [ ]\n  \n}",
+              "raw": "{\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    },\n    \"@type\": \"QuerySpec\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1713,6 +1713,65 @@
                 "management",
                 "v3",
                 "contractdefinitions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Contract Definition Copy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1b\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"always-true\",\n  \"assetsSelector\": []\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "contractdefinitions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Contract Definitions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n  \"offset\": 0,\n  \"limit\": 10,\n  \"filterExpression\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions/request",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "contractdefinitions",
+                "request"
               ]
             }
           },
