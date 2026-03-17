@@ -38,8 +38,11 @@ include(":providers:provider-ebird")
 include("commons")
 
 
-include("identity-hub")
 include("iam-identity")
 include("providers:policy")
 include("providers:policy:policy-always-true")
 include("providers:policy:policy-evaluation")
+include("identity-hub:identity-hub")
+include("identity-hub:identity-hub-ebird")
+include("identity-hub:identity-hub-consumer")
+include("dcp-impl")

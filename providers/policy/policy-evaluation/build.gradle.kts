@@ -22,7 +22,7 @@ dependencies {
     api(libs.edc.json.ld.spi)
 
     implementation(libs.edc.control.plane.core)
-    implementation(project(":iam-identity"));
+    //implementation(project(":iam-identity"));
     implementation(project(":commons"));
 
 }

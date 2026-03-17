@@ -55,7 +55,16 @@ dependencies {
     implementation(libs.edc.auth.configuration)
 
     implementation(project(":providers:content-based-catalog-dispatcher"))
-    implementation(project(":iam-identity"));
+   // implementation(project(":iam-identity"));
     implementation(project(":commons"))
+    implementation(project(":dcp-impl"))
+
+    //DCP libraries
+    implementation(libs.edc.dcp)
+    implementation(libs.edc.core.token)
+    implementation(libs.edc.did.core)
+    implementation(libs.edc.oauth2.client)
+    implementation(libs.edc.identity.did.web)
+    implementation(libs.edc.api.secrets)
 
 }

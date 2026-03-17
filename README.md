@@ -86,6 +86,15 @@ java -Dedc.fs.config=consumers/consumer-base/resources/configuration/consumer-ba
 ```
 java -Dedc.fs.config=federated-catalog/resources/configuration/fc-configuration.properties -jar federated-catalog/build/libs/federated-catalog.jar --log-level=DEBUG
 ```
+* Identity Hub : Provider ebird
+```
+ java  -Dedc.fs.config=identity-hub/identity-hub-ebird/resources/provider_identityhub.properties -jar identity-hub/identity-hub-ebird/build/libs/identity-hub-ebird.jar --log-lever=DEBUG
+```
+
+* Identity Hub : Consumer base
+```
+ java  -Dedc.fs.config=identity-hub/identity-hub-consumer/resources/consumer_identityhub.properties -jar identity-hub/identity-hub-consumer/build/libs/identity-hub-consumer.jar --log-lever=DEBUG
+```
 
 ### System Tests
 To execute the systems tests, just right-click on the tests folder and select the option 'Run "All Tests"'.

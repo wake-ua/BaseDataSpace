@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.edc.spi.auth)
     implementation(libs.edc.auth.configuration)
 
+    implementation(libs.edc.api.secrets)
     // sql storage
     implementation(libs.edc.spi.transaction.datasource)
     implementation(libs.bundles.edc.sqlstores)
@@ -79,10 +80,16 @@ dependencies {
     implementation(libs.postgres)
 
     // identification
-    implementation(project(":iam-identity"));
+    //implementation(project(":iam-identity"));
     implementation(project(":providers:policy:policy-evaluation"));
     implementation(project(":providers:policy:policy-always-true"));
-
+    implementation(project(":dcp-impl"))
+    //dcp
+    implementation(libs.edc.dcp)
+    implementation(libs.edc.core.token)
+    implementation(libs.edc.did.core)
+    implementation(libs.edc.oauth2.client)
+    implementation(libs.edc.identity.did.web)
     // test
     testImplementation(libs.restAssured)
     testImplementation(libs.awaitility)

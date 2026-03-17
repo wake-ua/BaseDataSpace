@@ -152,6 +152,16 @@ postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-spi-transaction-datasource = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
 
+
+## dcp
+edc-dcp = { module = "org.eclipse.edc:identity-trust", version.ref = "edc" }
+edc-core-token = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
+edc-did-core = { module = "org.eclipse.edc:identity-did-core", version.ref = "edc" }
+edc-identity-did-web = { module = "org.eclipse.edc:identity-did-web", version.ref = "edc" }
+edc-spi-identity-trust = { module = "org.eclipse.edc:identity-trust-spi", version.ref = "edc" }
+edc-spi-identity-did = { module = "org.eclipse.edc:identity-did-spi", version.ref = "edc" }
+edc-lib-jws2020 = { module = "org.eclipse.edc:jws2020-lib", version.ref = "edc" }
+
 # identity hub and issuer
 edc-bom-identityhub = { module = "org.eclipse.edc:identityhub-bom", version.ref = "edc" }
 edc-bom-identityhub-sql = { module = "org.eclipse.edc:identityhub-feature-sql-bom", version.ref = "edc" }
@@ -162,6 +172,9 @@ edc-bom-issuerservice-sql = { module = "org.eclipse.edc:issuerservice-feature-sq
 edc-ih-spi-did = { module = "org.eclipse.edc:did-spi", version.ref = "edc" }
 edc-ih-spi-credential = { module = "org.eclipse.edc:verifiable-credential-spi", version.ref = "edc" }
 edc-ih-spi = { module = "org.eclipse.edc:identity-hub-spi", version.ref = "edc" }
+verifiable-credentials-spi = { module = "org.eclipse.edc:verifiable-credential-spi", version.ref = "edc"}
+edc-ih-core = {module = "org.eclipse.edc:identity-hub-core", version.ref="edc"}
+edc-presentation-api = {module = "org.eclipse.edc:presentation-api", version.ref="edc"}
 
 # identityhub API modules
 edc-oauth2-client = { module = "org.eclipse.edc:oauth2-client", version.ref = "edc" }
