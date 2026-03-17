@@ -50,8 +50,13 @@ public class JsonObjectToDatasetContentBasedTransformer extends JsonObjectToData
     public @Nullable Dataset transform(@NotNull JsonObject object, @NotNull TransformerContext context) {
         var modifiedObject = moveDataDictionaryToDataset(object);
         Dataset dataset = super.transform(modifiedObject, context);
-        Dataset fixedDataset = fixDataset(dataset, modifiedObject);
-        return fixedDataset;
+        try {
+            Dataset fixedDataset = fixDataset(dataset, modifiedObject);
+            return fixedDataset;
+        } catch (Exception e) {
+            System.out.println("ERROR: Failed to transform JSON object to fixed Dataset: " + e.getMessage());
+            return dataset;
+        }
     }
 
     private JsonObject moveDataDictionaryToDataset(JsonObject object) {
