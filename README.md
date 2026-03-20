@@ -96,6 +96,16 @@ java -Dedc.fs.config=federated-catalog/resources/configuration/fc-configuration.
  java  -Dedc.fs.config=identity-hub/identity-hub-consumer/resources/consumer_identityhub.properties -jar identity-hub/identity-hub-consumer/build/libs/identity-hub-consumer.jar --log-lever=DEBUG
 ```
 
+* Issuer
+
+
+```
+docker run -d --name nginx -p 9876:80 --rm \
+  -v "$PWD"/deployment/issuer/nginx.conf:/etc/nginx/nginx.conf:ro \
+  -v "$PWD"/deployment/issuer/did.json:/var/www/.well-known/did.json:ro \
+  nginx
+```
+
 ### System Tests
 To execute the systems tests, just right-click on the tests folder and select the option 'Run "All Tests"'.
 
