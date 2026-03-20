@@ -1,0 +1,31 @@
+services:
+
+
+  bds-ih-postgresql:
+    container_name: bds-ih-postgresql
+    image: postgres:13
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=edc
+    volumes:
+      - postgresql_data_ih:/var/lib/postgresql/data
+      - ../deployment/bds-ih/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d edc_consumer_base" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - base-ds-network
+
+
+volumes:
+  postgresql_data_ih:
+
+
+networks:
+  base-ds-network:
+    external: true
