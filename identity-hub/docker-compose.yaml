@@ -22,6 +22,53 @@ services:
       - base-ds-network
 
 
+
+  ih-consumer-vault:
+    image: hashicorp/vault
+    container_name: ih-consumer
+    ports:
+      - "8301:8201"
+      - "8300:8200/tcp"
+    environment:
+      VAULT_ADDR: "http://0.0.0.0:8200"
+      VAULT_API_ADDR: "http://0.0.0.0:8200"
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ./identity-hub-consumer/resources/file:/vault/file:rw
+      - ./identity-hub-consumer/resources/logs:/vault/logs:rw
+      - ./identity-hub-consumer/resources/tmp:/vault/tmp:rw
+      - ./identity-hub-consumer/resources/config:/vault/config:r
+      - ./identity-hub-consumer/resources/secrets:/vault/secrets:r
+    entrypoint: vault server -config=/vault/config/config.hcl
+    networks:
+      - base-ds-network
+
+
+  ih-provider-vault:
+    image: hashicorp/vault
+    container_name: ih-provider
+    ports:
+      - "8401:8201"
+      - "8400:8200/tcp"
+    environment:
+      VAULT_ADDR: "http://0.0.0.0:8200"
+      VAULT_API_ADDR: "http://0.0.0.0:8200"
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    cap_add:
+      - IPC_LOCK  # Lock memory to prevent sensitive data from swapping to disk
+    volumes:
+      - ./identity-hub-ebird/resources/file:/vault/file:rw
+      - ./identity-hub-ebird/resources/logs:/vault/logs:rw
+      - ./identity-hub-ebird/resources/tmp:/vault/tmp:rw
+      - ./identity-hub-ebird/resources/config:/vault/config:r
+      - ./identity-hub-ebird/resources/secrets:/vault/secrets:r
+    entrypoint: vault server -config=/vault/config/config.hcl
+    networks:
+      - base-ds-network
+
+
 volumes:
   postgresql_data_ih:
 
