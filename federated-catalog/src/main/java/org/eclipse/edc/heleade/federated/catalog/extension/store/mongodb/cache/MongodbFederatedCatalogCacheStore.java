@@ -47,6 +47,15 @@ public class MongodbFederatedCatalogCacheStore extends MongodbStore {
     }
 
     /**
+     * Provides the name of the MongoDB collection used to store federated catalog datasets.
+     *
+     * @return the name of the collection as a String, which is "edc_federated_catalog_dataset"
+     */
+    public static String getFederatedCatalogDatasetCollectionName() {
+        return "edc_federated_catalog_dataset";
+    }
+
+    /**
      * Retrieves the name of the identifier field used in the MongoDB store.
      *
      * @return the name of the identifier field, typically "store_id".

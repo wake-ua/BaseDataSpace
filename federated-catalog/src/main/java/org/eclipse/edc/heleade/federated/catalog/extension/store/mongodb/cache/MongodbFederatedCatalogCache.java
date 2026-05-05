@@ -15,45 +15,27 @@
 package org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.BsonField;
-import com.mongodb.client.model.Field;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Sorts;
-import com.mongodb.client.model.UnwindOptions;
 import com.mongodb.client.model.UpdateOptions;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
-import org.bson.BsonDocument;
+import jakarta.json.JsonValue;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.json.JsonWriterSettings;
 import org.eclipse.edc.catalog.spi.CatalogConstants;
 import org.eclipse.edc.catalog.spi.FederatedCatalogCache;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Catalog;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
-import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
-import org.eclipse.edc.spi.query.SortOrder;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 
@@ -112,16 +94,45 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     }
 
     /**
+     * Deletes all entries from the cache that are marked as "expired"
+     */
+    @Override
+    public void deleteExpired() {
+        transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                deleteByMarkedTemplateInternal(connection);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    /**
+     * Marks all entries as "expired", i.e. marks them for deletion
+     */
+    @Override
+    public void expireAll() {
+        transactionContext.execute(() -> {
+            try (var connection = getConnection()) {
+                expireAllInternal(connection);
+            } catch (Exception e) {
+                throw new EdcPersistenceException(e);
+            }
+        });
+    }
+
+    /**
      * Queries the store for {@code ContractOffer}s
      *
-     * @param query A list of criteria the asset must fulfill
-     * @return A collection of assets that are already in the store and that satisfy a given list of criteria.
+     * @param query A list of criteria the catalog must fulfill
+     * @return A collection of catalogs that are already in the store and that satisfy a given list of criteria.
      */
     @Override
     public Collection<Catalog> query(QuerySpec query) {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                return queryInternal(connection, query);
+                var collection = getCollection(connection, getFederatedCatalogCollectionName());
+                return MongodbFederatedCatalogCacheQuery.queryInternalCatalog(query, collection, jsonLd, transformerRegistry);
             } catch (Exception e) {
                 throw new EdcPersistenceException(e);
             }
@@ -137,7 +148,8 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     public Collection<Dataset> queryDatasets(QuerySpec query) {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                return queryInternalDatasets(connection, query);
+                var collection = getCollection(connection, getFederatedCatalogDatasetCollectionName());
+                return MongodbFederatedCatalogCacheQuery.queryInternalDatasets(query, collection, jsonLd, transformerRegistry);
             } catch (Exception e) {
                 throw new EdcPersistenceException(e);
             }
@@ -154,7 +166,8 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     public String countDatasets(QuerySpec query, boolean noLimit) {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                return countInternalDatasets(connection, query, noLimit);
+                var collection = getCollection(connection, getFederatedCatalogDatasetCollectionName());
+                return MongodbFederatedCatalogCacheQuery.countInternalDatasets(query, collection, noLimit);
             } catch (Exception e) {
                 throw new EdcPersistenceException(e);
             }
@@ -171,126 +184,12 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     public String countKeywords(QuerySpec query, boolean noLimit) {
         return transactionContext.execute(() -> {
             try (var connection = getConnection()) {
-                return countInternalKeywords(connection, query, noLimit);
+                var collection = getCollection(connection, getFederatedCatalogDatasetCollectionName());
+                return MongodbFederatedCatalogCacheQuery.countInternalKeywords(query, collection, noLimit);
             } catch (Exception e) {
                 throw new EdcPersistenceException(e);
             }
         });
-    }
-
-    /**
-     * Deletes all entries from the cache that are marked as "expired"
-     */
-    @Override
-    public void deleteExpired() {
-        transactionContext.execute(() -> {
-            try (var connection = getConnection()) {
-                deleteByMarkedTemplateInternal(connection);
-            } catch (Exception e) {
-                throw new EdcPersistenceException(e);
-            }
-        });
-    }
-
-
-    /**
-     * Marks all entries as "expired", i.e. marks them for deletion
-     */
-    @Override
-    public void expireAll() {
-        transactionContext.execute(() -> {
-            try (var connection = getConnection()) {
-                expireAllInternal(connection);
-            } catch (Exception e) {
-                throw new EdcPersistenceException(e);
-            }
-        });
-    }
-
-
-    private Collection<Catalog> queryInternal(MongoClient connection, QuerySpec querySpec) {
-        List<Bson> aggregations = createAggregationPipeline(querySpec, false);
-        var resultsStr = new java.util.ArrayList<String>();
-        var results = new java.util.ArrayList<Catalog>();
-
-        getCollection(connection, getFederatedCatalogCollectionName()).aggregate(
-                aggregations
-        ).forEach(doc -> resultsStr.add(doc.toJson()));
-
-        for (String s : resultsStr) {
-            JsonReader jsonReader = Json.createReader(new StringReader(s));
-            JsonObject result = jsonReader.readObject();
-            JsonObject resultExpanded = jsonLd.expand(result).getContent();
-            jsonReader.close();
-            Catalog catalog = this.transformerRegistry.transform(resultExpanded, Catalog.class).getContent();
-            results.add(catalog);
-        }
-
-        return results;
-    }
-
-    private Collection<Dataset> queryInternalDatasets(MongoClient connection, QuerySpec querySpec) {
-        List<Bson> aggregations = createDatasetAggregationPipeline(querySpec);
-        var resultsStr = new java.util.ArrayList<String>();
-        var results = new java.util.ArrayList<Dataset>();
-
-        getCollection(connection, getFederatedCatalogCollectionName()).aggregate(
-                aggregations
-        ).forEach(doc -> resultsStr.add(doc.toJson()));
-
-        for (String s : resultsStr) {
-            JsonReader jsonReader = Json.createReader(new StringReader(s));
-            JsonObject result = jsonReader.readObject();
-            JsonObject resultExpanded = jsonLd.expand(result).getContent();
-            jsonReader.close();
-            Dataset dataset = this.transformerRegistry.transform(resultExpanded, Dataset.class).getContent();
-            results.add(dataset);
-        }
-
-        return results;
-    }
-
-    private String countInternalDatasets(MongoClient connection, QuerySpec querySpec, boolean noLimit) {
-        List<Bson> aggregations = createDatasetAggregationPipeline(querySpec);
-        // remove limit stage
-        if (noLimit) {
-            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$limit")));
-            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$skip")));
-        }
-        // add count
-        aggregations.add(Aggregates.count());
-
-        // run the aggregation
-        var documents = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations);
-
-        // check result is not empty
-        if (documents.iterator().hasNext()) {
-            var document = documents.first();
-            if (document != null && !document.isEmpty()) {
-                return document.toJson();
-            }
-        }
-
-        return "{\"count\": 0}";
-    }
-
-    private String countInternalKeywords(MongoClient connection, QuerySpec querySpec, boolean noLimit) {
-
-        List<Bson> aggregations = createKeywordCountAggregationPipeline(querySpec, noLimit);
-        // run the aggregation
-        var documents = getCollection(connection, getFederatedCatalogCollectionName()).aggregate(aggregations);
-
-        String result = "[";
-        var resultsStr = new java.util.ArrayList<String>();
-
-        // check result is not empty
-        if (documents.iterator().hasNext()) {
-            documents.forEach(doc -> resultsStr.add(doc.toJson()));
-            result += String.join(", ", resultsStr);
-        }
-
-        result += "]";
-        return result;
     }
 
     private void upsertInternal(MongoClient connection, String id, Catalog catalog) {
@@ -312,12 +211,27 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         Bson update = new Document("$set", setDoc);
         MongoCollection<Document> collection = getCollection(connection, getFederatedCatalogCollectionName());
         collection.updateOne(filter, update, options);
+
+        // Upsert datasets
+        String participantId = catalogDoc.getString("dspace:participantId");
+        var context = catalogDoc.get("@context");
+        for (JsonValue dataset : catalogJsonCompactedDatasetArray.getJsonArray("dcat:dataset")) {
+            var datasetJson = dataset.asJsonObject();
+            var datasetId = datasetJson.getString("@id");
+            var datasetDoc = Document.parse(datasetJson.toString()).append("dspace:participantId", participantId).append("@context", context);
+            collection = getCollection(connection, getFederatedCatalogDatasetCollectionName());
+            collection.updateOne(Filters.and(Filters.eq("@id", datasetId),
+                    Filters.eq("dspace:participantId", participantId)),
+                    new Document("$set", datasetDoc), options);
+        }
     }
 
     private void deleteByMarkedTemplateInternal(MongoClient connection) {
         Bson filter = Filters.eq(getMarkedField(), true);
         MongoCollection<Document> collection =  getCollection(connection, getFederatedCatalogCollectionName());
         collection.deleteMany(filter);
+        MongoCollection<Document> collectionDatasets =  getCollection(connection, getFederatedCatalogDatasetCollectionName());
+        collectionDatasets.deleteMany(filter);
     }
 
     private void expireAllInternal(MongoClient connection) {
@@ -325,6 +239,8 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         Document doc = Document.parse("{ $set: { " + getMarkedField() + ": true } }");
         MongoCollection<Document> collection = getCollection(connection, getFederatedCatalogCollectionName());
         collection.updateMany(Filters.empty(), doc, options);
+        MongoCollection<Document> collectionDatasets =  getCollection(connection, getFederatedCatalogDatasetCollectionName());
+        collectionDatasets.updateMany(Filters.empty(), doc, options);
     }
 
     private JsonObject ensureDatasetAsArray(JsonObject catalogJson) {
@@ -341,372 +257,6 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         return catalogJson;
     }
 
-    /**
-     * Creates a MongoDB aggregation pipeline based on the provided query specification and optional dataset unwinding.
-     *
-     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
-     * @param unwindDatasets a flag indicating whether to unwind dataset entries in the pipeline
-     * @return a list of BSON objects representing the aggregation pipeline
-     */
-    private static List<Bson> createAggregationPipeline(QuerySpec querySpec, boolean unwindDatasets) {
-        // aggregation creation
-        var aggregations = new java.util.ArrayList<Bson>();
-
-        // Add catalog fields to dataset
-        Bson addCatalogFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD + "." + PARTICIPANT_FIELD, "$" + PARTICIPANT_FIELD));
-        aggregations.add(addCatalogFieldsStage);
-
-        // Add basic filter to get catalogs with at least one dataset matching the filter criteria
-        Bson filter = createFilter(querySpec, DATASET_FIELD + ".");
-
-        if (!(Objects.equals(filter, Filters.empty()))) {
-
-            aggregations.add(Aggregates.match(filter));
-
-            // Create the filter expression for datasets using the MongoDB driver's filter API
-            Bson filterInner = createFilterExpression(querySpec, "$$this.");
-            Bson datasetsFilter = new Document("$filter",
-                    new Document("input", "$" + DATASET_FIELD)
-                            .append("cond", filterInner));
-
-            // Create and add the "add fields" stage with the datasets filter
-            Bson addFieldsStage = Aggregates.addFields(new Field<>(DATASET_FIELD, datasetsFilter));
-            aggregations.add(addFieldsStage);
-
-            // Filter out the catalogsw with no datasets matching the filter criteria
-            aggregations.add(Aggregates.addFields(new Field<>("datasets_size", new Document("$size", "$" + DATASET_FIELD))));
-            aggregations.add(Aggregates.match(Filters.gt("datasets_size", 0L)));
-        }
-
-        if (unwindDatasets) {
-            // Unwind
-            UnwindOptions unwindOptions = new UnwindOptions().preserveNullAndEmptyArrays(false);
-            aggregations.add(Aggregates.unwind("$dcat:dataset", unwindOptions));
-
-            // Repeat filter for the operators not included in expression to filter array
-            if (!(Objects.equals(filter, Filters.empty()))) {
-                aggregations.add(Aggregates.match(filter));
-            }
-
-            // Keep context from Catalog object
-            aggregations.add(Aggregates.addFields(new Field<>("dcat:dataset.@context", "$@context")));
-
-            // Replace root
-            aggregations.add(Aggregates.replaceRoot("$dcat:dataset"));
-        }
-
-        // Remove auxiliary fields
-        aggregations.add(Aggregates.project(Document.parse("{_id: 0, datasets_size: 0}")));
-
-        // Add pagination and sorting stages if necessary
-        if (querySpec.getOffset() > 0) {
-            aggregations.add(Aggregates.skip(querySpec.getOffset()));
-        }
-        if (querySpec.getLimit() > 0) {
-            aggregations.add(Aggregates.limit(querySpec.getLimit()));
-        }
-        Bson sort = createSort(querySpec);
-        if (sort != null) {
-            aggregations.add(Aggregates.sort(sort));
-        }
-
-        return aggregations;
-    }
-
-    /**
-     * Creates a MongoDB aggregation pipeline for catalog queries based on the provided query specification.
-     *
-     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
-     * @return a list of BSON objects representing the catalog aggregation pipeline
-     */
-    public static List<Bson> createCatalogAggregationPipeline(QuerySpec querySpec) {
-        return createAggregationPipeline(querySpec, false);
-    }
-
-    /**
-     * Creates a MongoDB aggregation pipeline for dataset queries based on the provided query specification.
-     *
-     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
-     * @return a list of BSON objects representing the dataset aggregation pipeline
-     */
-    public static List<Bson> createDatasetAggregationPipeline(QuerySpec querySpec) {
-        return createAggregationPipeline(querySpec, true);
-    }
-
-    /**
-     * Creates a MongoDB aggregation pipeline based on the provided query specification for keyword totals.
-     *
-     * @param querySpec the query specification containing filtering, sorting, and pagination criteria
-     * @param noLimit a flag indicating whether to limit dataset entries in the pipeline
-     * @return a list of BSON objects representing the aggregation pipeline
-     */
-    public static List<Bson> createKeywordCountAggregationPipeline(QuerySpec querySpec, boolean noLimit) {
-
-        List<Bson> aggregations = createDatasetAggregationPipeline(querySpec);
-
-        // remove limit stage
-        if (noLimit) {
-            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$limit")));
-            aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$skip")));
-        }
-
-        // remove sort
-        aggregations.removeIf(stage -> (stage.getClass().getSimpleName().equals("BsonDocument") && stage.toBsonDocument().containsKey("$sort")));
-
-        // project to leave only the keyword field
-        aggregations.add(Aggregates.project(Document.parse("{_id: 0, \"dcat:keyword\": 1}")));
-
-        // unwind the keywords
-        UnwindOptions unwindOptions = new UnwindOptions().preserveNullAndEmptyArrays(false);
-        aggregations.add(Aggregates.unwind("$dcat:keyword", unwindOptions));
-
-        // group the keywords
-        aggregations.add(Aggregates.group("$dcat:keyword", List.of(new BsonField("count", Document.parse("{ $sum: 1}")))));
-
-        // project to replace _id with keyword
-        aggregations.add(Aggregates.project(Document.parse("{_id: 0, \"dcat:keyword\": \"$_id\", count: 1}")));
-
-        // sort decreasingly by count
-        aggregations.add(Aggregates.sort(Document.parse("{\"count\": -1, \"dcat:keyword\": 1}")));
-
-        return aggregations;
-    }
-
-    /**
-     * Creates a MongoDB BSON filter from the given QuerySpec
-     *
-     * @param querySpec The query specification containing filter criteria
-     * @param prefix Prefix to use for the fields
-     * @return A BSON filter that can be used with MongoDB queries
-     */
-    public static Bson createFilter(QuerySpec querySpec, String prefix) {
-        if (querySpec == null || querySpec.getFilterExpression().isEmpty()) {
-            // Return a filter that matches all documents if no criteria are specified
-            return Filters.empty();
-        }
-
-        List<Bson> filters = new ArrayList<>();
-
-        // Process each criterion in the filter expression
-        for (Criterion criterion : querySpec.getFilterExpression()) {
-            String operator = criterion.getOperator();
-            Object leftOperand = criterion.getOperandLeft();
-            Object rightOperand = criterion.getOperandRight();
-
-            // Convert the left operand to a field path string
-            String fieldPath = prefix + leftOperand.toString();
-
-            // Convert criterion to appropriate MongoDB filter
-            switch (operator) {
-                case "=":
-                    filters.add(Filters.eq(fieldPath, rightOperand));
-                    break;
-                case "!=":
-                    filters.add(Filters.ne(fieldPath, rightOperand));
-                    break;
-                case ">":
-                    filters.add(Filters.gt(fieldPath, rightOperand));
-                    break;
-                case ">=":
-                    filters.add(Filters.gte(fieldPath, rightOperand));
-                    break;
-                case "<":
-                    filters.add(Filters.lt(fieldPath, rightOperand));
-                    break;
-                case "<=":
-                    filters.add(Filters.lte(fieldPath, rightOperand));
-                    break;
-                case "in":
-                    // Handle 'in' operator - convert right operand to a collection if it's not already
-                    if (rightOperand instanceof Collection) {
-                        filters.add(Filters.in(fieldPath, (Collection<?>) rightOperand));
-                    } else if (rightOperand instanceof Object[]) {
-                        filters.add(Filters.in(fieldPath, Arrays.asList((Object[]) rightOperand)));
-                    } else {
-                        // If it's a single value, create a singleton list
-                        filters.add(Filters.in(fieldPath, Collections.singletonList(rightOperand)));
-                    }
-                    break;
-                case "like", "contains":
-                    // For 'like' and 'contains' queries, convert SQL-like patterns to regex
-                    filters.add(Filters.regex(fieldPath, getRegExp(rightOperand.toString()), "i"));
-                    break;
-                case "exists":
-                    boolean exists = Boolean.parseBoolean(rightOperand.toString());
-                    filters.add(exists ? Filters.exists(fieldPath) : Filters.exists(fieldPath, false));
-                    break;
-                case "between":
-                    // Assuming the right operand is an array or collection with exactly two elements
-                    if (rightOperand instanceof Object[] array && array.length == 2) {
-                        filters.add(Filters.and(
-                                Filters.gte(fieldPath, array[0]),
-                                Filters.lte(fieldPath, array[1])
-                        ));
-                    } else if (rightOperand instanceof Collection coll && coll.size() == 2) {
-                        Iterator<?> iterator = coll.iterator();
-                        Object lower = iterator.next();
-                        Object upper = iterator.next();
-                        filters.add(Filters.and(
-                                Filters.gte(fieldPath, lower),
-                                Filters.lte(fieldPath, upper)
-                        ));
-                    } else {
-                        throw new IllegalArgumentException("Between operator requires exactly two values for comparison");
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unsupported operator: " + operator);
-            }
-        }
-
-        // Combine all filters with AND operator
-        return filters.isEmpty() ? Filters.empty() : Filters.and(filters);
-    }
-
-    /**
-     * Creates a MongoDB BSON filter as an expression from the given QuerySpec
-     *
-     * @param querySpec The query specification containing filter criteria
-     * @param prefix Prefix to use for the fields
-     * @return A BSON filter expression that can be used with MongoDB queries
-     */
-    public static Bson createFilterExpression(QuerySpec querySpec, String prefix) {
-        if (querySpec == null || querySpec.getFilterExpression().isEmpty()) {
-            return Document.parse("{}"); // Return an empty MongoDB expression
-        }
-
-        List<Document> filters = new ArrayList<>();
-
-        for (Criterion criterion : querySpec.getFilterExpression()) {
-            String operator = criterion.getOperator();
-            Object leftOperand = criterion.getOperandLeft();
-            Object rightOperand = criterion.getOperandRight();
-
-            String fieldPath = prefix + leftOperand.toString();
-
-            // Generate MongoDB expressions for each of the operators
-            switch (operator) {
-                case "=":
-                    filters.add(new Document("$eq", Arrays.asList(fieldPath, rightOperand)));
-                    break;
-                case "!=":
-                    filters.add(new Document("$ne", Arrays.asList(fieldPath, rightOperand)));
-                    break;
-                case ">":
-                    filters.add(new Document("$gt", Arrays.asList(fieldPath, rightOperand)));
-                    break;
-                case ">=":
-                    filters.add(new Document("$gte", Arrays.asList(fieldPath, rightOperand)));
-                    break;
-                case "<":
-                    filters.add(new Document("$lt", Arrays.asList(fieldPath, rightOperand)));
-                    break;
-                case "<=":
-                    filters.add(new Document("$lte", Arrays.asList(fieldPath, rightOperand)));
-                    break;
-                case "in":
-                    filters.add(new Document("$in", Arrays.asList(fieldPath, rightOperand)));
-                    break;
-                case "like", "contains":
-                    // it breaks with arrays, removed temporarily
-                    // String pattern = getRegExp(rightOperand.toString());
-                    // For 'like' and 'contains' queries, convert SQL-like patterns to regex
-                    // filters.add(new Document("$regexMatch", Document.parse("{ input: \"" + fieldPath + "\", regex: /" + pattern + "/, options: 'i' }")));
-                    break;
-                default:
-                    // ignore unsupported operators
-            }
-        }
-
-        // Combine all filters with $and operator
-        if (!filters.isEmpty()) {
-            StringBuilder combined = new StringBuilder("{$and: [");
-            for (Document filter : filters) {
-                combined.append(filter.toJson()).append(",");
-            }
-            combined.setLength(combined.length() - 1); // remove trailing comma
-            combined.append("]}");
-            return Document.parse(combined.toString());
-        }
-
-        return Document.parse("{}");
-    }
-
-    /**
-     * Creates a MongoDB BSON sort parameter from the given QuerySpec
-     *
-     * @param querySpec The query specification containing sort field and order
-     * @return A BSON sort object that can be used with MongoDB queries, or null if no sorting is specified
-     */
-    public static Bson createSort(QuerySpec querySpec) {
-        if (querySpec == null || querySpec.getSortField() == null || querySpec.getSortField().isEmpty()) {
-            // Return null if no sort field is specified
-            return null;
-        }
-
-        String sortField = querySpec.getSortField();
-
-        // Special handling for nested fields - MongoDB uses dot notation for nested fields
-        if (sortField.contains(":")) {
-            // Assuming Eclipse EDC uses ":" for nested properties, convert to MongoDB dot notation
-            sortField = sortField.replace(":", ".");
-        }
-
-        // Create sort based on the specified sort order
-        SortOrder sortOrder = querySpec.getSortOrder();
-        if (sortOrder == null) {
-            sortOrder = SortOrder.ASC; // Default to ascending if not specified
-        }
-
-        // Convert SortOrder to MongoDB sort direction
-        return switch (sortOrder) {
-            case ASC -> Sorts.ascending(sortField);
-            case DESC -> Sorts.descending(sortField);
-            default -> throw new IllegalArgumentException("Unsupported sort order: " + sortOrder);
-        };
-    }
-
-    /**
-     * Converts a list of MongoDB aggregation pipeline stages represented as BSON objects into a JSON string.
-     * The resulting JSON string includes formatted indentation for improved readability.
-     *
-     * @param aggregations the list of BSON aggregation pipeline stages to convert into a JSON representation
-     * @return a JSON string representing the aggregation pipeline
-     */
-    public static String getAggregationPipelineAsJson(List<Bson> aggregations) {
-        var codecRegistry = MongoClientSettings.getDefaultCodecRegistry();
-        List<BsonDocument> bsonDocuments = aggregations.stream()
-                .map(agg -> agg.toBsonDocument(BsonDocument.class, codecRegistry))
-                .collect(Collectors.toList());
-
-        // Use JsonWriterSettings to control the JSON formatting
-        JsonWriterSettings settings = JsonWriterSettings.builder()
-                .indent(true)  // Optional: for pretty printing
-                .build();
-
-        // Convert to JSON string
-        return bsonDocuments.stream()
-                .map(doc -> doc.toJson(settings))
-                .collect(Collectors.joining(",\n", "[\n", "\n]"));
-    }
-
-    private static String getRegExp(String pattern) {
-        // For 'like' and 'contains' queries, convert SQL-like patterns to regex
-        if (!pattern.startsWith("%")) {
-            pattern = "^" + pattern; // Anchor to start if no leading wildcard
-        } else {
-            pattern = pattern.substring(1); // Remove leading %
-        }
-        if (!pattern.endsWith("%")) {
-            pattern = pattern + "$"; // Anchor to end if no trailing wildcard
-        } else {
-            pattern = pattern.substring(0, pattern.length() - 1); // Remove trailing %
-        }
-        // Replace SQL wildcards with regex patterns
-        pattern = pattern.replace("%", ".*").replace("_", ".");
-        return pattern; // "i" for case-insensitive
-
-    }
 }
 
 

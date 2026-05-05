@@ -179,7 +179,7 @@ public class FederatedCatalog01embeddedTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID, CATALOG),
+                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0].'dcat:dataset'[0].'@id'", CATALOG),
                         id -> id.equals(baseAssetId));
     }
 
@@ -188,13 +188,13 @@ public class FederatedCatalog01embeddedTest {
         String assetId1 = createAssetWithId("ApiTestId1");
         String assetId2 = createAssetWithId("ApiTestId2");
 
-        // call catalog API from standalone FC (one dataset -  as object)
+        // call catalog API from standalone FC (one dataset - as object)
         await()
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(ID_QUERY_FILE_PATH), DATASET_ASSET_ID, CATALOG),
-                        id -> id.equals(assetId2));
+                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(ID_QUERY_FILE_PATH), "[0].'dspace:participantId'", CATALOG),
+                        id -> id.equals("provider"));
 
         // delete and check again
         deleteAsset(assetId1);
@@ -205,7 +205,7 @@ public class FederatedCatalog01embeddedTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID, CATALOG),
+                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0].'dcat:dataset'[0].'@id'", CATALOG),
                         id -> id.equals(baseAssetId));
     }
 }

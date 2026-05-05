@@ -728,7 +728,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2026-03-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -741,6 +741,65 @@
                 "{{HOST_URL}}"
               ],
               "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "assets"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Asset eBird",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if(pm.response.code == 200){",
+                  "    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "managementApiKeyProviderEbird",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId1\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name 1 eBIRD\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2022-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2026-04-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{EBIRD_MANAGEMENT_PORT}}/management/v3/assets",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{EBIRD_MANAGEMENT_PORT}}",
               "path": [
                 "management",
                 "v3",
@@ -816,7 +875,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetId\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dcat:keyword\": [\"TEST\"],\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetIdSingleKeyword\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dcat:keyword\": [\"TEST\"],\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\n    \"proxyPath\": \"true\"\n  }]\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1510,6 +1569,51 @@
           "response": []
         },
         {
+          "name": "Delete Asset Ebird",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "managementApiKeyProviderEbird",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{EBIRD_MANAGEMENT_PORT}}/management/v3/assets/{{ASSET_ID}}",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{EBIRD_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "assets",
+                "{{ASSET_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Get Provider Dataset",
           "event": [
             {
@@ -1604,7 +1708,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"aPolicy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@id\": \"eu-policy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"AtomicConstraint\",\n    \"permission\": [\n        {\n\n        \"action\": \"use\",\n        \"constraint\": {\n          \"@type\": \"Set\",\n          \"leftOperand\": \"https://w3id.org/edc/v0.0.1/ns/location\",\n          \"operator\": {\n            \"@id\": \"odrl:eq\"\n          },\n          \"rightOperand\": \"eu\"\n        }\n      }],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1690,6 +1794,35 @@
           "response": []
         },
         {
+          "name": "Create Policy Advanced Copy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"eu-policy\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@type\": \"Set\",\n    \"permission\": [\n      {\n        \"action\": \"use\",\n        \"constraint\": {\n          \"@type\": \"AtomicConstraint\",\n          \"leftOperand\": \"https://w3id.org/edc/v0.0.1/ns/location\",\n          \"operator\": {\n            \"@id\": \"odrl:eq\"\n          },\n          \"rightOperand\": \"eu\"\n        }\n      }\n    ],\n    \"prohibition\": [],\n    \"obligation\": []\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/policydefinitions",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v3",
+                "policydefinitions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Create Contract Definition",
           "request": {
             "method": "POST",
@@ -1719,13 +1852,28 @@
           "response": []
         },
         {
-          "name": "Create Contract Definition Copy",
+          "name": "Create Contract Definition eBird",
           "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "managementApiKeyProviderEbird",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1b\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"always-true\",\n  \"assetsSelector\": []\n}\n",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"2\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"always-true\",\n  \"assetsSelector\": []\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1733,11 +1881,11 @@
               }
             },
             "url": {
-              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
+              "raw": "{{HOST_URL}}:{{EBIRD_MANAGEMENT_PORT}}/management/v3/contractdefinitions",
               "host": [
                 "{{HOST_URL}}"
               ],
-              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "port": "{{EBIRD_MANAGEMENT_PORT}}",
               "path": [
                 "management",
                 "v3",
@@ -2289,7 +2437,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"@id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId2cbm\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:dataset.@id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-ebird\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2320,7 +2468,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:modified\",\n            \"operator\": \">=\",\n            \"operandRight\": \"2025-10-22T14:04:33+00:00\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:dataset.dct:modified\",\n            \"operator\": \">=\",\n            \"operandRight\": \"2026-04-20T14:04:33+00:00\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2351,7 +2499,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"@id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"@id\",\n            \"operator\": \"=\",\n            \"operandRight\": \"assetId\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-ebird\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2480,7 +2628,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-ebird\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-ebird\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"@type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"dcat:Dataset\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2508,6 +2656,38 @@
             },
             {
               "name": "Datasets Recent Query CBM",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        }\n        \n    ],\n   \"sortOrder\": \"DESC\",\n   \"sortField\": \"dct:modified\"\n  \n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{HOST_URL}}:{{FEDERATED_CATALOG_QUERY_PORT}}/api/catalog/v1alpha/catalog/query-cbm/datasets",
+                  "host": [
+                    "{{HOST_URL}}"
+                  ],
+                  "port": "{{FEDERATED_CATALOG_QUERY_PORT}}",
+                  "path": [
+                    "api",
+                    "catalog",
+                    "v1alpha",
+                    "catalog",
+                    "query-cbm",
+                    "datasets"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Datasets Date Filter Query CBM",
               "request": {
                 "method": "POST",
                 "header": [],
@@ -2669,7 +2849,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%quality%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%data%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"air\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"pollution\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%quality%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:description\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%data%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"pollution\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2701,7 +2881,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        },\n                {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dspace:participantId\",\n            \"operator\": \"=\",\n            \"operandRight\": \"provider-base\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -5049,6 +5229,10 @@
     },
     {
       "key": "FEDERATED_CATALOG_PUBLIC_PORT",
+      "value": ""
+    },
+    {
+      "key": "EBIRD_MANAGEMENT_PORT",
       "value": ""
     }
   ]

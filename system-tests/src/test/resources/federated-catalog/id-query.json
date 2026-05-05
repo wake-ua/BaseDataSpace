@@ -8,7 +8,7 @@
   "filterExpression": [
     {
       "@type": "Criterion",
-      "operandLeft": "@id",
+      "operandLeft": "dcat:dataset.@id",
       "operator": "=",
       "operandRight": "ApiTestId2"
     }
