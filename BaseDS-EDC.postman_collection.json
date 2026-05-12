@@ -332,12 +332,17 @@
                     "exec": [
                       "// get the id of one asset and save it as an environment variable",
                       "if(pm.response.code == 200){",
-                      "    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+                      "    var dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
                       "    if (Array.isArray(dcat_dataset)) {",
                       "        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
-                      "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+                      "        dcat_dataset = dcat_dataset[0]",
                       "    } else {",
                       "        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+                      "    }",
+                      "",
+                      "    if (Array.isArray(dcat_dataset[\"odrl:hasPolicy\"])) {",
+                      "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][0][\"@id\"]);",
+                      "    } else {",
                       "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
                       "    }",
                       "}"
@@ -653,6 +658,166 @@
                     "management",
                     "v3",
                     "transferprocesses"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Start Transfer Service PULL",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if(pm.response.code == 200){",
+                      "    pm.environment.set(\"TRANSFER_PROCESS_ID\", pm.response.json()[\"@id\"]);",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "managementApiKeyConsumerBase",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "x-api-key",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PULL\"\n}\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+                  "host": [
+                    "{{HOST_URL}}"
+                  ],
+                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+                  "path": [
+                    "management",
+                    "v3",
+                    "transferprocesses"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Start Transfer Service PULL get data auth",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// get the id of one asset and save it as an environment variable",
+                      "if(pm.response.code == 200){",
+                      "    pm.environment.set(\"HTTP_PULL_ENDPOINT_URL\", pm.response.json()[\"endpoint\"]);",
+                      "    pm.environment.set(\"HTTP_PULL_ENDPOINT_NO_HOST\", pm.response.json()[\"endpoint\"].split(\":\")[2]);",
+                      "    pm.environment.set(\"HTTP_PULL_AUTH_TYPE\", pm.response.json()[\"authType\"]);",
+                      "    pm.environment.set(\"HTTP_PULL_AUTH_TOKEN\", pm.response.json()[\"authorization\"]);",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "managementApiKeyConsumerBase",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "x-api-key",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/edrs/{{TRANSFER_PROCESS_ID}}/dataaddress",
+                  "host": [
+                    "{{HOST_URL}}"
+                  ],
+                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+                  "path": [
+                    "management",
+                    "v3",
+                    "edrs",
+                    "{{TRANSFER_PROCESS_ID}}",
+                    "dataaddress"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Start Transfer Service PULL get data",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{HTTP_PULL_AUTH_TOKEN}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{HTTP_PULL_ENDPOINT_URL}}",
+                  "host": [
+                    "{{HTTP_PULL_ENDPOINT_URL}}"
                   ]
                 }
               },
@@ -2849,7 +3014,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%quality%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:description\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%data%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dcat:keyword\",\n            \"operator\": \"like\",\n            \"operandRight\": \"pollution\"\n        }\n    ]\n  \n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\",\n    \"offset\": 0,\n    \"limit\": 57,\n    \"filterExpression\": [\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:type\",\n            \"operator\": \"=\",\n            \"operandRight\": \"Dataset\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:title\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%quality%\"\n        },\n        {\n            \"@type\": \"Criterion\",\n            \"operandLeft\": \"dct:description\",\n            \"operator\": \"like\",\n            \"operandRight\": \"%data%\"\n        }\n    ]\n  \n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3324,7 +3489,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"claims\": {\n        \"https://w3id.org/edc/v0.0.1/ns/country\": \"esp\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\",\n        \"schema:award\": \"Red Dot Design Award\"\n    },\n    \"security\": {\n        \"pem\": \"MCowBQYDK2VwAyEAF4SHqq/RAYBAWslvWdHXVFeCBzJInXQA4f+uQt/v1c4=\"\n    },\n    \"attributes\": {},\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
+                  "raw": "  {\n    \"name\": \"Default Base Consumer\",\n    \"id\": \"consumer-base\",\n    \"claims\": {\n        \"https://w3id.org/edc/v0.0.1/ns/country\": \"es\",\n        \"location\": \"eu\",\n        \"entity_type\": \"public\",\n        \"schema:award\": \"Red Dot Design Award\"\n    },\n    \"security\": {\n        \"pem\": \"MCowBQYDK2VwAyEAF4SHqq/RAYBAWslvWdHXVFeCBzJInXQA4f+uQt/v1c4=\"\n    },\n    \"attributes\": {},\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}",
                   "options": {
                     "raw": {
                       "language": "json"

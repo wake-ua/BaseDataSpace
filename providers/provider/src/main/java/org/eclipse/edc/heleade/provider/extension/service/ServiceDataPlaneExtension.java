@@ -14,6 +14,11 @@
 
 package org.eclipse.edc.heleade.provider.extension.service;
 
+import org.eclipse.edc.connector.dataplane.iam.service.DataPlaneAuthorizationServiceImpl;
+import org.eclipse.edc.connector.dataplane.spi.edr.EndpointDataReferenceServiceRegistry;
+import org.eclipse.edc.connector.dataplane.spi.iam.DataPlaneAccessControlService;
+import org.eclipse.edc.connector.dataplane.spi.iam.DataPlaneAccessTokenService;
+import org.eclipse.edc.connector.dataplane.spi.iam.PublicEndpointGeneratorService;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
@@ -21,6 +26,8 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
+
+import java.time.Clock;
 
 
 /**
@@ -42,20 +49,42 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
 
     @Inject
     PipelineService pipelineService;
-
+    @Inject
+    private EndpointDataReferenceServiceRegistry endpointDataReferenceServiceRegistry;
     @Inject
     private EdcHttpClient httpClient;
-
-
     @Inject
     private DataAddressValidatorRegistry dataAddressValidatorRegistry;
+    @Inject
+    private Clock clock;
+    @Inject
+    private DataPlaneAccessTokenService accessTokenService;
+    @Inject
+    private DataPlaneAccessControlService accessControlService;
+    @Inject
+    private PublicEndpointGeneratorService endpointGenerator;
+
+    private DataPlaneAuthorizationServiceImpl dataPlaneAuthorizationService;
+
 
     @Override
     public void initialize(ServiceExtensionContext context) {
         String defaultCredentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials.default", "");
         pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient, defaultCredentials));
 
+        var service = getDataPlaneAuthorizationService(context);
+        endpointDataReferenceServiceRegistry.register(SERVICE_DATA_TYPE, service);
+        endpointDataReferenceServiceRegistry.registerResponseChannel(SERVICE_DATA_TYPE, service);
+
         var validator = new ServiceDataDataAddressValidator();
         dataAddressValidatorRegistry.registerSourceValidator(SERVICE_DATA_TYPE, validator);
     }
+
+    private DataPlaneAuthorizationServiceImpl getDataPlaneAuthorizationService(ServiceExtensionContext context) {
+        if (dataPlaneAuthorizationService == null) {
+            dataPlaneAuthorizationService = new DataPlaneAuthorizationServiceImpl(accessTokenService, endpointGenerator, accessControlService, context.getParticipantId(), clock);
+        }
+        return dataPlaneAuthorizationService;
+    }
 }
+
