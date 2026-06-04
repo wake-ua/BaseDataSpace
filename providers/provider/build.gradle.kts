@@ -37,7 +37,10 @@ dependencies {
 
     implementation(libs.edc.catalog.spi)
     implementation(libs.edc.token.core)
-    implementation(libs.edc.dsp)
+    implementation(libs.edc.dsp) {
+        exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-08")
+    }
+    implementation(libs.edc.dsp.catalog.validation.lib)
     implementation(libs.edc.http)
     implementation(libs.edc.jersey.providers.lib)
     implementation(libs.edc.configuration.filesystem)
@@ -47,7 +50,6 @@ dependencies {
     implementation(libs.edc.lib.validator)
     implementation(libs.edc.lib.json)
     implementation(libs.edc.verifiable.credentials.spi)
-    implementation(project(":providers:content-based-catalog-dispatcher"))
     implementation(project(":commons"))
 
     implementation(libs.edc.edr.cache.api)
@@ -89,6 +91,7 @@ dependencies {
     testImplementation(libs.edc.junit)
 
     // upgrade 0.14.1
-    implementation(libs.edc.dsp.catalog.http.api.lib)
-
+    implementation(libs.edc.dsp.catalog.http.api.lib){
+        exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-08")
+    }
 }

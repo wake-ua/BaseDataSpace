@@ -18,9 +18,11 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
@@ -28,6 +30,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import org.eclipse.edc.connector.controlplane.services.spi.catalog.CatalogProtocolService;
 import org.eclipse.edc.protocol.dsp.catalog.http.api.controller.BaseDspCatalogApiController;
+import org.eclipse.edc.protocol.dsp.catalog.http.dispatcher.CatalogApiPaths;
 import org.eclipse.edc.protocol.dsp.http.spi.message.ContinuationTokenManager;
 import org.eclipse.edc.protocol.dsp.http.spi.message.DspRequestHandler;
 import org.eclipse.edc.spi.monitor.Monitor;
@@ -36,10 +39,12 @@ import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DATASETS_TAG;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.getAsJsonArray;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDataset;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDatasetArray;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveCbmFieldsToDistributionDatasetArray;
-import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_BASE_PATH;
-import static org.eclipse.edc.heleade.provider.extension.content.based.catalog.dispatcher.ContentBasedCatalogApiPaths.CBM_CATALOG_REQUEST;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveCbmFieldsToDistributionForDataset;
+import static org.eclipse.edc.protocol.dsp.catalog.http.api.CatalogApiPaths.CATALOG_REQUEST;
+import static org.eclipse.edc.protocol.dsp.catalog.http.api.CatalogApiPaths.DATASET_REQUEST;
 import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
 import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_NAMESPACE_V_08;
 
@@ -55,9 +60,10 @@ import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_NAMESPACE
  * The controller is primarily used to handle requests for content-based datasets 
  * and ensures compliance with CBM-specific schemas.
  */
+
 @Consumes({ APPLICATION_JSON })
 @Produces({ APPLICATION_JSON })
-@Path(CBM_BASE_PATH)
+@Path(CatalogApiPaths.BASE_PATH)
 public class ContentBasedCatalogApiController extends BaseDspCatalogApiController {
 
     private final Monitor monitor;
@@ -85,9 +91,10 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
      * @param continuationToken an optional continuation token to support paginated responses.
      * @return a Response containing the modified catalog conforming to the CBM schema.
      */
+    @Override
     @POST
-    @Path(CBM_CATALOG_REQUEST)
-    public Response requestCbmCatalog(JsonObject jsonObject, @HeaderParam(AUTHORIZATION) String token, @Context UriInfo uriInfo,
+    @Path(CATALOG_REQUEST)
+    public Response requestCatalog(JsonObject jsonObject, @HeaderParam(AUTHORIZATION) String token, @Context UriInfo uriInfo,
                                    @QueryParam("continuationToken") String continuationToken) {
 
         monitor.info("Received a catalog request for Content-Based-Catalog");
@@ -102,6 +109,22 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
         var newObject = Json.createObjectBuilder(object).add(DATASETS_TAG, modifiedDataDictionaryDatasets).build();
         return Response.fromResponse(response)
                 .entity(newObject)
+                .build();
+    }
+
+    @Override
+    @GET
+    @Path(DATASET_REQUEST + "/{id}")
+    public Response getDataset(@PathParam("id") String id, @HeaderParam(AUTHORIZATION) String token) {
+        Response response = super.getDataset(id, token);
+
+        // Modify the dataset to match CBM schema
+        JsonObject object = ((JsonObject) response.getEntity());
+        JsonObject modifiedDataset = modifySampleDataset(object);
+        JsonObject modifiedDataDictionaryDataset = moveCbmFieldsToDistributionForDataset(modifiedDataset);
+
+        return Response.fromResponse(response)
+                .entity(modifiedDataDictionaryDataset)
                 .build();
     }
 

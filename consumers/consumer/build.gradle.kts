@@ -54,7 +54,6 @@ dependencies {
     implementation(libs.edc.spi.auth)
     implementation(libs.edc.auth.configuration)
 
-    implementation(project(":providers:content-based-catalog-dispatcher"))
     implementation(project(":iam-identity"));
     implementation(project(":commons"))
 

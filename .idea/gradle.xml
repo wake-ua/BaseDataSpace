@@ -17,7 +17,6 @@
             <option value="$PROJECT_DIR$/iam-identity" />
             <option value="$PROJECT_DIR$/identity-hub" />
             <option value="$PROJECT_DIR$/providers" />
-            <option value="$PROJECT_DIR$/providers/content-based-catalog-dispatcher" />
             <option value="$PROJECT_DIR$/providers/policy" />
             <option value="$PROJECT_DIR$/providers/policy/policy-always-true" />
             <option value="$PROJECT_DIR$/providers/policy/policy-evaluation" />

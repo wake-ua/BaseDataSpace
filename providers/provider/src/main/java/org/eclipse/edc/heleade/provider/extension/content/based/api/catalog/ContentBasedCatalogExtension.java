@@ -21,19 +21,19 @@ import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.jsonld.spi.JsonLdNamespace;
 import org.eclipse.edc.protocol.dsp.catalog.http.api.decorator.Base64continuationTokenSerDes;
 import org.eclipse.edc.protocol.dsp.catalog.http.api.decorator.ContinuationTokenManagerImpl;
+import org.eclipse.edc.protocol.dsp.catalog.validation.CatalogRequestMessageValidator;
 import org.eclipse.edc.protocol.dsp.http.spi.message.ContinuationTokenManager;
 import org.eclipse.edc.protocol.dsp.http.spi.message.DspRequestHandler;
-import org.eclipse.edc.runtime.metamodel.annotation.Configuration;
+import org.eclipse.edc.protocol.spi.DataspaceProfileContextRegistry;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
-import org.eclipse.edc.runtime.metamodel.annotation.Setting;
-import org.eclipse.edc.runtime.metamodel.annotation.Settings;
 import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.edc.spi.system.Hostname;
+import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
+import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.jersey.providers.jsonld.JerseyJsonLdInterceptor;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
@@ -43,6 +43,7 @@ import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DA
 import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_NAMESPACE_V_08;
 import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_SCOPE_V_08;
 import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_TRANSFORMER_CONTEXT_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.DspCatalogPropertyAndTypeNames.DSPACE_TYPE_CATALOG_REQUEST_MESSAGE_TERM;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 
 /**
@@ -64,9 +65,6 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
      */
     public static final String NAME = "Dataspace Protocol Content Based Catalog Extension";
 
-    static final String DEFAULT_PROTOCOL_PATH = "/api/protocol";
-    static final int DEFAULT_PROTOCOL_PORT = 19194;
-
     @Inject
     private WebService webService;
     @Inject
@@ -78,15 +76,17 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
     @Inject
     private TypeTransformerRegistry transformerRegistry;
     @Inject
+    private DataspaceProfileContextRegistry dataspaceProfileContextRegistry;
+    @Inject
+    private CriterionOperatorRegistry criterionOperatorRegistry;
+    @Inject
+    private JsonObjectValidatorRegistry validatorRegistry;
+    @Inject
     private Monitor monitor;
     @Inject
     private TypeManager typeManager;
     @Inject
     private JsonLd jsonLd;
-    @Inject
-    private Hostname hostname;
-    @Configuration
-    private CatalogApiConfiguration apiConfiguration;
 
     @Override
     public String name() {
@@ -95,16 +95,12 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        String protocol = DATASPACE_PROTOCOL_HTTP;
+        registerValidators();
+
         webService.registerResource(ApiContext.PROTOCOL, new ContentBasedCatalogApiController(service, dspRequestHandler, continuationTokenManager(monitor, DSP_TRANSFORMER_CONTEXT_V_08, DSP_NAMESPACE_V_08), monitor));
         webService.registerDynamicResource(ApiContext.PROTOCOL, ContentBasedCatalogApiController.class, new JerseyJsonLdInterceptor(jsonLd, typeManager, JSON_LD, DSP_SCOPE_V_08));
 
-        var dspWebhookAddress = format("http://%s:%s%s", hostname.get(), apiConfiguration.port(), apiConfiguration.path());
-
-        dataServiceRegistry.register(protocol, DataService.Builder.newInstance()
-                .endpointDescription("dspace:connector")
-                .endpointUrl(dspWebhookAddress)
-                .build());
+        monitor.info("Content Based Catalog Extension initialized");
     }
 
     private ContinuationTokenManager continuationTokenManager(Monitor monitor, String version, JsonLdNamespace namespace) {
@@ -112,14 +108,30 @@ public class ContentBasedCatalogExtension implements ServiceExtension {
         return new ContinuationTokenManagerImpl(continuationTokenSerDes, namespace, monitor);
     }
 
-    @Settings
-    record CatalogApiConfiguration(
-            @Setting(key = "web.http." + ApiContext.PROTOCOL + ".port", description = "Port for " + ApiContext.PROTOCOL + " api context", defaultValue = DEFAULT_PROTOCOL_PORT + "")
-            int port,
-            @Setting(key = "web.http." + ApiContext.PROTOCOL + ".path", description = "Path for " + ApiContext.PROTOCOL + " api context", defaultValue = DEFAULT_PROTOCOL_PATH)
-            String path
-    ) {
-
+    @Override
+    public void prepare() {
+        registerDataService();
+        monitor.info("Content Based Catalog Extension prepared");
     }
 
+    @Override
+    public void start() {
+        monitor.info("Content Based Catalog Extension started");
+    }
+
+    private void registerDataService() {
+        var webhook = dataspaceProfileContextRegistry.getWebhook(DATASPACE_PROTOCOL_HTTP);
+        if (webhook != null) {
+            dataServiceRegistry.register(DATASPACE_PROTOCOL_HTTP, DataService.Builder.newInstance()
+                    .endpointDescription("dspace:connector")
+                    .endpointUrl(webhook.url())
+                    .build());
+        } else {
+            monitor.warning(format("CBM Extension: No webhook found for protocol %s", DATASPACE_PROTOCOL_HTTP));
+        }
+    }
+
+    private void registerValidators() {
+        validatorRegistry.register(DSP_NAMESPACE_V_08.toIri(DSPACE_TYPE_CATALOG_REQUEST_MESSAGE_TERM), CatalogRequestMessageValidator.instance(criterionOperatorRegistry, DSP_NAMESPACE_V_08));
+    }
 }
