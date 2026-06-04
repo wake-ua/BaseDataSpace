@@ -9,6 +9,7 @@ on:
       - 'commons/src/**'
       - 'iam-identity/src/**'
       - 'consumers/consumer/src/**'
+      - 'consumers/consumer/build.gradle.kts'
       - 'consumers/consumer-base/Dockerfile'
       - '.github/workflows/consumer-build.yml'
 
