@@ -9,6 +9,7 @@ on:
       - 'commons/src/**'
       - 'iam-identity/src/**'
       - 'consumers/consumer/src/**'
+      - 'consumers/consumer/build.gradle.kts'
       - 'federated-catalog/**'
       - '.github/workflows/federated-catalog.yml'
 
