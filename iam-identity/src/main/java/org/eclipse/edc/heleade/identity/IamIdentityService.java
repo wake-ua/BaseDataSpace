@@ -58,6 +58,12 @@ public class IamIdentityService implements IdentityService {
     private final String clientId;
 
     /**
+     * The region associated with the identity service.
+     * This value indicates the geographic area where the service operates.
+     */
+    private final String region;
+
+    /**
      * A map containing identity claims represented as key-value pairs.
      * Claims provide information about an identity, such as attributes or assertions,
      * which can be used for authentication, authorization, or identity verification.
@@ -91,9 +97,10 @@ public class IamIdentityService implements IdentityService {
      */
     public IamIdentityService(TypeManager typeManager,
                               Map<String, Object> claims,
-                              String clientId, String signedClaims) {
+                              String clientId, String region, String signedClaims) {
         this.typeManager = typeManager;
         this.clientId = clientId;
+        this.region = region;
         this.claims = claims;
         this.signedClaims = signedClaims;
     }
@@ -138,9 +145,9 @@ public class IamIdentityService implements IdentityService {
         var token = new Token();
         token.setAudience(parameters.getStringClaim("aud"));
         token.setClientId(clientId);
+        token.setRegion(region);
         token.setClaims(claims);
         token.setSignedClaims(signedClaims);
-
 
         TokenRepresentation tokenRepresentation = TokenRepresentation.Builder.newInstance()
                 .token(typeManager.writeValueAsString(token))
@@ -162,6 +169,7 @@ public class IamIdentityService implements IdentityService {
 
         var builder = ClaimToken.Builder.newInstance()
                 .claim("client_id", token.clientId)
+                .claim("region", token.region)
                 .claim("claims", token.getClaims());
 
         if (token.getSignedClaims() != null) {
@@ -176,6 +184,7 @@ public class IamIdentityService implements IdentityService {
         private String audience;
         private Map<String, Object> claims;
         private String clientId;
+        private String region;
         private String signedClaims;
 
         public String getClientId() {
@@ -184,6 +193,14 @@ public class IamIdentityService implements IdentityService {
 
         public void setClientId(String clientId) {
             this.clientId = clientId;
+        }
+
+        public String getRegion() {
+            return region;
+        }
+
+        public void setRegion(String region) {
+            this.region = region;
         }
 
         public String getAudience() {

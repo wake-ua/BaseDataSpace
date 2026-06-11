@@ -65,6 +65,10 @@ public class IamIdentityExtension implements ServiceExtension {
 
     public static final String DEFAULT_IDENTITY_CLAIM_KEY = "client_id";
 
+    public static final String DEFAULT_REGION_CLAIM_KEY = "region";
+
+    public static final String DEFAULT_LOCATION_CLAIM_KEY = "https://w3id.org/edc/v0.0.1/ns/location";
+
     @Inject
     private TypeManager typeManager;
 
@@ -97,7 +101,6 @@ public class IamIdentityExtension implements ServiceExtension {
         var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url", null);
         var participantId = context.getParticipantId();
 
-
         ParticipantIdentityLoader loader = new FileParticipantIdentityLoader(monitor, typeManager.getMapper());
         boolean checkConfiguration = loader.checkConfigurations(claimsPath, participantRegistryUrl, participantPrivateKeyPath, participantPublicKeyPath);
 
@@ -120,7 +123,16 @@ public class IamIdentityExtension implements ServiceExtension {
             }
         }
 
-        IamIdentityService iamIdentityService = new IamIdentityService(typeManager, claims, participantId, signedClaims);
+        // Extract region for compatibility with default EDC
+        String region = (String) claims.get(DEFAULT_REGION_CLAIM_KEY);
+        if (region == null) {
+            region = (String) claims.get(DEFAULT_LOCATION_CLAIM_KEY);
+        }
+        if (region == null) {
+            region = "undefined";
+        }
+
+        IamIdentityService iamIdentityService = new IamIdentityService(typeManager, claims, participantId, region, signedClaims);
         context.registerService(IdentityService.class, iamIdentityService);
 
         webService.registerResource(
