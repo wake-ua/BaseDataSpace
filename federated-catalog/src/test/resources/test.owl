@@ -1,0 +1,215 @@
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl ="http://www.w3.org/2002/07/owl#">
+    <owl:Ontology rdf:about="xml:base"/>
+
+    <owl:Class rdf:ID="genero">
+		<rdfs:comment>Generos musicales.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:ID="rock">
+		<rdfs:comment>Rock \m/ </rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#genero"/>
+
+	</owl:Class>
+
+	<owl:Class rdf:ID="clasico">
+ 		<rdfs:comment>
+  			Rock clasico
+ 		</rdfs:comment>
+
+ 		<owl:intersectionOf rdf:parseType="Collection">
+	  		<owl:Class rdf:about="#rock"/>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#subgenero"/>
+                <owl:allValuesFrom rdf:resource="#rock"/>
+            </owl:Restriction>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#toca"/>
+                <owl:allValuesFrom rdf:resource="#cuerdas"/>
+            </owl:Restriction>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#toca"/>
+                <owl:allValuesFrom rdf:resource="#percusion"/>
+            </owl:Restriction>
+
+		</owl:intersectionOf>
+	</owl:Class>
+
+	<owl:Class rdf:ID="metal">
+		<rdfs:comment>
+			Heavy metal
+		</rdfs:comment>
+
+ 		<owl:intersectionOf rdf:parseType="Collection">
+	  		<owl:Class rdf:about="#rock"/>
+	  		<owl:Restriction>
+                <owl:onProperty rdf:resource="#subgenero"/>
+                <owl:allValuesFrom rdf:resource="#rock"/>
+            </owl:Restriction>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#toca"/>
+                <owl:allValuesFrom rdf:resource="#cuerdas"/>
+            </owl:Restriction>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#toca"/>
+                <owl:allValuesFrom rdf:resource="#percusion"/>
+            </owl:Restriction>
+
+		</owl:intersectionOf>
+	</owl:Class>
+
+	<owl:Class rdf:ID="ska">
+ 		<rdfs:comment>
+  			Ska
+ 		</rdfs:comment>
+
+		<owl:intersectionOf rdf:parseType="Collection">
+			<owl:Class rdf:about="#rock"/>
+	  		<owl:Restriction>
+                <owl:onProperty rdf:resource="#subgenero"/>
+                <owl:allValuesFrom rdf:resource="#rock"/>
+            </owl:Restriction>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#toca"/>
+                <owl:allValuesFrom rdf:resource="#viento"/>
+            </owl:Restriction>
+             <owl:Restriction>
+                <owl:onProperty rdf:resource="#toca"/>
+                <owl:allValuesFrom rdf:resource="#percusion"/>
+            </owl:Restriction>
+		</owl:intersectionOf>
+	</owl:Class>
+
+	<owl:Class rdf:ID="pop">
+		<rdfs:comment>Musica Pop</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#genero"/>
+	</owl:Class>
+
+    <owl:Class rdf:ID="balada">
+        <rdfs:comment>Balada</rdfs:comment>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#pop"/>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#subgenero"/>
+                <owl:allValuesFrom rdf:resource="#pop"/>
+            </owl:Restriction>
+        </owl:intersectionOf>
+    </owl:Class>
+
+    <owl:Class rdf:ID="dance">
+        <rdfs:comment>Dance</rdfs:comment>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#pop"/>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#subgenero"/>
+                <owl:allValuesFrom rdf:resource="#pop"/>
+            </owl:Restriction>
+        </owl:intersectionOf>
+    </owl:Class>
+
+
+
+    <owl:Class rdf:ID="instrumento">
+		<rdfs:comment>Instrumentos musicales.</rdfs:comment>
+		<owl:disjointWith rdf:resource="#genero"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="cuerdas">
+		<rdfs:comment>Instrumentos de cuerdas</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#instrumento"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="guitarra">
+		<rdfs:comment>Guitarra</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#cuerdas"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="bajo">
+		<rdfs:comment>Bajo</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#cuerdas"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="percusion">
+		<rdfs:comment>Instrumentos de percusion</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#instrumento"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="bateria">
+		<rdfs:comment>Bateria</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#percusion"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="timbales">
+		<rdfs:comment>Timbales</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#percusion"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="viento">
+		<rdfs:comment>Instrumentos de viento</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#instrumento"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="saxofon">
+		<rdfs:comment>Sax</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#viento"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="trompeta">
+		<rdfs:comment>Trompeta</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#viento"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="teclado">
+		<rdfs:comment>Instrumentos con teclas</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#instrumento"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="sintetizador">
+		<rdfs:comment>Sintetizador</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#teclado"/>
+	</owl:Class>
+
+	<owl:Class rdf:ID="organo">
+		<rdfs:comment>Organo</rdfs:comment>
+		<rdfs:subClassOf rdf:resource="#teclado"/>
+	</owl:Class>
+
+
+    <owl:Class rdf:ID="artista">
+        <rdfs:comment>Artista.</rdfs:comment>
+
+    </owl:Class>
+
+    <owl:Class rdf:ID="guitarrista">
+        <rdfs:comment>Guitarrista</rdfs:comment>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#artista"/>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#toca"/>
+                <owl:allValuesFrom rdf:resource="#cuerdas"/>
+            </owl:Restriction>
+        </owl:intersectionOf>
+    </owl:Class>
+
+    <rdf:Description rdf:ID="tommorello">
+        <rdfs:comment>Tom Morello Guitarrista de RATM</rdfs:comment>
+        <rdf:type rdf:resource="#guitarrista"/>
+    </rdf:Description>
+
+    <owl:TransitiveProperty rdf:ID="subgenero"/>
+
+	<owl:ObjectProperty rdf:ID="toca">
+    	<rdfs:domain rdf:resource="#instrumento"/>
+        <rdfs:range  rdf:resource="#artista"/>
+        <rdfs:range  rdf:resource="#genero"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="tocadoPor">
+        <owl:inverseOf rdf:resource="#toca"/>
+    </owl:ObjectProperty>
+
+
+
+</rdf:RDF>

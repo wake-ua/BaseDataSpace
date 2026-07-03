@@ -168,6 +168,10 @@ edc-oauth2-client = { module = "org.eclipse.edc:oauth2-client", version.ref = "e
 edc-ih-api-did = { module = "org.eclipse.edc:did-api", version.ref = "edc" }
 edc-ih-api-participants = { module = "org.eclipse.edc:participant-context-api", version.ref = "edc" }
 
+# vocabulary hub
+net-sourceforge-owlapi = { module = "net.sourceforge.owlapi:owlapi-distribution", version = "5.5.1" }
+
+
 [bundles]
 edc-sqlstores = ["edc-sql-assetindex", "edc-sql-contract-definition", "edc-sql-contract-negotiation", "edc-sql-transferprocess", "edc-sql-policydef", "edc-sql-policy-monitor", "edc-sql-edrindex"]
 

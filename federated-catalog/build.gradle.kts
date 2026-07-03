@@ -55,6 +55,13 @@ dependencies {
 
     // upgrade 14.1
     implementation(libs.edc.fc.core.v2025)
+
+    // vocabulary
+    implementation(libs.net.sourceforge.owlapi)
+
+    // test
+    testImplementation(libs.edc.junit)
+
 }
 
 application {
