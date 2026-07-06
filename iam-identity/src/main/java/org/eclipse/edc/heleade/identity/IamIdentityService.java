@@ -135,13 +135,16 @@ public class IamIdentityService implements IdentityService {
     /**
      * Generates and returns a client credentials token representation based on the provided token parameters.
      *
+     * @param participantContextId the identifier of the participant context for which the JWT token is verified
      * @param parameters The {@link TokenParameters} containing the required claims for generating the token.
      *                   Must include an "aud" claim representing the audience of the token.
      * @return A {@link Result} containing the generated {@link TokenRepresentation} if successful,
      *         or an error result if the operation fails.
      */
     @Override
-    public Result<TokenRepresentation> obtainClientCredentials(TokenParameters parameters) {
+    public Result<TokenRepresentation> obtainClientCredentials(String participantContextId, TokenParameters parameters) {
+        // TODO: @Maria review the usage of new input parameter participantContextId
+
         var token = new Token();
         token.setAudience(parameters.getStringClaim("aud"));
         token.setClientId(clientId);
@@ -157,14 +160,16 @@ public class IamIdentityService implements IdentityService {
     }
 
     /**
-     * Verifies the provided JWT token and extracts relevant claims to construct a {@link ClaimToken}.
+     * Verifies a JWT token and constructs a {@link ClaimToken} based on the token's claims.
      *
-     * @param tokenRepresentation the representation of the token to be verified
-     * @param context the verification context containing additional data required for token verification
-     * @return a {@link Result} containing a {@link ClaimToken} if the verification is successful
+     * @param participantContextId the identifier of the participant context for which the JWT token is verified
+     * @param tokenRepresentation the {@link TokenRepresentation} containing the encoded JWT token to process
+     * @param context the {@link VerificationContext} providing additional data for verification purposes
+     * @return a {@link Result} containing the constructed {@link ClaimToken} if the verification is successful
      */
     @Override
-    public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, VerificationContext context) {
+    public Result<ClaimToken> verifyJwtToken(String participantContextId, TokenRepresentation tokenRepresentation, VerificationContext context) {
+        // TODO: @Maria review the usage of new input parameter participantContextId
         var token = typeManager.readValue(tokenRepresentation.getToken(), Token.class);
 
         var builder = ClaimToken.Builder.newInstance()

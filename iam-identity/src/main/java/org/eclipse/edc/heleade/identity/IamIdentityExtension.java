@@ -75,7 +75,6 @@ public class IamIdentityExtension implements ServiceExtension {
     @Inject
     WebService webService;
 
-    // TODO: Review this upgrade
     @Provider(isDefault = true)
     public DefaultParticipantIdExtractionFunction defaultParticipantIdExtractionFunction() {
         return new MockParticipantIdExtractionFunction(agentIdentityKey);
@@ -99,7 +98,8 @@ public class IamIdentityExtension implements ServiceExtension {
         var participantPrivateKeyPath = context.getConfig().getString("edc.participant.private.key", null);
         var participantPublicKeyPath = context.getConfig().getString("edc.participant.public.key", null);
         var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url", null);
-        var participantId = context.getParticipantId();
+        // TODO: @Maria Review this change
+        var participantId = context.getComponentId();
 
         ParticipantIdentityLoader loader = new FileParticipantIdentityLoader(monitor, typeManager.getMapper());
         boolean checkConfiguration = loader.checkConfigurations(claimsPath, participantRegistryUrl, participantPrivateKeyPath, participantPublicKeyPath);

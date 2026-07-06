@@ -18,20 +18,9 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.edc.runtime.core)
-    implementation(libs.edc.boot)
-    implementation(libs.edc.connector.core)
 
-    implementation(libs.edc.control.api.configuration)
+    runtimeOnly(libs.edc.bom.controlplane.base)
     implementation(libs.edc.control.plane.api.client)
-    implementation(libs.edc.control.plane.api)
-    implementation(libs.edc.control.plane.spi)
-    implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.token.core)
-    implementation(libs.edc.dsp)
-    implementation(libs.edc.http)
-    implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.validator.data.address.http.data)
 
@@ -39,12 +28,9 @@ dependencies {
     implementation(libs.edc.edr.store.core)
     implementation(libs.edc.edr.store.receiver)
 
-    implementation(libs.edc.data.plane.selector.api)
-    implementation(libs.edc.data.plane.selector.core)
-
     implementation(libs.edc.data.plane.self.registration)
     implementation(libs.edc.data.plane.signaling.api)
-    implementation(libs.edc.data.plane.public.api)
+    implementation(libs.edc.data.plane.signaling.client)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
     implementation(libs.edc.data.plane.iam)
@@ -54,6 +40,7 @@ dependencies {
     implementation(libs.edc.spi.auth)
     implementation(libs.edc.auth.configuration)
 
+    // local
     implementation(project(":iam-identity"));
     implementation(project(":commons"))
 
