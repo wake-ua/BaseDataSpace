@@ -19,9 +19,7 @@ plugins {
 
 dependencies {
 
-
     runtimeOnly(libs.edc.bom.controlplane.base){
-        exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-08")
         exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-2025")
     }
     implementation(libs.edc.control.plane.api.client)
@@ -58,7 +56,6 @@ dependencies {
 //    implementation(libs.edc.catalog.spi)
 //    implementation(libs.edc.token.core)
     implementation(libs.edc.dsp) {
-        exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-08")
         exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-2025")
     }
     implementation(libs.edc.dsp.catalog.validation.lib)
@@ -115,7 +112,6 @@ dependencies {
 
     // upgrade 0.14.1
     implementation(libs.edc.dsp.catalog.http.api.lib){
-        exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-08")
         exclude(group = "org.eclipse.edc", module = "dsp-catalog-http-api-2025")
     }
 }
