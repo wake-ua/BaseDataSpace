@@ -36,6 +36,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import static org.eclipse.edc.api.management.ManagementApi.MANAGEMENT_SCOPE_V4;
+import static org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext.CATALOG_SCOPE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_PREFIX;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SAMPLE_TYPE;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
@@ -46,8 +48,7 @@ import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCAT_DATASET_TYPE;
-import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_SCOPE_V_08;
-import static org.eclipse.edc.protocol.dsp.spi.type.Dsp2024Constants.DSP_SCOPE_V_2024_1;
+import static org.eclipse.edc.protocol.dsp.spi.type.Dsp2025Constants.DSP_SCOPE_V_2025_1;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 
@@ -94,7 +95,7 @@ public class AssetValidationExtension implements ServiceExtension {
         jsonLd = new JsonLdExtension().createJsonLdService(context);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
 
-        for (String scope : Arrays.asList(DSP_SCOPE_V_08, DSP_SCOPE_V_2024_1, CONTROL_SCOPE, MANAGEMENT_SCOPE)) {
+        for (String scope : Arrays.asList(DSP_SCOPE_V_2025_1, CONTROL_SCOPE, MANAGEMENT_SCOPE, MANAGEMENT_SCOPE_V4, CATALOG_SCOPE)) {
             jsonLdGlobal.registerNamespace(SCHEMA_ORG_PREFIX, SCHEMA_ORG_NAMESPACE, scope);
             jsonLdGlobal.registerNamespace(CBM_PREFIX, CBM_SCHEMA, scope);
             jsonLdGlobal.registerNamespace(DCT_PREFIX, DCT_SCHEMA, scope);

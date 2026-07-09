@@ -18,7 +18,6 @@ plugins {
 
 dependencies {
     implementation(libs.edc.http)
-    implementation(libs.edc.spi.core)
     implementation(libs.edc.spi.protocol)
     implementation(project(":commons"))
 }

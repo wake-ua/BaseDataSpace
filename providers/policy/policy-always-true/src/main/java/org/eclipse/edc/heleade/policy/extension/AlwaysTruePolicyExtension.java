@@ -21,6 +21,7 @@ import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.system.ServiceExtension;
 
@@ -36,6 +37,10 @@ public class AlwaysTruePolicyExtension implements ServiceExtension {
     static final String NAME = "Always True Policy";
     static final String ALWAYS_TRUE_POLICY_ID = "always-true";
 
+    // TODO: @Maria review if there is another way of obtaining the participant context id and if this will eork in multi-tenant
+    @Setting(description = "Configures the participant context id for the single participant runtime", key = "edc.participant.context.id", required = false)
+    public String participantContextId;
+
     @Inject
     private PolicyDefinitionService policyDefinitionService;
 
@@ -47,14 +52,15 @@ public class AlwaysTruePolicyExtension implements ServiceExtension {
     @Override
     public void start() {
         if (policyDefinitionService.findById(ALWAYS_TRUE_POLICY_ID) == null) {
-            var policyDefinition = alwaysTruePolicy();
+            var policyDefinition = alwaysTruePolicy(participantContextId);
 
             policyDefinitionService.create(policyDefinition)
                     .orElseThrow(f -> new EdcException("Cannot create 'always-true' policy: " + f.getFailureDetail()));
+
         }
     }
 
-    private static PolicyDefinition alwaysTruePolicy() {
+    private static PolicyDefinition alwaysTruePolicy(String participantContextId) {
         var alwaysTruePermission = Permission.Builder.newInstance()
                 .action(Action.Builder.newInstance().type(ODRL_SCHEMA + "use").build())
                 .build();
@@ -65,6 +71,7 @@ public class AlwaysTruePolicyExtension implements ServiceExtension {
         return PolicyDefinition.Builder.newInstance()
                 .id(ALWAYS_TRUE_POLICY_ID)
                 .policy(policy)
+                .participantContextId(participantContextId)
                 .build();
     }
 

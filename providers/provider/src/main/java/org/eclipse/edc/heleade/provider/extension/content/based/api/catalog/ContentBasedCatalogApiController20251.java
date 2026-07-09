@@ -29,6 +29,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import org.eclipse.edc.connector.controlplane.services.spi.catalog.CatalogProtocolService;
+import org.eclipse.edc.participantcontext.single.spi.SingleParticipantContextSupplier;
 import org.eclipse.edc.protocol.dsp.catalog.http.api.controller.BaseDspCatalogApiController;
 import org.eclipse.edc.protocol.dsp.catalog.http.dispatcher.CatalogApiPaths;
 import org.eclipse.edc.protocol.dsp.http.spi.message.ContinuationTokenManager;
@@ -45,8 +46,9 @@ import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjec
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.moveCbmFieldsToDistributionForDataset;
 import static org.eclipse.edc.protocol.dsp.catalog.http.api.CatalogApiPaths.CATALOG_REQUEST;
 import static org.eclipse.edc.protocol.dsp.catalog.http.api.CatalogApiPaths.DATASET_REQUEST;
-import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
-import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_NAMESPACE_V_08;
+import static org.eclipse.edc.protocol.dsp.spi.type.Dsp2025Constants.DATASPACE_PROTOCOL_HTTP_V_2025_1;
+import static org.eclipse.edc.protocol.dsp.spi.type.Dsp2025Constants.DSP_NAMESPACE_V_2025_1;
+import static org.eclipse.edc.protocol.dsp.spi.type.Dsp2025Constants.V_2025_1_PATH;
 
 
 /**
@@ -63,8 +65,8 @@ import static org.eclipse.edc.protocol.dsp.spi.type.Dsp08Constants.DSP_NAMESPACE
 
 @Consumes({ APPLICATION_JSON })
 @Produces({ APPLICATION_JSON })
-@Path(CatalogApiPaths.BASE_PATH)
-public class ContentBasedCatalogApiController extends BaseDspCatalogApiController {
+@Path(V_2025_1_PATH + CatalogApiPaths.BASE_PATH)
+public class ContentBasedCatalogApiController20251 extends BaseDspCatalogApiController {
 
     private final Monitor monitor;
 
@@ -76,8 +78,8 @@ public class ContentBasedCatalogApiController extends BaseDspCatalogApiControlle
      * @param continuationTokenManager the manager responsible for handling continuation tokens.
      * @param monitor the monitoring instance used for logging and diagnostics.
      */
-    public ContentBasedCatalogApiController(CatalogProtocolService service, DspRequestHandler dspRequestHandler, ContinuationTokenManager continuationTokenManager, Monitor monitor) {
-        super(service, dspRequestHandler, continuationTokenManager, DATASPACE_PROTOCOL_HTTP, DSP_NAMESPACE_V_08);
+    public ContentBasedCatalogApiController20251(CatalogProtocolService service, DspRequestHandler dspRequestHandler, ContinuationTokenManager continuationTokenManager, SingleParticipantContextSupplier participantContextSupplier, Monitor monitor) {
+        super(service, dspRequestHandler, continuationTokenManager, participantContextSupplier, DATASPACE_PROTOCOL_HTTP_V_2025_1, DSP_NAMESPACE_V_2025_1);
         this.monitor = monitor;
     }
 

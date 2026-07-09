@@ -82,7 +82,7 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
 
     private DataPlaneAuthorizationServiceImpl getDataPlaneAuthorizationService(ServiceExtensionContext context) {
         if (dataPlaneAuthorizationService == null) {
-            dataPlaneAuthorizationService = new DataPlaneAuthorizationServiceImpl(accessTokenService, endpointGenerator, accessControlService, context.getParticipantId(), clock);
+            dataPlaneAuthorizationService = new DataPlaneAuthorizationServiceImpl(accessTokenService, endpointGenerator, accessControlService, context.getComponentId(), clock);
         }
         return dataPlaneAuthorizationService;
     }

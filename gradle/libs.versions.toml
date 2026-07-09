@@ -95,6 +95,7 @@ edc-runtime-core = { module = "org.eclipse.edc:runtime-core", version.ref = "edc
 edc-spi-core = {module = "org.eclipse.edc:core-spi", version.ref = "edc" }
 edc-spi-protocol = {module = "org.eclipse.edc:protocol-spi", version.ref = "edc" }
 edc-spi-auth = {module = "org.eclipse.edc:auth-spi", version.ref = "edc" }
+edc-spi-participant-context-config = {module = "org.eclipse.edc:participant-context-config-spi", version.ref = "edc" }
 edc-auth-configuration = {module = "org.eclipse.edc:auth-configuration", version.ref = "edc" }
 edc-spi-jsonld = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-spi-transform = { module = "org.eclipse.edc:transform-spi", version.ref = "edc" }
@@ -147,6 +148,7 @@ edc-sql-edrindex = { module = "org.eclipse.edc:edr-index-sql", version.ref = "ed
 edc-sql-transferprocess = { module = "org.eclipse.edc:transfer-process-store-sql", version.ref = "edc" }
 edc-sql-core = { module = "org.eclipse.edc:sql-core", version.ref = "edc" }
 edc-sql-lease = { module = "org.eclipse.edc:sql-lease", version.ref = "edc" }
+edc-sql-lease-core = { module = "org.eclipse.edc:sql-lease-core", version.ref = "edc" }
 edc-sql-pool = { module = "org.eclipse.edc:sql-pool-apache-commons", version.ref = "edc" }
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }

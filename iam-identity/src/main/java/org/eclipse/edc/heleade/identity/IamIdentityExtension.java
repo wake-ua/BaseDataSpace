@@ -36,6 +36,8 @@ import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Map;
 
+import static org.eclipse.edc.spi.system.ServiceExtensionContext.ANONYMOUS_PARTICIPANT;
+
 /**
  * The {@code IamIdentityExtension} class is a service extension that integrates an IAM-based
  * identity mechanism into the application. It provides functionality for initializing participant
@@ -88,18 +90,19 @@ public class IamIdentityExtension implements ServiceExtension {
     @Setting(key = "edc.agent.identity.key", description = "The name of the claim key used to determine the participant identity", defaultValue = DEFAULT_IDENTITY_CLAIM_KEY)
     private String agentIdentityKey;
 
+    // TODO: @Maria review if there is another way of obtaining the participant  id and if this will work in multi-tenant
+    @Setting(description = "Configures the participant id this runtime is operating on behalf of", key = "edc.participant.id", defaultValue = ANONYMOUS_PARTICIPANT)
+    public String participantId;
+
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
         monitor.info("Initializing iam-identity extension");
 
-
         var claimsPath = context.getConfig().getString("edc.participant.claims", null);
         var participantPrivateKeyPath = context.getConfig().getString("edc.participant.private.key", null);
         var participantPublicKeyPath = context.getConfig().getString("edc.participant.public.key", null);
         var participantRegistryUrl = context.getConfig().getString("edc.participant.registry.url", null);
-        // TODO: @Maria Review this change
-        var participantId = context.getComponentId();
 
         ParticipantIdentityLoader loader = new FileParticipantIdentityLoader(monitor, typeManager.getMapper());
         boolean checkConfiguration = loader.checkConfigurations(claimsPath, participantRegistryUrl, participantPrivateKeyPath, participantPublicKeyPath);
