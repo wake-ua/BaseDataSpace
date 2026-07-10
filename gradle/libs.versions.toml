@@ -104,6 +104,7 @@ edc-spi-validator = { module = "org.eclipse.edc:validator-spi", version.ref = "e
 edc-spi-web = {module = "org.eclipse.edc:web-spi", version.ref = "edc" }
 edc-token-core = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
 edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
+edc-data-plane-signaling = { module = "org.eclipse.edc:data-plane-signaling", version.ref = "edc" }
 edc-transfer-spi = { module = "org.eclipse.edc:transfer-spi", version.ref = "edc" }
 edc-validator-data-address-http-data = { module = "org.eclipse.edc:validator-data-address-http-data", version.ref = "edc" }
 edc-vault-hashicorp = { module = "org.eclipse.edc:vault-hashicorp", version.ref = "edc" }

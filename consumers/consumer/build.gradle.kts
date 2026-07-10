@@ -21,7 +21,6 @@ dependencies {
 
     runtimeOnly(libs.edc.bom.controlplane.base)
     implementation(libs.edc.control.plane.api.client)
-    implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.validator.data.address.http.data)
 
     implementation(libs.edc.edr.cache.api)
@@ -29,6 +28,7 @@ dependencies {
     implementation(libs.edc.edr.store.receiver)
 
     implementation(libs.edc.data.plane.self.registration)
+    implementation(libs.edc.data.plane.signaling)
     implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.signaling.client)
     implementation(libs.edc.data.plane.core)

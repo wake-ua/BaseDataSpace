@@ -4,3 +4,4 @@ org.eclipse.edc.heleade.provider.extension.validation.AssetValidationExtension
 org.eclipse.edc.heleade.provider.extension.content.based.api.catalog.ContentBasedCatalog2025Extension
 org.eclipse.edc.heleade.provider.extension.content.based.api.asset.AssetApiExtension
 org.eclipse.edc.heleade.provider.extension.service.ServiceDataPlaneExtension
+org.eclipse.edc.heleade.provider.extension.proxy.HttpProxyDataPlaneExtension
