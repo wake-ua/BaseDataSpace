@@ -151,7 +151,7 @@
           "name": "Service Provider Extension",
           "item": [
             {
-              "name": "Create Asset Service",
+              "name": "Create Asset Service V4",
               "event": [
                 {
                   "listen": "test",
@@ -172,7 +172,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetIdService\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:type\": \"Service\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://creativecommons.org/licenses/by/4.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"ServiceData\",\n    \"baseUrl\": \"http://localhost:4001/credentials\",\n    \"authKey\": \"x-credstoken\",\n    \"authCode\": \"authCodeCredentials\"\n  }]\n}\n",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"dcat\": \"http://www.w3.org/ns/dcat#\",\n    \"dct\": \"http://purl.org/dc/terms/\"\n\n  },\n  \"@id\": \"assetIdService\",\n  \"@type\": \"Asset\",\n  \"properties\": {\n    \"contenttype\": \"application/json\",\n    \"dct:type\": \"Service\",\n    \"dct:title\": \"test name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T12:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://creativecommons.org/licenses/by/4.0/\"\n   },\n  \"dataAddress\":[ {\n    \"type\": \"ServiceData\",\n    \"baseUrl\": \"http://localhost:4001/credentials\",\n    \"authKey\": \"x-credstoken\",\n    \"authCode\": \"authCodeCredentials\"\n  }]\n}\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -180,14 +180,14 @@
                   }
                 },
                 "url": {
-                  "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/assets",
+                  "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v4/assets",
                   "host": [
                     "{{HOST_URL}}"
                   ],
                   "port": "{{PROVIDER_MANAGEMENT_PORT}}",
                   "path": [
                     "management",
-                    "v3",
+                    "v4",
                     "assets"
                   ]
                 }
@@ -269,363 +269,35 @@
               "response": []
             },
             {
-              "name": "Get Provider Catalog CBM",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// get the id of one asset and save it as an environment variable",
-                      "if(pm.response.code == 200){",
-                      "    var dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
-                      "    if (Array.isArray(dcat_dataset)) {",
-                      "        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
-                      "        dcat_dataset = dcat_dataset[0]",
-                      "    } else {",
-                      "        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
-                      "    }",
-                      "",
-                      "    if (Array.isArray(dcat_dataset[\"odrl:hasPolicy\"])) {",
-                      "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][0][\"@id\"]);",
-                      "    } else {",
-                      "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
-                      "    }",
-                      "}"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
+              "name": "Credentials Util",
               "request": {
-                "auth": {
-                  "type": "apikey",
-                  "apikey": [
-                    {
-                      "key": "value",
-                      "value": "managementApiKeyConsumerBase",
-                      "type": "string"
-                    },
-                    {
-                      "key": "key",
-                      "value": "x-api-key",
-                      "type": "string"
-                    }
-                  ]
-                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
+                  "raw": "{\n  \"participantId\": \"provider-base\"\n}\n"
                 },
                 "url": {
-                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog-cbm/request-cbm",
+                  "raw": "{{HOST_URL}}:4001/credentials",
                   "host": [
                     "{{HOST_URL}}"
                   ],
-                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+                  "port": "4001",
                   "path": [
-                    "management",
-                    "v3",
-                    "catalog-cbm",
-                    "request-cbm"
+                    "credentials"
                   ]
                 }
               },
               "response": []
             },
             {
-              "name": "Negotiate Contract",
+              "name": "Start Transfer Service PULL V4",
               "event": [
                 {
                   "listen": "test",
                   "script": {
                     "exec": [
                       "// get the id of one asset and save it as an environment variable",
-                      "if(pm.response.code == 200){",
-                      "    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-                      "}"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "apikey",
-                  "apikey": [
-                    {
-                      "key": "value",
-                      "value": "managementApiKeyConsumerBase",
-                      "type": "string"
-                    },
-                    {
-                      "key": "key",
-                      "value": "x-api-key",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"    \n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\",\n    \"odrl:permission\": {\n        \"odrl:action\": {\n            \"@id\": \"odrl:use\"\n        }\n    },\n    \"odrl:prohibition\": [],\n    \"odrl:obligation\": []\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
-                  "host": [
-                    "{{HOST_URL}}"
-                  ],
-                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
-                  "path": [
-                    "management",
-                    "v3",
-                    "contractnegotiations"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Negotiate Contract Docker",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// get the id of one asset and save it as an environment variable",
-                      "if(pm.response.code == 200){",
-                      "    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-                      "}"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\"\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
-                  "host": [
-                    "{{HOST_URL}}"
-                  ],
-                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
-                  "path": [
-                    "management",
-                    "v3",
-                    "contractnegotiations"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Check Contract Negotiation",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// get the id of one asset and save it as an environment variable",
-                      "if(pm.response.code == 200){",
-                      "    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", pm.response.json()[\"contractAgreementId\"]);",
-                      "}"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "apikey",
-                  "apikey": [
-                    {
-                      "key": "value",
-                      "value": "managementApiKeyConsumerBase",
-                      "type": "string"
-                    },
-                    {
-                      "key": "key",
-                      "value": "x-api-key",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_ID}}",
-                  "host": [
-                    "{{HOST_URL}}"
-                  ],
-                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
-                  "path": [
-                    "management",
-                    "v3",
-                    "contractnegotiations",
-                    "{{CONTRACT_ID}}"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Start Transfer Service PUSH",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "apikey",
-                  "apikey": [
-                    {
-                      "key": "value",
-                      "value": "managementApiKeyConsumerBase",
-                      "type": "string"
-                    },
-                    {
-                      "key": "key",
-                      "value": "x-api-key",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://localhost:4001/api/consumer/store\"\n  }\n}\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
-                  "host": [
-                    "{{HOST_URL}}"
-                  ],
-                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
-                  "path": [
-                    "management",
-                    "v3",
-                    "transferprocesses"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Start Transfer Service PUSH Docker",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript",
-                    "packages": {}
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PUSH\",\n  \"dataDestination\": {\n    \"type\": \"HttpData\",\n    \"baseUrl\": \"http://request-logger:4000/api/consumer/store\"\n  }\n}\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
-                  "host": [
-                    "{{HOST_URL}}"
-                  ],
-                  "port": "{{CONSUMER_MANAGEMENT_PORT}}",
-                  "path": [
-                    "management",
-                    "v3",
-                    "transferprocesses"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Start Transfer Service PULL",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
                       "if(pm.response.code == 200){",
                       "    pm.environment.set(\"TRANSFER_PROCESS_ID\", pm.response.json()[\"@id\"]);",
                       "}"
@@ -642,7 +314,7 @@
                   "apikey": [
                     {
                       "key": "value",
-                      "value": "managementApiKeyConsumerBase",
+                      "value": "{{CONSUMER_API_KEY}}",
                       "type": "string"
                     },
                     {
@@ -656,7 +328,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequestDto\",\n  \"connectorId\": \"provider-base\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"assetId\": \"{{ASSET_ID}}\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"transferType\": \"HttpData-PULL\"\n}\n",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequest\",\n  \"counterPartyId\": \"{{PARTICIPANT_ID}}\",\n  \"counterPartyAddress\": \"{{ENDPOINT_URL}}\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"protocol\": \"dataspace-protocol-http:2025-1\",\n  \"transferType\": \"ServiceData-PULL\"\n}\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -664,14 +336,14 @@
                   }
                 },
                 "url": {
-                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/transferprocesses",
+                  "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v4/transferprocesses",
                   "host": [
                     "{{HOST_URL}}"
                   ],
                   "port": "{{CONSUMER_MANAGEMENT_PORT}}",
                   "path": [
                     "management",
-                    "v3",
+                    "v4",
                     "transferprocesses"
                   ]
                 }
@@ -679,7 +351,7 @@
               "response": []
             },
             {
-              "name": "Start Transfer Service PULL get data auth",
+              "name": "Start Transfer PULL get data auth V3 (No V4?)",
               "event": [
                 {
                   "listen": "test",
@@ -705,7 +377,7 @@
                   "apikey": [
                     {
                       "key": "value",
-                      "value": "managementApiKeyConsumerBase",
+                      "value": "{{CONSUMER_API_KEY}}",
                       "type": "string"
                     },
                     {
@@ -771,31 +443,30 @@
                   }
                 },
                 "url": {
-                  "raw": "{{HTTP_PULL_ENDPOINT_URL}}",
+                  "raw": "{{HTTP_PULL_ENDPOINT_URL}}?participantId=consumer-base&processId={{TRANSFER_PROCESS_ID}}&assetId={{ASSET_ID}}&agreementId={{CONTRACT_AGREEMENT_ID}}",
                   "host": [
                     "{{HTTP_PULL_ENDPOINT_URL}}"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Credentials Util",
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"participantId\": \"provider-base\"\n}\n"
-                },
-                "url": {
-                  "raw": "{{HOST_URL}}:4001/credentials",
-                  "host": [
-                    "{{HOST_URL}}"
                   ],
-                  "port": "4001",
-                  "path": [
-                    "credentials"
+                  "query": [
+                    {
+                      "key": "participantId",
+                      "value": "consumer-base"
+                    },
+                    {
+                      "key": "processId",
+                      "value": "{{TRANSFER_PROCESS_ID}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "assetId",
+                      "value": "{{ASSET_ID}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "agreementId",
+                      "value": "{{CONTRACT_AGREEMENT_ID}}",
+                      "type": "text"
+                    }
                   ]
                 }
               },
@@ -4229,13 +3900,16 @@
           "response": []
         },
         {
-          "name": "Start Transfer PULL get data",
+          "name": "Start Transfer PULL V4",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  ""
+                  "// get the id of one asset and save it as an environment variable",
+                  "if(pm.response.code == 200){",
+                  "    pm.environment.set(\"TRANSFER_PROCESS_ID\", pm.response.json()[\"@id\"]);",
+                  "}"
                 ],
                 "type": "text/javascript",
                 "packages": {},
@@ -4243,21 +3917,12 @@
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "{{HTTP_PULL_AUTH_TOKEN}}",
-                "type": "text"
-              }
-            ],
+            "method": "POST",
+            "header": [],
             "body": {
               "mode": "raw",
-              "raw": "",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequest\",\n  \"counterPartyId\": \"{{PARTICIPANT_ID}}\",\n  \"counterPartyAddress\": \"{{ENDPOINT_URL}}\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"protocol\": \"dataspace-protocol-http:2025-1\",\n  \"transferType\": \"HttpData-PULL\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4265,9 +3930,15 @@
               }
             },
             "url": {
-              "raw": "{{HTTP_PULL_ENDPOINT_URL}}",
+              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v4/transferprocesses",
               "host": [
-                "{{HTTP_PULL_ENDPOINT_URL}}"
+                "{{HOST_URL}}"
+              ],
+              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v4",
+                "transferprocesses"
               ]
             }
           },
@@ -4315,16 +3986,13 @@
           "response": []
         },
         {
-          "name": "Start Transfer PULL V4",
+          "name": "Start Transfer PULL get data",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "// get the id of one asset and save it as an environment variable",
-                  "if(pm.response.code == 200){",
-                  "    pm.environment.set(\"TRANSFER_PROCESS_ID\", pm.response.json()[\"@id\"]);",
-                  "}"
+                  ""
                 ],
                 "type": "text/javascript",
                 "packages": {},
@@ -4332,12 +4000,21 @@
               }
             }
           ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
-            "method": "POST",
-            "header": [],
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{HTTP_PULL_AUTH_TOKEN}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"TransferRequest\",\n  \"counterPartyId\": \"{{PARTICIPANT_ID}}\",\n  \"counterPartyAddress\": \"{{ENDPOINT_URL}}\",\n  \"contractId\": \"{{CONTRACT_AGREEMENT_ID}}\",\n  \"protocol\": \"dataspace-protocol-http:2025-1\",\n  \"transferType\": \"HttpData-PULL\"\n}\n",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4345,15 +4022,9 @@
               }
             },
             "url": {
-              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v4/transferprocesses",
+              "raw": "{{HTTP_PULL_ENDPOINT_URL}}",
               "host": [
-                "{{HOST_URL}}"
-              ],
-              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
-              "path": [
-                "management",
-                "v4",
-                "transferprocesses"
+                "{{HTTP_PULL_ENDPOINT_URL}}"
               ]
             }
           },
@@ -5762,6 +5433,10 @@
     },
     {
       "key": "PROVIDER_API_KEY",
+      "secret": true
+    },
+    {
+      "key": "CONSUMER_API_KEY",
       "secret": true
     }
   ]

@@ -17,6 +17,7 @@ package org.eclipse.edc.heleade.provider.extension.proxy;
 import org.eclipse.edc.connector.dataplane.spi.Endpoint;
 import org.eclipse.edc.connector.dataplane.spi.iam.DataPlaneAuthorizationService;
 import org.eclipse.edc.connector.dataplane.spi.iam.PublicEndpointGeneratorService;
+import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.runtime.metamodel.annotation.Configuration;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
@@ -26,6 +27,8 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.PortMapping;
 import org.eclipse.edc.web.spi.configuration.PortMappingRegistry;
+
+import static org.eclipse.edc.heleade.provider.extension.service.ServiceDataPlaneExtension.SERVICE_DATA_TYPE;
 
 public class HttpProxyDataPlaneExtension implements ServiceExtension {
 
@@ -38,6 +41,10 @@ public class HttpProxyDataPlaneExtension implements ServiceExtension {
             key = "edc.dataplane.proxy.public.endpoint")
     private String proxyPublicEndpoint;
 
+    @Setting(description = "Default credentials endpoint",
+            key = "edc.heleade.service.dataservice.credentials.default", required = false)
+    private String defaultCredentials;
+
     @Inject
     private PortMappingRegistry portMappingRegistry;
     @Inject
@@ -46,14 +53,17 @@ public class HttpProxyDataPlaneExtension implements ServiceExtension {
     private WebService webService;
     @Inject
     private DataPlaneAuthorizationService authorizationService;
+    @Inject
+    private EdcHttpClient httpClient;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
         portMappingRegistry.register(new PortMapping("public", apiConfiguration.port(), apiConfiguration.path()));
 
         generatorService.addGeneratorFunction("HttpData", dataAddress -> Endpoint.url(proxyPublicEndpoint));
+        generatorService.addGeneratorFunction(SERVICE_DATA_TYPE, dataAddress -> Endpoint.url(proxyPublicEndpoint));
 
-        webService.registerResource("public", new HttpProxyController(authorizationService));
+        webService.registerResource("public", new HttpProxyController(authorizationService, httpClient, defaultCredentials, context.getMonitor()));
     }
 
     @Settings

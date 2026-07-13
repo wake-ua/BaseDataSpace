@@ -108,6 +108,10 @@ public class ServiceDataSource implements DataSource {
     }
 
     private String requestCredentials(String requestBody) {
+        return requestCredentials(requestBody, credentialsServiceUrl, credentialServiceApiKey, credentialServiceApiCode, httpClient);
+    }
+
+    public static String requestCredentials(String requestBody, String credentialsServiceUrl, String credentialServiceApiKey, String credentialServiceApiCode, EdcHttpClient httpClient) {
         var request = new okhttp3.Request.Builder().url(credentialsServiceUrl)
                 .header(credentialServiceApiKey, credentialServiceApiCode)
                 .post(RequestBody.create(requestBody.getBytes(), MediaType.get("application/json")));

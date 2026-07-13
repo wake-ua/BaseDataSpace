@@ -23,6 +23,7 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
@@ -62,14 +63,16 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
     @Inject
     private DataPlaneAccessControlService accessControlService;
     @Inject
-    private PublicEndpointGeneratorService endpointGenerator;
+    private PublicEndpointGeneratorService generatorService;
+
+    @Setting(description = "Default credentials endpoint",
+            key = "edc.heleade.service.dataservice.credentials.default", required = false)
+    private String defaultCredentials;
 
     private DataPlaneAuthorizationServiceImpl dataPlaneAuthorizationService;
 
-
     @Override
     public void initialize(ServiceExtensionContext context) {
-        String defaultCredentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials.default", "");
         pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient, defaultCredentials));
 
         var service = getDataPlaneAuthorizationService(context);
@@ -82,7 +85,7 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
 
     private DataPlaneAuthorizationServiceImpl getDataPlaneAuthorizationService(ServiceExtensionContext context) {
         if (dataPlaneAuthorizationService == null) {
-            dataPlaneAuthorizationService = new DataPlaneAuthorizationServiceImpl(accessTokenService, endpointGenerator, accessControlService, context.getComponentId(), clock);
+            dataPlaneAuthorizationService = new DataPlaneAuthorizationServiceImpl(accessTokenService, generatorService, accessControlService, context.getComponentId(), clock);
         }
         return dataPlaneAuthorizationService;
     }
