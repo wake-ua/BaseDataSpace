@@ -27,11 +27,14 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
+import org.eclipse.edc.web.jersey.providers.jsonld.JerseyJsonLdInterceptor;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.ApiContext;
 
+import static org.eclipse.edc.api.management.ManagementApi.MANAGEMENT_SCOPE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VOCAB;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
+import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 
 
 /**
@@ -87,6 +90,8 @@ public class NodeDirectoryApiExtension implements ServiceExtension {
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
 
         webService.registerResource(ApiContext.MANAGEMENT, new NodeDirectoryController(monitor, targetNodeDirectory, jsonLd));
+        webService.registerDynamicResource(ApiContext.MANAGEMENT, NodeDirectoryController.class, new JerseyJsonLdInterceptor(jsonLd, typeManager, JSON_LD, MANAGEMENT_SCOPE));
+
         webService.registerResource(new NodeDirectoryPublicController(monitor, targetNodeDirectory, jsonLd));
     }
 

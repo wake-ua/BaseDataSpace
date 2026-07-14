@@ -70,7 +70,8 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
      * @param jsonLd the JsonLd instance for processing JSON-LD data
      * @param transformerRegistry the registry for type transformers
      */
-    public MongodbFederatedCatalogCache(String dataSourceUri, String dataSourceDb, TransactionContext transactionContext, ObjectMapper objectMapper, JsonLd jsonLd, TypeTransformerRegistry transformerRegistry) {
+    public MongodbFederatedCatalogCache(String dataSourceUri, String dataSourceDb, TransactionContext transactionContext,
+                                        ObjectMapper objectMapper, JsonLd jsonLd, TypeTransformerRegistry transformerRegistry) {
         super(dataSourceUri, dataSourceDb, transactionContext, objectMapper);
         this.jsonLd = jsonLd;
         this.transformerRegistry = transformerRegistry;
@@ -83,6 +84,7 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     public void save(Catalog catalog) {
         transactionContext.execute(() -> {
             try (var connection = getConnection()) {
+                var properties = catalog.getProperties();
                 var id = ofNullable(catalog.getProperties().get(CatalogConstants.PROPERTY_ORIGINATOR))
                         .map(Object::toString)
                         .orElse(catalog.getId());
@@ -213,7 +215,8 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         collection.updateOne(filter, update, options);
 
         // Upsert datasets
-        String participantId = catalogDoc.getString("dspace:participantId");
+        var participantId = catalogDoc.get("dspace:participantId");
+
         var context = catalogDoc.get("@context");
         for (JsonValue dataset : catalogJsonCompactedDatasetArray.getJsonArray("dcat:dataset")) {
             var datasetJson = dataset.asJsonObject();

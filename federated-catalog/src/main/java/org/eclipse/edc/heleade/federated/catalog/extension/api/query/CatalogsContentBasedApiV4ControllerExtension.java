@@ -15,6 +15,7 @@
 package org.eclipse.edc.heleade.federated.catalog.extension.api.query;
 
 import jakarta.json.Json;
+import org.eclipse.edc.api.management.schema.ManagementApiJsonSchema;
 import org.eclipse.edc.catalog.spi.QueryService;
 import org.eclipse.edc.catalog.transform.JsonObjectToCatalogTransformer;
 import org.eclipse.edc.connector.core.agent.NoOpParticipantIdMapper;
@@ -26,6 +27,7 @@ import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDataSer
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDistributionTransformer;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.apiversion.ApiVersionService;
@@ -34,12 +36,16 @@ import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.transform.transformer.edc.to.JsonObjectToCriterionTransformer;
 import org.eclipse.edc.transform.transformer.edc.to.JsonObjectToQuerySpecTransformer;
+import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
+import org.eclipse.edc.web.jersey.providers.jsonld.JerseyJsonLdInterceptor;
 import org.eclipse.edc.web.spi.WebService;
+import org.eclipse.edc.web.spi.configuration.ApiContext;
 import org.eclipse.edc.web.spi.configuration.PortMappingRegistry;
 
 import java.util.Map;
 
-import static org.eclipse.edc.catalog.spi.FccApiContexts.CATALOG_QUERY;
+import static org.eclipse.edc.api.management.ManagementApi.MANAGEMENT_API_CONTEXT;
+import static org.eclipse.edc.api.management.ManagementApi.MANAGEMENT_SCOPE_V4;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_PREFIX;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.RDF_NAMESPACE;
@@ -51,8 +57,8 @@ import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_2025_1_IRI;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_PREFIX;
-import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_SCHEMA;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_PREFIX;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -74,8 +80,8 @@ import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
  * Registers JSON-LD namespaces and transformers required for catalog data manipulation
  * and enables the extension through the implemented initialization logic.
  */
-@Extension(value = FederatedCatalogContentBasedApiExtension.NAME)
-public class FederatedCatalogContentBasedApiExtension implements ServiceExtension {
+@Extension(value = CatalogsContentBasedApiV4ControllerExtension.NAME)
+public class CatalogsContentBasedApiV4ControllerExtension implements ServiceExtension {
 
     /**
      * Represents the name of the content-based cache query API extension.
@@ -101,6 +107,10 @@ public class FederatedCatalogContentBasedApiExtension implements ServiceExtensio
     private ApiVersionService apiVersionService;
     @Inject
     private PortMappingRegistry portMappingRegistry;
+    @Inject
+    private CriterionOperatorRegistry criterionOperatorRegistry;
+    @Inject
+    private JsonObjectValidatorRegistry validatorRegistry;
 
     @Override
     public String name() {
@@ -115,24 +125,26 @@ public class FederatedCatalogContentBasedApiExtension implements ServiceExtensio
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA, CATALOG_QUERY_SCOPE);
         jsonLd.registerNamespace(DCAT_PREFIX, DCAT_SCHEMA, CATALOG_QUERY_SCOPE);
         jsonLd.registerNamespace(DCT_PREFIX, DCT_SCHEMA, CATALOG_QUERY_SCOPE);
-        jsonLd.registerNamespace(DSPACE_PREFIX, DSPACE_SCHEMA, CATALOG_QUERY_SCOPE);
+        jsonLd.registerNamespace(DSPACE_PREFIX, DSPACE_2025_1_IRI, CATALOG_QUERY_SCOPE);
         jsonLd.registerNamespace(CBM_PREFIX, CBM_SCHEMA, CATALOG_QUERY_SCOPE);
         jsonLd.registerNamespace(RDF_PREFIX, RDF_NAMESPACE, CATALOG_QUERY_SCOPE);
         jsonLd.registerNamespace(SCHEMA_PREFIX, SCHEMA_ORG_NAMESPACE, CATALOG_QUERY_SCOPE);
 
-        var catalogController = new FederatedCatalogContentBasedApiController(queryService, transformerRegistry);
-        webService.registerResource(CATALOG_QUERY, catalogController);
-
         var jsonFactory = Json.createBuilderFactory(Map.of());
         var participantIdMapper = new NoOpParticipantIdMapper();
-        JsonLdNamespace namespace = new JsonLdNamespace(DSPACE_SCHEMA);
+        JsonLdNamespace namespace = new JsonLdNamespace(DSPACE_2025_1_IRI);
         transformerRegistry.register(new JsonObjectFromCatalogTransformer(jsonFactory, typeManager, JSON_LD, participantIdMapper, namespace));
         transformerRegistry.register(new JsonObjectFromDatasetContentBasedTransformer(jsonFactory, typeManager, JSON_LD));
         transformerRegistry.register(new JsonObjectFromDistributionTransformer(jsonFactory));
         transformerRegistry.register(new JsonObjectFromDataServiceTransformer(jsonFactory));
         transformerRegistry.register(new JsonObjectToCatalogTransformer());
         transformerRegistry.register(new JsonObjectToQuerySpecTransformer());
-        transformerRegistry.register(new JsonObjectToCriterionTransformer());
+        transformerRegistry.register(new JsonObjectToCriterionTransformer(criterionOperatorRegistry));
+
+        var managementApiTransformerRegistry = transformerRegistry.forContext(MANAGEMENT_API_CONTEXT);
+
+        webService.registerResource(ApiContext.MANAGEMENT, new CatalogsContentBasedApiV4Controller(queryService, managementApiTransformerRegistry));
+        webService.registerDynamicResource(ApiContext.MANAGEMENT, CatalogsContentBasedApiV4Controller.class, new JerseyJsonLdInterceptor(jsonLd, typeManager, JSON_LD, MANAGEMENT_SCOPE_V4, validatorRegistry, ManagementApiJsonSchema.V4.version()));
 
     }
 }

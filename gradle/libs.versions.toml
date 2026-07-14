@@ -68,6 +68,7 @@ edc-dsp-spi = { module = "org.eclipse.edc:dsp-spi", version.ref = "edc" }
 edc-edr-cache-api = { module = "org.eclipse.edc:edr-cache-api", version.ref = "edc" }
 edc-edr-store-core = { module = "org.eclipse.edc:edr-store-core", version.ref = "edc" }
 edc-edr-store-receiver = { module = "org.eclipse.edc:edr-store-receiver", version.ref = "edc" }
+edc-federatedcatalog-base-bom = { module = "org.eclipse.edc:federatedcatalog-base-bom", version.ref = "edc" }
 edc-http = { module = "org.eclipse.edc:http", version.ref = "edc" }
 edc-iam-mock = { module = "org.eclipse.edc:iam-mock", version.ref = "edc" }
 edc-jersey-providers-lib = { module = "org.eclipse.edc:jersey-providers-lib", version.ref = "edc" }

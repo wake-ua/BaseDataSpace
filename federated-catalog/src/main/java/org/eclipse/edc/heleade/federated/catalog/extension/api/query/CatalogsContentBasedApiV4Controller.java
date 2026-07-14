@@ -23,7 +23,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import org.eclipse.edc.catalog.api.query.FederatedCatalogApi;
+import org.eclipse.edc.catalog.api.query.BaseCatalogsApiController;
+import org.eclipse.edc.catalog.api.query.v4.CatalogsApiV4;
 import org.eclipse.edc.catalog.spi.QueryService;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.federatedcatalog.util.FederatedCatalogUtil;
@@ -33,11 +34,13 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 import org.eclipse.edc.web.spi.exception.ServiceResultHandler;
+import org.eclipse.edc.web.spi.validation.SchemaType;
 
 import javax.xml.catalog.Catalog;
 
 import static jakarta.json.stream.JsonCollectors.toJsonArray;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
+import static org.eclipse.edc.spi.query.QuerySpec.EDC_QUERY_SPEC_TYPE_TERM;
 
 /**
  * Handles API endpoints for querying cached federated catalog content.
@@ -45,8 +48,8 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  */
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
-@Path("/v1alpha/catalog/query-cbm")
-public class FederatedCatalogContentBasedApiController implements FederatedCatalogApi {
+@Path("/v4/catalogs-cbm")
+public class CatalogsContentBasedApiV4Controller extends BaseCatalogsApiController implements CatalogsApiV4 {
 
     private final QueryService queryService;
     private final TypeTransformerRegistry transformerRegistry;
@@ -57,24 +60,27 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
      * @param queryService the service used to query catalog data
      * @param transformerRegistry the registry managing type transformations
      */
-    public FederatedCatalogContentBasedApiController(QueryService queryService, TypeTransformerRegistry transformerRegistry) {
+    public CatalogsContentBasedApiV4Controller(QueryService queryService, TypeTransformerRegistry transformerRegistry) {
+        super(queryService, transformerRegistry);
+
         this.queryService = queryService;
         this.transformerRegistry = transformerRegistry;
     }
 
     /**
-     * Queries the cached federated catalog based on the provided query parameters and returns the matching result as a JSON array.
+     * Processes a catalog query and returns a list of matching catalogs as a JSON array.
      *
-     * @param catalogQuery the query object specifying the catalog search criteria; if null, a default query specification is used
-     * @param flatten a boolean flag indicating whether the result catalog should be flattened
-     * @return a JSON array containing the resulting catalog data, transformed based on the provided parameters
+     * @param querySpecJson the query specification as a JSON object. If null, a default query specification is used.
+     * @param flatten a boolean flag indicating whether to flatten the catalog entries into one level.
+     * @return a JsonArray containing the matched catalogs, potentially flattened based on the input flag.
+     * @throws InvalidRequestException if the querySpecJson cannot be transformed into a QuerySpec object.
      */
     @Override
     @POST
-    public JsonArray getCachedCatalog(JsonObject catalogQuery, @DefaultValue("false") @QueryParam("flatten") boolean flatten) {
-        var querySpec = catalogQuery == null
+    public JsonArray requestCatalogsV4(@SchemaType(EDC_QUERY_SPEC_TYPE_TERM) JsonObject querySpecJson, @DefaultValue("false") @QueryParam("flatten") boolean flatten) {
+        var querySpec = querySpecJson == null
                 ? QuerySpec.Builder.newInstance().build()
-                : transformerRegistry.transform(catalogQuery, QuerySpec.class)
+                : transformerRegistry.transform(querySpecJson, QuerySpec.class)
                     .orElseThrow(InvalidRequestException::new);
 
         var catalogs = queryService.getCatalog(querySpec)
@@ -91,19 +97,19 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
     /**
      * Retrieves cached datasets based on the provided query parameters.
      *
-     * @param catalogQuery the query parameters as a JsonObject; if null, a default query specification is used
+     * @param querySpecJson the query parameters as a JsonObject; if null, a default query specification is used
      * @return a JsonArray containing the matching datasets
-     * @throws InvalidRequestException if the catalogQuery transformation to QuerySpec fails
+     * @throws InvalidRequestException if the querySpecJson transformation to QuerySpec fails
      * @throws IllegalStateException if the QueryService or cache is not of the correct type
      */
     @Path("/datasets")
     @POST
-    public JsonArray getCachedDatasets(JsonObject catalogQuery) {
+    public JsonArray getCachedDatasets(JsonObject querySpecJson) {
         if (queryService instanceof HeleadeQueryServiceImpl) {
             HeleadeQueryServiceImpl heleadeQueryService = (HeleadeQueryServiceImpl) queryService;
-            var querySpec = catalogQuery == null
+            var querySpec = querySpecJson == null
                     ? QuerySpec.Builder.newInstance().build()
-                    : transformerRegistry.transform(catalogQuery, QuerySpec.class)
+                    : transformerRegistry.transform(querySpecJson, QuerySpec.class)
                     .orElseThrow(InvalidRequestException::new);
 
             var datasets = heleadeQueryService.getDatasets(querySpec)
@@ -122,23 +128,23 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
     /**
      * Counts the number of cached datasets based on the provided query parameters.
      *
-     * @param catalogQuery the query parameters as a JsonObject; if null, a default query specification is used
+     * @param querySpecJson the query parameters as a JsonObject; if null, a default query specification is used
      * @return a String representing the number of datasets matching the query
-     * @throws InvalidRequestException if the catalogQuery transformation to QuerySpec fails
+     * @throws InvalidRequestException if the querySpecJson transformation to QuerySpec fails
      * @throws IllegalStateException if the QueryService is not of type HeleadeQueryServiceImpl
      */
     @Path("/datasets/count")
     @POST
-    public String getCachedDatasetsCount(JsonObject catalogQuery) {
+    public String getCachedDatasetsCount(JsonObject querySpecJson) {
         if (queryService instanceof HeleadeQueryServiceImpl) {
             HeleadeQueryServiceImpl heleadeQueryService = (HeleadeQueryServiceImpl) queryService;
-            var querySpec = catalogQuery == null
+            var querySpec = querySpecJson == null
                     ? QuerySpec.Builder.newInstance().build()
-                    : transformerRegistry.transform(catalogQuery, QuerySpec.class)
+                    : transformerRegistry.transform(querySpecJson, QuerySpec.class)
                     .orElseThrow(InvalidRequestException::new);
 
             //check if the original query did not have a limit
-            boolean noLimit = (catalogQuery != null && !catalogQuery.containsKey(EDC_NAMESPACE + "limit"));
+            boolean noLimit = (querySpecJson != null && !querySpecJson.containsKey(EDC_NAMESPACE + "limit"));
             return heleadeQueryService.countDatasets(querySpec, noLimit);
         } else {
             throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");
@@ -148,23 +154,23 @@ public class FederatedCatalogContentBasedApiController implements FederatedCatal
     /**
      * Counts the number of cached datasets per keyword based on the provided query parameters.
      *
-     * @param catalogQuery the query parameters as a JsonObject; if null, a default query specification is used
+     * @param querySpecJson the query parameters as a JsonObject; if null, a default query specification is used
      * @return a String representing the number of datasets per keyword matching the query
-     * @throws InvalidRequestException if the catalogQuery transformation to QuerySpec fails
+     * @throws InvalidRequestException if the querySpecJson transformation to QuerySpec fails
      * @throws IllegalStateException if the QueryService is not of type HeleadeQueryServiceImpl
      */
     @Path("/keywords/count")
     @POST
-    public String getCachedKeywordsCount(JsonObject catalogQuery) {
+    public String getCachedKeywordsCount(JsonObject querySpecJson) {
         if (queryService instanceof HeleadeQueryServiceImpl) {
             HeleadeQueryServiceImpl heleadeQueryService = (HeleadeQueryServiceImpl) queryService;
-            var querySpec = catalogQuery == null
+            var querySpec = querySpecJson == null
                     ? QuerySpec.Builder.newInstance().build()
-                    : transformerRegistry.transform(catalogQuery, QuerySpec.class)
+                    : transformerRegistry.transform(querySpecJson, QuerySpec.class)
                     .orElseThrow(InvalidRequestException::new);
 
             //check if the original query did not have a limit
-            boolean noLimit = (catalogQuery != null && !catalogQuery.containsKey(EDC_NAMESPACE + "limit"));
+            boolean noLimit = (querySpecJson != null && !querySpecJson.containsKey(EDC_NAMESPACE + "limit"));
             return heleadeQueryService.countKeywords(querySpec, noLimit);
         } else {
             throw new IllegalStateException("Dataset query unavailable: QueryService is not of type HeleadeQueryServiceImpl");

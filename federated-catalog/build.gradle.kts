@@ -20,27 +20,31 @@ plugins {
 
 dependencies {
     // base fc
+    runtimeOnly(libs.edc.federatedcatalog.base.bom)
+    runtimeOnly(libs.edc.bom.controlplane.base)
+
     implementation(libs.edc.fc.api)
-    implementation(libs.edc.fc.core)
+//    implementation(libs.edc.fc.core)
     implementation(project(":commons"))
 
     // catalog node directory
     implementation(libs.edc.fc.spi.crawler)
-    implementation(libs.edc.catalog.util.lib)
-    implementation(libs.edc.lib.util)
+//    implementation(libs.edc.catalog.util.lib)
+//    implementation(libs.edc.lib.util)
+    implementation(libs.edc.spi.transaction)
     implementation(libs.edc.spi.transaction.datasource)
 
 
     // consumer fc
-    implementation(libs.edc.runtime.core)
-    runtimeOnly(libs.edc.boot)
-    implementation(libs.edc.http)
-    implementation(libs.edc.dsp)
-    runtimeOnly(libs.edc.token.core)
-
+//    implementation(libs.edc.runtime.core)
+//    runtimeOnly(libs.edc.boot)
+//    implementation(libs.edc.http)
+//    implementation(libs.edc.dsp)
+//    runtimeOnly(libs.edc.token.core)
+//
     implementation(libs.edc.connector.core)
-    implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.configuration.filesystem)
+//    implementation(libs.edc.control.plane.core)
+//    implementation(libs.edc.configuration.filesystem)
 
     // mongodb cache storage
     implementation(libs.edc.fc.spi.core)
@@ -48,13 +52,20 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
     implementation(libs.edc.verifiable.credentials.spi)
-    implementation(libs.edc.control.plane.transform)
+//    implementation(libs.edc.control.plane.transform)
 
     // consumer
     runtimeOnly(project(":consumers:consumer"))
 
     // upgrade 14.1
     implementation(libs.edc.fc.core.v2025)
+
+    // upgrade 17.0
+    implementation(libs.edc.jersey.providers.lib)
+    implementation(libs.edc.management.api.lib)
+
+    // verification API
+    implementation(libs.edc.jsonld)
 
     // vocabulary
     implementation(libs.net.sourceforge.owlapi)

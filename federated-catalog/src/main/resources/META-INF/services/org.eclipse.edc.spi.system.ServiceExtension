@@ -2,5 +2,5 @@ org.eclipse.edc.heleade.federated.catalog.extension.health.HealthEndpointExtensi
 org.eclipse.edc.heleade.federated.catalog.extension.api.node.directory.NodeDirectoryApiExtension
 org.eclipse.edc.heleade.federated.catalog.extension.store.mongodb.MongodbFederatedCatalogExtension
 org.eclipse.edc.heleade.federated.catalog.extension.content.based.FederatedCatalogContentBasedExtension
-org.eclipse.edc.heleade.federated.catalog.extension.api.query.FederatedCatalogContentBasedApiExtension
+org.eclipse.edc.heleade.federated.catalog.extension.api.query.CatalogsContentBasedApiV4ControllerExtension
 org.eclipse.edc.heleade.federated.catalog.extension.api.verification.VerificationApiExtension

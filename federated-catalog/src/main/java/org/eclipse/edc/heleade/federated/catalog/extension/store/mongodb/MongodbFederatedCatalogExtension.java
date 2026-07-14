@@ -50,8 +50,8 @@ import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_2025_1_IRI;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_PREFIX;
-import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_SCHEMA;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_PREFIX;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -109,11 +109,12 @@ public class MongodbFederatedCatalogExtension implements ServiceExtension {
         transformerRegistry.register(new JsonObjectToDutyTransformer());
         transformerRegistry.register(new JsonObjectToOperatorTransformer());
 
+        // TODO may need to add the management scope
         jsonLd = new JsonLdExtension().createJsonLdService(context);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
         jsonLd.registerNamespace(DCAT_PREFIX, DCAT_SCHEMA);
         jsonLd.registerNamespace(DCT_PREFIX, DCT_SCHEMA);
-        jsonLd.registerNamespace(DSPACE_PREFIX, DSPACE_SCHEMA);
+        jsonLd.registerNamespace(DSPACE_PREFIX, DSPACE_2025_1_IRI);
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA);
         jsonLd.registerNamespace(VOCAB, EDC_NAMESPACE);
         jsonLd.registerNamespace(ODRL_PREFIX, ODRL_SCHEMA);

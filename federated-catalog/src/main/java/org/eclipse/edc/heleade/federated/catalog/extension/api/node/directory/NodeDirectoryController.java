@@ -45,7 +45,7 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
  */
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
-@Path("/v1alpha/directory")
+@Path("/v4/directory")
 public class NodeDirectoryController {
 
     private final JsonLd jsonLd;
