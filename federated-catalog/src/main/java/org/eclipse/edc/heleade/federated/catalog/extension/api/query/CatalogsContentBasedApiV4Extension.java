@@ -14,8 +14,8 @@
 
 package org.eclipse.edc.heleade.federated.catalog.extension.api.query;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import jakarta.json.Json;
-import org.eclipse.edc.api.management.schema.ManagementApiJsonSchema;
 import org.eclipse.edc.catalog.spi.QueryService;
 import org.eclipse.edc.catalog.transform.JsonObjectToCatalogTransformer;
 import org.eclipse.edc.connector.core.agent.NoOpParticipantIdMapper;
@@ -25,12 +25,18 @@ import org.eclipse.edc.jsonld.spi.JsonLdNamespace;
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromCatalogTransformer;
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDataServiceTransformer;
 import org.eclipse.edc.protocol.dsp.catalog.transform.from.JsonObjectFromDistributionTransformer;
+import org.eclipse.edc.runtime.metamodel.annotation.Configuration;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Setting;
+import org.eclipse.edc.runtime.metamodel.annotation.Settings;
+import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.apiversion.ApiVersionService;
+import org.eclipse.edc.spi.system.apiversion.VersionRecord;
+import org.eclipse.edc.spi.system.health.HealthCheckResult;
 import org.eclipse.edc.spi.system.health.HealthCheckService;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
@@ -38,14 +44,15 @@ import org.eclipse.edc.transform.transformer.edc.to.JsonObjectToCriterionTransfo
 import org.eclipse.edc.transform.transformer.edc.to.JsonObjectToQuerySpecTransformer;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.jersey.providers.jsonld.JerseyJsonLdInterceptor;
+import org.eclipse.edc.web.jersey.providers.jsonld.ObjectMapperProvider;
 import org.eclipse.edc.web.spi.WebService;
-import org.eclipse.edc.web.spi.configuration.ApiContext;
+import org.eclipse.edc.web.spi.configuration.PortMapping;
 import org.eclipse.edc.web.spi.configuration.PortMappingRegistry;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.stream.Stream;
 
-import static org.eclipse.edc.api.management.ManagementApi.MANAGEMENT_API_CONTEXT;
-import static org.eclipse.edc.api.management.ManagementApi.MANAGEMENT_SCOPE_V4;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_PREFIX;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_SCHEMA;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.RDF_NAMESPACE;
@@ -58,7 +65,9 @@ import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_PREFIX;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_2025_1_IRI;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_CONTEXT_2025_1;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DSPACE_PREFIX;
+import static org.eclipse.edc.jsonld.spi.Namespaces.EDC_DSPACE_CONTEXT;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_PREFIX;
 import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -80,8 +89,8 @@ import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
  * Registers JSON-LD namespaces and transformers required for catalog data manipulation
  * and enables the extension through the implemented initialization logic.
  */
-@Extension(value = CatalogsContentBasedApiV4ControllerExtension.NAME)
-public class CatalogsContentBasedApiV4ControllerExtension implements ServiceExtension {
+@Extension(value = CatalogsContentBasedApiV4Extension.NAME)
+public class CatalogsContentBasedApiV4Extension implements ServiceExtension {
 
     /**
      * Represents the name of the content-based cache query API extension.
@@ -89,6 +98,8 @@ public class CatalogsContentBasedApiV4ControllerExtension implements ServiceExte
      */
     public static final String NAME = "Content Based Cache Query API Extension";
     static final String CATALOG_QUERY_SCOPE = "CATALOG_QUERY_API";
+    static final String CATALOG_QUERY_API_CONTEXT = "catalog";
+    private static final String API_VERSION_JSON_FILE = "catalog-version.json";
 
 
     @Inject
@@ -112,6 +123,9 @@ public class CatalogsContentBasedApiV4ControllerExtension implements ServiceExte
     @Inject
     private JsonObjectValidatorRegistry validatorRegistry;
 
+    @Configuration
+    private CatalogApiConfiguration apiConfiguration;
+
     @Override
     public String name() {
         return NAME;
@@ -130,6 +144,9 @@ public class CatalogsContentBasedApiV4ControllerExtension implements ServiceExte
         jsonLd.registerNamespace(RDF_PREFIX, RDF_NAMESPACE, CATALOG_QUERY_SCOPE);
         jsonLd.registerNamespace(SCHEMA_PREFIX, SCHEMA_ORG_NAMESPACE, CATALOG_QUERY_SCOPE);
 
+        jsonLd.registerContext(DSPACE_CONTEXT_2025_1, CATALOG_QUERY_SCOPE);
+        jsonLd.registerContext(EDC_DSPACE_CONTEXT, CATALOG_QUERY_SCOPE);
+
         var jsonFactory = Json.createBuilderFactory(Map.of());
         var participantIdMapper = new NoOpParticipantIdMapper();
         JsonLdNamespace namespace = new JsonLdNamespace(DSPACE_2025_1_IRI);
@@ -141,10 +158,42 @@ public class CatalogsContentBasedApiV4ControllerExtension implements ServiceExte
         transformerRegistry.register(new JsonObjectToQuerySpecTransformer());
         transformerRegistry.register(new JsonObjectToCriterionTransformer(criterionOperatorRegistry));
 
-        var managementApiTransformerRegistry = transformerRegistry.forContext(MANAGEMENT_API_CONTEXT);
+        portMappingRegistry.register(new PortMapping(CATALOG_QUERY_API_CONTEXT, apiConfiguration.port(), apiConfiguration.path()));
 
-        webService.registerResource(ApiContext.MANAGEMENT, new CatalogsContentBasedApiV4Controller(queryService, managementApiTransformerRegistry));
-        webService.registerDynamicResource(ApiContext.MANAGEMENT, CatalogsContentBasedApiV4Controller.class, new JerseyJsonLdInterceptor(jsonLd, typeManager, JSON_LD, MANAGEMENT_SCOPE_V4, validatorRegistry, ManagementApiJsonSchema.V4.version()));
+        var catalogController = new CatalogsContentBasedApiV4Controller(queryService, transformerRegistry);
+        webService.registerResource(CATALOG_QUERY_API_CONTEXT, catalogController);
+        webService.registerResource(CATALOG_QUERY_API_CONTEXT, new ObjectMapperProvider(typeManager, JSON_LD));
+        webService.registerResource(CATALOG_QUERY_API_CONTEXT, new JerseyJsonLdInterceptor(jsonLd, typeManager, JSON_LD, CATALOG_QUERY_SCOPE));
+
+        if (healthCheckService != null) {
+            var successResult = HealthCheckResult.Builder.newInstance().component("FCC Query API").build();
+            healthCheckService.addReadinessProvider(() -> successResult);
+            healthCheckService.addLivenessProvider(() -> successResult);
+        }
+        registerVersionInfo(getClass().getClassLoader());
+    }
+
+    private void registerVersionInfo(ClassLoader resourceClassLoader) {
+        try (var versionContent = resourceClassLoader.getResourceAsStream(API_VERSION_JSON_FILE)) {
+            if (versionContent == null) {
+                throw new EdcException("Version file not found or not readable.");
+            }
+            Stream.of(typeManager.getMapper()
+                            .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+                            .readValue(versionContent, VersionRecord[].class))
+                    .forEach(vr -> apiVersionService.addRecord(CATALOG_QUERY_API_CONTEXT, vr));
+        } catch (IOException e) {
+            throw new EdcException(e);
+        }
+    }
+
+    @Settings
+    record CatalogApiConfiguration(
+            @Setting(key = "web.http." + CATALOG_QUERY_API_CONTEXT + ".port", description = "Port for " + CATALOG_QUERY_API_CONTEXT + " api context", defaultValue = 17171 + "")
+            int port,
+            @Setting(key = "web.http." + CATALOG_QUERY_API_CONTEXT + ".path", description = "Path for " + CATALOG_QUERY_API_CONTEXT + " api context", defaultValue = "/api/catalog")
+            String path
+    ) {
 
     }
 }

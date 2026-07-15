@@ -4,6 +4,13 @@
     <option name="sourcePathsSet">
       <set>
         <option value="$PROJECT_DIR$/providers/provider-idearium/venv/lib/python3.13/site-packages" />
+        <option value="$PROJECT_DIR$/providers/provider-ebird/src/main/resources" />
+        <option value="$PROJECT_DIR$/system-tests/src/test/java" />
+        <option value="$PROJECT_DIR$/system-tests/src/test/resources" />
+        <option value="$PROJECT_DIR$/federated-catalog/src/main/java" />
+        <option value="$PROJECT_DIR$/federated-catalog/src/main/resources" />
+        <option value="$PROJECT_DIR$/federated-catalog/src/test/java" />
+        <option value="$PROJECT_DIR$/federated-catalog/src/test/resources" />
       </set>
     </option>
   </component>

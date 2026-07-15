@@ -2,8 +2,8 @@
   {
     "name": "Default Base Provider",
     "id": "provider",
-    "url": "http://localhost:19194/protocol",
-    "supportedProtocols": ["dataspace-protocol-http"],
+    "url": "http://localhost:19194/protocol/2025-1",
+    "supportedProtocols": ["dataspace-protocol-http:2025-1"],
     "@context": {
       "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
     }
@@ -11,8 +11,8 @@
   {
     "name": "Template Provider",
     "id": "provider-template",
-    "url": "http://localhost:18194/protocol",
-    "supportedProtocols": ["dataspace-protocol-http"],
+    "url": "http://localhost:18194/protocol/2025-1",
+    "supportedProtocols": ["dataspace-protocol-http:2025-1"],
     "@context": {
       "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
     }

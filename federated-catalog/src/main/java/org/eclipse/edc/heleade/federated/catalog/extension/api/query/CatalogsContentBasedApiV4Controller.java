@@ -23,11 +23,10 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import org.eclipse.edc.catalog.api.query.BaseCatalogsApiController;
 import org.eclipse.edc.catalog.api.query.v4.CatalogsApiV4;
+import org.eclipse.edc.catalog.api.query.v4.CatalogsApiV4Controller;
 import org.eclipse.edc.catalog.spi.QueryService;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
-import org.eclipse.edc.federatedcatalog.util.FederatedCatalogUtil;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.AbstractResult;
 import org.eclipse.edc.spi.result.Result;
@@ -35,8 +34,6 @@ import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 import org.eclipse.edc.web.spi.exception.ServiceResultHandler;
 import org.eclipse.edc.web.spi.validation.SchemaType;
-
-import javax.xml.catalog.Catalog;
 
 import static jakarta.json.stream.JsonCollectors.toJsonArray;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -48,8 +45,8 @@ import static org.eclipse.edc.spi.query.QuerySpec.EDC_QUERY_SPEC_TYPE_TERM;
  */
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
-@Path("/v4/catalogs-cbm")
-public class CatalogsContentBasedApiV4Controller extends BaseCatalogsApiController implements CatalogsApiV4 {
+@Path("/v4/query")
+public class CatalogsContentBasedApiV4Controller extends CatalogsApiV4Controller implements CatalogsApiV4 {
 
     private final QueryService queryService;
     private final TypeTransformerRegistry transformerRegistry;
@@ -78,20 +75,7 @@ public class CatalogsContentBasedApiV4Controller extends BaseCatalogsApiControll
     @Override
     @POST
     public JsonArray requestCatalogsV4(@SchemaType(EDC_QUERY_SPEC_TYPE_TERM) JsonObject querySpecJson, @DefaultValue("false") @QueryParam("flatten") boolean flatten) {
-        var querySpec = querySpecJson == null
-                ? QuerySpec.Builder.newInstance().build()
-                : transformerRegistry.transform(querySpecJson, QuerySpec.class)
-                    .orElseThrow(InvalidRequestException::new);
-
-        var catalogs = queryService.getCatalog(querySpec)
-                .orElseThrow(ServiceResultHandler.exceptionMapper(Catalog.class));
-
-        return catalogs.stream()
-                .map(c -> flatten ? FederatedCatalogUtil.flatten(c) : c)
-                .map(c -> transformerRegistry.transform(c, JsonObject.class))
-                .filter(Result::succeeded)
-                .map(AbstractResult::getContent)
-                .collect(toJsonArray());
+        return requestCatalogs(querySpecJson, flatten);
     }
 
     /**
