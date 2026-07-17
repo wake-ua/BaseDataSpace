@@ -30,24 +30,25 @@ import static org.eclipse.edc.heleade.util.TransferUtil.get;
 import static org.eclipse.edc.heleade.util.TransferUtil.post;
 import static org.eclipse.edc.heleade.util.TransferUtil.postExpect;
 import static org.eclipse.edc.heleade.util.TransferUtil.postJson;
+import static org.eclipse.edc.heleade.util.TransferUtil.put;
 
 public class NegotiationCommon {
 
     private static final String CREATE_ASSET_FILE_PATH = "system-tests/src/test/resources/transfer/create-asset.json";
-    private static final String V3_ASSETS_PATH = "/v3/assets";
-    private static final String V3_CBM_ASSETS_PATH = "/v3/assets-cbm";
+    private static final String V4_ASSETS_PATH = "/v4/assets";
+    private static final String V4_CBM_ASSETS_PATH = "/v4/assets-cbm";
     private static final String ASSET_ID = "@id";
     private static final String CREATE_POLICY_FILE_PATH = "system-tests/src/test/resources/transfer/create-policy.json";
-    private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
+    private static final String V4_POLICY_DEFINITIONS_PATH = "/v4/policydefinitions";
     private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = "system-tests/src/test/resources/transfer/create-contract-definition.json";
-    private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
-    private static final String V2_CATALOG_DATASET_REQUEST_PATH = "/v3/catalog/dataset/request";
+    private static final String V4_CONTRACT_DEFINITIONS_PATH = "/v4/contractdefinitions";
+    private static final String V4_CATALOG_DATASET_REQUEST_PATH = "/v4/catalog/dataset/request";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "system-tests/src/test/resources/transfer/get-dataset.json";
-    private static final String V2_CATALOG_REQUEST_PATH = "/v3/catalog/request";
-    private static final String CATALOG_DATASET_ID = "\"odrl:hasPolicy\".'@id'";
-    private static final String CATALOG_DATASET_LIST = "\"dcat:dataset\"";
+    private static final String V4_CATALOG_REQUEST_PATH = "/v4/catalog/request";
+    private static final String CATALOG_DATASET_ID = "\"hasPolicy\".'@id'";
+    private static final String CATALOG_DATASET_LIST = "\"dataset\"";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "system-tests/src/test/resources/transfer/negotiate-contract.json";
-    private static final String V2_CONTRACT_NEGOTIATIONS_PATH = "/v3/contractnegotiations/";
+    private static final String V4_CONTRACT_NEGOTIATIONS_PATH = "/v4/contractnegotiations/";
     private static final String CONTRACT_NEGOTIATION_ID = "@id";
     private static final String CONTRACT_AGREEMENT_ID = "contractAgreementId";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
@@ -63,31 +64,37 @@ public class NegotiationCommon {
         String nameReplacement = "\"name\": \"item name " + id + "\"";
         String content = getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH)
                 .replace(existing, replacement).replace(nameExisting, nameReplacement);
-        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, content, ASSET_ID);
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH, content, ASSET_ID);
     }
 
     public static String createAsset(String assetFilePath) {
-        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH,
-                        getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+        try {
+            return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH,
+                    getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+        } catch (Exception e) {
+            System.out.println("POST failed, updating with PUT. Exception: " + e.getMessage());
+            return put(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH,
+                    getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+        }
     }
 
     public static String createCbmAsset(String assetFilePath) {
-        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_CBM_ASSETS_PATH,
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_CBM_ASSETS_PATH,
                 getFileContentFromRelativePath(assetFilePath), ASSET_ID);
     }
 
     public static String createCbmAssetFromString(String assetContent) {
-        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_CBM_ASSETS_PATH,
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_CBM_ASSETS_PATH,
                 assetContent, ASSET_ID);
     }
 
     public static Object createCbmAssetExpect(String assetFilePath, int expectedStatus) {
-        return postExpect(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_CBM_ASSETS_PATH,
+        return postExpect(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_CBM_ASSETS_PATH,
                 getFileContentFromRelativePath(assetFilePath), expectedStatus);
     }
 
     public static void deleteAsset(String id) {
-        delete(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH + '/' + id);
+        delete(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH + '/' + id);
     }
 
     public static void createPolicy() {
@@ -95,7 +102,7 @@ public class NegotiationCommon {
     }
 
     public static void createPolicy(String createPolicyFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
     }
 
     public static void createContractDefinition() {
@@ -103,12 +110,12 @@ public class NegotiationCommon {
     }
 
     public static void createContractDefinition(String createContractDefinitionFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(createContractDefinitionFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(createContractDefinitionFilePath));
     }
 
     public static String fetchDatasetFromCatalog(String fetchDatasetFromCatalogFilePath) {
         var catalogDatasetId = post(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CATALOG_DATASET_REQUEST_PATH,
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CATALOG_DATASET_REQUEST_PATH,
                 getFileContentFromRelativePath(fetchDatasetFromCatalogFilePath),
                 CATALOG_DATASET_ID
         );
@@ -118,7 +125,7 @@ public class NegotiationCommon {
 
     public static ArrayList<LinkedHashMap> fetchCatalogDatasets(String catalogRequestFilePath) {
         var catalog = postJson(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CATALOG_REQUEST_PATH,
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CATALOG_REQUEST_PATH,
                 getFileContentFromRelativePath(catalogRequestFilePath));
         assertThat(catalog).isNotNull();
         var catalogDatasets = catalog.get(CATALOG_DATASET_LIST);
@@ -137,7 +144,7 @@ public class NegotiationCommon {
         var requestBody = getFileContentFromRelativePath(negotiateContractFilePath)
                 .replace(CONTRACT_OFFER_ID_KEY, catalogDatasetId);
         var contractNegotiationId = post(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH,
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CONTRACT_NEGOTIATIONS_PATH,
                 requestBody,
                 CONTRACT_NEGOTIATION_ID
         );
@@ -146,7 +153,7 @@ public class NegotiationCommon {
     }
 
     public static String getContractAgreementId(String contractNegotiationId) {
-        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
+        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
         return await()
                 .atMost(TIMEOUT)
                 .pollInterval(POLL_INTERVAL)
@@ -154,7 +161,7 @@ public class NegotiationCommon {
     }
 
     public static String getContractNegotiationState(String contractNegotiationId) {
-        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
+        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
         return get(url, "state");
     }
 

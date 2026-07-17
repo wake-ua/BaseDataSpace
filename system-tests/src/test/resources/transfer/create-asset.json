@@ -3,6 +3,7 @@
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@id": "assetId",
+  "@type": "Asset",
   "properties": {
     "name": "product description",
     "contenttype": "application/json"

@@ -3,6 +3,7 @@
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@id": "{{contract-definition-id}}",
+  "@type": "ContractDefinition",
   "accessPolicyId": "{{access-policy-id}}",
   "contractPolicyId": "{{contract-policy-id}}",
   "assetsSelector": [{

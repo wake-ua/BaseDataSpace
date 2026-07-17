@@ -125,7 +125,7 @@ public class TransferUtil {
     }
 
     public static String post(String url, String requestBody, String jsonPath) {
-        return given()
+        var result = given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
@@ -134,6 +134,23 @@ public class TransferUtil {
                 .then()
                 .log().ifError()
                 .statusCode(HttpStatus.SC_OK)
+                .body(jsonPath, not(emptyString()))
+                .extract()
+                .jsonPath()
+                .get(jsonPath);
+        return result.toString();
+    }
+
+    public static String put(String url, String requestBody, String jsonPath) {
+        return given()
+                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .put(url)
+                .then()
+                .log().ifError()
+                .statusCode(HttpStatus.SC_NO_CONTENT)
                 .body(jsonPath, not(emptyString()))
                 .extract()
                 .jsonPath()

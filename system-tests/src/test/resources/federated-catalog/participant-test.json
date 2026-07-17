@@ -1,8 +1,8 @@
 {
     "name": "https://w3id.org/edc/v0.0.1/ns/",
     "id": "provider",
-    "url": "http://localhost:49194/protocol",
-    "supportedProtocols": ["dataspace-protocol-http"],
+    "url": "http://localhost:49194/protocol/2025-1",
+    "supportedProtocols": ["dataspace-protocol-http:2025-1"],
     "@context": {
       "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
     }

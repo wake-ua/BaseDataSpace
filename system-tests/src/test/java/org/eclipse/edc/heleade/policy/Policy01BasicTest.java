@@ -123,7 +123,7 @@ public class Policy01BasicTest {
     static final RuntimeExtension FC_RUNTIME = getEmbeddedFc(":federated-catalog");
 
     @RegisterExtension
-    static final RuntimeExtension PROVIDER_RUNTIME = getProvider(":providers:provider-ebird", PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
+    static final RuntimeExtension PROVIDER_RUNTIME = getProvider(":providers:provider-base", PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
 
     @RegisterExtension
     static final RuntimeExtension CONSUMER_RUNTIME = getConsumer(CONSUMER_MODULE_PATH);

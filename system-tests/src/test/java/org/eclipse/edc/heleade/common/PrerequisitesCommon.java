@@ -21,14 +21,11 @@ import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.postgresql.PGProperty;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileFromRelativePath;
 
 public class PrerequisitesCommon {
     public static final String API_KEY_HEADER_KEY = "X-Api-Key";
@@ -42,7 +39,6 @@ public class PrerequisitesCommon {
     private static final String CONSUMER = "consumer";
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/provider-test-configuration.properties";
     private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/consumer-test-configuration.properties";
-    private static final String PROVIDER_SQL_FILE_PATH = "system-tests/src/test/resources/sql/database.sql";
 
     public static RuntimeExtension getProvider() {
         return getProvider(PROVIDER_MODULE_PATH, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
@@ -86,11 +82,6 @@ public class PrerequisitesCommon {
             String name = props.getProperty(PGProperty.PG_DBNAME.getName());
             String urlNoDb = "jdbc:postgresql://" + host + ":" + port + "/";
 
-            // get DB creation script
-            var filePath = getFileFromRelativePath(PROVIDER_SQL_FILE_PATH).toURI();
-            var stream = filePath.toURL().openStream();
-            String sqlScript = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-
             // Connect to the database
             Class.forName("org.postgresql.Driver");
 
@@ -101,10 +92,9 @@ public class PrerequisitesCommon {
             connectionAux.close();
 
             Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-            connection.prepareStatement(sqlScript).execute();
             connection.close();
 
-        } catch (ClassNotFoundException | NullPointerException | SQLException | IOException e) {
+        } catch (ClassNotFoundException | NullPointerException | SQLException e) {
             throw new RuntimeException(e);
         }
     }

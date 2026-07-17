@@ -48,7 +48,7 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     /**
      * Represents the field used to identify datasets in the DCAT context within
      * the MongoDB Federated Catalog Cache. This field is used as a key to reference
-     * datasets stored or queried in the catalog under the "dcat:dataset" schema.
+     * datasets stored or queried in the catalog under the DATASET_FIELD schema.
      */
     public static final String DATASET_FIELD = "dcat:dataset";
 
@@ -215,16 +215,16 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
         collection.updateOne(filter, update, options);
 
         // Upsert datasets
-        var participantId = catalogDoc.get("dspace:participantId");
+        var participantId = catalogDoc.get(PARTICIPANT_FIELD);
 
         var context = catalogDoc.get("@context");
-        for (JsonValue dataset : catalogJsonCompactedDatasetArray.getJsonArray("dcat:dataset")) {
+        for (JsonValue dataset : catalogJsonCompactedDatasetArray.getJsonArray(DATASET_FIELD)) {
             var datasetJson = dataset.asJsonObject();
             var datasetId = datasetJson.getString("@id");
-            var datasetDoc = Document.parse(datasetJson.toString()).append("dspace:participantId", participantId).append("@context", context);
+            var datasetDoc = Document.parse(datasetJson.toString()).append(PARTICIPANT_FIELD, participantId).append("@context", context);
             collection = getCollection(connection, getFederatedCatalogDatasetCollectionName());
             collection.updateOne(Filters.and(Filters.eq("@id", datasetId),
-                    Filters.eq("dspace:participantId", participantId)),
+                    Filters.eq(PARTICIPANT_FIELD, participantId)),
                     new Document("$set", datasetDoc), options);
         }
     }
@@ -247,13 +247,13 @@ public class MongodbFederatedCatalogCache extends MongodbFederatedCatalogCacheSt
     }
 
     private JsonObject ensureDatasetAsArray(JsonObject catalogJson) {
-        var dataset = catalogJson.get("dcat:dataset");
+        var dataset = catalogJson.get(DATASET_FIELD);
         if (dataset != null) {
             if (dataset instanceof JsonObject) {
                 var catalogWithArrayBuilder = Json.createObjectBuilder(catalogJson);
                 JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
                 arrayBuilder.add(dataset);
-                catalogWithArrayBuilder.add("dcat:dataset", arrayBuilder.build());
+                catalogWithArrayBuilder.add(DATASET_FIELD, arrayBuilder.build());
                 return catalogWithArrayBuilder.build();
             }
         }

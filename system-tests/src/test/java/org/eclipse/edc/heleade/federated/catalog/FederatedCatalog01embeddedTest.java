@@ -32,10 +32,10 @@ import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.CATALOG;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.CRAWLER_EXECUTION_DELAY_VALUE;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.DATASET;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.DATASET_ASSET_ID;
+import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.DATASET_FIELD;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.EMPTY_QUERY_FILE_PATH;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.FC_CATALOG_API_ENDPOINT;
-import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.FC_CBM_CATALOG_API_ENDPOINT;
-import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.FC_CBM_DATASET_API_ENDPOINT;
+import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.FC_DATASET_API_ENDPOINT;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.FEDERATED_CATALOG_MANAGEMENT_URL;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.ID_QUERY_FILE_PATH;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.TIMEOUT;
@@ -128,26 +128,14 @@ public class FederatedCatalog01embeddedTest {
     }
 
     @Test
-    void runFederatedCatalogCbmBaseTest() {
+    void runFederatedCatalogDatasetEndpointTest() {
 
         // call catalog API from standalone FC
         await()
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CBM_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID, CATALOG),
-                        id -> id.equals(baseAssetId));
-    }
-
-    @Test
-    void runFederatedCatalogCbmDatasetEndpointTest() {
-
-        // call catalog API from standalone FC
-        await()
-                .atMost(Duration.ofSeconds(TIMEOUT))
-                .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
-                .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CBM_DATASET_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0].@id", DATASET),
+                .until(() -> postAndAssertType(FC_DATASET_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0].@id", DATASET),
                         id -> id.equals(baseAssetId));
     }
 
@@ -161,13 +149,13 @@ public class FederatedCatalog01embeddedTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0].'dcat:dataset'[0].'@id'", CATALOG),
+                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0]." + DATASET_FIELD + "[0].'@id'", CATALOG),
                         id -> !(id.isEmpty()));
 
         // get all the datasets
         JsonPath resultJsonPath = postJson(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH));
         assertThat(resultJsonPath).isNotNull();
-        var datasets = resultJsonPath.getList("[0].'dcat:dataset'");
+        var datasets = resultJsonPath.getList("[0]." + DATASET_FIELD + "");
         assertThat(datasets.size()).isEqualTo(3);
 
         // delete and check again
@@ -179,7 +167,7 @@ public class FederatedCatalog01embeddedTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0].'dcat:dataset'[0].'@id'", CATALOG),
+                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0]." + DATASET_FIELD + "[0].'@id'", CATALOG),
                         id -> id.equals(baseAssetId));
     }
 
@@ -193,7 +181,7 @@ public class FederatedCatalog01embeddedTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(ID_QUERY_FILE_PATH), "[0].'dspace:participantId'", CATALOG),
+                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(ID_QUERY_FILE_PATH), "[0].'participantId'", CATALOG),
                         id -> id.equals("provider"));
 
         // delete and check again
@@ -205,7 +193,7 @@ public class FederatedCatalog01embeddedTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0].'dcat:dataset'[0].'@id'", CATALOG),
+                .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0]." + DATASET_FIELD + "[0].'@id'", CATALOG),
                         id -> id.equals(baseAssetId));
     }
 }

@@ -16,7 +16,7 @@
   "security": {
     "pem": ""
   },
-  "url": "http://localhost:39194/protocol",
+  "url": "http://localhost:39194/protocol/2025-1",
   "@context": {
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   }

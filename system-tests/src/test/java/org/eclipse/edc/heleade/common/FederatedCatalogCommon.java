@@ -49,20 +49,20 @@ public class FederatedCatalogCommon {
     private static final String CRAWLER_EXECUTION_DELAY = "edc.catalog.cache.execution.delay.seconds";
     public static final int CRAWLER_EXECUTION_DELAY_VALUE = 5;
     private static final String CRAWLER_EXECUTION_PERIOD = "edc.catalog.cache.execution.period.seconds";
-    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 20;
-    public static final int TIMEOUT = 2 * CRAWLER_EXECUTION_PERIOD_VALUE;
+    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 10;
+    public static final int TIMEOUT = 3 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
-    public static final String FC_CATALOG_API_ENDPOINT = "http://localhost:59195/api/catalog/v1alpha/catalog/query";
-    public static final String FC_CBM_CATALOG_API_ENDPOINT = "http://localhost:59195/api/catalog/v1alpha/catalog/query-cbm";
-    public static final String FC_CBM_DATASET_API_ENDPOINT = "http://localhost:59195/api/catalog/v1alpha/catalog/query-cbm/datasets";
+    public static final String DATASET_FIELD = "'dataset'";
+    public static final String FC_CATALOG_API_ENDPOINT = "http://localhost:59195/api/catalog/v4/query";
+    public static final String FC_DATASET_API_ENDPOINT = "http://localhost:59195/api/catalog/v4/query/datasets";
     public static final String FEDERATED_CATALOG_MANAGEMENT_URL = "http://localhost:59193/management";
-    public static final String V_NODE_DIRECTORY_PATH = "/v1alpha/directory";
+    public static final String V_NODE_DIRECTORY_PATH = "/v4/directory";
     public static final String EMPTY_QUERY_FILE_PATH = "system-tests/src/test/resources/federated-catalog/empty-query.json";
     public static final String ID_QUERY_FILE_PATH = "system-tests/src/test/resources/federated-catalog/id-query.json";
     public static final String TYPE = "[0].@type";
-    public static final String CATALOG = "dcat:Catalog";
-    public static final String DATASET = "dcat:Dataset";
-    public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
+    public static final String CATALOG = "Catalog";
+    public static final String DATASET = "Dataset";
+    public static final String DATASET_ASSET_ID = "[0]." + DATASET_FIELD + "[0].@id";
     public static final String FC_CACHE_COLLECTION_NAME = "edc_federated_catalog";
     public static final String FC_DIRECTORY_COLLECTION_NAME = "edc_node_directory";
 
@@ -96,7 +96,7 @@ public class FederatedCatalogCommon {
     }
 
     public static String postAndAssertType(String url, String requestBody, String jsonPath, String expectedType) {
-        return given()
+        var result = given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
@@ -110,6 +110,7 @@ public class FederatedCatalogCommon {
                 .extract()
                 .jsonPath()
                 .get(jsonPath);
+        return result.toString();
     }
 
     public static void startMongodbCollection(Config config) {
