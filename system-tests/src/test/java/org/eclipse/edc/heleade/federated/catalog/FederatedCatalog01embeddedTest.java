@@ -45,11 +45,11 @@ import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.addNodeToDir
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.getEmbeddedFc;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.postAndAssertType;
 import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAsset;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAssetWithId;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.deleteAsset;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAsset;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAssetWithId;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.heleade.util.TransferUtil.delete;
 import static org.eclipse.edc.heleade.util.TransferUtil.getAsJsonArray;

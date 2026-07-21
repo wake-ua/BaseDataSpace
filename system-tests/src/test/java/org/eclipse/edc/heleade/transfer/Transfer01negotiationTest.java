@@ -21,12 +21,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAsset;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.fetchDatasetFromCatalog;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.getContractAgreementId;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.negotiateContract;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAsset;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.heleade.common.PrerequisitesCommon.getProvider;
 
