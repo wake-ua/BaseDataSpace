@@ -24,6 +24,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.Clock;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,8 +45,8 @@ import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.addNodeToDir
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.getEmbeddedFc;
 import static org.eclipse.edc.heleade.common.FederatedCatalogCommon.postAndAssertType;
 import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.createAsset;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.createAssetWithId;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAsset;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAssetWithId;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.deleteAsset;
@@ -70,7 +71,7 @@ public class FederatedCatalog01embeddedTest {
 
     @BeforeAll
     static void beforeAll() {
-        baseAssetId = createAsset();
+        baseAssetId = upsertAsset();
         createPolicy();
         createContractDefinition();
         addNodeToDirectory();
@@ -141,16 +142,24 @@ public class FederatedCatalog01embeddedTest {
 
     @Test
     void nodeMongodbCacheStoreEmptyQueryTest() {
-        String assetId1 = createAssetWithId("ApiTestId1");
-        String assetId2 = createAssetWithId("ApiTestId2");
+        String assetId1 = upsertAssetWithId("ApiTestId1");
+        String assetId2 = upsertAssetWithId("ApiTestId2");
 
-        // call catalog API from standalone FC (multiple datasets -  as list)
+        // call catalog API from standalone FC (multiple datasets - as list)
         await()
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
                 .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0]." + DATASET_FIELD + "[0].'@id'", CATALOG),
                         id -> !(id.isEmpty()));
+
+        // timeout extra
+        System.out.println(" * Sleeping for 10 seconds *");
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            System.out.println("Sleep interrupted");
+        }
 
         // get all the datasets
         JsonPath resultJsonPath = postJson(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH));
@@ -173,8 +182,8 @@ public class FederatedCatalog01embeddedTest {
 
     @Test
     void nodeMongodbCacheStoreIdQueryTest() {
-        String assetId1 = createAssetWithId("ApiTestId1");
-        String assetId2 = createAssetWithId("ApiTestId2");
+        String assetId1 = upsertAssetWithId("ApiTestId1");
+        String assetId2 = upsertAssetWithId("ApiTestId2");
 
         // call catalog API from standalone FC (one dataset - as object)
         await()
@@ -196,4 +205,5 @@ public class FederatedCatalog01embeddedTest {
                 .until(() -> postAndAssertType(FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), "[0]." + DATASET_FIELD + "[0].'@id'", CATALOG),
                         id -> id.equals(baseAssetId));
     }
+
 }

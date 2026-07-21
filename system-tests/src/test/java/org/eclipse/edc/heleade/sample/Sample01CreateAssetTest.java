@@ -14,13 +14,14 @@
 
 package org.eclipse.edc.heleade.sample;
 
+import org.eclipse.edc.heleade.common.NegotiationCommon;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.createAsset;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAsset;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.fetchCatalogDatasets;
@@ -48,14 +49,14 @@ public class Sample01CreateAssetTest {
         var catalogDatasetsEmpty = fetchCatalogDatasets(CATALOG_REQUEST_FILE_PATH);
         assertThat(catalogDatasetsEmpty).isEmpty();
 
-        createAsset(CREATE_ASSET_FILE_PATH);
+        NegotiationCommon.upsertAsset(CREATE_ASSET_FILE_PATH);
         createPolicy(CREATE_RESTRICTED_POLICY_FILE_PATH);
         createContractDefinition(CREATE_RESTRICTED_CONTRACT_DEFINITION_FILE_PATH);
         var catalogDatasetsSingle = fetchCatalogDatasets(CATALOG_REQUEST_FILE_PATH);
         assertThat(catalogDatasetsSingle).isNotEmpty();
         assertThat(catalogDatasetsSingle.size()).isEqualTo(1);
 
-        createAsset(CREATE_ASSET_SAMPLE_FILE_PATH);
+        NegotiationCommon.upsertAsset(CREATE_ASSET_SAMPLE_FILE_PATH);
         createPolicy(CREATE_OPEN_POLICY_FILE_PATH);
         createContractDefinition(CREATE_OPEN_CONTRACT_DEFINITION_FILE_PATH);
         var catalogDatasetsList = fetchCatalogDatasets(CATALOG_REQUEST_FILE_PATH);

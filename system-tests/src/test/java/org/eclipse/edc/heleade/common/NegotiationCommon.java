@@ -53,28 +53,36 @@ public class NegotiationCommon {
     private static final String CONTRACT_AGREEMENT_ID = "contractAgreementId";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
 
-    public static String createAsset() {
-        return createAsset(CREATE_ASSET_FILE_PATH);
+    public static String upsertAsset() {
+        return upsertAsset(CREATE_ASSET_FILE_PATH);
     }
 
-    public static String createAssetWithId(String id) {
+    public static String upsertAssetWithId(String id) {
         String existing = "\"@id\": \"assetId\"";
         String replacement = "\"@id\": \"" + id + "\"";
         String nameExisting = "\"name\": \"product description\"";
         String nameReplacement = "\"name\": \"item name " + id + "\"";
         String content = getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH)
                 .replace(existing, replacement).replace(nameExisting, nameReplacement);
-        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH, content, ASSET_ID);
+        return createAssetFromString(content, true);
     }
 
-    public static String createAsset(String assetFilePath) {
+    public static String upsertAsset(String assetFilePath) {
+        return createAssetFromString(getFileContentFromRelativePath(assetFilePath), true);
+    }
+
+    public static String createAssetFromString(String assetContent, boolean upsert) {
         try {
             return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH,
-                    getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+                    assetContent, ASSET_ID);
         } catch (Exception e) {
-            System.out.println("POST failed, updating with PUT. Exception: " + e.getMessage());
-            return put(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH,
-                    getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+            if (upsert) {
+                System.out.println("POST failed, updating with PUT. Exception: " + e.getMessage());
+                return put(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH,
+                        assetContent, ASSET_ID);
+            } else {
+                throw e;
+            }
         }
     }
 
@@ -166,7 +174,7 @@ public class NegotiationCommon {
     }
 
     public static String runNegotiation() {
-        createAsset();
+        upsertAsset();
         createPolicy();
         createContractDefinition();
         var catalogDatasetId = fetchDatasetFromCatalog(FETCH_DATASET_FROM_CATALOG_FILE_PATH);

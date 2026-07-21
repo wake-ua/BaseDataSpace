@@ -49,8 +49,8 @@ public class FederatedCatalogCommon {
     private static final String CRAWLER_EXECUTION_DELAY = "edc.catalog.cache.execution.delay.seconds";
     public static final int CRAWLER_EXECUTION_DELAY_VALUE = 5;
     private static final String CRAWLER_EXECUTION_PERIOD = "edc.catalog.cache.execution.period.seconds";
-    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 10;
-    public static final int TIMEOUT = 3 * CRAWLER_EXECUTION_PERIOD_VALUE;
+    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 15;
+    public static final int TIMEOUT = 2 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
     public static final String DATASET_FIELD = "'dataset'";
     public static final String FC_CATALOG_API_ENDPOINT = "http://localhost:59195/api/catalog/v4/query";

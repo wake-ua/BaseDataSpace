@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.heleade.common.NegotiationCommon.createAsset;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.upsertAsset;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.heleade.common.NegotiationCommon.fetchDatasetFromCatalog;
@@ -44,7 +44,7 @@ public class Transfer01negotiationTest {
 
     @Test
     void runNegotiationSteps() {
-        createAsset();
+        upsertAsset();
         createPolicy();
         createContractDefinition();
         var catalogDatasetId = fetchDatasetFromCatalog(FETCH_DATASET_FROM_CATALOG_FILE_PATH);
