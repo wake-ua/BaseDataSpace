@@ -50,7 +50,7 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 @EndToEndTest
 public class Policy01BasicTest {
-    private static final Duration TIMEOUT = Duration.ofSeconds(190);
+    private static final Duration TIMEOUT = Duration.ofSeconds(20);
     private static final String CONSUMER_URL_API = "http://localhost:39191/api";
     private static final String PROVIDER_URL_API = "http://localhost:49191/api";
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
@@ -68,8 +68,8 @@ public class Policy01BasicTest {
     private static final String LEI_CODE_OK = "1000";
     private static final String LEI_CODE_KO = "70";
     private static final String INVALID_VALUE = "abc";
-    private static final String ALLOWED_COUNTRIES = "esp,che,fra,prt";
-    private static final String ALLOWED_COUNTRY = "esp";
+    private static final String ALLOWED_COUNTRIES = "es,ch,fr,pt";
+    private static final String ALLOWED_COUNTRY = "es";
     private static final String ALLOWED_AWARD = "Red Dot Design Award";
     private static final String ALLOWED_PARTICIPANT = "consumer";
     private static final String ALLOWED_PARTICIPANTS = "consumer,provider-ebird,consumer-base";

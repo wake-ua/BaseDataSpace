@@ -34,24 +34,24 @@ import static org.eclipse.edc.heleade.util.TransferUtil.put;
 
 public class NegotiationCommon {
 
-    private static final String CREATE_ASSET_FILE_PATH = "system-tests/src/test/resources/transfer/create-asset.json";
-    private static final String V4_ASSETS_PATH = "/v4/assets";
-    private static final String V4_CBM_ASSETS_PATH = "/v4/assets-cbm";
     private static final String ASSET_ID = "@id";
-    private static final String CREATE_POLICY_FILE_PATH = "system-tests/src/test/resources/transfer/create-policy.json";
-    private static final String V4_POLICY_DEFINITIONS_PATH = "/v4/policydefinitions";
-    private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = "system-tests/src/test/resources/transfer/create-contract-definition.json";
-    private static final String V4_CONTRACT_DEFINITIONS_PATH = "/v4/contractdefinitions";
-    private static final String V4_CATALOG_DATASET_REQUEST_PATH = "/v4/catalog/dataset/request";
-    private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "system-tests/src/test/resources/transfer/get-dataset.json";
-    private static final String V4_CATALOG_REQUEST_PATH = "/v4/catalog/request";
-    private static final String CATALOG_DATASET_ID = "\"hasPolicy\".'@id'";
+    public static final String CATALOG_DATASET_ID = "\"hasPolicy\".'@id'";
     private static final String CATALOG_DATASET_LIST = "\"dataset\"";
-    private static final String NEGOTIATE_CONTRACT_FILE_PATH = "system-tests/src/test/resources/transfer/negotiate-contract.json";
-    private static final String V4_CONTRACT_NEGOTIATIONS_PATH = "/v4/contractnegotiations/";
-    private static final String CONTRACT_NEGOTIATION_ID = "@id";
     private static final String CONTRACT_AGREEMENT_ID = "contractAgreementId";
+    private static final String CONTRACT_NEGOTIATION_ID = "@id";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
+    private static final String CREATE_ASSET_FILE_PATH = "system-tests/src/test/resources/transfer/create-asset.json";
+    private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = "system-tests/src/test/resources/transfer/create-contract-definition.json";
+    private static final String CREATE_POLICY_FILE_PATH = "system-tests/src/test/resources/transfer/create-policy.json";
+    private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "system-tests/src/test/resources/transfer/get-dataset.json";
+    private static final String NEGOTIATE_CONTRACT_FILE_PATH = "system-tests/src/test/resources/transfer/negotiate-contract.json";
+    public static final String V4_ASSETS_PATH = "/v4/assets";
+    public static final String V4_CATALOG_DATASET_REQUEST_PATH = "/v4/catalog/dataset/request";
+    private static final String V4_CATALOG_REQUEST_PATH = "/v4/catalog/request";
+    private static final String V4_CBM_ASSETS_PATH = "/v4/assets-cbm";
+    public static final String V4_CONTRACT_DEFINITIONS_PATH = "/v4/contractdefinitions";
+    public static final String V4_CONTRACT_NEGOTIATIONS_PATH = "/v4/contractnegotiations/";
+    public static final String V4_POLICY_DEFINITIONS_PATH = "/v4/policydefinitions";
 
     public static String upsertAsset() {
         return upsertAsset(CREATE_ASSET_FILE_PATH);
@@ -128,6 +128,9 @@ public class NegotiationCommon {
                 CATALOG_DATASET_ID
         );
         assertThat(catalogDatasetId).isNotEmpty();
+        if (catalogDatasetId.contains("[")) {
+            catalogDatasetId = catalogDatasetId.split(",")[0].replace("[", "").replace("]", "");
+        }
         return catalogDatasetId;
     }
 
@@ -151,6 +154,7 @@ public class NegotiationCommon {
     public static String negotiateContract(String negotiateContractFilePath, String catalogDatasetId) {
         var requestBody = getFileContentFromRelativePath(negotiateContractFilePath)
                 .replace(CONTRACT_OFFER_ID_KEY, catalogDatasetId);
+
         var contractNegotiationId = post(
                 PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CONTRACT_NEGOTIATIONS_PATH,
                 requestBody,
@@ -162,6 +166,10 @@ public class NegotiationCommon {
 
     public static String getContractAgreementId(String contractNegotiationId) {
         var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
+        var result = get(url, "errorDetail");
+        if (result != null) {
+            throw new RuntimeException("Contract negotiation failed: " + result);
+        }
         return await()
                 .atMost(TIMEOUT)
                 .pollInterval(POLL_INTERVAL)

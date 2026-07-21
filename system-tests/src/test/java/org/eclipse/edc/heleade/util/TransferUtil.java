@@ -40,11 +40,11 @@ import static org.hamcrest.Matchers.not;
 public class TransferUtil {
 
     public static final Duration TIMEOUT = Duration.ofSeconds(30);
-    public static final Duration POLL_DELAY = Duration.ofMillis(1000);
-    public static final Duration POLL_INTERVAL = Duration.ofMillis(500);
+    public static final Duration POLL_DELAY = Duration.ofMillis(1500);
+    public static final Duration POLL_INTERVAL = Duration.ofMillis(750);
 
     private static final String CONTRACT_AGREEMENT_ID_KEY = "{{contract-agreement-id}}";
-    private static final String V2_TRANSFER_PROCESSES_PATH = "/v3/transferprocesses/";
+    private static final String V4_TRANSFER_PROCESSES_PATH = "/v4/transferprocesses/";
     private static final String EDC_STATE = "state";
 
     public static void get(String url) {
@@ -181,7 +181,7 @@ public class TransferUtil {
 
     public static String startTransfer(String requestBody, String contractAgreementId) {
         requestBody = requestBody.replace(CONTRACT_AGREEMENT_ID_KEY, contractAgreementId);
-        return post(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH, requestBody, ID);
+        return post(CONSUMER_MANAGEMENT_URL + V4_TRANSFER_PROCESSES_PATH, requestBody, ID);
     }
 
     public static void checkTransferStatus(String transferProcessId, TransferProcessStates status) {
@@ -190,7 +190,7 @@ public class TransferUtil {
                 .pollDelay(POLL_DELAY)
                 .pollInterval(POLL_INTERVAL)
                 .untilAsserted(() -> {
-                    var state = get(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
+                    var state = get(CONSUMER_MANAGEMENT_URL + V4_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
                     assertThat(state).isEqualTo(status.name());
                 });
     }
@@ -202,7 +202,7 @@ public class TransferUtil {
                 .pollDelay(POLL_DELAY)
                 .pollInterval(POLL_INTERVAL)
                 .untilAsserted(() -> {
-                    var state = get(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
+                    var state = get(CONSUMER_MANAGEMENT_URL + V4_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
                     System.out.println(state);
                 });
     }

@@ -22,6 +22,12 @@ import java.util.LinkedHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.heleade.common.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.CATALOG_DATASET_ID;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.V4_ASSETS_PATH;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.V4_CATALOG_DATASET_REQUEST_PATH;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.V4_CONTRACT_DEFINITIONS_PATH;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.V4_CONTRACT_NEGOTIATIONS_PATH;
+import static org.eclipse.edc.heleade.common.NegotiationCommon.V4_POLICY_DEFINITIONS_PATH;
 import static org.eclipse.edc.heleade.util.TransferUtil.get;
 import static org.eclipse.edc.heleade.util.TransferUtil.getResponseBody;
 import static org.eclipse.edc.heleade.util.TransferUtil.post;
@@ -29,12 +35,6 @@ import static org.eclipse.edc.heleade.util.TransferUtil.post;
 
 public class PolicyCommon {
     private static final String AUTO_VERIFY = "/verify-identity";
-    private static final String V3_ASSETS_PATH = "/v3/assets";
-    private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
-    private static final String V2_CATALOG_DATASET_REQUEST_PATH = "/v3/catalog/dataset/request";
-    private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
-
-    private static final String V2_CONTRACT_NEGOTIATIONS_PATH = "/v3/contractnegotiations/";
     private static final String RESOURCES_FOLDER = "system-tests/src/test/resources/policy";
     private static final String CREATE_ASSET_FILE_PATH = RESOURCES_FOLDER + "/create-asset.json";
     private static final String CREATE_POLICY_FILE_PATH = RESOURCES_FOLDER + "/create-policy.json";
@@ -45,7 +45,6 @@ public class PolicyCommon {
     private static final String CONTRACT_OFFER_FILE_PATH = RESOURCES_FOLDER + "/create-contract-request.json";
     private static final String CONTRACT_OFFER_FILE_PATH_DIFF_NAMESPACE = RESOURCES_FOLDER + "/create-contract-request-namespace.json";
     private static final String CONTRACT_OFFER_COMPLEX_FILE_PATH = RESOURCES_FOLDER + "/create-complex-contract-request.json";
-    private static final String CATALOG_DATASET_ID = "\"hasPolicy\".'@id'";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
     private static final String ASSET_ID_KEY = "{{asset-id}}";
     private static final String POLICY_ID_KEY = "{{policy-id}}";
@@ -81,14 +80,14 @@ public class PolicyCommon {
 
 
     public static boolean checkPolicyById(String policyId) {
-        String response = get(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH + "/" + policyId, ID);
+        String response = get(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_POLICY_DEFINITIONS_PATH + "/" + policyId, ID);
         return response != null && response.equals(policyId);
     }
 
     public static String createAssetWithId(String assetId) {
         String content = getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH)
                 .replace(ASSET_ID_KEY, assetId);
-        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, content, ID);
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_ASSETS_PATH, content, ID);
     }
 
     public static void createPolicyWithParams(String policyId, String leftOperand, String rightOperand, String operator) {
@@ -97,7 +96,7 @@ public class PolicyCommon {
                 .replace(LEFT_OPERAND_KEY, leftOperand)
                 .replace(RIGHT_OPERAND_KEY, rightOperand)
                 .replace(OPERATOR_KEY, operator);
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, content);
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_POLICY_DEFINITIONS_PATH, content);
     }
 
 
@@ -109,13 +108,13 @@ public class PolicyCommon {
                 .replace(RIGHT_OPERAND_2_KEY, rightOperand2)
                 .replace(RIGHT_OPERAND_3_KEY, rightOperand3);
 
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, content);
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_POLICY_DEFINITIONS_PATH, content);
     }
 
     public static void createSimpleDynamicPolicy(String policyId) {
         String content = getFileContentFromRelativePath(CREATE_POLICY_SIMPLE_DYNAMIC)
                 .replace(POLICY_ID_KEY, policyId);
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, content);
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_POLICY_DEFINITIONS_PATH, content);
     }
 
     public static void createContractDefinitionWithParams(String contractId, String accessPolicyId, String contractPolicyId, String assetId) {
@@ -125,16 +124,23 @@ public class PolicyCommon {
                 .replace(CONTRACT_POLICY_ID_KEY, contractPolicyId)
                 .replace(RIGHT_OPERAND_KEY, assetId);
 
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, content);
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V4_CONTRACT_DEFINITIONS_PATH, content);
     }
 
     public static String fetchDatasetFromCatalogWithId(String assetId) {
         String content = getFileContentFromRelativePath(FETCH_DATASET_FROM_CATALOG_FILE_PATH)
                 .replace(ASSET_ID_KEY, assetId);
-        return post(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CATALOG_DATASET_REQUEST_PATH, content,
+        String catalogDatasetId = post(
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CATALOG_DATASET_REQUEST_PATH, content,
                 CATALOG_DATASET_ID
         );
+        assertThat(catalogDatasetId).isNotEmpty();
+
+        if (catalogDatasetId.contains("[")) {
+            catalogDatasetId = catalogDatasetId.split(",")[0].replace("[", "").replace("]", "");
+        }
+
+        return catalogDatasetId;
     }
 
     public static String negotiateContractWithParams(String assetId, String contractOfferId, String leftOperand, String rightOperand, String operator, Boolean defaultNamespace) {
@@ -149,7 +155,7 @@ public class PolicyCommon {
 
 
         var contractNegotiationId = post(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH,
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CONTRACT_NEGOTIATIONS_PATH,
                 content,
                 ID
         );
@@ -168,7 +174,7 @@ public class PolicyCommon {
 
 
         var contractNegotiationId = post(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH,
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V4_CONTRACT_NEGOTIATIONS_PATH,
                 content,
                 ID
         );

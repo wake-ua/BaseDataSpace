@@ -4,7 +4,7 @@
   },
   "@type": "ContractRequest",
   "counterPartyAddress": "http://localhost:49194/protocol/2025-1",
-  "counterPartyId": "provider-base",
+  "counterPartyId": "provider",
   "protocol": "dataspace-protocol-http:2025-1",
   "policy": {
     "@context": "http://www.w3.org/ns/odrl.jsonld",
