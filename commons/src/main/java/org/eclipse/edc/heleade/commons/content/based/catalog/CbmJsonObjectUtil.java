@@ -18,6 +18,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonValue;
 
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_HAS_DATA_DICTIONARY;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.CBM_IS_SAMPLE_OF;
@@ -25,12 +26,16 @@ import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DISTRIBUTION_TAG;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.TYPE_TAG;
 import static org.eclipse.edc.jsonld.spi.Namespaces.DCAT_SCHEMA;
+import static org.eclipse.edc.jsonld.spi.Namespaces.DCT_SCHEMA;
 
 /**
  * Utility class for performing operations on JSON-LD structures related to Content Based Metadata (CBM),
  * including manipulation of datasets and distributions, as well as utility methods for handling JSON arrays.
  */
 public class CbmJsonObjectUtil {
+
+    private static final String DATASET_DC_TYPE = DCT_SCHEMA + "type";
+    private static final String DISTRIBUTION_DC_FORMAT = DCT_SCHEMA + "format";
 
     /**
      * Modifies a dataset by adding a sample type tag if it represents a sample dataset.
@@ -114,6 +119,52 @@ public class CbmJsonObjectUtil {
         datasetBuilder.add(DISTRIBUTION_TAG, modifiedDistributionArrayBuilder.build());
 
         return datasetBuilder.build();
+
+    }
+
+    public static JsonArray cleanupDistributionDatasetArray(JsonArray datasets) {
+        var modifiedDatasetBuilder = Json.createArrayBuilder();
+        for (JsonObject dataset : datasets.getValuesAs(JsonObject.class)) {
+            modifiedDatasetBuilder.add(cleanupDistributionForDataset(dataset));
+        }
+        return modifiedDatasetBuilder.build();
+    }
+
+    public static JsonObject cleanupDistributionForDataset(JsonObject dataset) {
+        if (dataset.containsKey(DATASET_DC_TYPE) && dataset.getString(DATASET_DC_TYPE).equals("Dataset")) {
+
+            // create nw objects
+            JsonObjectBuilder datasetBuilder = Json.createObjectBuilder(dataset);
+            var distributions = getAsJsonArray(dataset, DISTRIBUTION_TAG).getValuesAs(JsonObject.class);
+            var modifiedDistributionArrayBuilder = Json.createArrayBuilder();
+
+            for (JsonObject distribution : distributions) {
+                JsonObjectBuilder modifiedDistributionBuilder = Json.createObjectBuilder(distribution);
+
+                String format = "Undefined";
+
+                if (distribution.containsKey(DISTRIBUTION_DC_FORMAT)) {
+                    var formatValue = distribution.get(DISTRIBUTION_DC_FORMAT);
+                    if (formatValue.getValueType().equals(jakarta.json.JsonValue.ValueType.STRING)) {
+                        format = formatValue.toString();
+                    } else {
+                        if (formatValue.getValueType().equals(JsonValue.ValueType.OBJECT)) {
+                            format = formatValue.asJsonObject().getString("@id");
+                        }
+                    }
+                }
+
+                // remove ServiceData
+                if (!format.startsWith("ServiceData")) {
+                    modifiedDistributionArrayBuilder.add(modifiedDistributionBuilder.build());
+                }
+            }
+            datasetBuilder.add(DISTRIBUTION_TAG, modifiedDistributionArrayBuilder.build());
+
+            return datasetBuilder.build();
+        } else {
+            return dataset;
+        }
 
     }
 

@@ -39,6 +39,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmConstants.DATASETS_TAG;
+import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.cleanupDistributionDatasetArray;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.getAsJsonArray;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDataset;
 import static org.eclipse.edc.heleade.commons.content.based.catalog.CbmJsonObjectUtil.modifySampleDatasetArray;
@@ -107,8 +108,9 @@ public class ContentBasedCatalogApiController20251 extends BaseDspCatalogApiCont
         JsonArray datasets = getAsJsonArray(object, DATASETS_TAG);
         JsonArray modifiedSampleDatasets = modifySampleDatasetArray(datasets);
         JsonArray modifiedDataDictionaryDatasets = moveCbmFieldsToDistributionDatasetArray(modifiedSampleDatasets);
+        JsonArray modifiedDistributionCleanupDatasets = cleanupDistributionDatasetArray(modifiedDataDictionaryDatasets);
 
-        var newObject = Json.createObjectBuilder(object).add(DATASETS_TAG, modifiedDataDictionaryDatasets).build();
+        var newObject = Json.createObjectBuilder(object).add(DATASETS_TAG, modifiedDistributionCleanupDatasets).build();
         return Response.fromResponse(response)
                 .entity(newObject)
                 .build();
