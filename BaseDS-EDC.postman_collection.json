@@ -1445,7 +1445,51 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"@id\": \"csv_dataset_ES521005_2015_from_asset\",\n    \"@type\": \"Asset\",\n    \"properties\": {\n        \"dcat:temporalResolution\": \"P1D\",\n        \"dct:license\": \"https://creativecommons.org/licenses/by/4.0/\",\n        \"dcat:keyword\": [\n            \"WETLANDS\",\n            \"HONDO\",\n            \"GRID\",\n            \"CEDEX\",\n            \"NDWI\",\n            \"MNDWI\"\n        ],\n        \"dct:accrualPeriodicity\": \"annual\",\n        \"dcat:byteSize\": 2761618.0,\n        \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/RESTRICTED\",\n        \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural del Hondo. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n        \"dct:spatial\": \"POLYGON ((-0.808594 38.215505, -0.686988 38.215505, -0.686988 38.154669, -0.808594 38.154669, -0.808594 38.215505))\",\n        \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n        \"dct:type\": \"Dataset\",\n        \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n        \"cbm:hasDataDictionary\": {\n            \"@type\": \"cbm:DataDictionary\",\n            \"cbm:hasField\": [\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"ES521006\",\n                    \"dct:description\": \"Identificador único del área de interés (laguna).\",\n                    \"dct:title\": \"Identificador del área de interés\",\n                    \"schema:name\": \"aoi_id\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"10\",\n                    \"dct:description\": \"Identificador único de la celda dentro de la cuadrícula.\",\n                    \"dct:title\": \"Identificador de celda\",\n                    \"schema:name\": \"cell_id\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"dateTime\",\n                    \"cbm:sampleValue\": \"2015-07-06T10:50:16Z\",\n                    \"dct:description\": \"Fecha y hora de la imagen o dato analizado.\",\n                    \"dct:title\": \"Fecha y hora\",\n                    \"schema:name\": \"timestamp\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.12305422\",\n                    \"dct:description\": \"Índice de vegetación normalizada.\",\n                    \"dct:title\": \"Índice NDVI\",\n                    \"schema:name\": \"ndvi\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.19679184\",\n                    \"dct:description\": \"Índice modificado de agua.\",\n                    \"dct:title\": \"Índice MNDWI\",\n                    \"schema:name\": \"mndwi\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.0859602\",\n                    \"dct:description\": \"Índice específico CEDEX para análisis ambiental.\",\n                    \"dct:title\": \"Índice CEDEX\",\n                    \"schema:name\": \"cedex\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"1.16801\",\n                    \"dct:description\": \"Relación entre bandas SWIR y NIR.\",\n                    \"dct:title\": \"Ratio SWIR/NIR\",\n                    \"schema:name\": \"ratio_swir_nir\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.26639273\",\n                    \"dct:description\": \"Índice mejorado de agua para humedales (AWEIsh).\",\n                    \"dct:title\": \"Índice AWEIsh\",\n                    \"schema:name\": \"aweish\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.49938032\",\n                    \"dct:description\": \"Índice de vegetación con banda verde.\",\n                    \"dct:title\": \"Índice CIGreen\",\n                    \"schema:name\": \"cigreen\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.0635949\",\n                    \"dct:description\": \"Índice de diferencia normalizada en banda roja y NIR.\",\n                    \"dct:title\": \"Índice NDRE\",\n                    \"schema:name\": \"ndre\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.07565519\",\n                    \"dct:description\": \"Índice de diferencia normalizada de la textura.\",\n                    \"dct:title\": \"Índice NDTI\",\n                    \"schema:name\": \"ndti\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.0759602\",\n                    \"dct:description\": \"Indicador relacionado con la salinidad del agua o suelo.\",\n                    \"dct:title\": \"Índice de salinidad\",\n                    \"schema:name\": \"salinity_index\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.06010487\",\n                    \"dct:description\": \"Índice de diferencia normalizada de clorofila.\",\n                    \"dct:title\": \"Índice NDCI\",\n                    \"schema:name\": \"ndci\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.13885115\",\n                    \"dct:description\": \"Índice de vegetación basado en reflectancia roja.\",\n                    \"dct:title\": \"Índice CI_RE\",\n                    \"schema:name\": \"ci_re\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"37.95690968\",\n                    \"dct:description\": \"Coordenada geográfica de latitud en grados decimales.\",\n                    \"dct:title\": \"Latitud\",\n                    \"schema:name\": \"latitude\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.76692115\",\n                    \"dct:description\": \"Coordenada geográfica de longitud en grados decimales.\",\n                    \"dct:title\": \"Longitud\",\n                    \"schema:name\": \"longitude\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"integer\",\n                    \"cbm:sampleValue\": \"4326\",\n                    \"dct:description\": \"Código EPSG del sistema de referencia espacial.\",\n                    \"dct:title\": \"EPSG\",\n                    \"schema:name\": \"epsg\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"Parque Natural del Hondo\",\n                    \"dct:description\": \"Nombre común del área de interés (laguna).\",\n                    \"dct:title\": \"Nombre del área de interés\",\n                    \"schema:name\": \"aoi_name\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"S2A_MSIL2A_20150706T105016_N0500_R051_T30SXH_20231010T143709\",\n                    \"dct:description\": \"Nombre de la imagen de la que provienen los datos.\",\n                    \"dct:title\": \"Carpeta de origen\",\n                    \"schema:name\": \"folder\"\n                }\n            ]\n        },\n        \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural del Hondo (2015)\",\n        \"id\": \"csv_dataset_ES521005_2015\",\n        \"contenttype\": \"text/csv\",\n        \"dcat:spatialResolutionInMeters\": 500.0,\n        \"dct:rights\": \"Datos derivados de imágenes Sentinel-2 del programa Copernicus.\",\n        \"dct:temporal\": {\n            \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\",\n            \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\"\n        }\n    },\n    \"dataAddress\": {\n        \"@type\": \"DataAddress\",\n        \"proxyPath\": \"true\",\n        \"type\": \"HttpData\",\n        \"authCode\": \"a8f3c1e9b2d4475fa9120cbe7e65ad90\",\n        \"authKey\": \"x-auth-token\",\n        \"baseUrl\": \"https://idearium.eu/heleade/download.php?file=es521005_aoi_2015.csv\"\n    },\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n    }\n}",
+                  "raw": "{\n    \"@id\": \"csv_dataset_ES521005_2015_from_asset\",\n    \"@type\": \"Asset\",\n    \"properties\": {\n        \"dcat:temporalResolution\": \"P1D\",\n        \"dct:license\": \"https://creativecommons.org/licenses/by/4.0/\",\n        \"dcat:keyword\": [\n            \"WETLANDS\",\n            \"HONDO\",\n            \"GRID\",\n            \"CEDEX\",\n            \"NDWI\",\n            \"MNDWI\"\n        ],\n        \"dct:accrualPeriodicity\": \"annual\",\n        \"dcat:byteSize\": 2761618.0,\n        \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/RESTRICTED\",\n        \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural del Hondo. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n        \"dct:spatial\": \"POLYGON ((-0.808594 38.215505, -0.686988 38.215505, -0.686988 38.154669, -0.808594 38.154669, -0.808594 38.215505))\",\n        \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n        \"dct:type\": \"Dataset\",\n        \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n        \"cbm:hasDataDictionary\": {\n            \"@type\": \"cbm:DataDictionary\",\n            \"cbm:hasField\": [\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"ES521006\",\n                    \"dct:description\": \"Identificador único del área de interés (laguna).\",\n                    \"dct:title\": \"Identificador del área de interés\",\n                    \"schema:name\": \"aoi_id\"\n                },\n                {\n                    \"@type\": \"cbm:Fieldx\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"10\",\n                    \"dct:description\": \"Identificador único de la celda dentro de la cuadrícula.\",\n                    \"dct:title\": \"Identificador de celda\",\n                    \"schema:name\": \"cell_id\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"dateTime\",\n                    \"cbm:sampleValue\": \"2015-07-06T10:50:16Z\",\n                    \"dct:description\": \"Fecha y hora de la imagen o dato analizado.\",\n                    \"dct:title\": \"Fecha y hora\",\n                    \"schema:name\": \"timestamp\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.12305422\",\n                    \"dct:description\": \"Índice de vegetación normalizada.\",\n                    \"dct:title\": \"Índice NDVI\",\n                    \"schema:name\": \"ndvi\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.19679184\",\n                    \"dct:description\": \"Índice modificado de agua.\",\n                    \"dct:title\": \"Índice MNDWI\",\n                    \"schema:name\": \"mndwi\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.0859602\",\n                    \"dct:description\": \"Índice específico CEDEX para análisis ambiental.\",\n                    \"dct:title\": \"Índice CEDEX\",\n                    \"schema:name\": \"cedex\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"1.16801\",\n                    \"dct:description\": \"Relación entre bandas SWIR y NIR.\",\n                    \"dct:title\": \"Ratio SWIR/NIR\",\n                    \"schema:name\": \"ratio_swir_nir\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.26639273\",\n                    \"dct:description\": \"Índice mejorado de agua para humedales (AWEIsh).\",\n                    \"dct:title\": \"Índice AWEIsh\",\n                    \"schema:name\": \"aweish\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.49938032\",\n                    \"dct:description\": \"Índice de vegetación con banda verde.\",\n                    \"dct:title\": \"Índice CIGreen\",\n                    \"schema:name\": \"cigreen\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.0635949\",\n                    \"dct:description\": \"Índice de diferencia normalizada en banda roja y NIR.\",\n                    \"dct:title\": \"Índice NDRE\",\n                    \"schema:name\": \"ndre\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.07565519\",\n                    \"dct:description\": \"Índice de diferencia normalizada de la textura.\",\n                    \"dct:title\": \"Índice NDTI\",\n                    \"schema:name\": \"ndti\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.0759602\",\n                    \"dct:description\": \"Indicador relacionado con la salinidad del agua o suelo.\",\n                    \"dct:title\": \"Índice de salinidad\",\n                    \"schema:name\": \"salinity_index\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.06010487\",\n                    \"dct:description\": \"Índice de diferencia normalizada de clorofila.\",\n                    \"dct:title\": \"Índice NDCI\",\n                    \"schema:name\": \"ndci\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"0.13885115\",\n                    \"dct:description\": \"Índice de vegetación basado en reflectancia roja.\",\n                    \"dct:title\": \"Índice CI_RE\",\n                    \"schema:name\": \"ci_re\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"37.95690968\",\n                    \"dct:description\": \"Coordenada geográfica de latitud en grados decimales.\",\n                    \"dct:title\": \"Latitud\",\n                    \"schema:name\": \"latitude\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"float\",\n                    \"cbm:sampleValue\": \"-0.76692115\",\n                    \"dct:description\": \"Coordenada geográfica de longitud en grados decimales.\",\n                    \"dct:title\": \"Longitud\",\n                    \"schema:name\": \"longitude\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"integer\",\n                    \"cbm:sampleValue\": \"4326\",\n                    \"dct:description\": \"Código EPSG del sistema de referencia espacial.\",\n                    \"dct:title\": \"EPSG\",\n                    \"schema:name\": \"epsg\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"Parque Natural del Hondo\",\n                    \"dct:description\": \"Nombre común del área de interés (laguna).\",\n                    \"dct:title\": \"Nombre del área de interés\",\n                    \"schema:name\": \"aoi_name\"\n                },\n                {\n                    \"@type\": \"cbm:Field\",\n                    \"cbm:datatype\": \"string\",\n                    \"cbm:sampleValue\": \"S2A_MSIL2A_20150706T105016_N0500_R051_T30SXH_20231010T143709\",\n                    \"dct:description\": \"Nombre de la imagen de la que provienen los datos.\",\n                    \"dct:title\": \"Carpeta de origen\",\n                    \"schema:name\": \"folder\"\n                }\n            ]\n        },\n        \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural del Hondo (2015)\",\n        \"id\": \"csv_dataset_ES521005_2015\",\n        \"contenttype\": \"text/csv\",\n        \"dcat:spatialResolutionInMeters\": 500.0,\n        \"dct:rights\": \"Datos derivados de imágenes Sentinel-2 del programa Copernicus.\",\n        \"dct:temporal\": {\n            \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\",\n            \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\"\n        }\n    },\n    \"dataAddress\": {\n        \"@type\": \"DataAddress\",\n        \"proxyPath\": \"true\",\n        \"type\": \"HttpData\",\n        \"authCode\": \"a8f3c1e9b2d4475fa9120cbe7e65ad90\",\n        \"authKey\": \"x-auth-token\",\n        \"baseUrl\": \"https://idearium.eu/heleade/download.php?file=es521005_aoi_2015.csv\"\n    },\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n    }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v4/assets",
+                  "host": [
+                    "{{HOST_URL}}"
+                  ],
+                  "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+                  "path": [
+                    "management",
+                    "v4",
+                    "assets"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Asset V4 Single Field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if(pm.response.code == 200){",
+                      "    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"@id\": \"dataset_single_dictionary_field\",\n    \"@type\": \"Asset\",\n    \"properties\": {\n        \"dcat:temporalResolution\": \"P1D\",\n        \"dct:license\": \"https://creativecommons.org/licenses/by/4.0/\",\n        \"dcat:keyword\": [\n            \"WETLANDS\",\n            \"HONDO\",\n            \"GRID\",\n            \"CEDEX\",\n            \"NDWI\",\n            \"MNDWI\"\n        ],\n        \"dct:accrualPeriodicity\": \"annual\",\n        \"dcat:byteSize\": 2761618.0,\n        \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/RESTRICTED\",\n        \"dct:description\": \"Archivo con datos agregados anuales de varios índices espectrales (NDVI, NDWI, MNDWI, etc.) calculados para cada celda de la cuadrícula del Parque Natural del Hondo. Incluye un registro por celda y año con los valores resultantes del análisis.\",\n        \"dct:spatial\": \"POLYGON ((-0.808594 38.215505, -0.686988 38.215505, -0.686988 38.154669, -0.808594 38.154669, -0.808594 38.215505))\",\n        \"dct:issued\": \"2025-12-31T00:00:00+01:00\",\n        \"dct:type\": \"Dataset\",\n        \"dct:modified\": \"2025-12-31T00:00:00+01:00\",\n        \"cbm:hasDataDictionary\": {\n            \"@type\": \"cbm:DataDictionary\",\n            \"cbm:hasField\": \n                         {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"ANY\",\n                            \"dct:title\": \"Year\",\n                            \"cbm:datatype\": \"integer\",\n                            \"dct:description\": \"Year of the data accrual\",\n                            \"cbm:sampleValue\": \"2021\"\n                        }\n            \n        },\n        \"dct:title\": \"Datos de análisis anual de índices para la cuadrícula del Parque Natural del Hondo (2015)\",\n        \"id\": \"csv_dataset_ES521005_2015\",\n        \"contenttype\": \"text/csv\",\n        \"dcat:spatialResolutionInMeters\": 500.0,\n        \"dct:rights\": \"Datos derivados de imágenes Sentinel-2 del programa Copernicus.\",\n        \"dct:temporal\": {\n            \"dcat:endDate\": \"2015-12-31T23:59:59+01:00\",\n            \"dcat:startDate\": \"2015-01-01T00:00:00+01:00\"\n        }\n    },\n    \"dataAddress\": {\n        \"@type\": \"DataAddress\",\n        \"proxyPath\": \"true\",\n        \"type\": \"HttpData\",\n        \"authCode\": \"a8f3c1e9b2d4475fa9120cbe7e65ad90\",\n        \"authKey\": \"x-auth-token\",\n        \"baseUrl\": \"https://idearium.eu/heleade/download.php?file=es521005_aoi_2015.csv\"\n    },\n    \"@context\": {\n        \"schema\": \"https://schema.org/\",\n        \"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n        \"dct\": \"http://purl.org/dc/terms/\",\n        \"dcat\": \"http://www.w3.org/ns/dcat#\",\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n    }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1512,7 +1556,7 @@
               "response": []
             },
             {
-              "name": "Create Asset 4 CBM V4",
+              "name": "Create Dataset 4 CBM V4",
               "event": [
                 {
                   "listen": "test",
@@ -1556,7 +1600,51 @@
               "response": []
             },
             {
-              "name": "Create Asset 4 Sample CBM V4",
+              "name": "Create Dataset 4 CBM V4 Single Field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if(pm.response.code == 200){",
+                      "    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"@id\": \"assetId4CbmSingleField\",\n\t\"@type\": \"dcat:Dataset\",\n\t\"dcat:distribution\": [\n            {\n                \"@type\": \"dcat:Distribution\",\n                \"dct:format\": {\n                    \"@id\": \"HttpData\"\n                },\n                \"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n                \"proxyPath\": \"true\",\n                \"cbm:hasDataDictionary\": {\n                    \"@type\": \"cbm:DataDictionary\",\n                    \"cbm:hasField\": \n                        {\n                            \"@type\": \"cbm:Field\",\n                            \"schema:name\": \"username\",\n                            \"dct:title\": \"User Name\",\n                            \"cbm:datatype\": \"string\",\n                            \"dct:description\": \"Name of the user\",\n                            \"cbm:sampleValue\": \"bret\"\n                        }\n                }\n            }\n        ],\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n\t\"contenttype\": \"application/json\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n    \"cbm:hasSample\": [\"assetId4SampleCbm\"],\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",\n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v4/assets-cbm",
+                  "host": [
+                    "{{HOST_URL}}"
+                  ],
+                  "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+                  "path": [
+                    "management",
+                    "v4",
+                    "assets-cbm"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Dataset 4 Sample CBM V4",
               "event": [
                 {
                   "listen": "test",
@@ -1578,6 +1666,50 @@
                 "body": {
                   "mode": "raw",
                   "raw": "{\n\t\"@id\": \"assetId4SampleCbm\",\n\t\"@type\": \"cbm:Sample\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n                \"@type\": \"cbm:DataDictionary\",\n\t\t\t\t\"cbm:hasField\": [\n\t\t\t\t\t{\n                        \"@type\": \"cbm:Field\",\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"cbm:datatype\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n                        \"@type\": \"cbm:Field\",\n\t\t\t\t\t\t\"schema:name\": \"id\",\n\t\t\t\t\t\t\"dct:title\": \"User Identifier\",\n\t\t\t\t\t\t\"cbm:datatype\": \"integer\",\n\t\t\t\t\t\t\"dct:description\": \"Id of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"1\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t],\n\t\"cbm:isSampleOf\": \"assetId4\",\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n\t\"schema:algorithm\": \"clustering\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",   \n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v4/assets-cbm",
+                  "host": [
+                    "{{HOST_URL}}"
+                  ],
+                  "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+                  "path": [
+                    "management",
+                    "v4",
+                    "assets-cbm"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Dataset 4 Sample CBM V4 Single Field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if(pm.response.code == 200){",
+                      "    pm.environment.set(\"ASSET_ID\", pm.response.json()[\"@id\"]);",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"@id\": \"assetId4SampleCbmSingleField\",\n\t\"@type\": \"cbm:Sample\",\n\t    \"dcat:distribution\": [\n\t\t{\n\t\t\t\"@type\": \"dcat:Distribution\",\n\t\t\t\"dct:format\": {\n\t\t\t\t\"@id\": \"HttpData\"\n\t\t\t},\n\t\t\t\"dcat:accessURL\": \"https://jsonplaceholder.typicode.com/users\",\n\t\t\t\"proxyPath\": \"true\",\n\t\t\t\"cbm:hasDataDictionary\": {\n                \"@type\": \"cbm:DataDictionary\",\n\t\t\t\t\"cbm:hasField\": \n\t\t\t\t\t{\n                        \"@type\": \"cbm:Field\",\n\t\t\t\t\t\t\"schema:name\": \"username\",\n\t\t\t\t\t\t\"dct:title\": \"User Name\",\n\t\t\t\t\t\t\"cbm:datatype\": \"string\",\n\t\t\t\t\t\t\"dct:description\": \"Name of the user\",\n\t\t\t\t\t\t\"cbm:sampleValue\": \"bret\"\n\t\t\t\t\t}\n\t\t\t\t\n\t\t\t}\n\t\t}\n\t],\n\t\"cbm:isSampleOf\": \"assetId4\",\n\t\"dct:title\": \"test template 4 name\",\n    \"dct:description\": \"test description\",\n    \"dct:issued\": \"2025-10-22T13:04:33+00:00\",\n    \"dct:modified\": \"2025-10-22T13:04:33+00:00\",\n\t\"contenttype\": \"application/json\",\n\t\"schema:algorithm\": \"clustering\",\n    \"dct:accessRights\": \"http://publications.europa.eu/resource/authority/access-right/PUBLIC\",\n    \"dct:license\": \"https://opendatacommons.org/licenses/odbl/1.0/\",\n    \"dct:type\": \"Dataset\",   \n\t\"@context\": {\n\t\t\"schema\": \"https://schema.org/\",\n\t\t\"cbm\": \"https://w3id.org/cbm/v0.0.1/ns/\",\n\t\t\"dcat\": \"http://www.w3.org/ns/dcat#\",\n\t\t\"dct\": \"http://purl.org/dc/terms/\",\n\t\t\"odrl\": \"http://www.w3.org/ns/odrl/2/\",\n\t\t\"dspace\": \"https://w3id.org/dspace/v0.8/\",\n\t\t\"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n\t\t\"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    }\n}\n\n\n    \n    \n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2017,7 +2149,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"@type\": \"ContractDefinition\",\n    \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1a\",\n  \"accessPolicyId\": \"aPolicy\",\n  \"contractPolicyId\": \"aPolicy\",\n  \"assetsSelector\": []\n}\n",
+                  "raw": "{\n    \"@type\": \"ContractDefinition\",\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n    },\n    \"@id\": \"1a\",\n    \"accessPolicyId\": \"aPolicy\",\n    \"contractPolicyId\": \"aPolicy\",\n    \"assetsSelector\": []\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2046,7 +2178,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"@type\": \"ContractDefinition\",\n    \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"always-true\",\n  \"assetsSelector\": []\n}\n",
+                  "raw": "{\n    \"@type\": \"ContractDefinition\",\n    \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"1\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"always-true\",\n  \"assetsSelector\": [\n            {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"assetIdService\"\n    }\n    ]\n}\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2092,6 +2224,35 @@
                     "management",
                     "v4",
                     "policydefinitions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Contract Definition V4 location-eu",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"@type\": \"ContractDefinition\",\n    \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@id\": \"3\",\n  \"accessPolicyId\": \"always-true\",\n  \"contractPolicyId\": \"eu-policy\",\n  \"assetsSelector\": [\n        {\n        \"@type\": \"CriterionDto\",\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\n        \"operator\": \"=\",\n        \"operandRight\": \"{{ASSET_ID}}\"\n    }\n  ]\n}\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v4/contractdefinitions",
+                  "host": [
+                    "{{HOST_URL}}"
+                  ],
+                  "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+                  "path": [
+                    "management",
+                    "v4",
+                    "contractdefinitions"
                   ]
                 }
               },
@@ -2432,7 +2593,52 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyId\": \"{{PARTICIPANT_ID}}\",\n  \"counterPartyAddress\": \"{{ENDPOINT_URL}}\",\n  \"protocol\": \"dataspace-protocol-http:2025-1\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \n    \"@type\": \"Offer\",\n    \"assigner\": \"{{PARTICIPANT_ID}}\",\n    \"target\": \"{{ASSET_ID}}\",\n    \"odrl:permission\": [],\n    \"odrl:prohibition\": [],\n    \"odrl:obligation\": []\n  }\n}",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyId\": \"{{PARTICIPANT_ID}}\",\n  \"counterPartyAddress\": \"{{ENDPOINT_URL}}\",\n  \"protocol\": \"dataspace-protocol-http:2025-1\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"{{PARTICIPANT_ID}}\",\n    \"target\": \"{{ASSET_ID}}\",\n    \"odrl:permission\": [],\n    \"odrl:prohibition\": [],\n    \"odrl:obligation\": []\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v4/contractnegotiations",
+              "host": [
+                "{{HOST_URL}}"
+              ],
+              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+              "path": [
+                "management",
+                "v4",
+                "contractnegotiations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Negotiate Contract with Policy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// get the id of one asset and save it as an environment variable",
+                  "if(pm.response.code == 200){",
+                  "    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"@context\": {\n        \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n    },\n    \"@type\": \"ContractRequest\",\n    \"counterPartyAddress\": \"{{ENDPOINT_URL}}\",\n    \"protocol\": \"dataspace-protocol-http:2025-1\",\n    \"policy\": {\n        \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n        \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n        \"@type\": \"Offer\",\n        \"assigner\": \"provider-base\",\n        \"target\": \"{{ASSET_ID}}\",\n        \"permission\": {\n            \"action\": \"use\",\n            \"constraint\": {\n                \"leftOperand\": {\n                    \"@id\": \"edc:location\"\n                },\n                \"operator\": {\n                    \"@id\": \"odrl:eq\"\n                },\n                \"rightOperand\": \"eu\"\n            }\n        }\n    }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2757,6 +2963,12 @@
                 "key": "Authorization",
                 "value": "{{HTTP_PULL_AUTH_TOKEN}}",
                 "type": "text"
+              },
+              {
+                "key": "Content-Length",
+                "value": "181",
+                "type": "text",
+                "disabled": true
               }
             ],
             "body": {
@@ -2847,45 +3059,44 @@
           "response": []
         },
         {
-          "name": "Get Provider Catalog Docker",
+          "name": "List Provider Contract Agreements",
           "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            },
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "// get the id of one asset and save it as an environment variable",
                   "if(pm.response.code == 200){",
-                  "    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
-                  "    if (Array.isArray(dcat_dataset)) {",
-                  "        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
-                  "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
-                  "    } else {",
-                  "        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
-                  "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
-                  "    }",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", jsonData[0][\"@id\"]);",
                   "}"
                 ],
                 "type": "text/javascript",
-                "packages": {}
+                "packages": {},
+                "requests": {}
               }
             }
           ],
           "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "managementApiKeyProviderBase",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2893,15 +3104,15 @@
               }
             },
             "url": {
-              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractagreements/request",
               "host": [
                 "{{HOST_URL}}"
               ],
-              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
               "path": [
                 "management",
                 "v3",
-                "catalog",
+                "contractagreements",
                 "request"
               ]
             }
@@ -2909,15 +3120,15 @@
           "response": []
         },
         {
-          "name": "Negotiate Contract Docker",
+          "name": "List Provider Contract Negotiations from Agreement",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "// get the id of one asset and save it as an environment variable",
                   "if(pm.response.code == 200){",
-                  "    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"CONTRACT_NEGOTIATION_ID\", jsonData[\"@id\"]);",
                   "}"
                 ],
                 "type": "text/javascript",
@@ -2926,12 +3137,30 @@
               }
             }
           ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
-            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "managementApiKeyProviderBase",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\",\n                \"odrl:permission\": {\n                    \"odrl:action\": {\n                        \"@id\": \"odrl:use\"\n                    }\n                },\n                \"odrl:prohibition\": [],\n                \"odrl:obligation\": []\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2939,31 +3168,30 @@
               }
             },
             "url": {
-              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractagreements/{{CONTRACT_AGREEMENT_ID}}/negotiation",
               "host": [
                 "{{HOST_URL}}"
               ],
-              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
               "path": [
                 "management",
                 "v3",
-                "contractnegotiations"
+                "contractagreements",
+                "{{CONTRACT_AGREEMENT_ID}}",
+                "negotiation"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Negotiate Contract with Policy",
+          "name": "Terminate Provider Contract Negotiation",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "// get the id of one asset and save it as an environment variable",
-                  "if(pm.response.code == 200){",
-                  "    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
-                  "}"
+                  ""
                 ],
                 "type": "text/javascript",
                 "packages": {},
@@ -2972,11 +3200,26 @@
             }
           ],
           "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "managementApiKeyProviderBase",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\n    \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"{{HOST_URL}}:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\",\n    \"permission\": \n        {\n            \"action\": \"use\",\n            \"constraint\": {\n                \"leftOperand\": {\n                    \"@id\": \"edc:location\"\n                },\n                \"operator\": {\n                    \"@id\": \"odrl:eq\"\n                },\n                \"rightOperand\": \"eu\"\n            }\n        }\n  }\n}",
+              "raw": "{\n    \"@context\": { \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\" },\n    \"@type\": \"https://w3id.org/edc/v0.0.1/ns/TerminateNegotiation\",\n    \"@id\": \"{{CONTRACT_NEGOTIATION_ID}}\",\n    \"reason\": \"no reason to terminate\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2984,15 +3227,17 @@
               }
             },
             "url": {
-              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
+              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_NEGOTIATION_ID}}/terminate",
               "host": [
                 "{{HOST_URL}}"
               ],
-              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
+              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
               "path": [
                 "management",
                 "v3",
-                "contractnegotiations"
+                "contractnegotiations",
+                "{{CONTRACT_NEGOTIATION_ID}}",
+                "terminate"
               ]
             }
           },
@@ -3179,44 +3424,45 @@
           "response": []
         },
         {
-          "name": "List Provider Contract Agreements",
+          "name": "Get Provider Catalog Docker",
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
             {
               "listen": "test",
               "script": {
                 "exec": [
+                  "// get the id of one asset and save it as an environment variable",
                   "if(pm.response.code == 200){",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.environment.set(\"CONTRACT_AGREEMENT_ID\", jsonData[0][\"@id\"]);",
+                  "    const dcat_dataset = pm.response.json()[\"dcat:dataset\"]",
+                  "    if (Array.isArray(dcat_dataset)) {",
+                  "        pm.environment.set(\"ASSET_ID\", dcat_dataset[0][\"@id\"]);",
+                  "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[0][\"odrl:hasPolicy\"][\"@id\"]);",
+                  "    } else {",
+                  "        pm.environment.set(\"ASSET_ID\", dcat_dataset[\"@id\"]);",
+                  "        pm.environment.set(\"CONTRACT_OFFER_ID\", dcat_dataset[\"odrl:hasPolicy\"][\"@id\"]);",
+                  "    }",
                   "}"
                 ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "packages": {}
               }
             }
           ],
           "request": {
-            "auth": {
-              "type": "apikey",
-              "apikey": [
-                {
-                  "key": "value",
-                  "value": "managementApiKeyProviderBase",
-                  "type": "string"
-                },
-                {
-                  "key": "key",
-                  "value": "x-api-key",
-                  "type": "string"
-                }
-              ]
-            },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3224,15 +3470,15 @@
               }
             },
             "url": {
-              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractagreements/request",
+              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/catalog/request",
               "host": [
                 "{{HOST_URL}}"
               ],
-              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
               "path": [
                 "management",
                 "v3",
-                "contractagreements",
+                "catalog",
                 "request"
               ]
             }
@@ -3240,15 +3486,15 @@
           "response": []
         },
         {
-          "name": "List Provider Contract Negotiations from Agreement",
+          "name": "Negotiate Contract Docker",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
+                  "// get the id of one asset and save it as an environment variable",
                   "if(pm.response.code == 200){",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.environment.set(\"CONTRACT_NEGOTIATION_ID\", jsonData[\"@id\"]);",
+                  "    pm.environment.set(\"CONTRACT_ID\", pm.response.json()[\"@id\"]);",
                   "}"
                 ],
                 "type": "text/javascript",
@@ -3257,89 +3503,12 @@
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
-            "auth": {
-              "type": "apikey",
-              "apikey": [
-                {
-                  "key": "value",
-                  "value": "managementApiKeyProviderBase",
-                  "type": "string"
-                },
-                {
-                  "key": "key",
-                  "value": "x-api-key",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"QuerySpec\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractagreements/{{CONTRACT_AGREEMENT_ID}}/negotiation",
-              "host": [
-                "{{HOST_URL}}"
-              ],
-              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
-              "path": [
-                "management",
-                "v3",
-                "contractagreements",
-                "{{CONTRACT_AGREEMENT_ID}}",
-                "negotiation"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Terminate Provider Contract Negotiation",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "apikey",
-              "apikey": [
-                {
-                  "key": "value",
-                  "value": "managementApiKeyProviderBase",
-                  "type": "string"
-                },
-                {
-                  "key": "key",
-                  "value": "x-api-key",
-                  "type": "string"
-                }
-              ]
-            },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"@context\": { \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\" },\n    \"@type\": \"https://w3id.org/edc/v0.0.1/ns/TerminateNegotiation\",\n    \"@id\": \"{{CONTRACT_NEGOTIATION_ID}}\",\n    \"reason\": \"no reason to terminate\"\n}",
+              "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"@type\": \"ContractRequest\",\n  \"counterPartyAddress\": \"http://provider-base:{{PROVIDER_PROTOCOL_PORT}}/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"policy\": {\n    \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n    \"@id\": \"{{CONTRACT_OFFER_ID}}\",\n    \"@type\": \"Offer\",\n    \"assigner\": \"provider-base\",\n    \"target\": \"{{ASSET_ID}}\",\n                \"odrl:permission\": {\n                    \"odrl:action\": {\n                        \"@id\": \"odrl:use\"\n                    }\n                },\n                \"odrl:prohibition\": [],\n                \"odrl:obligation\": []\n  },\n  \"callbackAddresses\": [{\n    \"transactional\": false,\n    \"uri\": \"http://consumer-base:29194\",\n    \"events\": [\"contract.negotiation\", \"transfer.process\"]\n    }]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3347,17 +3516,15 @@
               }
             },
             "url": {
-              "raw": "{{HOST_URL}}:{{PROVIDER_MANAGEMENT_PORT}}/management/v3/contractnegotiations/{{CONTRACT_NEGOTIATION_ID}}/terminate",
+              "raw": "{{HOST_URL}}:{{CONSUMER_MANAGEMENT_PORT}}/management/v3/contractnegotiations",
               "host": [
                 "{{HOST_URL}}"
               ],
-              "port": "{{PROVIDER_MANAGEMENT_PORT}}",
+              "port": "{{CONSUMER_MANAGEMENT_PORT}}",
               "path": [
                 "management",
                 "v3",
-                "contractnegotiations",
-                "{{CONTRACT_NEGOTIATION_ID}}",
-                "terminate"
+                "contractnegotiations"
               ]
             }
           },
@@ -4313,7 +4480,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"https://edc-albufera-ds.iti.es/producer/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"counterPartyId\": \"provider-\"\n\n}",
+                  "raw": "{\n  \"@context\": {\n    \"@vocab\": \"https://w3id.org/edc/v0.0.1/ns/\"\n  },\n  \"counterPartyAddress\": \"https://edc-albufera-ds.iti.es/producer/protocol\",\n  \"protocol\": \"dataspace-protocol-http\",\n  \"counterPartyId\": \"provider-albufera\"\n\n}",
                   "options": {
                     "raw": {
                       "language": "json"
