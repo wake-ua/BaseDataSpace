@@ -1,6 +1,15 @@
 # *HELEADE/Base Data Space*
 
-> Base Data Space for the Heleade project
+Base Data Space for the Heleade project.
+Heleade aims to implement data-sharing and data-exploitation solutions in areas of high environmental value, focusing
+on the Natural Parks of southern Alicante. Its goal is to create a sustainable socio-economic ecosystem where 
+institutions, companies, and researchers can collaborate and share data efficiently, enabling new services and products 
+while raising awareness of the data economy’s role in addressing socio-environmental challenges.
+
+More information about the project: [https://heleade.iuii.ua.es/](https://heleade.iuii.ua.es/)
+
+The components of this base data space are deployed in production serving the current 
+Heleade dataspace: [https://dataspace.heleade.iuii.ua.es/](https://dataspace.heleade.iuii.ua.es/)
 
 ---
 
@@ -15,13 +24,12 @@
 
 * PROVIDERS:
   * **Base Provider**: Ports 1919x / 1929x
-  * **Climate Provider**: Ports 1619x / 1629x
   * **eBird Provider**: Ports 1719x / 1729x
-  * **Mastral Provider**: Ports 1819x / 1829x
   * **Idearium Provider**: Ports 1519x / 1529x
 * CONSUMERS:
   * **Base Consumer**: Ports 2919x / 2929x
-* **Federated Catalog**: Ports 3919x / 3929x
+* CATALOG
+  * **Federated Catalog**: Ports 3919x / 3929x
 
 ---
 
@@ -32,7 +40,7 @@ This research project is supported by:
 - **Funding organization/institution:** MINISTERIO PARA LA TRANSFORMACION DIGITAL Y DE LA FUNCION PUBLICA
 - **Program or grant:** CONVOCATORIA DE AYUDAS PROGRAMA DE ESPACIOS DE DATOS SECTORIALES PARA LA TRANSFORMACIÓN DIGITAL DE LOS SECTORES PRODUCTIVOS ESTRATÉGICOS MEDIANTE LA CREACIÓN DE DEMOSTRADORES Y CASOS DE USO DE ESPACIOS DE COMPARTICIÓN DE DATOS
 - **Project code/reference:** TSI-100121-2024-24
-- **Duration:** [01/11/2024 – 31/12/2025] 
+- **Duration:** [01/11/2024 – 31/06/2026] 
 
 ---
 
@@ -103,9 +111,6 @@ For that run:
 ``chmod +x generate-keys.sh``
 
 
-
-
-
 ### Postman Collection
 The postman collection is under development.
 Import into Postman the file BaseDS-EDC.postman_collection.json
@@ -123,7 +128,7 @@ docker run -p 4000:4000 http-request-logger
 - **Collaborators:**
 - Lucía De Espona Pernas – [@espona](https://github.com/espona)
 - María de los Ángeles Ortega Rivas – [@ortegi](https://github.com/ortegi)
-- David Bernabeu Ferrer – [@ortegi](https://github.com/dvddepennde)
+- David Bernabeu Ferrer – [@dvddepennde](https://github.com/dvddepennde)
 
 ---
 

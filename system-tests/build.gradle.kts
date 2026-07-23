@@ -29,20 +29,14 @@ dependencies {
     testImplementation(libs.restAssured)
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.junit)
-    testImplementation(libs.testcontainers.kafka)
-    testImplementation(libs.kafka.clients)
     testImplementation(libs.testcontainers.minio)
     testImplementation(libs.testcontainers.hashicorp.vault)
-    testImplementation(libs.azure.storage.blob)
     testImplementation(libs.minio.io)
     testImplementation(libs.postgres)
-    testImplementation("org.mongodb:mongodb-driver-sync:5.5.0")
+    testImplementation(libs.mongodb.driver.sync)
+
     // catalog node directory
     testImplementation(libs.edc.fc.spi.crawler)
 
-    // runtimes (commented out as it messes up the tests)
-//    testCompileOnly(project(":consumer"))
-//    testCompileOnly(project(":provider"))
-//    testCompileOnly(project(":federated-catalog"))
 
 }

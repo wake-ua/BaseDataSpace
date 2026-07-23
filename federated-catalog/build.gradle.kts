@@ -24,35 +24,20 @@ dependencies {
     runtimeOnly(libs.edc.bom.controlplane.base)
 
     implementation(libs.edc.fc.api)
-//    implementation(libs.edc.fc.core)
     implementation(project(":commons"))
+    implementation(libs.edc.connector.core)
 
     // catalog node directory
     implementation(libs.edc.fc.spi.crawler)
-//    implementation(libs.edc.catalog.util.lib)
-//    implementation(libs.edc.lib.util)
     implementation(libs.edc.spi.transaction)
     implementation(libs.edc.spi.transaction.datasource)
 
-
-    // consumer fc
-//    implementation(libs.edc.runtime.core)
-//    runtimeOnly(libs.edc.boot)
-//    implementation(libs.edc.http)
-//    implementation(libs.edc.dsp)
-//    runtimeOnly(libs.edc.token.core)
-//
-    implementation(libs.edc.connector.core)
-//    implementation(libs.edc.control.plane.core)
-//    implementation(libs.edc.configuration.filesystem)
-
     // mongodb cache storage
     implementation(libs.edc.fc.spi.core)
-    implementation("org.mongodb:mongodb-driver-sync:5.5.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
+    implementation(libs.mongodb.driver.sync)
+    implementation(libs.jackson.databind)
+    implementation(libs.jackson.datatype)
     implementation(libs.edc.verifiable.credentials.spi)
-//    implementation(libs.edc.control.plane.transform)
 
     // consumer
     runtimeOnly(project(":consumers:consumer"))

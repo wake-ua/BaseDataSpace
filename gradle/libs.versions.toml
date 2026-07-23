@@ -6,6 +6,7 @@ awaitility = "4.3.0"
 edc = "0.17.0"
 postgres = "42.7.9"
 restAssured = "6.0.0"
+jackson = "2.16.1"
 jupiter = "5.11.3"
 okhttp-mockwebserver = "5.0.0-alpha.14"
 rsApi = "4.0.0"
@@ -58,8 +59,6 @@ edc-data-plane-spi = { module = "org.eclipse.edc:data-plane-spi", version.ref = 
 edc-dsp = { module = "org.eclipse.edc:dsp", version.ref = "edc" }
 edc-dsp-catalog-lib = { module = "org.eclipse.edc:dsp-catalog-lib", version.ref = "edc" }
 edc-dsp-catalog-transform-lib = { module = "org.eclipse.edc:dsp-catalog-transform-lib", version.ref = "edc" }
-# edc-dsp-catalog = { module = "org.eclipse.edc:dsp-catalog-08", version.ref = "edc" }
-# edc-dsp-catalog-http-api = { module = "org.eclipse.edc:dsp-catalog-http-api-08", version.ref = "edc" }
 edc-dsp-catalog-http-api-lib = { module = "org.eclipse.edc:dsp-catalog-http-api-lib", version.ref = "edc" }
 edc-dsp-catalog-validation-lib = { module = "org.eclipse.edc:dsp-catalog-validation-lib", version.ref = "edc" }
 edc-dsp-http-core = { module = "org.eclipse.edc:dsp-http-core", version.ref = "edc" }
@@ -116,7 +115,7 @@ jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsA
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafkaClients" }
-minio-io = { module = "io.minio:minio", version = "8.5.17" }
+minio-io = { module = "io.minio:minio", version = "8.6.0" }
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp-mockwebserver" }
 opentelemetry-annotations = { module = "io.opentelemetry:opentelemetry-extension-annotations", version = "1.18.0" }
 opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version = "1.47.0" }
@@ -130,16 +129,12 @@ testcontainers-minio = { module = "org.testcontainers:minio", version.ref = "tes
 
 # federated catalog modules
 edc-fc-spi-core = { module = "org.eclipse.edc:federated-catalog-spi", version.ref = "edc" }
-edc-fc-core = { module = "org.eclipse.edc:federated-catalog-core", version.ref = "edc" }
-edc-fc-core-v08 = { module = "org.eclipse.edc:federated-catalog-core-08", version.ref = "edc" }
 edc-fc-core-v2025 = { module = "org.eclipse.edc:federated-catalog-core-2025", version.ref = "edc" }
 edc-fc-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref = "edc" }
 edc-fc-spi-crawler = { module = "org.eclipse.edc:crawler-spi", version.ref = "edc" }
-edc-fc-cache-sql = { module = "org.eclipse.edc:federated-catalog-cache-sql", version.ref = "edc" }
-edc-fc-target-node-directory-sql = { module = "org.eclipse.edc:target-node-directory-sql", version.ref = "edc" }
-edc-catalog-util-lib = { module = "org.eclipse.edc:catalog-util-lib", version.ref = "edc" }
-edc-spi-catalog = { module = "org.eclipse.edc:catalog-spi", version.ref = "edc" }
-federatedcatalog-dcp-bom = { module = "org.eclipse.edc:federatedcatalog-dcp-bom", version.ref = "edc" }
+mongodb-driver-sync = { module = "org.mongodb:mongodb-driver-sync", version = "5.5.0"}
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson"}
+jackson-datatype = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson"}
 
 # datasource sql
 edc-sql-assetindex = { module = "org.eclipse.edc:asset-index-sql", version.ref = "edc" }
@@ -156,22 +151,6 @@ edc-sql-pool = { module = "org.eclipse.edc:sql-pool-apache-commons", version.ref
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 edc-transaction-local = { module = "org.eclipse.edc:transaction-local", version.ref = "edc" }
 edc-spi-transaction-datasource = { module = "org.eclipse.edc:transaction-datasource-spi", version.ref = "edc" }
-
-# identity hub and issuer
-edc-bom-identityhub = { module = "org.eclipse.edc:identityhub-bom", version.ref = "edc" }
-edc-bom-identityhub-sql = { module = "org.eclipse.edc:identityhub-feature-sql-bom", version.ref = "edc" }
-edc-bom-issuerservice = { module = "org.eclipse.edc:issuerservice-bom", version.ref = "edc" }
-edc-bom-issuerservice-sql = { module = "org.eclipse.edc:issuerservice-feature-sql-bom", version.ref = "edc" }
-
-# identityhub SPI modules
-edc-ih-spi-did = { module = "org.eclipse.edc:did-spi", version.ref = "edc" }
-edc-ih-spi-credential = { module = "org.eclipse.edc:verifiable-credential-spi", version.ref = "edc" }
-edc-ih-spi = { module = "org.eclipse.edc:identity-hub-spi", version.ref = "edc" }
-
-# identityhub API modules
-edc-oauth2-client = { module = "org.eclipse.edc:oauth2-client", version.ref = "edc" }
-edc-ih-api-did = { module = "org.eclipse.edc:did-api", version.ref = "edc" }
-edc-ih-api-participants = { module = "org.eclipse.edc:participant-context-api", version.ref = "edc" }
 
 # vocabulary hub
 net-sourceforge-owlapi = { module = "net.sourceforge.owlapi:owlapi-distribution", version = "5.5.1" }
