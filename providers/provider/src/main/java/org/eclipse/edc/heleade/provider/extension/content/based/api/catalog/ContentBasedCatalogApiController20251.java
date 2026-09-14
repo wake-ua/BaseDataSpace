@@ -126,6 +126,7 @@ public class ContentBasedCatalogApiController20251 extends BaseDspCatalogApiCont
         JsonObject object = ((JsonObject) response.getEntity());
         JsonObject modifiedDataset = modifySampleDataset(object);
         JsonObject modifiedDataDictionaryDataset = moveCbmFieldsToDistributionForDataset(modifiedDataset);
+        // TODO: Cleanup distribution
 
         return Response.fromResponse(response)
                 .entity(modifiedDataDictionaryDataset)

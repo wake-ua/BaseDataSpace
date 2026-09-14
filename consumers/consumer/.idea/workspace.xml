@@ -5,46 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2ab0c9ec-1f5d-4c1d-9b87-aeb58bda4064" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../consumer-base/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../consumer-base/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/extension/health/HealthEndpointExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/extension/health/HealthEndpointExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/sample/runtime/SeedVaultExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/eclipse/edc/heleade/consumer/sample/runtime/SeedVaultExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryApiExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryApiExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/node/directory/NodeDirectoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/query/FederatedCatalogContentBasedApiExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/query/FederatedCatalogContentBasedApiExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/verification/VerificationApiExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/api/verification/VerificationApiExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/content/based/FederatedCatalogContentBasedExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/content/based/FederatedCatalogContentBasedExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/health/HealthEndpointExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/health/HealthEndpointExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/MongodbFederatedCatalogExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/MongodbFederatedCatalogExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectoryStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../federated-catalog/src/main/java/org/eclipse/edc/heleade/federated/catalog/extension/store/mongodb/node/directory/MongodbFederatedCatalogNodeDirectoryStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/../../gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../iam-identity/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../iam-identity/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../iam-identity/src/main/java/org/eclipse/edc/heleade/identity/IamIdentityExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../iam-identity/src/main/java/org/eclipse/edc/heleade/identity/IamIdentityExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/content-based-catalog-dispatcher/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/content-based-catalog-dispatcher/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider-base/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider-base/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider-ebird/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider-ebird/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/content/based/api/catalog/ContentBasedCatalogExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/health/HealthEndpointExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/health/HealthEndpointExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/service/ServiceDataPlaneExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/service/ServiceDataPlaneExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/validation/AssetValidationExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/extension/validation/AssetValidationExtension.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/sample/runtime/SeedVaultExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../providers/provider/src/main/java/org/eclipse/edc/heleade/provider/sample/runtime/SeedVaultExtension.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="3ACwd1uHCwiCbFuVjJl3DoKcdTh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -53,16 +35,69 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "upgrade-0.17.0",
     "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
     "nodejs_package_manager_path": "npm",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <module name="" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -79,6 +114,7 @@
       <option name="presentableId" value="Default" />
       <updated>1772109943561</updated>
       <workItem from="1772109944685" duration="3000" />
+      <workItem from="1786108319820" duration="6000" />
     </task>
     <servers />
   </component>
