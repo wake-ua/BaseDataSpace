@@ -89,7 +89,7 @@ public class ServiceDataSource implements DataSource {
                 "\"processId\": \"" + processId + "\", " +
                 "\"participantId\": \"" + participantId + "\", " +
                 "\"assetId\": \"" + assetId + "\", " +
-                "\"agreementId\": \"" + agreementId +
+                "\"agreementId\": \"" + agreementId + "\"" +
                 "}";
         String credentialsString;
         // if no url, go for default credentials
