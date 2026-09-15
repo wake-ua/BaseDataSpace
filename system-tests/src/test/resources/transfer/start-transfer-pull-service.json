@@ -7,5 +7,5 @@
   "counterPartyAddress": "http://localhost:49194/protocol",
   "contractId": "{{contract-agreement-id}}",
   "protocol": "dataspace-protocol-http",
-  "transferType": "ServiceData-PULL"
+  "transferType": "HttpData-PULL"
 }
