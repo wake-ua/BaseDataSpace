@@ -182,7 +182,7 @@ public class TransferUtil {
     }
 
     public static String pullTransferGetData(String transferProcessId) {
-        String dataPullEndpointUrl =  PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_EDRS_PATH + transferProcessId +"/dataaddress";
+        String dataPullEndpointUrl =  PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_EDRS_PATH + transferProcessId + "/dataaddress";
         JsonObject result = getResponseBody(dataPullEndpointUrl).asJsonObject();
         String dataEndpoint = result.getString("endpoint");
         String dataAuthorization = result.getString("authorization");

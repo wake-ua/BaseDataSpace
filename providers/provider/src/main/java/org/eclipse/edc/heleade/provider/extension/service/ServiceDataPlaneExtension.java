@@ -15,6 +15,7 @@
 package org.eclipse.edc.heleade.provider.extension.service;
 
 import org.eclipse.edc.connector.dataplane.iam.service.DataPlaneAuthorizationServiceImpl;
+import org.eclipse.edc.connector.dataplane.spi.Endpoint;
 import org.eclipse.edc.connector.dataplane.spi.edr.EndpointDataReferenceServiceRegistry;
 import org.eclipse.edc.connector.dataplane.spi.iam.DataPlaneAccessControlService;
 import org.eclipse.edc.connector.dataplane.spi.iam.DataPlaneAccessTokenService;
@@ -71,6 +72,9 @@ public class ServiceDataPlaneExtension  implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         String defaultCredentials = context.getConfig().getString("edc.heleade.service.dataservice.credentials.default", "");
         pipelineService.registerFactory(new ServiceDataSourceFactory(context.getMonitor(), httpClient, defaultCredentials));
+
+        var publicBaseUrl = context.getConfig().getString("edc.dataplane.api.public.baseurl");
+        endpointGenerator.addGeneratorFunction(SERVICE_DATA_TYPE, dataAddress -> Endpoint.url(publicBaseUrl));
 
         var service = getDataPlaneAuthorizationService(context);
         endpointDataReferenceServiceRegistry.register(SERVICE_DATA_TYPE, service);
