@@ -19,10 +19,12 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonStructure;
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
+import org.eclipse.edc.heleade.common.PrerequisitesCommon;
 
 import java.io.StringReader;
 import java.time.Duration;
@@ -45,6 +47,7 @@ public class TransferUtil {
 
     private static final String CONTRACT_AGREEMENT_ID_KEY = "{{contract-agreement-id}}";
     private static final String V2_TRANSFER_PROCESSES_PATH = "/v3/transferprocesses/";
+    private static final String V2_EDRS_PATH = "/v3/edrs/";
     private static final String EDC_STATE = "state";
 
     public static void get(String url) {
@@ -178,6 +181,24 @@ public class TransferUtil {
                 });
     }
 
+    public static String pullTransferGetData(String transferProcessId) {
+        String dataPullEndpointUrl =  PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_EDRS_PATH + transferProcessId +"/dataaddress";
+        JsonObject result = getResponseBody(dataPullEndpointUrl).asJsonObject();
+        String dataEndpoint = result.getString("endpoint");
+        String dataAuthorization = result.getString("authorization");
+        return given()
+                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
+                .header("Authorization", dataAuthorization)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(dataEndpoint)
+                .then()
+                .log().ifError()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .body()
+                .asString();
+    }
 
     public static void printTransferStatus(String transferProcessId) {
         await()

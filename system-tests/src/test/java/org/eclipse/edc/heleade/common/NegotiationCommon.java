@@ -34,6 +34,7 @@ import static org.eclipse.edc.heleade.util.TransferUtil.postJson;
 public class NegotiationCommon {
 
     private static final String CREATE_ASSET_FILE_PATH = "system-tests/src/test/resources/transfer/create-asset.json";
+    private static final String CREATE_SERVICE_FILE_PATH = "system-tests/src/test/resources/transfer/create-service.json";
     private static final String V3_ASSETS_PATH = "/v3/assets";
     private static final String V3_CBM_ASSETS_PATH = "/v3/assets-cbm";
     private static final String ASSET_ID = "@id";
@@ -43,10 +44,12 @@ public class NegotiationCommon {
     private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
     private static final String V2_CATALOG_DATASET_REQUEST_PATH = "/v3/catalog/dataset/request";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "system-tests/src/test/resources/transfer/get-dataset.json";
+    private static final String FETCH_SERVICE_FROM_CATALOG_FILE_PATH = "system-tests/src/test/resources/transfer/get-service.json";
     private static final String V2_CATALOG_REQUEST_PATH = "/v3/catalog/request";
     private static final String CATALOG_DATASET_ID = "\"odrl:hasPolicy\".'@id'";
     private static final String CATALOG_DATASET_LIST = "\"dcat:dataset\"";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "system-tests/src/test/resources/transfer/negotiate-contract.json";
+    private static final String NEGOTIATE_CONTRACT_SERVICE_FILE_PATH = "system-tests/src/test/resources/transfer/negotiate-contract-service.json";
     private static final String V2_CONTRACT_NEGOTIATIONS_PATH = "/v3/contractnegotiations/";
     private static final String CONTRACT_NEGOTIATION_ID = "@id";
     private static final String CONTRACT_AGREEMENT_ID = "contractAgreementId";
@@ -54,6 +57,11 @@ public class NegotiationCommon {
 
     public static String createAsset() {
         return createAsset(CREATE_ASSET_FILE_PATH);
+    }
+
+    public static String createService(int port) {
+        String serviceAssetContent = getFileContentFromRelativePath(CREATE_SERVICE_FILE_PATH);
+        return createAssetFromString(serviceAssetContent.replace("4000", String.valueOf(port)));
     }
 
     public static String createAssetWithId(String id) {
@@ -67,8 +75,12 @@ public class NegotiationCommon {
     }
 
     public static String createAsset(String assetFilePath) {
+        return createAssetFromString(getFileContentFromRelativePath(assetFilePath));
+    }
+
+    public static String createAssetFromString(String assetContent) {
         return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH,
-                        getFileContentFromRelativePath(assetFilePath), ASSET_ID);
+                assetContent, ASSET_ID);
     }
 
     public static String createCbmAsset(String assetFilePath) {
@@ -164,6 +176,15 @@ public class NegotiationCommon {
         createContractDefinition();
         var catalogDatasetId = fetchDatasetFromCatalog(FETCH_DATASET_FROM_CATALOG_FILE_PATH);
         var contractNegotiationId = negotiateContract(NEGOTIATE_CONTRACT_FILE_PATH, catalogDatasetId);
+        return getContractAgreementId(contractNegotiationId);
+    }
+
+    public static String runNegotiationService(int port) {
+        createService(port);
+        createPolicy();
+        createContractDefinition();
+        var catalogDatasetId = fetchDatasetFromCatalog(FETCH_SERVICE_FROM_CATALOG_FILE_PATH);
+        var contractNegotiationId = negotiateContract(NEGOTIATE_CONTRACT_SERVICE_FILE_PATH, catalogDatasetId);
         return getContractAgreementId(contractNegotiationId);
     }
 }
