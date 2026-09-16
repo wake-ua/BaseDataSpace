@@ -91,6 +91,7 @@ public class ServiceDataSource implements DataSource {
                 "\"assetId\": \"" + assetId + "\", " +
                 "\"agreementId\": \"" + agreementId + "\"" +
                 "}";
+        monitor.debug("Info for credential service: " + source);
         String credentialsString;
         // if no url, go for default credentials
         if (credentialsServiceUrl == null || credentialsServiceUrl.isEmpty()) {
